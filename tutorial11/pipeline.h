@@ -21,48 +21,48 @@
 
 #include "math_3d.h"
 
+//////////////////////////////////////////////////////////////////////////
+/// Класс реализующий матричный конфейер
+//////////////////////////////////////////////////////////////////////////
 class Pipeline
 {
 public:
-    Pipeline()
-    {
-        m_scale      = Vector3f(1.0f, 1.0f, 1.0f);
-        m_worldPos   = Vector3f(0.0f, 0.0f, 0.0f);
-        m_rotateInfo = Vector3f(0.0f, 0.0f, 0.0f);
-    }
+	// Конструктор
+    Pipeline();
 
-    void Scale(float ScaleX, float ScaleY, float ScaleZ)
-    {
-        m_scale.x = ScaleX;
-        m_scale.y = ScaleY;
-        m_scale.z = ScaleZ;
-    }
+	// Установка параметров преобразоваания масштабирования
+    void Scale(const float ScaleX, const float ScaleY, const float ScaleZ);
 
-    void WorldPos(float x, float y, float z)
-    {
-        m_worldPos.x = x;
-        m_worldPos.y = y;
-        m_worldPos.z = z;
-    }
+	// Установка параметров преобразоваания сдвига
+    void WorldPos(const float x, const float y, const float z);
 
-    void Rotate(float RotateX, float RotateY, float RotateZ)
-    {
-        m_rotateInfo.x = RotateX;
-        m_rotateInfo.y = RotateY;
-        m_rotateInfo.z = RotateZ;
-    }
+	// Установка параметров преобразоваания поворота
+    void Rotate(const float RotateX, const float RotateY, const float RotateZ);
 
-    const Matrix4f* GetTrans();
+	// Вычисление матрицы преобразования
+    const Matrix4f& GetTrans();
 
-private:
+protected:
+	// Инициализация матрицы масштабирования
     void InitScaleTransform(Matrix4f& m) const;
+	
+	// Инициализация общей матрицы поворота
     void InitRotateTransform(Matrix4f& m) const;
+	
+	// Инициализация матрицы сдвига
     void InitTranslationTransform(Matrix4f& m) const;
-
+	
+protected:
+	// параметры масштабирования
     Vector3f m_scale;
+	
+	// параметры сдвига
     Vector3f m_worldPos;
+	
+	// параметры поворота
     Vector3f m_rotateInfo;
 
+	// матрица преобразования
     Matrix4f m_transformation;
 };
 

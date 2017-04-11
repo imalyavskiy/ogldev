@@ -18,59 +18,125 @@
 
 #include "pipeline.h"
 
-void Pipeline::InitScaleTransform(Matrix4f& m) const
+// Конструктор
+Pipeline::Pipeline()
+	: m_scale	  (1.0f, 1.0f, 1.0f)
+	, m_worldPos  (0.0f, 0.0f, 0.0f)
+	, m_rotateInfo(0.0f, 0.0f, 0.0f)
 {
-    m.m[0][0] = m_scale.x; m.m[0][1] = 0.0f     ; m.m[0][2] = 0.0f     ; m.m[0][3] = 0.0f;
-    m.m[1][0] = 0.0f     ; m.m[1][1] = m_scale.y; m.m[1][2] = 0.0f     ; m.m[1][3] = 0.0f;
-    m.m[2][0] = 0.0f     ; m.m[2][1] = 0.0f     ; m.m[2][2] = m_scale.z; m.m[2][3] = 0.0f;
-    m.m[3][0] = 0.0f     ; m.m[3][1] = 0.0f     ; m.m[3][2] = 0.0f     ; m.m[3][3] = 1.0f;
 }
 
+// Установка параметров преобразоваания масштабирования
+void Pipeline::Scale(const float ScaleX, const float ScaleY, const float ScaleZ)
+{
+	m_scale.x = ScaleX;
+	m_scale.y = ScaleY;
+	m_scale.z = ScaleZ;
+}
+
+// Установка параметров преобразоваания сдвига
+void Pipeline::WorldPos(const float x, const float y, const float z)
+{
+	m_worldPos.x = x;
+	m_worldPos.y = y;
+	m_worldPos.z = z;
+}
+
+// Установка параметров преобразоваания поворота
+void Pipeline::Rotate(const float RotateX, const float RotateY, const float RotateZ)
+{
+	m_rotateInfo.x = RotateX;
+	m_rotateInfo.y = RotateY;
+	m_rotateInfo.z = RotateZ;
+}
+
+
+// Инициализация матрицы масштабирования
+void Pipeline::InitScaleTransform(Matrix4f& m) const
+{
+	m = Matrix4f
+	{
+        m_scale.x  ,     0.0f     ,      0.0f     ,      0.0f     ,
+          0.0f     ,  m_scale.y   ,      0.0f     ,      0.0f     ,
+          0.0f     ,     0.0f     ,   m_scale.z   ,      0.0f     ,
+          0.0f     ,     0.0f     ,      0.0f     ,      1.0f     
+	};
+}
+
+// Инициализация общей матрицы поворота
 void Pipeline::InitRotateTransform(Matrix4f& m) const
 {
-    Matrix4f rx, ry, rz;
-
     const float x = ToRadian(m_rotateInfo.x);
     const float y = ToRadian(m_rotateInfo.y);
     const float z = ToRadian(m_rotateInfo.z);
+	
+	// Транспонированная матрица поворота в плоскости YOZ
+    Matrix4f rx 
+	{
+	     1.0f,     0.0f,      0.0f,     0.0f,
+	     0.0f,    cosf(x),  -sinf(x),   0.0f,
+	     0.0f,    sinf(x),   cosf(x),   0.0f,
+	     0.0f,     0.0f,      0.0f,     1.0f,
+	};
 
-    rx.m[0][0] = 1.0f; rx.m[0][1] = 0.0f   ; rx.m[0][2] = 0.0f    ; rx.m[0][3] = 0.0f;
-    rx.m[1][0] = 0.0f; rx.m[1][1] = cosf(x); rx.m[1][2] = -sinf(x); rx.m[1][3] = 0.0f;
-    rx.m[2][0] = 0.0f; rx.m[2][1] = sinf(x); rx.m[2][2] = cosf(x) ; rx.m[2][3] = 0.0f;
-    rx.m[3][0] = 0.0f; rx.m[3][1] = 0.0f   ; rx.m[3][2] = 0.0f    ; rx.m[3][3] = 1.0f;
+	// Транспонированная матрица поворота в плоскости XOZ
+	Matrix4f ry
+	{
+	    cosf(y),   0.0f,    -sinf(y),   0.0f,
+	     0.0f  ,   1.0f,     0.0f  ,    0.0f,
+		sinf(y),   0.0f,    cosf(y),    0.0f,
+		 0.0f  ,   0.0f,     0.0f  ,    1.0f,
+	};
 
-    ry.m[0][0] = cosf(y); ry.m[0][1] = 0.0f; ry.m[0][2] = -sinf(y); ry.m[0][3] = 0.0f;
-    ry.m[1][0] = 0.0f   ; ry.m[1][1] = 1.0f; ry.m[1][2] = 0.0f    ; ry.m[1][3] = 0.0f;
-    ry.m[2][0] = sinf(y); ry.m[2][1] = 0.0f; ry.m[2][2] = cosf(y) ; ry.m[2][3] = 0.0f;
-    ry.m[3][0] = 0.0f   ; ry.m[3][1] = 0.0f; ry.m[3][2] = 0.0f    ; ry.m[3][3] = 1.0f;
-
-    rz.m[0][0] = cosf(z); rz.m[0][1] = -sinf(z); rz.m[0][2] = 0.0f; rz.m[0][3] = 0.0f;
-    rz.m[1][0] = sinf(z); rz.m[1][1] = cosf(z) ; rz.m[1][2] = 0.0f; rz.m[1][3] = 0.0f;
-    rz.m[2][0] = 0.0f   ; rz.m[2][1] = 0.0f    ; rz.m[2][2] = 1.0f; rz.m[2][3] = 0.0f;
-    rz.m[3][0] = 0.0f   ; rz.m[3][1] = 0.0f    ; rz.m[3][2] = 0.0f; rz.m[3][3] = 1.0f;
+	// Транспонированная матрица поворота в плоскости XOY
+	Matrix4f rz
+	{
+	    cosf(z), -sinf(z),   0.0f,      0.0f,
+	    sinf(z),  cosf(z),   0.0f,      0.0f,
+	     0.0f  ,   0.0f  ,   1.0f,      0.0f,
+	     0.0f  ,   0.0f  ,   0.0f,      1.0f,
+	};
 
     m = rz * ry * rx;
 }
 
+// Инициализация матрицы сдвига
 void Pipeline::InitTranslationTransform(Matrix4f& m) const
 {
-    m.m[0][0] = 1.0f; m.m[0][1] = 0.0f; m.m[0][2] = 0.0f; m.m[0][3] = m_worldPos.x;
-    m.m[1][0] = 0.0f; m.m[1][1] = 1.0f; m.m[1][2] = 0.0f; m.m[1][3] = m_worldPos.y;
-    m.m[2][0] = 0.0f; m.m[2][1] = 0.0f; m.m[2][2] = 1.0f; m.m[2][3] = m_worldPos.z;
-    m.m[3][0] = 0.0f; m.m[3][1] = 0.0f; m.m[3][2] = 0.0f; m.m[3][3] = 1.0f;
+	// Транспонированная матрица сдвига
+	m = Matrix4f
+	{
+			1.0f    ,     0.0f    ,     0.0f    , m_worldPos.x,
+			0.0f    ,     1.0f    ,     0.0f    , m_worldPos.y,
+			0.0f    ,     0.0f    ,     1.0f    , m_worldPos.z,
+			0.0f    ,     0.0f    ,     0.0f    ,     1.0f    ,
+	};
 }
 
-
-const Matrix4f* Pipeline::GetTrans()
+// Вычисление матрицы преобразования
+const Matrix4f& Pipeline::GetTrans()
 {
-    Matrix4f ScaleTrans, RotateTrans, TranslationTrans;
+    Matrix4f ScaleTrans;
+	InitScaleTransform(ScaleTrans);
 
-    InitScaleTransform(ScaleTrans);
-    InitRotateTransform(RotateTrans);
+	Matrix4f RotateTrans;
+	InitRotateTransform(RotateTrans);
+
+	Matrix4f TranslationTrans;
     InitTranslationTransform(TranslationTrans);
 
-    m_transformation = TranslationTrans * RotateTrans * ScaleTrans;
-    return &m_transformation;
+	// Последовательность действий всегда такова:
+	// 1. Масштабирование
+	// 2. Поворот
+	// 3. Сдвиг
+	// m_transformation = ScaleTrans;
+	// m_transformation = RotateTrans * m_transformation;
+	// m_transformation = TranslationTrans * m_transformation;
+	// что то же самое, что и ниже
+	
+	m_transformation = TranslationTrans * RotateTrans * ScaleTrans;
+	
+    return m_transformation;
 }
 
 
