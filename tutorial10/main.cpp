@@ -26,187 +26,355 @@
 #include <GL/freeglut.h>
 #include "math_3d.h"
 
+// Идентификатор объекта буфера вершин
 GLuint VBO;
+
+// Идентификатор объекта буфера индексов
 GLuint IBO;
+
+// Идентификатор связываемый с uniform переменной gWorld вершинного шейдера,
+// всемирной матрицей. Всемирная она потому, что всё что мы делаем с объектом, 
+// это изменение его позиции в место, которое мы указываем относительно коорди-
+// натной системы внутри нашего виртуального 'мира'.
 GLuint gWorldLocation;
 
 
-static const char* pVS = "                                                          \n\
-#version 330                                                                        \n\
-                                                                                    \n\
-layout (location = 0) in vec3 Position;                                             \n\
-                                                                                    \n\
-uniform mat4 gWorld;                                                                \n\
-                                                                                    \n\
-out vec4 Color;                                                                     \n\
-                                                                                    \n\
-void main()                                                                         \n\
-{                                                                                   \n\
-    gl_Position = gWorld * vec4(Position, 1.0);                                     \n\
-    Color = vec4(clamp(Position, 0.0, 1.0), 1.0);                                   \n\
-}";
+// Исходный код вершинного шейдера
+static const char* pVS =
+// использовать GLSL версиию 3.3
+"#version 330                                                                        \n"\
+// Вершина содержит атрибут, являющийся вектором из 3 элементов типа float, который будет иметь имя 'Position' внутри шейдера
+// "layout (location = 0)" создаёт связь между названием атрибута и атрибутом в буфере
+"layout (location = 0) in vec3 Position;                                             \n"\
+// Всемирная матрица в шейдере. Доступна из вне шейдерного программного объекта, т.к. uniform.
+//		This means that the value does not change between multiple executions of a shader during 
+//		the rendering of a primitive (ie: during a glDraw* call). These values are set by the user 
+//		from the OpenGL API. "https://www.khronos.org/opengl/wiki/Uniform_(GLSL)"
+"uniform mat4 gWorld;                                                                \n"\
+// Переменная передающая данные следующему этапу графического конвейера.
+// Обязательно д.б. глобальной и помечена как out
+"out vec4 Color;                                                                     \n"\
+// Точка входа в шейдер
+"void main()                                                                         \n"\
+"{                                                                                   \n"\
+// Изменяем координаты вершины и записываем результат в "vec4 gl_Position"
+//		"gl_Position" - втроенная переменная, содержащая вершинные координаты (X, Y, Z и W компоненты)
+//	Сначала дополняем vec3 Position до vec4 - "vec4(Position, 1.0)", что бы согласовать
+//	размерность вектора и матрицы. После чего умножаем ветктор на матрицу слева,
+//	т.е. матрицу умножаем на вектор и получаем новые кординаты точки.
+"    gl_Position = gWorld * vec4(Position, 1.0);                                     \n"\
+// Для преобразования в цвет ограничиваем значения x,y,z позиции отрезком от [0.0, 1.0]
+// поскольку цвет меняетя именно в этом интервале значений, а координаты у нас в интервале
+// [-1, 1]. То что меньше 0 - без clamp бует чёрным цвет
+"    vec3 clamped = clamp(Position, 0.0, 1.0);                                       \n"\
+// Дополняем vec3 единицей, собраем в  vec4 и передаём на выход
+"    Color = vec4(clamped, 1.0);                                                     \n"\
+"}                                                                                   \n";
 
-static const char* pFS = "                                                          \n\
-#version 330                                                                        \n\
-                                                                                    \n\
-in vec4 Color;                                                                      \n\
-                                                                                    \n\
-out vec4 FragColor;                                                                 \n\
-                                                                                    \n\
-void main()                                                                         \n\
-{                                                                                   \n\
-    FragColor = Color;                                                              \n\
-}";
+// Исходный код фрагментного шейдера
+static const char* pFS =
+// использовать GLSL версию 3.3
+"#version 330                                                                        \n"\
+// Одноименная переменная принимающая данные от предыдущего этапа конвейера.
+// Так же глобальная, но помеченная in.
+"in vec4 Color;                                                                      \n"\
+// Выходной параметр vec4(R,G,B,A)
+"out vec4 FragColor;                                                                 \n"\
+// Точка входа в шейдер
+"void main()                                                                         \n"\
+"{                                                                                   \n"\
+// Транслируем цвет полученный от пиксельного шейдера дальше.
+"    FragColor = Color;                                                              \n"\
+"}                                                                                   \n";
 
+// Функция заполнения буфера кадра
 static void RenderSceneCB()
 {
+	// Очищаем буфер кадра
     glClear(GL_COLOR_BUFFER_BIT);
 
+	// Аргумент функции(sin) расчёта коэффициента преобразования
     static float Scale = 0.0f;
 
-    Scale += 0.01f;
+	// Приращение
+    Scale += 0.005f;
+	
+	// Каноническая матрица поворота    
+	// в плоскости XOY меет вид:       | в плоскости XOZ меет вид:       | в плоскости YOZ меет вид:       |
+	//  cos(a)  sin(a)    0       0    |  cos(a)    0     sin(a)    0    |    1       0       0       0    |
+	// -sin(a)  cos(a)    0       0    |    0       1       0       0    |    0     cos(a)  sin(a)    0    |
+	//    0       0       1       0    | -sin(a)    0     cos(a)    0    |    0    -sin(a)  cos(a)    0    |
+	//    0       0       0       1    |    0       0       0       1    |    0       0       0       1    |
 
-    Matrix4f World;
+	// Задаём матирцу поворота XOZ в транспонированном виде
+	Matrix4f World =
+	{
+		 cosf(Scale),     0.0f,    -sinf(Scale),     0.0f,
+			 0.0f,        1.0f,        0.0f,         0.0f,
+		 sinf(Scale),     0.0f,    cosf(Scale),      0.0f,
+			 0.0f,        0.0f,        0.0f,         1.0f
+	};
 
-    World.m[0][0] = cosf(Scale); World.m[0][1] = 0.0f; World.m[0][2] = -sinf(Scale); World.m[0][3] = 0.0f;
-    World.m[1][0] = 0.0;         World.m[1][1] = 1.0f; World.m[1][2] = 0.0f        ; World.m[1][3] = 0.0f;
-    World.m[2][0] = sinf(Scale); World.m[2][1] = 0.0f; World.m[2][2] = cosf(Scale) ; World.m[2][3] = 0.0f;
-    World.m[3][0] = 0.0f;        World.m[3][1] = 0.0f; World.m[3][2] = 0.0f        ; World.m[3][3] = 1.0f;
+	// Установка матрицы сдвига в переменную gWorld вершинного 
+	// шейдера через её идентификатор хранящийся в gWorldLocation
+    glUniformMatrix4fv( gWorldLocation	// Идентификатор uniform переменной
+					  , 1				// Количество элементов, в данном случае матриц 4х4 из float'ов
+					  , GL_TRUE			// Копируемая матрица - транспонированная
+					  , &World.m[0][0]	// указатель на начало длока данных матрицы
+					  );
 
-    glUniformMatrix4fv(gWorldLocation, 1, GL_TRUE, &World.m[0][0]);
-
+	// Координаты вершин, используемые в буфере, рассматриваются как атрибут вершины с индексом 0 
+	// поэтому разрешаем индексацию атрибутов вершины 0
     glEnableVertexAttribArray(0);
+	
+	// Подключаем буфер, как буфер вершин(GL_ARRAY_BUFFER)
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+	
+	// Говорим конвейеру как воспринимать данные внутри буфера
+    glVertexAttribPointer( 0		// Индекс атрибута с которого начать чтение
+						 , 3		// Количество компонент в атрибуте
+						 , GL_FLOAT // Тип компонент
+						 , GL_FALSE // Режим нормализации - выкл.
+						 , 0		// Шаг - число байт между экземплярами атрибута
+						 , 0		// Смещение первого элемента в буфере в байтах.
+						 );
+	
+	// Подключаем буфер индексов, как буфер индексов буфера атрибутов(координат) вершин(GL_ELEMENT_ARRAY_BUFFER)
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER	// Наименование точки подключения
+				, IBO 						// ID буфера
+				);
 
-    glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+	// Используем glDrawElements вместо glDrawArrays
+    glDrawElements( GL_TRIANGLES		// тип примитива который рисуем
+				  , 12					// какое количество индексов в индексном буфере используем 12/3 == 4 треугольника
+				  , GL_UNSIGNED_INT		// тип элемента(говорит о количестве байт на элемент)
+				  , 0					// смещение в байтах от начала буфера индексов до до позиции первого индекса для обработки
+				  );
 
+	// Отключаем доступ к атирибутам вершины 0
     glDisableVertexAttribArray(0);
 
+	// меняем местами буфера кадров(у нас их два, мы включали двойную буфферизацию).
     glutSwapBuffers();
 }
 
-
+// Функция регистрации callback'ов
 static void InitializeGlutCallbacks()
 {
+	// Устанавливаем callback функцию заполнения буфера кадра
     glutDisplayFunc(RenderSceneCB);
+
+	// Указываем функцию рендера в качестве функции простоя
+	//	- функция простоя вызывается когда нет событий пользовательсткого ввода
     glutIdleFunc(RenderSceneCB);
 }
 
+// Функция создания буфера вершин
 static void CreateVertexBuffer()
 {
-    Vector3f Vertices[4];
-    Vertices[0] = Vector3f(-1.0f, -1.0f, 0.0f);
-    Vertices[1] = Vector3f(0.0f, -1.0f, 1.0f);
-    Vertices[2] = Vector3f(1.0f, -1.0f, 0.0f);
-    Vertices[3] = Vector3f(0.0f, 1.0f, 0.0f);
+	
+	// Буфер координат вершин
+    Vector3f Vertices[4] = 
+	{
+		Vector3f(-1.0f, -1.0f,  0.0f),
+		Vector3f( 0.0f, -1.0f,  1.0f),
+		Vector3f( 1.0f, -1.0f,  0.0f),
+		Vector3f( 0.0f,  1.0f,  0.0f)
+	};
 
- 	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
+	// Запрашиваем у OpenGL создание объекта буфера
+ 	glGenBuffers( 1					// количество буферов
+				, &VBO );			// блок памяти GLuint'ов того же количества
+
+	// Подключаем буфер, как буфер атрибутов(координат) вершин(GL_ARRAY_BUFFER)
+	glBindBuffer( GL_ARRAY_BUFFER	// Наименование точки подключения
+				, VBO				// ID буфера
+				);
+
+	// Копируем данные из RAM буфера вершин в VRAM буфер вершин
+	glBufferData( GL_ARRAY_BUFFER	// Тип буфера
+				, sizeof(Vertices)  // Размер массива с вершинами
+				, Vertices          // адрес массива с вершинами
+				, GL_STATIC_DRAW    // данные буфера статичны(неизменны)
+				);
 }
 
+// Функция создания буфера индексов
 static void CreateIndexBuffer()
 {
-    unsigned int Indices[] = { 0, 3, 1,
-                               1, 3, 2,
-                               2, 3, 0,
-                               0, 2, 1 };
+	// Буфер индексов вершин треугольников нашей пирамиды
+    unsigned int Indices[] = 
+	{ 
+		0, 3, 1,
+        1, 3, 2,
+        2, 3, 0,
+        0, 2, 1 
+	};
 
-    glGenBuffers(1, &IBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
+	// Запрашиваем у OpenGL создание объекта буфера
+    glGenBuffers( 1							// количество буферов
+				, &IBO);					// блок памяти GLuint'ов того же количества
+
+	// Подключаем буфер, как буфер индексов буфера атрибутов(координат) вершин(GL_ELEMENT_ARRAY_BUFFER)
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER	// Наименование точки подключения
+				, IBO 						// ID буфера
+				);
+
+	// Копируем данные из RAM буфера индексов в VRAM буфер индексов
+    glBufferData( GL_ELEMENT_ARRAY_BUFFER	// Тип буфера
+				, sizeof(Indices)			// Размер массива с вершинами
+				, Indices					// адрес массива с вершинами
+				, GL_STATIC_DRAW			// данные буфера статичны(неизменны)
+				);
 }
 
+// Функция добавления шейдера в шейдерную программу
 static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
 {
+	// Запросим у OpenGL создать объект шейдера
     GLuint ShaderObj = glCreateShader(ShaderType);
 
     if (ShaderObj == 0) {
+		// Что-то пошло не так
         fprintf(stderr, "Error creating shader type %d\n", ShaderType);
         exit(0);
     }
 
-    const GLchar* p[1];
-    p[0] = pShaderText;
-    GLint Lengths[1];
-    Lengths[0]= strlen(pShaderText);
-    glShaderSource(ShaderObj, 1, p, Lengths);
+	const GLchar* p[] = { pShaderText };
+    GLint Lengths[]   = { (GLint)strlen(pShaderText) };
+    
+	// Заполним объект шейдера ресурсами
+    glShaderSource( ShaderObj // Идентификатор
+				  , 1		  // Кол-во пар код/длина в нижеследующих массивах
+				  , p		  // Код шейдеров
+				  , Lengths	  // Размер кода шедеров
+				  ); 
+	
+	// Запустим процесс компиляции
     glCompileShader(ShaderObj);
-    GLint success;
-    glGetShaderiv(ShaderObj, GL_COMPILE_STATUS, &success);
+    
+	GLint success = 0;
+
+	// Запросим у объекта шейдера параметр - результат компиляции
+    glGetShaderiv( ShaderObj			// Идентификатор объекта шейдера
+				 , GL_COMPILE_STATUS	// Идентификатор запрашиваемого параметра
+				 , &success				// Куда положить значение параметра
+				 );
+
     if (!success) {
+		// Если были ошибки коде в шейдера
         GLchar InfoLog[1024];
+
+		// Запросим и выведем лог
         glGetShaderInfoLog(ShaderObj, 1024, NULL, InfoLog);
         fprintf(stderr, "Error compiling shader type %d: '%s'\n", ShaderType, InfoLog);
         exit(1);
     }
 
+	// Всё прошло отлично. 
+	// Добавим скомпилированный шейдер в объект программы
     glAttachShader(ShaderProgram, ShaderObj);
 }
 
+// Функция задания шейдеров
 static void CompileShaders()
 {
+	// Запросим у OpenGL создать объект шейдероной программы
     GLuint ShaderProgram = glCreateProgram();
 
+	// Проверяем что всё идёт по плану
     if (ShaderProgram == 0) {
         fprintf(stderr, "Error creating shader program\n");
         exit(1);
     }
 
+	// Добавляем в программу исходный код вершинного шейдера 
     AddShader(ShaderProgram, pVS, GL_VERTEX_SHADER);
+
+	// Добавляем в программу исходный код фрагментного шейдера 
     AddShader(ShaderProgram, pFS, GL_FRAGMENT_SHADER);
 
     GLint Success = 0;
     GLchar ErrorLog[1024] = { 0 };
 
+	// Линкуем программу
     glLinkProgram(ShaderProgram);
+
+	// Запрашиваем результат и лог
     glGetProgramiv(ShaderProgram, GL_LINK_STATUS, &Success);
 	if (Success == 0) {
+		// Что-то пошло не так
 		glGetProgramInfoLog(ShaderProgram, sizeof(ErrorLog), NULL, ErrorLog);
 		fprintf(stderr, "Error linking shader program: '%s'\n", ErrorLog);
         exit(1);
 	}
 
+	// Проверяем сможет ли программа запуститься с текущим состоянием конвейера.
     glValidateProgram(ShaderProgram);
+
+	// Запрашиваем результат и лог
     glGetProgramiv(ShaderProgram, GL_VALIDATE_STATUS, &Success);
     if (!Success) {
+		// Что-то пошло не так
         glGetProgramInfoLog(ShaderProgram, sizeof(ErrorLog), NULL, ErrorLog);
         fprintf(stderr, "Invalid shader program: '%s'\n", ErrorLog);
         exit(1);
     }
 
+	// Подключаем программу к графическому конвейеру
     glUseProgram(ShaderProgram);
 
+	// Получаем идентификатор uniform переменной gWorld вершинного шейдера
     gWorldLocation = glGetUniformLocation(ShaderProgram, "gWorld");
+
+	// Ошибка может возникнуть, если неправильно указано имя uniform переменной
+	// или она была удалена компилятором во время оптимизации шейдера поскольку
+	// не использовалась
     assert(gWorldLocation != 0xFFFFFFFF);
 }
 
+// Собственно точка входа
 int main(int argc, char** argv)
 {
+	// Инициализация GLUT
     glutInit(&argc, argv);
+	
+	// Включаем режим двойной буферизации(GLUT_DOUBLE) и режим вывода цветов(GLUT_RGBA, не индексированный режим цветопередачи).
     glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA);
+	
+	// Задаём размер окна
     glutInitWindowSize(1024, 768);
+	
+	// Задаём позицию верхнего левого угла нашего окна
     glutInitWindowPosition(100, 100);
+
+	// Создаём окно с указанным именем
     glutCreateWindow("Tutorial 10");
 
+	// Регистрируем callback'и
     InitializeGlutCallbacks();
 
-    // Must be done after glut is initialized!
+    // Инициализируем GLEW.
+	// ВНИМАНИЕ: Этот шаг инициализации производится только после инициализации GLUT.
     GLenum res = glewInit();
     if (res != GLEW_OK) {
       fprintf(stderr, "Error: '%s'\n", glewGetErrorString(res));
       return 1;
     }
 
+	// Задаём цвет заливки буфера кадра
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
+	// Создаём буфер вершин
     CreateVertexBuffer();
+
+	// Создаём буфер индексов
     CreateIndexBuffer();
-    
+
+	// Задаём шейдеры
     CompileShaders();
 
+	// Передаём управление главному циклу GLUT
     glutMainLoop();
 
     return 0;
