@@ -21,6 +21,10 @@
 
 #include <math.h>
 
+#ifndef M_PI
+#define M_PI       3.14159265358979323846f   // pi
+#endif
+
 #define ToRadian(x) ((x) * M_PI / 180.0f)
 #define ToDegree(x) ((x) * 180.0f / M_PI)
 
@@ -47,12 +51,7 @@ class Matrix4f
 public:
     float m[4][4];
 
-    Matrix4f()
-    {        
-    }
-
-
-    inline void InitIdentity()
+   inline void InitIdentity()
     {
         m[0][0] = 1.0f; m[0][1] = 0.0f; m[0][2] = 0.0f; m[0][3] = 0.0f;
         m[1][0] = 0.0f; m[1][1] = 1.0f; m[1][2] = 0.0f; m[1][3] = 0.0f;

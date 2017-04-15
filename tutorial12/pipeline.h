@@ -21,66 +21,63 @@
 
 #include "math_3d.h"
 
+//////////////////////////////////////////////////////////////////////////
+/// Класс реализующий матричный конфейер
+//////////////////////////////////////////////////////////////////////////
 class Pipeline
 {
 public:
-    Pipeline()
-    {
-        m_scale      = Vector3f(1.0f, 1.0f, 1.0f);
-        m_worldPos   = Vector3f(0.0f, 0.0f, 0.0f);
-        m_rotateInfo = Vector3f(0.0f, 0.0f, 0.0f);
-    }
+	// Конструктор
+    Pipeline();
+	
+	// Установка коэффициентов масштабирования
+    void Scale(const float x, const float y, const float z);
 
-    void Scale(float ScaleX, float ScaleY, float ScaleZ)
-    {
-        m_scale.x = ScaleX;
-        m_scale.y = ScaleY;
-        m_scale.z = ScaleZ;
-    }
+	// Установка параметров преобразоваания сдвига
+    void WorldPos(const float x, const float y, const float z);
 
-    void WorldPos(float x, float y, float z)
-    {
-        m_worldPos.x = x;
-        m_worldPos.y = y;
-        m_worldPos.z = z;
-    }
+	// Установка поворота вокруг осей(в градусах)
+    void Rotate(const float x, const float y, const float z);
 
-    void Rotate(float RotateX, float RotateY, float RotateZ)
-    {
-        m_rotateInfo.x = RotateX;
-        m_rotateInfo.y = RotateY;
-        m_rotateInfo.z = RotateZ;
-    }
+	// Установка параметров перспективной проекции(угол обзора, ширина вьюпортаб высота вьюпорта, ближняя отсекаюшая плоскость, дальняя отсекающая плоскость)
+	void SetPerspectiveProj(const float fov, const float w, const float h, const float zn, const float zf);
 
-    void SetPerspectiveProj(float FOV, float Width, float Height, float zNear, float zFar)
-    {
-        m_persProj.FOV    = FOV;
-        m_persProj.Width  = Width;
-        m_persProj.Height = Height;
-        m_persProj.zNear  = zNear;
-        m_persProj.zFar   = zFar;
-    }
+	// Вычисление матрицы преобразования
+    const Matrix4f& GetTrans();
 
-    const Matrix4f* GetTrans();
-
-private:
+protected:
+	// Инициализация матрицы масштабирования
     void InitScaleTransform(Matrix4f& m) const;
+	
+	// Инициализация общей матрицы поворота
     void InitRotateTransform(Matrix4f& m) const;
+	
+	// Инициализация матрицы сдвига
     void InitTranslationTransform(Matrix4f& m) const;
+	
+	// Инициализация матрицы перспективной проекции
     void InitPerspectiveProj(Matrix4f& m) const;
 
+protected:
+	// параметры масштабирования
     Vector3f m_scale;
+	
+	// параметры сдвига
     Vector3f m_worldPos;
+	
+	// параметры поворота
     Vector3f m_rotateInfo;
 
+	// параметры перспективной проекции
     struct {
-        float FOV;
-        float Width;
-        float Height;
-        float zNear;
-        float zFar;
+        float fov;
+        float w;	// ширина
+        float h;	// высота
+        float zn;	// z координата ближней отсекающей плоскости
+        float zf;	// z координата дальней отсекающей плоскости
     } m_persProj;
 
+	// матрица преобразования
     Matrix4f m_transformation;
 };
 
