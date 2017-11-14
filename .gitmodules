@@ -2,3 +2,7 @@
 	path = externals/FreeGlut
 	url = https://github.com/imalyavskiy/FreeGLUT.git
 	branch = FG_3_0_0_branch
+[submodule "externals/glew"]
+	path = externals/glew
+	url = https://github.com/imalyavskiy/glew.git
+	branch = glew_2-1-0
