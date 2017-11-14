@@ -1,0 +1,6 @@
+{
+    "install_dir": "../externals",
+    "cmake_dir": "C:/Program Files/CMake/bin/",
+    "vstudio_dir": "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/",
+    "vstudio_ver": "2017"
+}
