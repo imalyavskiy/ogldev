@@ -1,0 +1,4 @@
+[submodule "externals/FreeGlut"]
+	path = externals/FreeGlut
+	url = https://github.com/imalyavskiy/FreeGLUT.git
+	branch = FG_3_0_0_branch
