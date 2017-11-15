@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <IncludePath>$(SolutionDir)exports\freeglut\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)exports\freeglut\lib\Win32\Release;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link />
+    <PostBuildEvent>
+      <Command>echo Checking the freeglut.dll presence at $(OutDir)
+if not exist "$(OutDir)freeglut.dll" ( 
+    echo Library does not exist here.
+    if not exist "$(SolutionDir)exports\freeglut\lib\Win32\Release\freeglut.dll" (
+        echo ERROR!!!! Library does not exist at source location. Did you run setup script?
+        echo check this: "$(SolutionDir)exports\freeglut\lib\Win32\Release"
+        exit 1
+    )
+    echo coping freeglutd.dll...
+    copy /Y /V "$(SolutionDir)exports\freeglut\lib\Win32\Release\freeglut.dll" /B "$(OutDir)freeglut.dll" /B 
+) else ( echo Ok. )
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>

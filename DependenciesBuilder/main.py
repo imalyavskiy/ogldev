@@ -75,10 +75,10 @@ activities = \
           "clean"       : True,
     },
     subdir_glew[:-1]: {
-          "build_Win64" : False,
-          "build_Win32" : False,
-          "copy_headers": False,
-          "clean"       : False,
+          "build_Win64" : True,
+          "build_Win32" : True,
+          "copy_headers": True,
+          "clean"       : True,
     },
 }
 
@@ -135,23 +135,41 @@ dependencies =\
                       "args"    : ["--variable=Path", "--action=append", "--value="+msbuild_dir]},
                     # building certain project with msbuild and certain parameters
                     { "command" : command.msbuild,
-                      "args"    : [ "freeglut.vcxproj", "/t:Rebuild", "/p:Configuration=Debug;Platform=x64;OutDir=./../../exports/freeglut/lib/Win64/Debug",
-                                                                      "/p:DebugSymbols=true;DebugType=full;PdbFile=./../../exports/freeglut/lib/Win64/Debug/freeglut.pdb"]},
+                      "args"    : [ "freeglut.vcxproj"
+                                  , "/t:Rebuild"
+                                  , "/p:Configuration=Debug"
+                                  , "/p:Platform=x64"
+                                  ]},
                     # building certain project with msbuild and certain parameters
                     { "command" : command.msbuild,
-                      "args"    : [ "freeglut.vcxproj", "/t:Rebuild", "/p:Configuration=Release;Platform=x64;OutDir=./../../exports/freeglut/lib/Win64/Release"]},
+                      "args"    : [ "freeglut.vcxproj"
+                                  , "/t:Rebuild"
+                                  , "/p:Configuration=Release"
+                                  , "/p:Platform=x64"
+                                  ]},
                     # building certain project with msbuild and certain parameters
                     { "command" : command.msbuild,
-                      "args"    : [ "freeglut_static.vcxproj", "/t:Rebuild", "/p:Configuration=Debug;Platform=x64;OutDir=./../../exports/freeglut/lib/Win64/Debug",
-                                                                             "/p:DebugSymbols=true;DebugType=full;PdbFile=./../../exports/freeglut/lib/Win64/Debug/freeglut_static.pdb"]},
+                      "args"    : [ "freeglut_static.vcxproj"
+                                  , "/t:Rebuild"
+                                  , "/p:Configuration=Debug"
+                                  , "/p:Platform=x64"
+                                  ]},
                     # building certain project with msbuild and certain parameters
                     { "command" : command.msbuild,
-                      "args"    : [ "freeglut_static.vcxproj", "/t:Rebuild", "/p:Configuration=Release;Platform=x64;OutDir=./../../exports/freeglut/lib/Win64/Release"]},
-                    # copy pdb files
+                      "args"    : [ "freeglut_static.vcxproj"
+                                  , "/t:Rebuild"
+                                  , "/p:Configuration=Release"
+                                  , "/p:Platform=x64"
+                                  ]},
+                    # copy build artifacts
                     { "command" : command.copy,
-                      "args"    : [ "--src=\"./bin/Debug\"", "--dst=\"./../../exports/freeglut/lib/Win64/Debug\"", "--filter=\"*.pdb\""]},
-                    #{ "command" : command.copy,
-                    #  "args"    : [ "--src=\"./freeglut_static.dir/Debug\"", "--dst=\"./../../exports/freeglut/lib/Win64/Debug\"", "--filter=\"*.pdb\""]},
+                      "args"    : [ "--src=\"./bin/Debug\"", "--dst=\"./../../exports/freeglut/lib/Win64/Debug\"", "--filter=\"*.dll;*.ilk;*.pdb\""]},
+                    { "command" : command.copy,
+                      "args"    : [ "--src=\"./lib/Debug\"", "--dst=\"./../../exports/freeglut/lib/Win64/Debug\"", "--filter=\"*.lib;*.exp\""]},
+                    { "command" : command.copy,
+                      "args"    : [ "--src=\"./bin/Release\"", "--dst=\"./../../exports/freeglut/lib/Win64/Release\"", "--filter=\"*.dll;*.ilk;*.pdb\""]},
+                    { "command" : command.copy,
+                      "args"    : [ "--src=\"./lib/Release\"", "--dst=\"./../../exports/freeglut/lib/Win64/Release\"", "--filter=\"*.lib;*.exp\""]},
                 ]
             },
             # clean
@@ -183,24 +201,41 @@ dependencies =\
                       "args"    : ["--variable=Path", "--action=append", "--value="+msbuild_dir]},
                     # building certain project with msbuild and certain parameters
                     { "command" : command.msbuild,
-                      "args"    : [ "freeglut.vcxproj", "/t:Rebuild", "/p:Configuration=Debug;Platform=x86;OutDir=./../../exports/freeglut/lib/Win32/Debug", 
-                                                                      "/p:DebugSymbols=true;DebugType=full;PdbFile=./../../exports/freeglut/lib/Win32/Debug/freeglut.pdb"]},
+                      "args"    : [ "freeglut.vcxproj"
+                                  , "/t:Rebuild"
+                                  , "/p:Configuration=Debug"
+                                  , "/p:Platform=x86"
+                                  ]},
                     # building certain project with msbuild and certain parameters
                     { "command" : command.msbuild,
-                      "args"    : [ "freeglut.vcxproj", "/t:Rebuild", "/p:Configuration=Release;Platform=x86;OutDir=./../../exports/freeglut/lib/Win32/Release"]},
+                      "args"    : [ "freeglut.vcxproj"
+                                  , "/t:Rebuild"
+                                  , "/p:Configuration=Release"
+                                  , "/p:Platform=x86"
+                                  ]},
                     # building certain project with msbuild and certain parameters
                     { "command" : command.msbuild,
-                      "args"    : [ "freeglut_static.vcxproj", "/t:Rebuild", "/p:Configuration=Debug;Platform=x86;OutDir=./../../exports/freeglut/lib/Win32/Debug", 
-                                                                             "/p:DebugSymbols=true;DebugType=full;PdbFile=./../../exports/freeglut/lib/Win32/Debug/freeglut_static.pdb"]},
+                      "args"    : [ "freeglut_static.vcxproj"
+                                  , "/t:Rebuild"
+                                  , "/p:Configuration=Debug"
+                                  , "/p:Platform=x86"
+                                  ]},
                     # building certain project with msbuild and certain parameters
                     { "command" : command.msbuild,
-                      "args"    : [ "freeglut_static.vcxproj", "/t:Rebuild", "/p:Configuration=Release;Platform=x86;OutDir=./../../exports/freeglut/lib/Win32/Release"]},
-                    ## copy pdb files
+                      "args"    : [ "freeglut_static.vcxproj"
+                                  , "/t:Rebuild"
+                                  , "/p:Configuration=Release"
+                                  , "/p:Platform=x86"
+                                  ]},
+                    # copy build artifacts
                     { "command" : command.copy,
-                      "args"    : [ "--src=\"./bin/Debug\"", "--dst=\"./../../exports/freeglut/lib/Win32/Debug\"", "--filter=\"*.pdb\""]},
-                    #{ "command" : command.copy,
-                    #  "args"    : [ "--src=\"./freeglut_static.dir/Debug\"", "--dst=\"./../../exports/freeglut/lib/Win64/Debug\"", "--filter=\"*.pdb\""]},
-
+                      "args"    : [ "--src=\"./bin/Debug\"", "--dst=\"./../../exports/freeglut/lib/Win32/Debug\"", "--filter=\"*.dll;*.ilk;*.pdb\""]},
+                    { "command" : command.copy,
+                      "args"    : [ "--src=\"./lib/Debug\"", "--dst=\"./../../exports/freeglut/lib/Win32/Debug\"", "--filter=\"*.lib;*.exp\""]},
+                    { "command" : command.copy,
+                      "args"    : [ "--src=\"./bin/Release\"", "--dst=\"./../../exports/freeglut/lib/Win32/Release\"", "--filter=\"*.dll;*.ilk;*.pdb\""]},
+                    { "command" : command.copy,
+                      "args"    : [ "--src=\"./lib/Release\"", "--dst=\"./../../exports/freeglut/lib/Win32/Release\"", "--filter=\"*.lib;*.exp\""]},
                 ]
             },
             # clean
@@ -247,25 +282,44 @@ dependencies =\
                       "args"    : [ "\""+vcvarsall_dir+"vcvarsall.bat\"", "x64"]},
                     # changing the --variable environment variable in the way --action with value --value
                     { "command" : command.update_environment_variable,
-                      "args"    : ["--variable=Path", "--action=append", "--value=\"C:/Program Files/CMake/bin/\""]},
-                    # generating project files with CMake
-                    { "command" : command.cmake,
-                      "args"    : [ "-G \"Visual Studio 15 2017 Win64\""]},
-                    # changing the --variable environment variable in the way --action with value --value
-                    { "command" : command.update_environment_variable,
                       "args"    : ["--variable=Path", "--action=append", "--value="+msbuild_dir]},
-                    ## building certain project with msbuild and certain parameters
-                    #{ "command" : command.msbuild,
-                    #  "args"    : [ "sioclient.vcxproj", "/t:Rebuild", "/p:Configuration=Debug;Platform=x64;OutDir=./../socket.io_libs/Win64/Debug"]},
-                    ## building certain project with msbuild and certain parameters
-                    #{ "command" : command.msbuild,
-                    #  "args"    : [ "sioclient.vcxproj", "/t:Rebuild", "/p:Configuration=Release;Platform=x64;OutDir=./../socket.io_libs/Win64/Release"]},
-                    ## building certain project with msbuild and certain parameters
-                    #{ "command" : command.msbuild,
-                    #  "args"    : [ "sioclient_tls.vcxproj", "/t:Rebuild", "/p:Configuration=Debug;Platform=x64;OutDir=./../socket.io_libs/Win64/Debug"]},
-                    ## building certain project with msbuild and certain parameters
-                    #{ "command" : command.msbuild,
-                    #  "args"    : [ "sioclient_tls.vcxproj", "/t:Rebuild", "/p:Configuration=Release;Platform=x64;OutDir=./../socket.io_libs/Win64/Release"]},
+                    # building certain project with msbuild and certain parameters
+                    { "command" : command.msbuild,
+                      "args"    : [ "./build/vc15/glew_shared.vcxproj"
+                                  , "/t:Rebuild"
+                                  , "/p:Configuration=Debug"
+                                  , "/p:Platform=x64"
+                                  ]},
+                    # building certain project with msbuild and certain parameters
+                    { "command" : command.msbuild,
+                      "args"    : [ "./build/vc15/glew_shared.vcxproj"
+                                  , "/t:Rebuild"
+                                  , "/p:Configuration=Release"
+                                  , "/p:Platform=x64"
+                                  ]},
+                    # building certain project with msbuild and certain parameters
+                    { "command" : command.msbuild,
+                      "args"    : [ "./build/vc15/glew_static.vcxproj"
+                                  , "/t:Rebuild"
+                                  , "/p:Configuration=Debug"
+                                  , "/p:Platform=x64"
+                                  ]},
+                    # building certain project with msbuild and certain parameters
+                    { "command" : command.msbuild,
+                      "args"    : [ "./build/vc15/glew_static.vcxproj"
+                                  , "/t:Rebuild"
+                                  , "/p:Configuration=Release"
+                                  , "/p:Platform=x64"
+                                  ]},
+                    # copy build artifacts
+                    { "command" : command.copy,
+                      "args"    : [ "--src=\"./bin/Debug/x64\"", "--dst=\"./../../exports/glew/lib/Win64/Debug\"", "--filter=\"*.dll;*.ilk;*.pdb\""]},
+                    { "command" : command.copy,
+                      "args"    : [ "--src=\"./lib/Debug/x64\"", "--dst=\"./../../exports/glew/lib/Win64/Debug\"", "--filter=\"*.lib;*.exp\""]},
+                    { "command" : command.copy,
+                      "args"    : [ "--src=\"./bin/Release/x64\"", "--dst=\"./../../exports/glew/lib/Win64/Release\"", "--filter=\"*.dll;*.ilk;*.pdb\""]},
+                    { "command" : command.copy,
+                      "args"    : [ "--src=\"./lib/Release/x64\"", "--dst=\"./../../exports/glew/lib/Win64/Release\"", "--filter=\"*.lib;*.exp\""]},
                 ]
             },
             # clean
@@ -289,24 +343,43 @@ dependencies =\
                     # changing the --variable environment variable in the way --action with value --value
                     { "command" : command.update_environment_variable,
                       "args"    : ["--variable=Path", "--action=append", "--value=\"C:/Program Files/CMake/bin/\""]},
-                    # generating project files with CMake
-                    { "command" : command.cmake,
-                      "args"    : [ "-G \"Visual Studio 15 2017\""]},
-                    # changing the --variable environment variable in the way --action with value --value
-                    { "command" : command.update_environment_variable,
-                      "args"    : ["--variable=Path", "--action=append", "--value="+msbuild_dir]},
-                    ## building certain project with msbuild and certain parameters
-                    #{ "command" : command.msbuild,
-                    #  "args"    : [ "sioclient.vcxproj", "/t:Rebuild", "/p:Configuration=Debug", "/p:Platform=x86", "/p:OutDir=./../socket.io_libs/Win32/Debug", "/p:DebugSymbols=true", "/p:DebugType=full", "/p:PdbFile=./../socket.io_libs/Win32/Debug/sioclient.pdb"]},
-                    ## building certain project with msbuild and certain parameters
-                    #{ "command" : command.msbuild,
-                    #  "args"    : [ "sioclient.vcxproj", "/t:Rebuild", "/p:Configuration=Release;Platform=x86;OutDir=./../socket.io_libs/Win32/Release"]},
-                    ## building certain project with msbuild and certain parameters
-                    #{ "command" : command.msbuild,
-                    #  "args"    : [ "sioclient_tls.vcxproj", "/t:Rebuild", "/p:Configuration=Debug", "/p:Platform=x86", "/p:OutDir=./../socket.io_libs/Win32/Debug", "/p:DebugSymbols=true", "/p:DebugType=full", "/p:PdbFile=./../socket.io_libs/Win32/Debug/sioclient.pdb"]},
-                    ## building certain project with msbuild and certain parameters
-                    #{ "command" : command.msbuild,
-                    #  "args"    : [ "sioclient_tls.vcxproj", "/t:Rebuild", "/p:Configuration=Release;Platform=x86;OutDir=./../socket.io_libs/Win32/Release"]},
+                    # building certain project with msbuild and certain parameters
+                    { "command" : command.msbuild,
+                      "args"    : [ "./build/vc15/glew_shared.vcxproj"
+                                  , "/t:Rebuild"
+                                  , "/p:Configuration=Debug"
+                                  , "/p:Platform=x86"
+                                  ]},
+                    # building certain project with msbuild and certain parameters
+                    { "command" : command.msbuild,
+                      "args"    : [ "./build/vc15/glew_shared.vcxproj"
+                                  , "/t:Rebuild"
+                                  , "/p:Configuration=Release"
+                                  , "/p:Platform=x86"
+                                  ]},
+                    # building certain project with msbuild and certain parameters
+                    { "command" : command.msbuild,
+                      "args"    : [ "./build/vc15/glew_static.vcxproj"
+                                  , "/t:Rebuild"
+                                  , "/p:Configuration=Debug"
+                                  , "/p:Platform=x86"
+                                  ]},
+                    # building certain project with msbuild and certain parameters
+                    { "command" : command.msbuild,
+                      "args"    : [ "./build/vc15/glew_static.vcxproj"
+                                  , "/t:Rebuild"
+                                  , "/p:Configuration=Release"
+                                  , "/p:;Platform=x86"
+                                  ]},
+                    # copy build artifacts
+                    { "command" : command.copy,
+                      "args"    : [ "--src=\"./bin/Debug/Win32\"", "--dst=\"./../../exports/glew/lib/Win32/Debug\"", "--filter=\"*.dll;*.ilk;*.pdb\""]},
+                    { "command" : command.copy,
+                      "args"    : [ "--src=\"./lib/Debug/Win32\"", "--dst=\"./../../exports/glew/lib/Win32/Debug\"", "--filter=\"*.lib;*.exp\""]},
+                    { "command" : command.copy,
+                      "args"    : [ "--src=\"./bin/Release/Win32\"", "--dst=\"./../../exports/glew/lib/Win32/Release\"", "--filter=\"*.dll;*.ilk;*.pdb\""]},
+                    { "command" : command.copy,
+                      "args"    : [ "--src=\"./lib/Release/Win32\"", "--dst=\"./../../exports/glew/lib/Win32/Release\"", "--filter=\"*.lib;*.exp\""]},
                 ]
             },
             # clean
@@ -324,6 +397,8 @@ dependencies =\
               "active": activities[subdir_glew[:-1]]["copy_headers"],
               "steps" :
                 [
+                    { "command" : command.copy,
+                      "args"    : [ "--src=\"./include\"", "--dst=\"./../../exports/glew/inc/\"", "--filter=\"*.h;*.hpp\""]},
                 ]
             },
         ]
