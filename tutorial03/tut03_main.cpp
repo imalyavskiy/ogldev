@@ -22,8 +22,19 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include "math_3d.h"
+#include <math.h>
 
 GLuint VBO;
+
+const GLfloat r1 = 0.6f;
+const GLfloat r2 = 0.2f;
+const GLuint SEGMENTS(3);
+const GLuint SIDES(3);
+const GLfloat Pi = 3.14159265358979323846f;
+const GLfloat twoPi = 2 * Pi;
+
+Vector3f* pVertices = nullptr;
+GLuint uiVerteces = 0;
 
 static void RenderSceneCB()
 {
@@ -33,7 +44,7 @@ static void RenderSceneCB()
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_POINTS, 0, uiVerteces);
 
     glDisableVertexAttribArray(0);
 
@@ -47,15 +58,32 @@ static void InitializeGlutCallbacks()
 }
 
 static void CreateVertexBuffer()
-{
-    Vector3f Vertices[3];
-    Vertices[0] = Vector3f(-1.0f, -1.0f, 0.0f);
-    Vertices[1] = Vector3f(1.0f, -1.0f, 0.0f);
-    Vertices[2] = Vector3f(0.0f, 1.0f, 0.0f);
+{   
+    uiVerteces = SEGMENTS * SIDES;
+    pVertices = new Vector3f[uiVerteces];
 
- 	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
+    for (GLuint segment = 0; segment < SEGMENTS; ++segment) {
+        for (GLuint side = 0; side < SIDES; ++side) {
+            const GLfloat psi = (twoPi / SIDES) * side;
+            const GLfloat phi = (twoPi / SEGMENTS) * segment;
+
+            const GLfloat cosPsi = cosf(psi);
+            const GLfloat sinPsi = sinf(psi);
+            const GLfloat cosPhi = cosf(phi);
+            const GLfloat sinPhi = sinf(phi);
+
+            const GLuint index = SIDES * segment + side;
+
+            Vector3f& v = pVertices[index];
+            v.x = (r1 + r2 * cosPsi) * cosPhi;
+            v.y = (r1 + r2 * cosPsi) * sinPhi;
+            v.z = r2 * sinPsi;
+        }
+    }
+
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, uiVerteces * sizeof(Vector3f), pVertices, GL_STATIC_DRAW);
 }
 
 
@@ -63,7 +91,7 @@ int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA);
-    glutInitWindowSize(1024, 768);
+    glutInitWindowSize(800, 800);
     glutInitWindowPosition(100, 100);
     glutCreateWindow("Tutorial 03");
 

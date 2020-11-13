@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 	Copyright 2010 Etay Meiri
 
@@ -24,11 +24,34 @@
 #include <math.h>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
+#include <assert.h>
+
 #include "math_3d.h"
 
 GLuint VBO;
 GLuint IBO;
 GLuint gWorldLocation;
+
+const GLfloat r1 = 0.6f;
+const GLfloat r2 = 0.2f;
+const GLuint SEGMENTS(3);
+const GLuint SIDES(3);
+const GLfloat Pi = 3.14159265358979323846f;
+const GLfloat twoPi = 2 * Pi;
+
+Vector3f* pVertices = nullptr;
+Vector3f* pNormals = nullptr;
+Vector3ui* pTriangles = nullptr;
+
+GLuint uiVertices = 0;
+GLuint& uiNormals = uiVertices;
+GLuint uiTriangles;
+#ifdef _DEBUG
+#define MEMSET(_DEST, _VAL, _SIZE) memset(_DEST, _VAL, _SIZE)
+#else
+#define MEMSET(_DEST, _VAL, _SIZE)
+#endif
+
 
 
 static const char* pVS = "                                                          \n\
@@ -43,7 +66,8 @@ out vec4 Color;                                                                 
 void main()                                                                         \n\
 {                                                                                   \n\
     gl_Position = gWorld * vec4(Position, 1.0);                                     \n\
-    Color = vec4(clamp(Position, 0.0, 1.0), 1.0);                                   \n\
+    //Color = vec4(clamp(Position, 0.0, 1.0), 1.0);                                 \n\
+    Color = vec4(1.0, 1.0, 1.0, 1.0);                                               \n\
 }";
 
 static const char* pFS = "                                                          \n\
@@ -63,24 +87,28 @@ static void RenderSceneCB()
     glClear(GL_COLOR_BUFFER_BIT);
 
     static float Scale = 0.0f;
-
+    
     Scale += 0.01f;
-
+    
     Matrix4f World;
-
+    
     World.m[0][0] = cosf(Scale); World.m[0][1] = 0.0f; World.m[0][2] = -sinf(Scale); World.m[0][3] = 0.0f;
     World.m[1][0] = 0.0;         World.m[1][1] = 1.0f; World.m[1][2] = 0.0f        ; World.m[1][3] = 0.0f;
     World.m[2][0] = sinf(Scale); World.m[2][1] = 0.0f; World.m[2][2] = cosf(Scale) ; World.m[2][3] = 0.0f;
     World.m[3][0] = 0.0f;        World.m[3][1] = 0.0f; World.m[3][2] = 0.0f        ; World.m[3][3] = 1.0f;
-
+    
     glUniformMatrix4fv(gWorldLocation, 1, GL_TRUE, &World.m[0][0]);
 
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-
-    glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+    if (pTriangles) {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+    }
+    else {
+        glDrawArrays(GL_POINTS, 0, uiVertices);
+    }
 
     glDisableVertexAttribArray(0);
 
@@ -96,27 +124,76 @@ static void InitializeGlutCallbacks()
 
 static void CreateVertexBuffer()
 {
-    Vector3f Vertices[4];
-    Vertices[0] = Vector3f(-1.0f, -1.0f, 0.0f);
-    Vertices[1] = Vector3f(0.0f, -1.0f, 1.0f);
-    Vertices[2] = Vector3f(1.0f, -1.0f, 0.0f);
-    Vertices[3] = Vector3f(0.0f, 1.0f, 0.0f);
+    uiVertices = SEGMENTS * SIDES;
 
- 	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
+    if (pVertices) {
+        delete[] pVertices;
+        pVertices = nullptr;
+    }
+    pVertices = new Vector3f[uiVertices];
+    MEMSET(pVertices, 0, sizeof(Vector3f) * uiVertices);
+
+    // x = (R + r * cos(𝜓)) * cos(𝜑);
+    // y = (R + r * cos(𝜓)) * sin(𝜑);
+    // z = r * sin(𝜓);
+    for (GLuint segment = 0; segment < SEGMENTS; ++segment) {
+        for (GLuint side = 0; side < SIDES; ++side) {
+            const GLfloat psi = (twoPi / SIDES) * side;
+            const GLfloat phi = (twoPi / SEGMENTS) * segment;
+
+            const GLfloat cosPsi = cosf(psi);
+            const GLfloat sinPsi = sinf(psi);
+            const GLfloat cosPhi = cosf(phi);
+            const GLfloat sinPhi = sinf(phi);
+
+            const GLuint index = SIDES * segment + side;
+
+            Vector3f& v = pVertices[index];
+            v.x = (r1 + r2 * cosPsi) * cosPhi;
+            v.y = (r1 + r2 * cosPsi) * sinPhi;
+            v.z = r2 * sinPsi;
+        }
+    }
+
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, uiVertices * sizeof(Vector3f), pVertices, GL_STATIC_DRAW);
 }
 
 static void CreateIndexBuffer()
 {
-    unsigned int Indices[] = { 0, 3, 1,
-                               1, 3, 2,
-                               2, 3, 0,
-                               0, 2, 1 };
+#if 0 // ERROR
+    if (pTriangles) {
+        delete[] pTriangles;
+        pTriangles = nullptr;
+    }
+    assert(uiVertices != 0);
+    uiTriangles = uiVertices * 2;
+    pTriangles = new Vector3ui[uiTriangles];
+
+    for (GLuint segment = 0; segment < SEGMENTS; ++segment) {
+        for (GLuint side = 0; side < SIDES; ++side) {
+            const GLuint index0 = SIDES * segment + side;
+            const GLuint index1 = SIDES * segment + (((side + 1) < SIDES) ? side + 1 : 0);
+            const GLuint index2 = SIDES * ((segment + 1) < SEGMENTS ? segment + 1 : 0) + (((side + 1) < SIDES) ? side + 1 : 0);
+            const GLuint index3 = SIDES * ((segment + 1) < SEGMENTS ? segment + 1 : 0) + side;
+
+            Vector3ui* pTriangle1 = &pTriangles[index0 * 2];
+            pTriangle1->x = index2;
+            pTriangle1->y = index1;
+            pTriangle1->z = index0;
+
+            Vector3ui* pTriangle2 = pTriangle1 + 1;
+            pTriangle2->x = index3;
+            pTriangle2->y = index2;
+            pTriangle2->z = index0;
+        }
+    }
 
     glGenBuffers(1, &IBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(pTriangles), pTriangles, GL_STATIC_DRAW);
+#endif // 0
 }
 
 static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
@@ -187,7 +264,7 @@ int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA);
-    glutInitWindowSize(1024, 768);
+    glutInitWindowSize(800, 800);
     glutInitWindowPosition(100, 100);
     glutCreateWindow("Tutorial 10");
 

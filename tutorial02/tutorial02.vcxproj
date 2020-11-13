@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{8766c3b7-1bfa-41a8-a010-75627d18ee49}</ProjectGuid>
-    <RootNamespace>tutorial10</RootNamespace>
+    <ProjectGuid>{F615B805-77F5-4C25-A931-0E85BC061C82}</ProjectGuid>
+    <RootNamespace>tutorial02</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -149,7 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="tut10_main.cpp" />
+    <ClCompile Include="tut02_main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="math_3d.h" />
