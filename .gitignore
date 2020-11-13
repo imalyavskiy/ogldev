@@ -6,3 +6,7 @@ tutorial../tutorial(?<!cpp)
 nbproject
 .dep.inc
 build
+*.user
+.vs
+bin/
+int/
