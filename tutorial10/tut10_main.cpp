@@ -28,16 +28,25 @@
 
 #include "math_3d.h"
 
+#define TORUS
+
 GLuint VBO;
 GLuint IBO;
 GLuint gWorldLocation;
-
 const GLfloat r1 = 0.6f;
 const GLfloat r2 = 0.2f;
-const GLuint SEGMENTS(3);
-const GLuint SIDES(3);
+const GLuint SEGMENTS(16);
+const GLuint SIDES(25);
+
 const GLfloat Pi = 3.14159265358979323846f;
 const GLfloat twoPi = 2 * Pi;
+
+struct VertexParams {
+    float phi;
+    float psi;
+};
+
+VertexParams* pParams = nullptr;
 
 Vector3f* pVertices = nullptr;
 Vector3f* pNormals = nullptr;
@@ -66,8 +75,8 @@ out vec4 Color;                                                                 
 void main()                                                                         \n\
 {                                                                                   \n\
     gl_Position = gWorld * vec4(Position, 1.0);                                     \n\
-    //Color = vec4(clamp(Position, 0.0, 1.0), 1.0);                                 \n\
-    Color = vec4(1.0, 1.0, 1.0, 1.0);                                               \n\
+    Color = vec4(clamp(Position, 0.0, 1.0), 1.0);                                   \n\
+    //Color = vec4(1.0, 1.0, 1.0, 1.0);                                             \n\
 }";
 
 static const char* pFS = "                                                          \n\
@@ -102,9 +111,10 @@ static void RenderSceneCB()
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    
     if (pTriangles) {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, sizeof(Vector3ui) * uiTriangles, GL_UNSIGNED_INT, nullptr);
     }
     else {
         glDrawArrays(GL_POINTS, 0, uiVertices);
@@ -125,6 +135,13 @@ static void InitializeGlutCallbacks()
 static void CreateVertexBuffer()
 {
     uiVertices = SEGMENTS * SIDES;
+
+    if (pParams) {
+        delete[] pParams;
+        pParams = nullptr;
+    }
+    pParams = new VertexParams[uiVertices];
+    MEMSET(pParams, 0, sizeof(VertexParams) * uiVertices);
 
     if (pVertices) {
         delete[] pVertices;
@@ -152,6 +169,12 @@ static void CreateVertexBuffer()
             v.x = (r1 + r2 * cosPsi) * cosPhi;
             v.y = (r1 + r2 * cosPsi) * sinPhi;
             v.z = r2 * sinPsi;
+
+            const float radperdeg = twoPi / 360.0;
+
+            VertexParams& p = pParams[index];
+            p.psi = psi / radperdeg;
+            p.phi = phi / radperdeg;
         }
     }
 
@@ -162,7 +185,6 @@ static void CreateVertexBuffer()
 
 static void CreateIndexBuffer()
 {
-#if 0 // ERROR
     if (pTriangles) {
         delete[] pTriangles;
         pTriangles = nullptr;
@@ -170,6 +192,8 @@ static void CreateIndexBuffer()
     assert(uiVertices != 0);
     uiTriangles = uiVertices * 2;
     pTriangles = new Vector3ui[uiTriangles];
+    MEMSET(pTriangles, 0, sizeof(Vector3ui) * uiTriangles);
+
 
     for (GLuint segment = 0; segment < SEGMENTS; ++segment) {
         for (GLuint side = 0; side < SIDES; ++side) {
@@ -183,7 +207,7 @@ static void CreateIndexBuffer()
             pTriangle1->y = index1;
             pTriangle1->z = index0;
 
-            Vector3ui* pTriangle2 = pTriangle1 + 1;
+            Vector3ui* pTriangle2 = &pTriangles[index0 * 2 + 1];
             pTriangle2->x = index3;
             pTriangle2->y = index2;
             pTriangle2->z = index0;
@@ -192,8 +216,7 @@ static void CreateIndexBuffer()
 
     glGenBuffers(1, &IBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(pTriangles), pTriangles, GL_STATIC_DRAW);
-#endif // 0
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Vector3ui) * uiTriangles, pTriangles, GL_STATIC_DRAW);
 }
 
 static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)

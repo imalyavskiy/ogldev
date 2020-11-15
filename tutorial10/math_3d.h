@@ -43,6 +43,8 @@ struct Vector3
     T_ y;
     T_ z;
 
+    typedef T_ T;
+
     Vector3()
     {
     }
