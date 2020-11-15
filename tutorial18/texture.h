@@ -4,7 +4,7 @@
 #include <string>
 
 #include <GL/glew.h>
-#include <ImageMagick/Magick++.h>
+#include <Magick++.h>
 
 class Texture
 {
