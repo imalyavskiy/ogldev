@@ -11,9 +11,15 @@
 #include "util.h"
 
 #include <vector>
+#include <memory>
 
 #define WINDOW_WIDTH  1280
 #define WINDOW_HEIGHT 1024
+
+#define TORUS
+#ifndef TORUS
+#define TETRAHEDRON
+#endif
 
 struct Vertex
 {
@@ -31,13 +37,13 @@ struct Vertex
     }
 };
 
-class Main : public ICallbacks
+class Engine : public ICallbacks
 {
 public:
 
-    Main();
+    Engine();
 
-    ~Main();
+    ~Engine();
 
     bool Init();
 
@@ -54,21 +60,39 @@ public:
     virtual void PassiveMouseCB(int x, int y);
 
 private:
-    void CalcNormals(const std::vector<Vector3ui>& indices, std::vector<Vertex>& vertices);
+    void CreateVertexBuffer();
 
-    void CreateVertexBuffer(const std::vector<Vector3ui> indices);
+    void CreateIndexBuffer();
 
-    void CreateIndexBuffer(const std::vector<Vector3ui>& indices);
+    void CalcNormals();
 
+    void BindBuffers();
 
     GLuint m_VBO = GLuint(-1);
     GLuint m_IBO = GLuint(-1);
-    LightingTechnique* m_pEffect = nullptr;
-    Texture* m_pTexture = nullptr;
-    Camera* m_pGameCamera = nullptr;
+    
+    std::auto_ptr<LightingTechnique> m_pEffect;
+    std::auto_ptr<Texture> m_pTexture;
+    std::auto_ptr<Camera> m_pGameCamera;
+    
     float m_scale = 0.0;
     DirectionLight m_directionalLight;
 
+#if defined(TORUS)
+    const GLfloat r1 = 0.6f;
+    const GLfloat r2 = 0.2f;
+    const GLuint SEGMENTS = 16;
+    const GLuint SIDES = 25;
+
+    const GLfloat Pi = 3.14159265358979323846f;
+    const GLfloat twoPi = 2 * Pi;
+
+    struct VertexParams {
+        float phi;
+        float psi;
+    };
+    std::vector<VertexParams> params_;
+#endif
     std::vector<Vector3ui> indices_;
     std::vector<Vertex> vertices_;
 };

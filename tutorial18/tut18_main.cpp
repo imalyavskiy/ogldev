@@ -8,7 +8,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    Main* pApp = new Main();
+    Engine* pApp = new Engine();
 
     if (!pApp->Init()) {
         return 1;
