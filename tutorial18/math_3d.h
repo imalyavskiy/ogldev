@@ -31,14 +31,14 @@
 
 struct Vector2i
 {
-    int x;
-    int y;
+    int x = 0;
+    int y = 0;
 };
 
 struct Vector2f
 {
-    float x;
-    float y;
+    float x = 0.0f;
+    float y = 0.0f;
 
     Vector2f()
     {
@@ -54,9 +54,9 @@ struct Vector2f
 
 struct Vector3f
 {
-    float x;
-    float y;
-    float z;
+    float x = 0.0f;
+    float y = 0.0f;
+    float z = 0.0f;
 
     Vector3f()
     {
@@ -136,6 +136,25 @@ inline Vector3f operator*(const Vector3f& l, float f)
     return Ret;
 }
 
+struct Vector3ui
+{
+    unsigned int x = 0;
+    unsigned int y = 0;
+    unsigned int z = 0;
+
+    typedef unsigned int T;
+
+    Vector3ui()
+    {
+    }
+
+    Vector3ui(unsigned int _x, unsigned int _y, unsigned int _z)
+        : x(_x)
+        , y(_y)
+        , z(_z)
+    {
+    }
+};
 
 class Matrix4f
 {

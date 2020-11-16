@@ -9,6 +9,8 @@
 #include "glut_backend.h"
 #include "util.h"
 
+#include <vector>
+
 #define WINDOW_WIDTH  1280
 #define WINDOW_HEIGHT 1024
 
@@ -58,14 +60,11 @@ public:
         Vector3f Up(0.0, 1.0f, 0.0f);
         m_pGameCamera = new Camera(WINDOW_WIDTH, WINDOW_HEIGHT, Pos, Target, Up);
 
-        unsigned int Indices[] = { 0, 3, 1,
-                                   1, 3, 2,
-                                   2, 3, 0,
-                                   1, 2, 0 };
+        indices_ = std::vector<Vector3ui>{ { 0, 3, 1 }, { 1, 3, 2 }, { 2, 3, 0 }, { 1, 2, 0 } };
 
-        CreateIndexBuffer(Indices, sizeof(Indices));
+        CreateIndexBuffer(indices_);
 
-        CreateVertexBuffer(Indices, ARRAY_SIZE_IN_ELEMENTS(Indices));
+        CreateVertexBuffer(indices_);
 
         m_pEffect = new LightingTechnique();
 
@@ -173,49 +172,45 @@ public:
 
 private:
 
-    void CalcNormals(const unsigned int* pIndices, unsigned int IndexCount,
-        Vertex* pVertices, unsigned int VertexCount){
-        for (unsigned int i = 0; i < IndexCount; i +=3 ){
-            unsigned int Index0 = pIndices[i];
-            unsigned int Index1 = pIndices[i + 1];
-            unsigned int Index2 = pIndices[i + 2];
-            Vector3f v1 = pVertices[Index1].m_pos - pVertices[Index0].m_pos;
-            Vector3f v2 = pVertices[Index2].m_pos - pVertices[Index0].m_pos;
-            Vector3f Normal = v1.Cross(v2);
-            Normal.Normalize();
+    void CalcNormals(const std::vector<Vector3ui>& indices, std::vector<Vertex>& vertices){
+        for (unsigned int i = 0; i < indices.size(); ++i){
+            const GLuint Index0 = indices[i].x;
+            const GLuint Index1 = indices[i].y;
+            const GLuint Index2 = indices[i].z;
+            const Vector3f v1 = vertices[Index1].m_pos - vertices[Index0].m_pos;
+            const Vector3f v2 = vertices[Index2].m_pos - vertices[Index0].m_pos;
+            const Vector3f Normal = v1.Cross(v2).Normalize();
 
-            pVertices[Index0].m_normal += Normal;
-            pVertices[Index1].m_normal += Normal;
-            pVertices[Index2].m_normal += Normal;
+            vertices[Index0].m_normal += Normal;
+            vertices[Index1].m_normal += Normal;
+            vertices[Index2].m_normal += Normal;
         }
 
-        for (unsigned int i = 0; i < VertexCount; i++){
-            pVertices[i].m_normal.Normalize();
+        for (unsigned int i = 0; i < vertices.size(); i++){
+            vertices[i].m_normal.Normalize();
         }
     }
 
 
-    void CreateVertexBuffer(const unsigned int* pIndices, unsigned int IndexCount)
+    void CreateVertexBuffer(const std::vector<Vector3ui> indices)
     {
-        Vertex Vertices[4] = { Vertex(Vector3f(-1.0f, -1.0f, 0.5773f), Vector2f(0.0f, 0.0f)),
-                               Vertex(Vector3f(0.0f, -1.0f, -1.15475), Vector2f(0.5f, 0.0f)),
-                               Vertex(Vector3f(1.0f, -1.0f, 0.5773f),  Vector2f(1.0f, 0.0f)),
-                               Vertex(Vector3f(0.0f, 1.0f, 0.0f),      Vector2f(0.5f, 1.0f)) };
+        vertices_ = std::vector<Vertex>{ Vertex(Vector3f(-1.0f, -1.0f, 0.5773f), Vector2f(0.0f, 0.0f)),
+                                         Vertex(Vector3f(0.0f, -1.0f, -1.15475), Vector2f(0.5f, 0.0f)),
+                                         Vertex(Vector3f(1.0f, -1.0f, 0.5773f),  Vector2f(1.0f, 0.0f)),
+                                         Vertex(Vector3f(0.0f, 1.0f, 0.0f),      Vector2f(0.5f, 1.0f)) };
 
-        unsigned int VertexCount = ARRAY_SIZE_IN_ELEMENTS(Vertices);
-
-        CalcNormals(pIndices, IndexCount, Vertices, VertexCount);
+        CalcNormals(indices, vertices_);
 
         glGenBuffers(1, &m_VBO);
         glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices_.size(), &vertices_[0], GL_STATIC_DRAW);
     }
 
-    void CreateIndexBuffer(const unsigned int* pIndices, unsigned int SizeInBytes)
+    void CreateIndexBuffer(const std::vector<Vector3ui>& indices)
     {
         glGenBuffers(1, &m_IBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, SizeInBytes, pIndices, GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Vector3ui) * indices.size(), &indices[0], GL_STATIC_DRAW);
     }
 
 
@@ -226,6 +221,9 @@ private:
     Camera* m_pGameCamera;
     float m_scale;
     DirectionLight m_directionalLight;
+
+    std::vector<Vector3ui> indices_;
+    std::vector<Vertex> vertices_;
 };
 
 
