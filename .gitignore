@@ -6,3 +6,8 @@ tutorial../tutorial(?<!cpp)
 nbproject
 .dep.inc
 build
+/bin
+/int
+/.vs
+OGLDev_OpenGLLessons.VC.db
+*.bak

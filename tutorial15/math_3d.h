@@ -22,32 +22,49 @@
 #include <stdio.h>
 #include <math.h>
 
+#ifndef M_PI
+#define M_PI       3.14159265358979323846f   // pi
+#endif
+
 #define ToRadian(x) ((x) * M_PI / 180.0f)
 #define ToDegree(x) ((x) * 180.0f / M_PI)
 
+// TODO: comment
 struct Vector2i
 {
-    int x;
-    int y;
+	int x;
+	int y;
 };
 
+// Класс представляющий собой реализацию математического 3D вектора на базе float
 struct Vector3f
 {
-    float x;
-    float y;
-    float z;
+	// Координата X
+	float x;
 
+	// Координата Y
+	float y;
+
+	// Координата Z
+	float z;
+
+	// Конструктор
     Vector3f()
+		: x( 0 )
+		, y( 0 )
+		, z( 0 )
     {
     }
 
-    Vector3f(float _x, float _y, float _z)
+	// Конструктор
+	Vector3f(float _x, float _y, float _z)
+		: x( _x )
+		, y( _y )
+		, z( _z )
     {
-        x = _x;
-        y = _y;
-        z = _z;
     }
 
+	// Оператор сложения векторов
     Vector3f& operator+=(const Vector3f& r)
     {
         x += r.x;
@@ -57,6 +74,7 @@ struct Vector3f
         return *this;
     }
 
+	// Оператор вычитания векторов
     Vector3f& operator-=(const Vector3f& r)
     {
         x -= r.x;
@@ -66,6 +84,7 @@ struct Vector3f
         return *this;
     }
 
+	// Оператор умножения вектора на скаляр
     Vector3f& operator*=(float f)
     {
         x *= f;
@@ -75,102 +94,109 @@ struct Vector3f
         return *this;
     }
 
-    Vector3f Cross(const Vector3f& v) const;
+	//////////////////////////////////////////////////////////////////////////
+	/// Cross Product - векторное произведение векторов
+	/// пусть a(x, y, z) и b(x, y, z) вектора тогда(для правостронней системы координат):
+	/// [a,b] = ( a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x )
+	///                 |  i   j   k  |
+	/// [a,b] условно = | a.x a.y a.z | = i * a.y * b.z + k * a.x * b.y + j * a.z * b.x - k * a.y * b.x - i * a.z * b.y - j * a.x * b.z =
+	///                 | b.x b.y b.z |
+	/// = i * ( a.y * b.z - a.z * b.y ) + j * ( a.z * b.x - a.x * b.z ) + k * ( a.x * b.y - a.y * b.x )
+	/// правый множитель i - х координата результирующего вектора, j - y, k - z.
+	/// для левосторонней системы координат определитель берётся со знаком "-"
+	Vector3f Cross(const Vector3f& v) const;
 
-    Vector3f& Normalize();
+	// Нормализация вектора
+	/// приведение вектора к единичной длине
+	Vector3f& Normalize();
 
-    void Rotate(float Angle, const Vector3f& Axis);
+	// TODO: comment
+	void Rotate(float Angle, const Vector3f& Axis);
 
-    void Print() const
-    {
-        printf("(%.02f, %.02f, %.02f", x, y, z);
-    }
+	// TODO: comment
+	void Print() const
+	{
+		printf("(%.02f, %.02f, %.02f)", x, y, z);
+	}
 };
 
-
+// Оператор сложения векторов
 inline Vector3f operator+(const Vector3f& l, const Vector3f& r)
 {
-    Vector3f Ret(l.x + r.x,
-                 l.y + r.y,
-                 l.z + r.z);
-
-    return Ret;
+	return Vector3f{ l.x + r.x
+				   , l.y + r.y
+				   , l.z + r.z
+				   };
 }
 
+// Оператор вычитания векторов
 inline Vector3f operator-(const Vector3f& l, const Vector3f& r)
 {
-    Vector3f Ret(l.x - r.x,
-                 l.y - r.y,
-                 l.z - r.z);
-
-    return Ret;
+    return Vector3f{ l.x - r.x
+				   , l.y - r.y
+				   , l.z - r.z
+				   };
 }
 
+// Оператор умножения ветокра на скаляр
 inline Vector3f operator*(const Vector3f& l, float f)
 {
-    Vector3f Ret(l.x * f,
-                 l.y * f,
-                 l.z * f);
-
-    return Ret;
+	return Vector3f{ l.x * f
+				   , l.y * f
+				   , l.z * f
+				   };
 }
 
-
+// Класс 2D матрицы 4х4 из float'ов
 class Matrix4f
 {
 public:
+	// Непосредственно матрица
     float m[4][4];
 
-    Matrix4f()
-    {        
-    }
+	// Инициализация единичной матрицей
+	static void InitIdentity(Matrix4f& m);
 
+	// Умножение на матрицу справа
+	Matrix4f operator*(const Matrix4f& Right) const;
 
-    inline void InitIdentity()
-    {
-        m[0][0] = 1.0f; m[0][1] = 0.0f; m[0][2] = 0.0f; m[0][3] = 0.0f;
-        m[1][0] = 0.0f; m[1][1] = 1.0f; m[1][2] = 0.0f; m[1][3] = 0.0f;
-        m[2][0] = 0.0f; m[2][1] = 0.0f; m[2][2] = 1.0f; m[2][3] = 0.0f;
-        m[3][0] = 0.0f; m[3][1] = 0.0f; m[3][2] = 0.0f; m[3][3] = 1.0f;
-    }
-
-    inline Matrix4f operator*(const Matrix4f& Right) const
-    {
-        Matrix4f Ret;
-
-        for (unsigned int i = 0 ; i < 4 ; i++) {
-            for (unsigned int j = 0 ; j < 4 ; j++) {
-                Ret.m[i][j] = m[i][0] * Right.m[0][j] +
-                              m[i][1] * Right.m[1][j] +
-                              m[i][2] * Right.m[2][j] +
-                              m[i][3] * Right.m[3][j];
-            }
-        }
-
-        return Ret;
-    }
-
-    void InitScaleTransform(float ScaleX, float ScaleY, float ScaleZ);
-    void InitRotateTransform(float RotateX, float RotateY, float RotateZ);
-    void InitTranslationTransform(float x, float y, float z);
-    void InitCameraTransform(const Vector3f& Target, const Vector3f& Up);
-    void InitPersProjTransform(float FOV, float Width, float Height, float zNear, float zFar);
+	// Инициализаия матрицы масштабирования
+	static void InitScaleTransform(Matrix4f& m, const float x, const float y, const float z);
+	
+	// Инициализация матрицы поворота
+	static void InitRotateTransform(Matrix4f& m, const float x, const float y, const float z);
+	
+	// Инициализация матрицы сдвига
+	static void InitTranslationTransform(Matrix4f& m, const float x, const float y, const float z);
+	
+	// Инициализация UVN матрицы камеры
+	static void InitCameraTransform(Matrix4f& m, const Vector3f& target, const Vector3f& up);
+	
+	// Инициализация матрицы преобразования перспективной проекции
+	static void InitPersProjTransform(Matrix4f& m, const float fov, const float w, const float h, const float zn, const float zf);
 };
 
 
+// TODO: comment
 struct Quaternion
 {
-    float x, y, z, w;
+	// TODO: comment
+	float x, y, z, w;
 
-    Quaternion(float _x, float _y, float _z, float _w);
+	// TODO: comment
+	Quaternion(float _x, float _y, float _z, float _w);
 
-    void Normalize();
+	// TODO: comment
+	void Normalize();
 
-    Quaternion Conjugate();  
- };
+	// TODO: comment
+	Quaternion Conjugate();
+};
 
+// TODO: comment
 Quaternion operator*(const Quaternion& l, const Quaternion& r);
 
+// TODO: comment
 Quaternion operator*(const Quaternion& q, const Vector3f& v);
 
 #endif	/* MATH_3D_H */

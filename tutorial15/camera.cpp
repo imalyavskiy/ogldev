@@ -19,38 +19,42 @@
 
 #include "camera.h"
 
-const static float STEP_SCALE = 0.1f;
+// Приращение движения камеры
+const static float StepScale = 0.1f;
+
 const static int MARGIN = 10;
 
+// Конструктор
 Camera::Camera(int WindowWidth, int WindowHeight)
 {
+    m_pos	 = Vector3f(0.0f, 0.0f, 0.0f);
+    m_target = Vector3f(0.0f, 0.0f, 1.0f);
+    m_up	 = Vector3f(0.0f, 1.0f, 0.0f);
+
     m_windowWidth  = WindowWidth;
     m_windowHeight = WindowHeight;
-    m_pos          = Vector3f(0.0f, 0.0f, 0.0f);
-    m_target       = Vector3f(0.0f, 0.0f, 1.0f);
     m_target.Normalize();
-    m_up           = Vector3f(0.0f, 1.0f, 0.0f);
 
     Init();
 }
 
-
+// TODO: comment
 Camera::Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up)
 {
+    m_pos    = Pos;
+
     m_windowWidth  = WindowWidth;
     m_windowHeight = WindowHeight;
-    m_pos = Pos;
 
     m_target = Target;
     m_target.Normalize();
-
-    m_up = Up;
+    m_up     = Up;
     m_up.Normalize();
 
     Init();
 }
 
-
+// TODO: comment
 void Camera::Init()
 {
     Vector3f HTarget(m_target.x, 0.0, m_target.z);
@@ -60,26 +64,26 @@ void Camera::Init()
     {
         if (HTarget.x >= 0.0f)
         {
-            m_AngleH = 360.0f - ToDegree(asin(HTarget.z));
+            m_AngleH = 360.0f - ToDegree((float)asin(HTarget.z));
         }
         else
         {
-            m_AngleH = 180.0f + ToDegree(asin(HTarget.z));
+            m_AngleH = 180.0f + ToDegree((float)asin(HTarget.z));
         }
     }
     else
     {
         if (HTarget.x >= 0.0f)
         {
-            m_AngleH = ToDegree(asin(-HTarget.z));
+            m_AngleH = ToDegree((float)asin(-HTarget.z));
         }
         else
         {
-            m_AngleH = 90.0f + ToDegree(asin(-HTarget.z));
+            m_AngleH = 90.0f + ToDegree((float)asin(-HTarget.z));
         }
     }
     
-    m_AngleV = -ToDegree(asin(m_target.y));
+    m_AngleV = -ToDegree((float)asin(m_target.y));
 
     m_OnUpperEdge = false;
     m_OnLowerEdge = false;
@@ -91,8 +95,9 @@ void Camera::Init()
     glutWarpPointer(m_mousePos.x, m_mousePos.y);
 }
 
-
-bool Camera::OnKeyboard(int Key)
+// Обработчик нажатия кнопки
+bool 
+Camera::OnKeyboard(int Key)
 {
     bool Ret = false;
 
@@ -100,14 +105,14 @@ bool Camera::OnKeyboard(int Key)
 
     case GLUT_KEY_UP:
         {
-            m_pos += (m_target * STEP_SCALE);
+            m_pos += (m_target * StepScale);
             Ret = true;
         }
         break;
 
     case GLUT_KEY_DOWN:
         {
-            m_pos -= (m_target * STEP_SCALE);
+            m_pos -= (m_target * StepScale);
             Ret = true;
         }
         break;
@@ -116,7 +121,7 @@ bool Camera::OnKeyboard(int Key)
         {
             Vector3f Left = m_target.Cross(m_up);
             Left.Normalize();
-            Left *= STEP_SCALE;
+            Left *= StepScale;
             m_pos += Left;
             Ret = true;
         }
@@ -126,7 +131,7 @@ bool Camera::OnKeyboard(int Key)
         {
             Vector3f Right = m_up.Cross(m_target);
             Right.Normalize();
-            Right *= STEP_SCALE;
+            Right *= StepScale;
             m_pos += Right;
             Ret = true;
         }
@@ -136,7 +141,28 @@ bool Camera::OnKeyboard(int Key)
     return Ret;
 }
 
+// Get'тер текущей позиции камеры
+const Vector3f& 
+Camera::GetPos() const
+{
+	return m_pos;
+}
 
+// Get'тер текущего направления камеры
+const Vector3f& 
+Camera::GetTarget() const
+{
+	return m_target;
+}
+
+// Get'тер текущего направления "вверх" камеры
+const Vector3f& 
+Camera::GetUp() const
+{
+	return m_up;
+}
+
+// TODO: comment
 void Camera::OnMouse(int x, int y)
 {
     const int DeltaX = x - m_mousePos.x;
@@ -179,7 +205,7 @@ void Camera::OnMouse(int x, int y)
     Update();
 }
 
-
+// TODO: comment
 void Camera::OnRender()
 {
     bool ShouldUpdate = false;
@@ -211,6 +237,7 @@ void Camera::OnRender()
     }
 }
 
+// TODO: comment
 void Camera::Update()
 {
     const Vector3f Vaxis(0.0f, 1.0f, 0.0f);

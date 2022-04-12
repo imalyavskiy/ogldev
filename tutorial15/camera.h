@@ -21,57 +21,73 @@
 
 #include "math_3d.h"
 
-
+// Класс реализации свободной камеры
 class Camera
 {
 public:
 
-    Camera(int WindowWidth, int WindowHeight);
+	// Конструктор
+	Camera(int WindowWidth, int WindowHeight);
 
-    Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
+	// Конструктор
+	Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
 
-    bool OnKeyboard(int Key);
+	// Обработчик нажатия кнопки
+	bool OnKeyboard(int Key);
 
-    void OnMouse(int x, int y);
+	// TODO: comment
+	void OnMouse(int x, int y);
 
-    void OnRender();
+	// TODO: comment
+	void OnRender();
 
-    const Vector3f& GetPos() const
-    {
-        return m_pos;
-    }
+	// Get'тер текущей позиции камеры
+	const Vector3f& GetPos() const;
 
-    const Vector3f& GetTarget() const
-    {
-        return m_target;
-    }
+	// Get'тер текущего направления камеры
+	const Vector3f& GetTarget() const;
 
-    const Vector3f& GetUp() const
-    {
-        return m_up;
-    }
+	// Get'тер текущего направления "вверх" камеры
+	const Vector3f& GetUp() const;
 
 private:
 
-    void Init();
-    void Update();
+	// TODO: comment
+	  void Init();
 
-    Vector3f m_pos;
-    Vector3f m_target;
-    Vector3f m_up;
+	// TODO: comment
+	void Update();
 
-    int m_windowWidth;
-    int m_windowHeight;
+	// Текущая позиция камеры
+	Vector3f m_pos;
 
-    float m_AngleH;
-    float m_AngleV;
+	// Текущее направление камеры
+	Vector3f m_target;
 
-    bool m_OnUpperEdge;
-    bool m_OnLowerEdge;
-    bool m_OnLeftEdge;
-    bool m_OnRightEdge;
+	// Текущее направление "вверх" камеры
+	Vector3f m_up;
 
-    Vector2i m_mousePos;
+	// TODO: comment
+	int m_windowWidth;
+	// TODO: comment
+	int m_windowHeight;
+
+	// TODO: comment
+	float m_AngleH;
+	// TODO: comment
+	float m_AngleV;
+
+	// TODO: comment
+	bool m_OnUpperEdge;
+	// TODO: comment
+	bool m_OnLowerEdge;
+	// TODO: comment
+	bool m_OnLeftEdge;
+	// TODO: comment
+	bool m_OnRightEdge;
+
+	// TODO: comment
+	Vector2i m_mousePos;
 };
 
 #endif	/* CAMERA_H */

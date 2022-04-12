@@ -20,74 +20,65 @@
 
 #include "math_3d.h"
 
+//////////////////////////////////////////////////////////////////////////
+//  класс реализующий матричный конвейер
+//////////////////////////////////////////////////////////////////////////
 class Pipeline
 {
 public:
-    Pipeline()
-    {
-        m_scale      = Vector3f(1.0f, 1.0f, 1.0f);
-        m_worldPos   = Vector3f(0.0f, 0.0f, 0.0f);
-        m_rotateInfo = Vector3f(0.0f, 0.0f, 0.0f);
-    }
+	//  конструктор
+    Pipeline();
 
-    void Scale(float ScaleX, float ScaleY, float ScaleZ)
-    {
-        m_scale.x = ScaleX;
-        m_scale.y = ScaleY;
-        m_scale.z = ScaleZ;
-    }
+	// установка коэффициентов масштабирований
+    void Scale(const float x, const float y, const float z);
 
-    void WorldPos(float x, float y, float z)
-    {
-        m_worldPos.x = x;
-        m_worldPos.y = y;
-        m_worldPos.z = z;
-    }
+    // установка параметров преобразований сдвига
+    void WorldPos(const float x, const float y, const float z);
 
-    void Rotate(float RotateX, float RotateY, float RotateZ)
-    {
-        m_rotateInfo.x = RotateX;
-        m_rotateInfo.y = RotateY;
-        m_rotateInfo.z = RotateZ;
-    }
+	// установка поворота вокруг осей(в градусах)
+    void Rotate(const float x, const float y, const float z);
 
-    void SetPerspectiveProj(float FOV, float Width, float Height, float zNear, float zFar)
-    {
-        m_persProj.FOV    = FOV;
-        m_persProj.Width  = Width;
-        m_persProj.Height = Height;
-        m_persProj.zNear  = zNear;
-        m_persProj.zFar   = zFar;
-    }
+	// установка параметров перспективной проекции(угол обзора, ширина вьюпорта, высота вьюпорта, ближняя отсекаюшая плоскость, дальняя отсекающая плоскость)
+    void SetPerspectiveProj(const float fov, const float w, const float h, const float zn, const float zf);
+	
+	// установка параметров ориентации камеры
+	void SetCamera(const Vector3f& pos, const Vector3f& target, const Vector3f& up);
 
-    void SetCamera(const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up)
-    {
-        m_camera.Pos = Pos;
-        m_camera.Target = Target;
-        m_camera.Up = Up;
-    }
+	// вычисление матрицы преобразования
+    const Matrix4f& GetTrans();
 
-    const Matrix4f* GetTrans();
-
-private:
+protected:
+	// параметры масштабирования
     Vector3f m_scale;
+	
+	// параметры сдвига
     Vector3f m_worldPos;
+	
+	// параметры поворота
     Vector3f m_rotateInfo;
 
+	// параметры перспективной проекции
     struct {
-        float FOV;
-        float Width;
-        float Height;
-        float zNear;
-        float zFar;
+        float fov;
+        float w;	// ширина
+        float h;	// высота
+        float zn;	// z координата ближней отсекающей плоскости
+        float zf;	// z координата дальней отсекающей плоскости
     } m_persProj;
-
+	
+	// параметры ориентации камеры
     struct {
-        Vector3f Pos;
-        Vector3f Target;
-        Vector3f Up;
+		// позиция
+		Vector3f Pos;
+		
+		// направление "взгляда"
+		Vector3f Target;
+		
+		// направление "вверх"
+		Vector3f Up;
     } m_camera;
 
+	// матрица преобразования
     Matrix4f m_transformation;
 };
 
