@@ -22,23 +22,20 @@
 #include <string>
 
 #include <GL/glew.h>
-#include <ImageMagick/Magick++.h>
 
 class Texture
 {
 public:
-    Texture(GLenum TextureTarget, const std::string& FileName);
+    Texture(GLenum TextureTarget, std::string FileName);
 
-    bool Load();
+    bool Load() const;
 
-    void Bind(GLenum TextureUnit);
+    void Bind(const GLenum TextureUnit) const;
 
 private:
     std::string m_fileName;
     GLenum m_textureTarget;
     GLuint m_textureObj;
-    Magick::Image* m_pImage;
-    Magick::Blob m_blob;
 };
 
 

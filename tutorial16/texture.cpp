@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 	Copyright 2011 Etay Meiri
 
@@ -16,37 +16,64 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cassert>
 #include <iostream>
 #include "texture.h"
+#include <FreeImage.h>
 
-Texture::Texture(GLenum TextureTarget, const std::string& FileName)
-{
-    m_textureTarget = TextureTarget;
-    m_fileName      = FileName;
-    m_pImage        = NULL;
+FIBITMAP* GenericLoader(const char* lpszPathName, int flag) {
+    auto fif = FIF_UNKNOWN;
+
+    fif = FreeImage_GetFileType(lpszPathName, 0);
+    if (fif == FIF_UNKNOWN) {
+        fif = FreeImage_GetFIFFromFilename(lpszPathName);
+    }
+
+    if ((fif != FIF_UNKNOWN) && FreeImage_FIFSupportsReading(fif)) {
+        return FreeImage_Load(fif, lpszPathName, flag);
+    }
+
+    return nullptr;
 }
 
-bool Texture::Load()
-{
-    try {
-        m_pImage = new Magick::Image(m_fileName);
-        m_pImage->write(&m_blob, "RGBA");
-    }
-    catch (Magick::Error& Error) {
-        std::cout << "Error loading texture '" << m_fileName << "': " << Error.what() << std::endl;
-        return false;
-    }
 
+Texture::Texture(GLenum TextureTarget, std::string FileName)
+    : m_fileName(std::move(FileName))
+    , m_textureTarget(TextureTarget)
+{
     glGenTextures(1, &m_textureObj);
+}
+
+bool Texture::Load() const
+{
+    const auto src = GenericLoader(m_fileName.c_str(), 0);
+    if (!src)
+        return false;
+
+    const auto type = FreeImage_GetColorType(src);
+    if (type != FIC_RGB)
+        return false;
+
+    if (!FreeImage_HasPixels(src))
+        return false;
+
+    const auto width = FreeImage_GetWidth(src);
+    const auto height = FreeImage_GetHeight(src);
+
+    const auto data = FreeImage_GetBits(src);
+
     glBindTexture(m_textureTarget, m_textureObj);
-    glTexImage2D(m_textureTarget, 0, GL_RGB, m_pImage->columns(), m_pImage->rows(), -0.5, GL_RGBA, GL_UNSIGNED_BYTE, m_blob.data());
+    glTexImage2D(m_textureTarget, 0, GL_RGB, width, height, -0.5, GL_BGRA, GL_UNSIGNED_BYTE, data);
+        // почему-то перепутаны R и B каналы поэтому читаем RGB, а пишем BGRA(в оригинале было RGBA), см 3й и 7й аргументы.
     glTexParameterf(m_textureTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameterf(m_textureTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(m_textureTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    FreeImage_Unload(src);
 
     return true;
 }
 
-void Texture::Bind(GLenum TextureUnit)
+void Texture::Bind(const GLenum TextureUnit) const
 {
     glActiveTexture(TextureUnit);
     glBindTexture(m_textureTarget, m_textureObj);
