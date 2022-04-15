@@ -1,4 +1,4 @@
-#include <math.h>
+﻿#include <math.h>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
@@ -236,7 +236,8 @@ int main(int argc, char** argv)
 {
     GLUTBackendInit(argc, argv);
 
-    if (!GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 32, true, "OpenGL tutors")) {
+    // Не работает на полный экран, хз почему....
+    if (!GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 32, false/*true*/, "OpenGL tutors")) {
         return 1;
     }
 
