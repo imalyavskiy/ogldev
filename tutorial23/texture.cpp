@@ -72,6 +72,8 @@ bool Texture::Load() const
     if (!FreeImage_HasPixels(src))
         return false;
 
+    assert(24 == FreeImage_GetBPP(src));
+
     glBindTexture(m_textureTarget, m_textureObj);
     glTexImage2D(
         m_textureTarget,
@@ -80,7 +82,7 @@ bool Texture::Load() const
         FreeImage_GetWidth(src),
         FreeImage_GetHeight(src),
         0,
-        GL_RGB,
+        GL_BGR,
         GL_UNSIGNED_BYTE,
         FreeImage_GetBits(src));
     glTexParameterf(m_textureTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

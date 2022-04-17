@@ -59,12 +59,10 @@ bool Texture::Load() const
 
     const auto width = FreeImage_GetWidth(src);
     const auto height = FreeImage_GetHeight(src);
-
     const auto data = FreeImage_GetBits(src);
 
     glBindTexture(m_textureTarget, m_textureObj);
-    glTexImage2D(m_textureTarget, 0, GL_RGB, width, height, -0.5, GL_BGRA, GL_UNSIGNED_BYTE, data);
-        // почему-то перепутаны R и B каналы поэтому читаем RGB, а пишем BGRA(в оригинале было RGBA), см 3й и 7й аргументы.
+    glTexImage2D(m_textureTarget, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
     glTexParameterf(m_textureTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(m_textureTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 

@@ -80,7 +80,7 @@ bool Texture::Load() const
         FreeImage_GetWidth(src), 
         FreeImage_GetHeight(src),
         0, 
-        GL_RGB, 
+        GL_BGR, 
         GL_UNSIGNED_BYTE,
         FreeImage_GetBits(src));
     glTexParameterf(m_textureTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
