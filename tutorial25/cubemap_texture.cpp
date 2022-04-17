@@ -20,6 +20,7 @@
 #include "cubemap_texture.h"
 #include "util.h"
 #include "cubemap_texture.h"
+#include "texture.h"
 
 static const GLenum types[6] = {  GL_TEXTURE_CUBE_MAP_POSITIVE_X,
                                   GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
@@ -28,18 +29,17 @@ static const GLenum types[6] = {  GL_TEXTURE_CUBE_MAP_POSITIVE_X,
                                   GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
                                   GL_TEXTURE_CUBE_MAP_NEGATIVE_Z };
 
-
-CubemapTexture::CubemapTexture(const string& Directory,
-                               const string& PosXFilename,
-                               const string& NegXFilename,
-                               const string& PosYFilename,
-                               const string& NegYFilename,
-                               const string& PosZFilename,
-                               const string& NegZFilename)
+CubemapTexture::CubemapTexture(const std::string& Directory,
+                               const std::string& PosXFilename,
+                               const std::string& NegXFilename,
+                               const std::string& PosYFilename,
+                               const std::string& NegYFilename,
+                               const std::string& PosZFilename,
+                               const std::string& NegZFilename)
 {
-    string::const_iterator it = Directory.end();
+    std::string::const_iterator it = Directory.end();
     it--;
-    string BaseDir = (*it == '/') ? Directory : Directory + "/";
+    std::string BaseDir = (*it == '/') ? Directory : Directory + "/";
     
     m_fileNames[0] = BaseDir + PosXFilename;
     m_fileNames[1] = BaseDir + NegXFilename;
@@ -63,24 +63,28 @@ bool CubemapTexture::Load()
     glGenTextures(1, &m_textureObj);
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_textureObj);
 
-    Magick::Image* pImage = NULL;
-    Magick::Blob blob;
-
     for (unsigned int i = 0 ; i < ARRAY_SIZE_IN_ELEMENTS(types) ; i++) {
-        pImage = new Magick::Image(m_fileNames[i]);
-        
-        try {            
-            pImage->write(&blob, "RGBA");
-        }
-        catch (Magick::Error& Error) {
-            cout << "Error loading texture '" << m_fileNames[i] << "': " << Error.what() << endl;
-            delete pImage;
+        FIBITMAP* src = GenericLoader(m_fileNames[i].c_str(), 0);
+        if (!src)
             return false;
-        }
 
-        glTexImage2D(types[i], 0, GL_RGB, pImage->columns(), pImage->rows(), 0, GL_RGBA, GL_UNSIGNED_BYTE, blob.data());
+        const auto type = FreeImage_GetColorType(src);
+        if (type != FIC_RGB)
+            return false;
+
+        if (!FreeImage_HasPixels(src))
+            return false;
+
+        FreeImage_FlipVertical(src);
+
+        const GLsizei width = FreeImage_GetWidth(src);
+        const GLsizei height = FreeImage_GetHeight(src);
+        const auto bpp = FreeImage_GetBPP(src);
+        const auto data = FreeImage_GetBits(src);
+
+        glTexImage2D(types[i], 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
         
-        delete pImage;
+        FreeImage_Unload(src);
     }    
     
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

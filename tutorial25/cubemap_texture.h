@@ -21,21 +21,18 @@
 
 #include <string>
 #include <GL/glew.h>
-#include <ImageMagick/Magick++.h>
-
-using namespace std;
 
 class CubemapTexture
 {
 public:
     
-    CubemapTexture(const string& Directory,
-                   const string& PosXFilename,
-                   const string& NegXFilename,
-                   const string& PosYFilename,
-                   const string& NegYFilename,
-                   const string& PosZFilename,
-                   const string& NegZFilename);
+    CubemapTexture(const std::string& Directory,
+                   const std::string& PosXFilename,
+                   const std::string& NegXFilename,
+                   const std::string& PosYFilename,
+                   const std::string& NegYFilename,
+                   const std::string& PosZFilename,
+                   const std::string& NegZFilename);
 
     ~CubemapTexture();
     
@@ -45,7 +42,7 @@ public:
 
 private:
    
-    string m_fileNames[6];
+    std::string m_fileNames[6];
     GLuint m_textureObj;
 };
 
