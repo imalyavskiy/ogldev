@@ -140,10 +140,9 @@ bool Mesh::InitMaterials(const aiScene* pScene, const std::string& Filename)
         if (pMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0){
             aiString Path;
 
-            if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &Path,
-                                NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS){
+            if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &Path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS){
                 std::string FullPath = Dir + "/" + Path.data;
-                m_Textures[i] = new Texture(GL_TEXTURE_2D, FullPath.c_str());
+                m_Textures[i] = new Texture(GL_TEXTURE_2D, FullPath);
 
                 if (!m_Textures[i]->Load()){
                     printf("Error loading texture '%s'\n", FullPath.c_str());
