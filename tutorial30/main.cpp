@@ -211,6 +211,8 @@ private:
 
 int main(int argc, char** argv)
 {
+    std::srand(/*WINAPI->*/GetCurrentProcessId());
+
     GLUTBackendInit(argc, argv);
 
     if (!GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 32, false, "Tutorial 30")) {

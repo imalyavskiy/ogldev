@@ -20,6 +20,7 @@
 #define	GLUT_BACKEND_H
 
 #include "callbacks.h"
+#include <stdio.h>
 
 void GLUTBackendInit(int argc, char** argv);
 

@@ -20,10 +20,12 @@
 
 #include <stdlib.h>
 #include <math.h>
-#include <sys/time.h>
+//#include <sys/time.h>
 #include <assert.h>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
+#include <chrono>
+#include <thread>
 
 #ifdef __GNUC__
 #  if __GNUC_PREREQ(4,7)
@@ -46,11 +48,9 @@
 
 static long long GetCurrentTimeMillis()
 {
-    timeval t;
-    gettimeofday(&t, NULL);
-     
-    long long ret = t.tv_sec * 1000 + t.tv_usec / 1000;
-    return ret;
+    const auto duration = std::chrono::system_clock::now().time_since_epoch();
+    const auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+    return millis;
 }
 
 class Tutorial28 : public ICallbacks
@@ -217,7 +217,7 @@ public:
 
 int main(int argc, char** argv)
 {
-    srandom(getpid());
+    std::srand(/*WINAPI->*/GetCurrentProcessId());
        
     GLUTBackendInit(argc, argv);
 

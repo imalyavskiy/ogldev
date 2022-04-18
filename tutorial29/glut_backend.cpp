@@ -16,12 +16,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <unistd.h>
-#include <stdio.h>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
 #include "glut_backend.h"
+
+#include <stdio.h>
 
 // Points to the object implementing the ICallbacks interface which was delivered to
 // GLUTBackendRun(). All events are forwarded to this object.
