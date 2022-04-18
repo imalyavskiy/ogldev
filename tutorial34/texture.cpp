@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2011 Etay Meiri
+    Copyright 2011 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,38 +16,88 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cassert>
 #include <iostream>
-#include "util.h"
 #include "texture.h"
 
-Texture::Texture(GLenum TextureTarget, const std::string& FileName)
-{
-    m_textureTarget = TextureTarget;
-    m_fileName      = FileName;
-    m_pImage        = NULL;
+FIBITMAP* GenericLoader(const char* lpszPathName, int flag) {
+    auto fif = FIF_UNKNOWN;
+
+    fif = FreeImage_GetFileType(lpszPathName, 0);
+    if (fif == FIF_UNKNOWN) {
+        fif = FreeImage_GetFIFFromFilename(lpszPathName);
+    }
+
+    if ((fif != FIF_UNKNOWN) && FreeImage_FIFSupportsReading(fif)) {
+        return FreeImage_Load(fif, lpszPathName, flag);
+    }
+
+    return nullptr;
 }
 
-bool Texture::Load()
-{
-    try {
-        m_pImage = new Magick::Image(m_fileName);
-        m_pImage->write(&m_blob, "RGBA");
-    }
-    catch (Magick::Error& Error) {
-        std::cout << "Error loading texture '" << m_fileName << "': " << Error.what() << std::endl;
-        return false;
-    }
+bool GenericWriter(FIBITMAP* dib, const std::string& lpszPathName, int flag) {
+    FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
+    BOOL bSuccess = FALSE;
 
+    if (dib) {
+        fif = FreeImage_GetFIFFromFilename(lpszPathName.c_str());
+        if (fif != FIF_UNKNOWN) {
+            WORD bpp = FreeImage_GetBPP(dib);
+            if (FreeImage_FIFSupportsWriting(fif) && FreeImage_FIFSupportsExportBPP(fif, bpp)) {
+                bSuccess = FreeImage_Save(fif, dib, lpszPathName.c_str(), flag);
+            }
+        }
+    }
+    return (bSuccess == TRUE) ? true : false;
+}
+
+Texture::Texture(GLenum TextureTarget, std::string FileName)
+    : m_fileName(std::move(FileName))
+    , m_textureTarget(TextureTarget)
+{
     glGenTextures(1, &m_textureObj);
-    glBindTexture(m_textureTarget, m_textureObj);
-    glTexImage2D(m_textureTarget, 0, GL_RGBA, m_pImage->columns(), m_pImage->rows(), 0, GL_RGBA, GL_UNSIGNED_BYTE, m_blob.data());
-    glTexParameterf(m_textureTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameterf(m_textureTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    return GLCheckError();
 }
 
-void Texture::Bind(GLenum TextureUnit)
+bool Texture::Load() const
+{
+    auto src = GenericLoader(m_fileName.c_str(), 0);
+    if (!src)
+        return false;
+
+    const auto type = FreeImage_GetColorType(src);
+    if (!(type == FIC_RGBALPHA || type == FIC_RGB))
+        return false;
+
+    if (!FreeImage_HasPixels(src))
+        return false;
+
+    const auto bpp = FreeImage_GetBPP(src);
+    assert((type == FIC_RGBALPHA && 32 == bpp) || (type == FIC_RGB && 24 == bpp));
+
+    const GLsizei width = FreeImage_GetWidth(src);
+    const GLsizei height = FreeImage_GetHeight(src);
+
+    FreeImage_FlipVertical(src);
+
+    const auto data = FreeImage_GetBits(src);
+
+    glBindTexture(m_textureTarget, m_textureObj);
+    if (type == FIC_RGBALPHA && 32 == bpp)
+        glTexImage2D(m_textureTarget, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+    else if (type == FIC_RGB && 24 == bpp)
+        glTexImage2D(m_textureTarget, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+    else
+        throw std::logic_error("Unsupported color format");
+
+    glTexParameterf(m_textureTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(m_textureTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    FreeImage_Unload(src);
+
+    return true;
+}
+
+void Texture::Bind(const GLenum TextureUnit) const
 {
     glActiveTexture(TextureUnit);
     glBindTexture(m_textureTarget, m_textureObj);
