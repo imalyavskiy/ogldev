@@ -186,5 +186,5 @@ Quaternion operator*(const Quaternion& q, const Vector3f& v)
 float RandomFloat()
 {
     float Max = RAND_MAX;
-    return ((float)RANDOM() / Max);
+    return ((float)std::rand() / Max);
 }

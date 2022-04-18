@@ -18,7 +18,6 @@
     Tutorial 28 - Particle System Using Transform Feedback
 */
 
-#include <stdlib.h>
 #include <math.h>
 //#include <sys/time.h>
 #include <assert.h>
