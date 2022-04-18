@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2011 Etay Meiri
+    Copyright 2011 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,27 +20,24 @@
 #define	TEXTURE_H
 
 #include <string>
-
 #include <GL/glew.h>
-#include <ImageMagick/Magick++.h>
+#include <FreeImage.h>
 
 class Texture
 {
 public:
-    Texture(GLenum TextureTarget, const std::string& FileName);
+    Texture(GLenum TextureTarget, std::string FileName);
 
-    bool Load();
+    bool Load() const;
 
-    void Bind(GLenum TextureUnit);
+    void Bind(const GLenum TextureUnit) const;
 
 private:
     std::string m_fileName;
     GLenum m_textureTarget;
     GLuint m_textureObj;
-    Magick::Image* m_pImage;
-    Magick::Blob m_blob;
 };
 
+FIBITMAP* GenericLoader(const char* lpszPathName, int flag);
 
 #endif	/* TEXTURE_H */
-
