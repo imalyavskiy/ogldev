@@ -19,7 +19,6 @@
     <ClInclude Include="math_3d.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="pipeline.h" />
-    <ClInclude Include="render_callbacks.h" />
     <ClInclude Include="technique.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="util.h" />
@@ -39,9 +38,9 @@
     <None Include="Makefile" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{F4887688-2103-48C1-958E-5FBDCF83BFFA}</ProjectGuid>
+    <ProjectGuid>{C6EC9373-2CD6-4F23-8B1F-1593B6157724}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>tutorial31</RootNamespace>
+    <RootNamespace>tutorial34</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -78,15 +77,15 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)int\$(Configuration)\$(ProjectName)\</IntDir>
-    <LibraryPath>E:\MyProjects\GameDev\Assimp\lib\$(PlatformShortName)\$(Configuration);E:\MyProjects\GameDev\FreeImage3180\Dist\$(PlatformShortName);E:\MyProjects\GameDev\ImageMagick-Windows\VisualMagick\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>E:\MyProjects\GameDev\Assimp\include;E:\MyProjects\GameDev\FreeImage3180\Dist\$(PlatformShortName);E:\MyProjects\GameDev\ImageMagick-Windows\ImageMagick\;E:\MyProjects\GameDev\ImageMagick-Windows\ImageMagick\Magick++\lib\;$(SolutionDir)..\glew.2.0.0.exports\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\glfx\_bin\$(PlatformShortName)\debug-dll;$(SolutionDir)..\Assimp\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\glfx\include;$(SolutionDir)Include;$(SolutionDir)..\Assimp\include;$(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName);$(SolutionDir)..\glew.2.0.0.exports\inc;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)int\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)..\Assimp\include;$(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName);$(SolutionDir)..\glew.2.0.0.exports\inc;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\Assimp\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName);$(SolutionDir)..\glew.2.0.0.exports\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\glfx\include;$(SolutionDir)Include;$(SolutionDir)..\Assimp\include;$(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName);$(SolutionDir)..\glew.2.0.0.exports\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\glfx\_bin\$(PlatformShortName)\release-dll;$(SolutionDir)..\Assimp\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -104,11 +103,12 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>assimp-vc142-mtd.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfx.lib;assimp-vc142-mtd.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy E:\MyProjects\GameDev\FreeImage3180\Dist\$(PlatformShortName)\FreeImage.dll $(OutDir)FreeImage.dll
-copy E:\MyProjects\GameDev\Assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc142-mtd.dll $(OutDir)assimp-vc142-mtd.dll</Command>
+      <Command>copy $(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName)\FreeImage.dll $(OutDir)FreeImage.dll
+copy $(SolutionDir)..\Assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc142-mtd.dll $(OutDir)assimp-vc142-mtd.dll
+copy $(SolutionDir)..\glfx\_bin\x86\debug-dll\glfx.dll $(OutDir)glfx.dll</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -127,11 +127,12 @@ copy E:\MyProjects\GameDev\Assimp\bin\$(PlatformShortName)\$(Configuration)\assi
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>assimp-vc142-mt.lib;FreeImage.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfx.lib;assimp-vc142-mt.lib;FreeImage.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy $(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName)\FreeImage.dll $(OutDir)FreeImage.dll
-copy $(SolutionDir)..\Assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc142-mt.dll $(OutDir)assimp-vc142-mt.dll</Command>
+copy $(SolutionDir)..\Assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc142-mt.dll $(OutDir)assimp-vc142-mt.dll
+copy $(SolutionDir)..\glfx\_bin\x86\release-dll\glfx.dll $(OutDir)glfx.dll</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
