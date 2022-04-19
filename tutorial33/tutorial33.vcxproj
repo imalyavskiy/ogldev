@@ -106,8 +106,8 @@
       <AdditionalDependencies>assimp-vc142-mtd.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy E:\MyProjects\GameDev\FreeImage3180\Dist\$(PlatformShortName)\FreeImage.dll $(OutDir)FreeImage.dll
-copy E:\MyProjects\GameDev\Assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc142-mtd.dll $(OutDir)assimp-vc142-mtd.dll</Command>
+      <Command>copy $(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName)\FreeImage.dll $(OutDir)FreeImage.dll
+copy $(SolutionDir)..\Assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc142-mtd.dll $(OutDir)assimp-vc142-mtd.dll</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
