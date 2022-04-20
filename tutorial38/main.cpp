@@ -39,6 +39,7 @@
 #ifdef FREETYPE
 #include "freetypeGL.h"
 #endif
+#include <chrono>
 
 using namespace std;
 
@@ -51,6 +52,13 @@ Markup sMarkup = { (char*)"Arial", 64, 1, 0, 0.0, 0.0,
                    0, {1,0,0,1}, 0, {1,0,0,1},
                    0, {0,0,0,1}, 0, {0,0,0,1} };
 #endif
+
+static long long GetCurrentTimeMillis()
+{
+    const auto duration = std::chrono::system_clock::now().time_since_epoch();
+    const auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+    return millis;
+}
 
 class Tutorial38 : public ICallbacks
 {
@@ -247,14 +255,13 @@ private:
 
 int main(int argc, char** argv)
 {
-    Magick::InitializeMagick(*argv);
     GLUTBackendInit(argc, argv);
 
     if (!GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 32, false, "Tutorial 38")) {
         return 1;
     }
     
-    SRANDOM;
+    std::srand(GetCurrentProcessId());
     
     Tutorial38* pApp = new Tutorial38();
 
