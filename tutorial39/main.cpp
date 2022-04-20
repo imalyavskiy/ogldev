@@ -36,6 +36,7 @@
 #include "lighting_technique.h"
 #include "glut_backend.h"
 #include "mesh.h"
+#include <chrono>
 #ifdef FREETYPE
 #include "freetypeGL.h"
 #endif
@@ -51,6 +52,13 @@ Markup sMarkup = { (char*)"Arial", 64, 1, 0, 0.0, 0.0,
                    0, {1,0,0,1}, 0, {1,0,0,1},
                    0, {0,0,0,1}, 0, {0,0,0,1} };
 #endif
+
+static long long GetCurrentTimeMillis()
+{
+    const auto duration = std::chrono::system_clock::now().time_since_epoch();
+    const auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+    return millis;
+}
 
 class Tutorial39 : public ICallbacks
 {
@@ -248,14 +256,13 @@ private:
 
 int main(int argc, char** argv)
 {
-    Magick::InitializeMagick(*argv);
     GLUTBackendInit(argc, argv);
 
     if (!GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 32, false, "Tutorial 39")) {
         return 1;
     }
     
-    SRANDOM;
+    std::srand(GetCurrentProcessId());
     
     Tutorial39* pApp = new Tutorial39();
 
