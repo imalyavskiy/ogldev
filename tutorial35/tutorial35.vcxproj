@@ -11,12 +11,38 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="callbacks.h" />
+    <ClInclude Include="camera.h" />
+    <ClInclude Include="ds_geom_pass_tech.h" />
+    <ClInclude Include="engine_common.h" />
+    <ClInclude Include="gbuffer.h" />
+    <ClInclude Include="glut_backend.h" />
+    <ClInclude Include="math_3d.h" />
+    <ClInclude Include="mesh.h" />
+    <ClInclude Include="pipeline.h" />
+    <ClInclude Include="technique.h" />
+    <ClInclude Include="texture.h" />
+    <ClInclude Include="util.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="camera.cpp" />
+    <ClCompile Include="ds_geom_pass_tech.cpp" />
+    <ClCompile Include="gbuffer.cpp" />
+    <ClCompile Include="glut_backend.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="math_3d.cpp" />
+    <ClCompile Include="mesh.cpp" />
+    <ClCompile Include="pipeline.cpp" />
+    <ClCompile Include="technique.cpp" />
+    <ClCompile Include="texture.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Makefile" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{3015716C-94AB-4083-9535-C1BABEF37BDD}</ProjectGuid>
+    <ProjectGuid>{CA96BE72-E51A-4F96-ADA4-DC2937750DC8}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>tutorialXX</RootNamespace>
+    <RootNamespace>tutorial35</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

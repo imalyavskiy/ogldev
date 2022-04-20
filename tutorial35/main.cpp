@@ -235,14 +235,13 @@ private:
 
 int main(int argc, char** argv)
 {
-    Magick::InitializeMagick(*argv);
     GLUTBackendInit(argc, argv);
 
     if (!GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 32, false, "Tutorial 35")) {
         return 1;
     }
     
-    SRANDOM;
+    std::srand(GetCurrentProcessId());
  
     Tutorial35* pApp = new Tutorial35();
 
