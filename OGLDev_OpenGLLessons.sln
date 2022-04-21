@@ -90,6 +90,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial41", "tutorial41\tu
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Common\Common.vcxproj", "{6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial42", "tutorial42\tutorial42.vcxproj", "{86530C7F-C289-4627-9011-7009BE2B7D12}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC} = {6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -352,6 +357,12 @@ Global
 		{6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC}.Release|x64.Build.0 = Release|x64
 		{6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC}.Release|x86.ActiveCfg = Release|Win32
 		{6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC}.Release|x86.Build.0 = Release|Win32
+		{86530C7F-C289-4627-9011-7009BE2B7D12}.Debug|x64.ActiveCfg = Debug|Win32
+		{86530C7F-C289-4627-9011-7009BE2B7D12}.Debug|x86.ActiveCfg = Debug|Win32
+		{86530C7F-C289-4627-9011-7009BE2B7D12}.Debug|x86.Build.0 = Debug|Win32
+		{86530C7F-C289-4627-9011-7009BE2B7D12}.Release|x64.ActiveCfg = Release|Win32
+		{86530C7F-C289-4627-9011-7009BE2B7D12}.Release|x86.ActiveCfg = Release|Win32
+		{86530C7F-C289-4627-9011-7009BE2B7D12}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

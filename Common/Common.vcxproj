@@ -123,9 +123,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)int\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(Solutiondir)Include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <OutDir>$(SolutionDir)lib\$(Configuration)\$(PlatformShortName)\</OutDir>
+    <IntDir>$(SolutionDir)int\$(Configuration)\$(PlatformShortName)\$(ProjectName)\</IntDir>
+    <IncludePath>$(SolutionDir)..\freeglut.3.0.0.exports\inc;$(SolutionDir)..\GLFW\include;$(SolutionDir)..\AntTweakBar_116\include;$(SolutionDir)..\glfx\include;$(SolutionDir)..\Assimp\include;$(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName);$(SolutionDir)..\glew.2.0.0.exports\inc;$(SolutionDir)Include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -154,8 +154,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>
