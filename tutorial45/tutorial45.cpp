@@ -18,6 +18,7 @@
     Tutorial 45 - Screen Space Ambient Occlusion
 */
 
+#include <windows.h>
 #include <math.h>
 #include <GL/glew.h>
 #include <string>
@@ -277,8 +278,6 @@ private:
 
 int main(int argc, char** argv)
 {
-//    Magick::InitializeMagick(*argv);
-
     OgldevBackendInit(OGLDEV_BACKEND_TYPE_GLFW, argc, argv, true, false);
 
     if (!OgldevBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, false, "Tutorial 45")) {
@@ -286,7 +285,7 @@ int main(int argc, char** argv)
 		return 1;
     }
 
-    SRANDOM;
+    std::srand(GetCurrentProcessId());
     
     Tutorial45* pApp = new Tutorial45();
 
