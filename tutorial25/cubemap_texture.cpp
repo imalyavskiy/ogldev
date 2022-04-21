@@ -17,7 +17,6 @@
 */
 
 #include <iostream>
-#include "cubemap_texture.h"
 #include "util.h"
 #include "cubemap_texture.h"
 #include "texture.h"
