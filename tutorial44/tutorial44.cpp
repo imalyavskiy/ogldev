@@ -18,6 +18,7 @@
     Tutorial 44 - GLFW
 */
 
+#include <windows.h>
 #include <math.h>
 #include <GL/glew.h>
 #include <string>
@@ -161,8 +162,6 @@ private:
 
 int main(int argc, char** argv)
 {
-    Magick::InitializeMagick(*argv);
-
     OgldevBackendInit(OGLDEV_BACKEND_TYPE_GLFW, argc, argv, true, false);
 
     if (!OgldevBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, false, "Tutorial 44")) {
@@ -170,7 +169,7 @@ int main(int argc, char** argv)
 		return 1;
     }
 
-    SRANDOM;
+    std::srand(/*WINAPI->*/GetCurrentProcessId());
     
     Tutorial44* pApp = new Tutorial44();
 
