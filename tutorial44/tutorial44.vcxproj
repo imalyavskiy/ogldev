@@ -11,9 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Makefile" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="engine_common.h" />
     <ClInclude Include="lighting_technique.h" />
     <ClInclude Include="mesh.h" />

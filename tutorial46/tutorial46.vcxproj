@@ -26,9 +26,6 @@
     <ClInclude Include="mesh.h" />
     <ClInclude Include="ssao_technique.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Makefile" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{ECB87595-8711-4847-A757-B62B7944606A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

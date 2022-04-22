@@ -29,35 +29,19 @@
 #define ToRadian(x) ((x) * M_PI / 180.0f)
 #define ToDegree(x) ((x) * 180.0f / M_PI)
 
-// Класс представляющий собой реализацию математического 3D вектора на базе float
 struct Vector3f
 {	
-	// Координата X
-    float x;
+    float x = 0.f;
+    float y = 0.f;
+    float z = 0.f;
 
-	// Координата Y
-	float y;
+    Vector3f() = default;
 
-	// Координата Z
-	float z;
-
-	// Конструктор
-    Vector3f()
-		: x( 0 )
-		, y( 0 )
-		, z( 0 )
+    Vector3f(const float _x, const float _y, const float _z)
+        : x(_x), y(_y), z(_z)
     {
     }
 
-	// Конструктор
-	Vector3f(float _x, float _y, float _z)
-		: x( _x )
-		, y( _y )
-		, z( _z )
-    {
-    }
-
-	// Оператор сложения векторов
     Vector3f& operator+=(const Vector3f& r)
     {
         x += r.x;
@@ -67,7 +51,6 @@ struct Vector3f
         return *this;
     }
 
-	// Оператор вычитания векторов
     Vector3f& operator-=(const Vector3f& r)
     {
         x -= r.x;
@@ -77,7 +60,6 @@ struct Vector3f
         return *this;
     }
 
-	// Оператор умножения ветора на скаляр
     Vector3f& operator*=(float f)
     {
         x *= f;
@@ -87,20 +69,8 @@ struct Vector3f
         return *this;
     }
 
-	//////////////////////////////////////////////////////////////////////////
-	/// Cross Product - векторное произведение векторов
-	/// пусть a(x, y, z) и b(x, y, z) вектора тогда(для правостронней системы координат):
-	/// [a,b] = ( a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x )
-	///                 |  i   j   k  |
-	/// [a,b] условно = | a.x a.y a.z | = i * a.y * b.z + k * a.x * b.y + j * a.z * b.x - k * a.y * b.x - i * a.z * b.y - j * a.x * b.z =
-	///                 | b.x b.y b.z |
-	/// = i * ( a.y * b.z - a.z * b.y ) + j * ( a.z * b.x - a.x * b.z ) + k * ( a.x * b.y - a.y * b.x )
-	/// правый множитель i - х координата результирующего вектора, j - y, k - z.
-	/// для левосторонней системы координат определитель берётся со знаком "-"
 	Vector3f Cross(const Vector3f& v) const;
 
-	// Нормализация вектора
-	/// приведение вектора к единичной длинне
 	Vector3f& Normalize();
 
     void Print() const
@@ -109,7 +79,6 @@ struct Vector3f
     }
 };
 
-// Оператор вычитания векторов
 inline Vector3f operator-(const Vector3f& l, const Vector3f& r)
 {
     Vector3f Ret(l.x - r.x,
@@ -119,7 +88,6 @@ inline Vector3f operator-(const Vector3f& l, const Vector3f& r)
     return Ret;
 }
 
-// Оператор умножения ветокра на скаляр
 inline Vector3f operator*(const Vector3f& l, float f)
 {
     Vector3f Ret(l.x * f,
@@ -129,32 +97,23 @@ inline Vector3f operator*(const Vector3f& l, float f)
     return Ret;
 }
 
-// Класс 2D матрицы 4х4 из float'ов
 class Matrix4f
 {
 public:
-	// Непосредственно матрица
-    float m[4][4];
+    float m[4][4] = { {0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f} };
 
-	// Инициализация единичной матрицей
 	static void InitIdentity(Matrix4f& m);
 
-	// Умножение на матрицу справа
 	Matrix4f operator*(const Matrix4f& Right) const;
 
-	// Инициализаия матрицы масштабирования
 	static void InitScaleTransform(Matrix4f& m, const float x, const float y, const float z);
 	
-	// Инициализация матрицы поворота
 	static void InitRotateTransform(Matrix4f& m, const float x, const float y, const float z);
 	
-	// Инициализация матрицы сдвига
 	static void InitTranslationTransform(Matrix4f& m, const float x, const float y, const float z);
 	
-	// Инициализация UVN матрицы камеры
 	static void InitCameraTransform(Matrix4f& m, const Vector3f& target, const Vector3f& up);
 	
-	// Инициализация матрицы преобразования перспективной проекции
 	static void InitPersProjTransform(Matrix4f& m, const float fov, const float w, const float h, const float zn, const float zf);
 };
 

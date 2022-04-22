@@ -19,10 +19,8 @@
 
 #include "camera.h"
 
-// Приращение движения камеры
 const static float StepScale = 0.1f;
 
-// Конструктор
 Camera::Camera()
 {
     m_pos    = Vector3f(0.0f, 0.0f, 0.0f);
@@ -30,7 +28,6 @@ Camera::Camera()
     m_up     = Vector3f(0.0f, 1.0f, 0.0f);
 }
 
-// Конструктор
 Camera::Camera(const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up)
 {
     m_pos    = Pos;
@@ -40,7 +37,6 @@ Camera::Camera(const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up)
     m_up.Normalize();
 }
 
-// Обработчик нажатия кнопки
 bool 
 Camera::OnKeyboard(int Key)
 {
@@ -86,21 +82,18 @@ Camera::OnKeyboard(int Key)
     return Ret;
 }
 
-// Get'тер текущей позиции камеры
 const Vector3f& 
 Camera::GetPos() const
 {
 	return m_pos;
 }
 
-// Get'тер текущего направления камеры
 const Vector3f& 
 Camera::GetTarget() const
 {
 	return m_target;
 }
 
-// Get'тер текущего направления "вверх" камеры
 const Vector3f& 
 Camera::GetUp() const
 {

@@ -38,9 +38,6 @@
     <ClInclude Include="texture.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Makefile" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4228EEE6-CFF4-4F72-A526-41B1AD9FAD4D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

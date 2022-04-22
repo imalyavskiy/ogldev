@@ -98,14 +98,28 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial43", "tutorial43\tutorial43.vcxproj", "{7233B7C3-0804-4D5F-A9B7-20B45AB45FF1}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial44", "tutorial44\tutorial44.vcxproj", "{4895D6C2-0C5F-4927-B537-C0404F083D22}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC} = {6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial45", "tutorial45\tutorial45.vcxproj", "{EF3E5A2B-9E10-4011-99D3-CBBEBEE694B0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial46", "tutorial46\tutorial46.vcxproj", "{ECB87595-8711-4847-A757-B62B7944606A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial47", "tutorial47\tutorial47.vcxproj", "{6A30767F-4FEA-427B-BC13-FE21D3EC3BA1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC} = {6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial48", "tutorial48\tutorial48.vcxproj", "{1B74B773-3474-44B0-A0FF-BC5D540BF6A5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC} = {6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial49", "tutorial49\tutorial49.vcxproj", "{E68277C2-2609-4C3D-9C8A-4F7E17FF4F9C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC} = {6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -411,6 +425,12 @@ Global
 		{1B74B773-3474-44B0-A0FF-BC5D540BF6A5}.Release|x64.ActiveCfg = Release|Win32
 		{1B74B773-3474-44B0-A0FF-BC5D540BF6A5}.Release|x86.ActiveCfg = Release|Win32
 		{1B74B773-3474-44B0-A0FF-BC5D540BF6A5}.Release|x86.Build.0 = Release|Win32
+		{E68277C2-2609-4C3D-9C8A-4F7E17FF4F9C}.Debug|x64.ActiveCfg = Debug|Win32
+		{E68277C2-2609-4C3D-9C8A-4F7E17FF4F9C}.Debug|x86.ActiveCfg = Debug|Win32
+		{E68277C2-2609-4C3D-9C8A-4F7E17FF4F9C}.Debug|x86.Build.0 = Debug|Win32
+		{E68277C2-2609-4C3D-9C8A-4F7E17FF4F9C}.Release|x64.ActiveCfg = Release|Win32
+		{E68277C2-2609-4C3D-9C8A-4F7E17FF4F9C}.Release|x86.ActiveCfg = Release|Win32
+		{E68277C2-2609-4C3D-9C8A-4F7E17FF4F9C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

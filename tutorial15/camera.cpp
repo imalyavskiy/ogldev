@@ -19,12 +19,10 @@
 
 #include "camera.h"
 
-// Приращение движения камеры
 const static float StepScale = 0.1f;
 
 const static int MARGIN = 10;
 
-// Конструктор
 Camera::Camera(int WindowWidth, int WindowHeight)
 {
     m_pos	 = Vector3f(0.0f, 0.0f, 0.0f);
@@ -38,7 +36,6 @@ Camera::Camera(int WindowWidth, int WindowHeight)
     Init();
 }
 
-// TODO: comment
 Camera::Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up)
 {
     m_pos    = Pos;
@@ -95,7 +92,6 @@ void Camera::Init()
     glutWarpPointer(m_mousePos.x, m_mousePos.y);
 }
 
-// Обработчик нажатия кнопки
 bool 
 Camera::OnKeyboard(int Key)
 {
@@ -141,28 +137,24 @@ Camera::OnKeyboard(int Key)
     return Ret;
 }
 
-// Get'тер текущей позиции камеры
 const Vector3f& 
 Camera::GetPos() const
 {
 	return m_pos;
 }
 
-// Get'тер текущего направления камеры
 const Vector3f& 
 Camera::GetTarget() const
 {
 	return m_target;
 }
 
-// Get'тер текущего направления "вверх" камеры
 const Vector3f& 
 Camera::GetUp() const
 {
 	return m_up;
 }
 
-// TODO: comment
 void Camera::OnMouse(int x, int y)
 {
     const int DeltaX = x - m_mousePos.x;
@@ -176,11 +168,9 @@ void Camera::OnMouse(int x, int y)
 
     if (DeltaX == 0) {
         if (x <= MARGIN) {
-        //    m_AngleH -= 1.0f;
             m_OnLeftEdge = true;
         }
         else if (x >= (m_windowWidth - MARGIN)) {
-        //    m_AngleH += 1.0f;
             m_OnRightEdge = true;
         }
     }
@@ -205,7 +195,6 @@ void Camera::OnMouse(int x, int y)
     Update();
 }
 
-// TODO: comment
 void Camera::OnRender()
 {
     bool ShouldUpdate = false;
@@ -237,17 +226,14 @@ void Camera::OnRender()
     }
 }
 
-// TODO: comment
 void Camera::Update()
 {
     const Vector3f Vaxis(0.0f, 1.0f, 0.0f);
 
-    // Rotate the view vector by the horizontal angle around the vertical axis
     Vector3f View(1.0f, 0.0f, 0.0f);
     View.Rotate(m_AngleH, Vaxis);
     View.Normalize();
 
-    // Rotate the view vector by the vertical angle around the horizontal axis
     Vector3f Haxis = Vaxis.Cross(View);
     Haxis.Normalize();
     View.Rotate(m_AngleV, Haxis);

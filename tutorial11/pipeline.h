@@ -21,51 +21,35 @@
 
 #include "math_3d.h"
 
-//////////////////////////////////////////////////////////////////////////
-/// Класс реализующий матричный конфейер
-//////////////////////////////////////////////////////////////////////////
 class Pipeline
 {
 public:
-	// Конструктор
     Pipeline();
 
-	// Установка параметров преобразоваания масштабирования
     void Scale(const float ScaleX, const float ScaleY, const float ScaleZ);
 
-	// Установка параметров преобразоваания сдвига
     void WorldPos(const float x, const float y, const float z);
 
-	// Установка параметров преобразоваания поворота
     void Rotate(const float RotateX, const float RotateY, const float RotateZ);
 
-	// Вычисление матрицы преобразования
     const Matrix4f& GetTrans();
 
 protected:
-	// Инициализация матрицы масштабирования
     void InitScaleTransform(Matrix4f& m) const;
 	
-	// Инициализация общей матрицы поворота
     void InitRotateTransform(Matrix4f& m) const;
 	
-	// Инициализация матрицы сдвига
     void InitTranslationTransform(Matrix4f& m) const;
 	
 protected:
-	// параметры масштабирования
     Vector3f m_scale;
 	
-	// параметры сдвига
     Vector3f m_worldPos;
 	
-	// параметры поворота
     Vector3f m_rotateInfo;
 
-	// матрица преобразования
     Matrix4f m_transformation;
 };
-
 
 #endif	/* PIPELINE_H */
 

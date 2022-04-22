@@ -21,38 +21,28 @@
 
 #include "math_3d.h"
 
-// Класс реализации свободной камеры
 class Camera
 {
 public:
 
-	// Конструктор
 	Camera();
 
-	// Конструктор
 	Camera(const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
 
-	// Обработчик нажатия кнопки
 	bool OnKeyboard(int Key);
 
-	// Get'тер текущей позиции камеры
 	const Vector3f& GetPos() const;
 
-	// Get'тер текущего направления камеры
 	const Vector3f& GetTarget() const;
 
-	// Get'тер текущего направления "вверх" камеры
 	const Vector3f& GetUp() const;
 
 private:
 
-	// Текущая позиция камеры
 	Vector3f m_pos;
 
-	// Текущее направление камеры
 	Vector3f m_target;
 
-	// Текущее направление "вверх" камеры
 	Vector3f m_up;
 };
 

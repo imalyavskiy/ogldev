@@ -30,26 +30,22 @@
 
 struct Vector3f
 {
-    float x;
-    float y;
-    float z;
+    float x = 0.f;
+    float y = 0.f;
+    float z = 0.f;
 
-    Vector3f()
-    {
-    }
+    Vector3f() = default;
 
-    Vector3f(float _x, float _y, float _z)
+    Vector3f(const float _x, const float _y, const float _z)
+        : x(_x), y(_y), z(_z)
     {
-        x = _x;
-        y = _y;
-        z = _z;
     }
 };
 
 class Matrix4f
 {
 public:
-    float m[4][4];
+    float m[4][4] = { {0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f} };
 
    inline void InitIdentity()
     {

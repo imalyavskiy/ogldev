@@ -34,9 +34,6 @@
     <ClCompile Include="technique.cpp" />
     <ClCompile Include="texture.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Makefile" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C27F8A61-37A2-4FB3-A6DC-533DF86D39AD}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

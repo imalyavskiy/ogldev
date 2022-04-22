@@ -20,68 +20,48 @@
 
 #include "math_3d.h"
 
-//////////////////////////////////////////////////////////////////////////
-//  класс реализующий матричный конвейер
-//////////////////////////////////////////////////////////////////////////
 class Pipeline
 {
 public:
-	//  конструктор
     Pipeline();
 
-	// установка коэффициентов масштабирований
     void Scale(const float x, const float y, const float z);
 
-    // установка параметров преобразований сдвига
     void WorldPos(const float x, const float y, const float z);
 
-	// установка поворота вокруг осей(в градусах)
     void Rotate(const float x, const float y, const float z);
 
-	// установка параметров перспективной проекции(угол обзора, ширина вьюпорта, высота вьюпорта, ближняя отсекаюшая плоскость, дальняя отсекающая плоскость)
     void SetPerspectiveProj(const float fov, const float w, const float h, const float zn, const float zf);
 	
-	// установка параметров ориентации камеры
 	void SetCamera(const Vector3f& pos, const Vector3f& target, const Vector3f& up);
 
-	// вычисление матрицы преобразования
     const Matrix4f& GetTrans();
 
 protected:
-	// параметры масштабирования
     Vector3f m_scale;
 	
-	// параметры сдвига
     Vector3f m_worldPos;
 	
-	// параметры поворота
     Vector3f m_rotateInfo;
 
-	// параметры перспективной проекции
     struct {
         float fov;
-        float w;	// ширина
-        float h;	// высота
-        float zn;	// z координата ближней отсекающей плоскости
-        float zf;	// z координата дальней отсекающей плоскости
+        float w;
+        float h;
+        float zn;
+        float zf;
     } m_persProj;
 	
-	// параметры ориентации камеры
     struct {
-		// позиция
 		Vector3f Pos;
 		
-		// направление "взгляда"
 		Vector3f Target;
 		
-		// направление "вверх"
 		Vector3f Up;
     } m_camera;
 
-	// матрица преобразования
     Matrix4f m_transformation;
 };
-
 
 #endif	/* PIPELINE_H */
 

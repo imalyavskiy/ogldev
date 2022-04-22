@@ -45,9 +45,6 @@
   <ItemGroup>
     <Image Include="fireworks_red.jpg" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Makefile" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C31D1296-0CCC-4F14-8B9E-668FF592F8CF}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

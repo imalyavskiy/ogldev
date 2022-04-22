@@ -21,72 +21,49 @@
 
 #include "math_3d.h"
 
-// Класс реализации свободной камеры
 class Camera
 {
 public:
 
-	// Конструктор
 	Camera(int WindowWidth, int WindowHeight);
 
-	// Конструктор
 	Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
 
-	// Обработчик нажатия кнопки
 	bool OnKeyboard(int Key);
 
-	// TODO: comment
 	void OnMouse(int x, int y);
 
-	// TODO: comment
 	void OnRender();
 
-	// Get'тер текущей позиции камеры
 	const Vector3f& GetPos() const;
 
-	// Get'тер текущего направления камеры
 	const Vector3f& GetTarget() const;
 
-	// Get'тер текущего направления "вверх" камеры
 	const Vector3f& GetUp() const;
 
 private:
 
-	// TODO: comment
-	  void Init();
+	void Init();
 
-	// TODO: comment
 	void Update();
 
-	// Текущая позиция камеры
 	Vector3f m_pos;
 
-	// Текущее направление камеры
 	Vector3f m_target;
 
-	// Текущее направление "вверх" камеры
 	Vector3f m_up;
 
-	// TODO: comment
 	int m_windowWidth;
-	// TODO: comment
 	int m_windowHeight;
 
-	// TODO: comment
 	float m_AngleH;
-	// TODO: comment
 	float m_AngleV;
 
-	// TODO: comment
 	bool m_OnUpperEdge;
-	// TODO: comment
 	bool m_OnLowerEdge;
-	// TODO: comment
 	bool m_OnLeftEdge;
-	// TODO: comment
 	bool m_OnRightEdge;
 
-	// TODO: comment
 	Vector2i m_mousePos;
 };
 

@@ -130,12 +130,9 @@ void Matrix4f::InitPersProjTransform(const PersProjInfo& p)
 }
 
 
-Quaternion::Quaternion(float _x, float _y, float _z, float _w)
+Quaternion::Quaternion(const float _x, const float _y, const float _z, const float _w)
+    : x(_x), y(_y), z(_z), w(_w)
 {
-    x = _x;
-    y = _y;
-    z = _z;
-    w = _w;
 }
 
 void Quaternion::Normalize()

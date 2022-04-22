@@ -33,42 +33,34 @@ float RandomFloat();
 
 struct Vector2i
 {
-    int x;
-    int y;
+    int x = 0;
+    int y = 0;
 };
 
 struct Vector2f
 {
-    float x;
-    float y;
+    float x = 0.f;
+    float y = 0.f;
 
-    Vector2f()
-    {
-    }
+    Vector2f() = default;
 
     Vector2f(float _x, float _y)
+        : x(_x), y(_y)
     {
-        x = _x;
-        y = _y;
     }
 };
 
-
 struct Vector3f
 {
-    float x;
-    float y;
-    float z;
+    float x = 0.f;
+    float y = 0.f;
+    float z = 0.f;
 
-    Vector3f()
-    {
-    }
+    Vector3f() = default;
 
-    Vector3f(float _x, float _y, float _z)
+    Vector3f(const float _x, const float _y, const float _z)
+        : x(_x), y(_y), z(_z)
     {
-        x = _x;
-        y = _y;
-        z = _z;
     }
 
     Vector3f& operator+=(const Vector3f& r)
@@ -113,23 +105,18 @@ struct Vector3f
 
 struct Vector4f
 {
-    float x;
-    float y;
-    float z;
-    float w;
+    float x = 0.f;
+    float y = 0.f;
+    float z = 0.f;
+    float w = 0.f;
 
-    Vector4f()
-    {        
-    }
-    
+    Vector4f() = default;
+
     Vector4f(float _x, float _y, float _z, float _w)
+        : x(_x), y(_y), z(_z), w(_w)
     {
-        x = _x;
-        y = _y;
-        z = _z;
-        w = _w;
     }
-    
+
     void Print() const
     {
         printf("(%.02f, %.02f, %.02f, %.02f)", x, y, z, w);
@@ -175,12 +162,9 @@ struct PersProjInfo
 class Matrix4f
 {
 public:
-    float m[4][4];
+    float m[4][4] = { {0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f} };
 
-    Matrix4f()
-    {        
-    }
-
+    Matrix4f() = default;
 
     inline void InitIdentity()
     {
@@ -235,9 +219,14 @@ public:
 
 struct Quaternion
 {
-    float x, y, z, w;
+    float x = 0.f;
+    float y = 0.f;
+    float z = 0.f;
+    float w = 0.f;
 
-    Quaternion(float _x, float _y, float _z, float _w);
+    Quaternion() = default;
+
+    Quaternion(const float _x, const float _y, const float _z, const float _w);
 
     void Normalize();
 

@@ -18,7 +18,7 @@
 
 #include "math_3d.h"
 #pragma region -- Vector3f --
-// Cross Product - векторное произведение веторов
+
 Vector3f Vector3f::Cross(const Vector3f& v) const
 {
     const float _x = y * v.z - z * v.y;
@@ -28,7 +28,6 @@ Vector3f Vector3f::Cross(const Vector3f& v) const
     return Vector3f(_x, _y, _z);
 }
 
-// Нормализация вектора
 Vector3f& Vector3f::Normalize()
 {
     const float Length = sqrtf(x * x + y * y + z * z);
@@ -41,7 +40,7 @@ Vector3f& Vector3f::Normalize()
 }
 #pragma endregion
 #pragma region -- Matrix4f --
-// Инициализация единичной матрицей
+
 void Matrix4f::InitIdentity(Matrix4f& m)
 {
 	m = Matrix4f
@@ -53,7 +52,6 @@ void Matrix4f::InitIdentity(Matrix4f& m)
 	};
 }
 
-// Умножение на матрицу справа
 Matrix4f Matrix4f::operator*(const Matrix4f& r) const
 {
 	Matrix4f Ret;
@@ -70,7 +68,6 @@ Matrix4f Matrix4f::operator*(const Matrix4f& r) const
 	return Ret;
 }
 
-// TODO: comment
 void Vector3f::Rotate(float Angle, const Vector3f& Axe)
 {
     const float SinHalfAngle = sinf(ToRadian(Angle/2));
@@ -91,11 +88,8 @@ void Vector3f::Rotate(float Angle, const Vector3f& Axe)
     z = W.z;
 }
 
-// Инициализаия матрицы масштабирования
 void Matrix4f::InitScaleTransform(Matrix4f& m, const float x, const float y, const float z)
 {
-	// матрица транспонируется зеркалированием относительно главной(\) диагонали, даннойм случае везде кроме главной длиагонали нули,
-	// т.о. транспонированная и оригинальная матрицы тождественны
 	m = Matrix4f
 	{
 		  x  ,  0.0f,  0.0f,  0.0f,
@@ -105,15 +99,12 @@ void Matrix4f::InitScaleTransform(Matrix4f& m, const float x, const float y, con
 	};
 }
 
-// Инициализация матрицы поворота
 void Matrix4f::InitRotateTransform(Matrix4f& m, const float RotateX, const float RotateY, const float RotateZ)
 {
-	// Преобразование градусов в радианы
 	const float x = ToRadian(RotateX);
     const float y = ToRadian(RotateY);
     const float z = ToRadian(RotateZ);
 
-	// Транспонированная матрица поворота в плоскости YOZ
 	Matrix4f rx
 	{
 		1.0f,     0.0f,      0.0f,     0.0f,
@@ -122,7 +113,6 @@ void Matrix4f::InitRotateTransform(Matrix4f& m, const float RotateX, const float
 		0.0f,     0.0f,      0.0f,     1.0f,
 	};
 
-	// Транспонированная матрица поворота в плоскости XOZ
 	Matrix4f ry
 	{
 		cosf(y),   0.0f,    -sinf(y),   0.0f,
@@ -131,7 +121,6 @@ void Matrix4f::InitRotateTransform(Matrix4f& m, const float RotateX, const float
 		 0.0f  ,   0.0f,     0.0f  ,    1.0f,
 	};
 
-	// Транспонированная матрица поворота в плоскости XOY
 	Matrix4f rz
 	{
 		cosf(z), -sinf(z),   0.0f,      0.0f,
@@ -140,14 +129,11 @@ void Matrix4f::InitRotateTransform(Matrix4f& m, const float RotateX, const float
 		0.0f  ,   0.0f  ,    0.0f,      1.0f,
 	};
 
-	// Производим вычисление общей матрицы поворота
     m = rz * ry * rx;
 }
 
-// Инициализация матрицы сдвига
 void Matrix4f::InitTranslationTransform(Matrix4f& m, const float x, const float y, const float z)
 {
-	// Транспонированная матрица сдвига
 	m = Matrix4f
 	{
 		1.0f, 0.0f, 0.0f,  x  ,
@@ -157,32 +143,20 @@ void Matrix4f::InitTranslationTransform(Matrix4f& m, const float x, const float 
 	};
 }
 
-// Инициализация UVN матрицы камеры, где:
-// N - вектор "взгляда" камеры, т.н. "Looak At"
-// V - вектор "вверх"
-// U - вектор "право"
 void Matrix4f::InitCameraTransform(Matrix4f& m, const Vector3f& target, const Vector3f& up)
 {
     Vector3f N = target;
     Vector3f V = up;
 	Vector3f U;
 	
-	// Нормализация вектора направления "взгляда"(привеление к 1 по модулю)
 	N.Normalize();
 	
-	// Нормализация вектора "вверх"
 	V.Normalize();
     
-	// Вычисление векторного произведения векторов N и V - вектора "вправо"
 	U = V.Cross(N);
     
-	// Перевычисляем вектор V, как векторное произведение векторов N и U(U у нас теперь перпендикулярен плоскости VN), и,
-	// что очень ВАЖНО - вектор V, даже если изначально он был (0, 1, 0, 0) и угол между V и N не был равен 90
-	// теперь становится перпендикулярен плоскости NU, т.о. UVN образуют полноценный базис, где скалярное произведение 
-	// любой пары векторов даёт 0
 	V = N.Cross(U);
 
-	// Транспонированная матрица преобразования мирового пространства в пространство камеры
 	m = Matrix4f
 	{
 		 U.x,   U.y,   U.z,  0.0f,
@@ -192,7 +166,6 @@ void Matrix4f::InitCameraTransform(Matrix4f& m, const Vector3f& target, const Ve
 	};
 }
 
-// Инициализация матрицы преобразования перспективной проекции
 void Matrix4f::InitPersProjTransform(Matrix4f& m, const float fov, const float w, const float h, const float zn, const float zf)
 {
 	const float ar		= w / h;
@@ -212,13 +185,9 @@ void Matrix4f::InitPersProjTransform(Matrix4f& m, const float fov, const float w
 }
 #pragma endregion
 
-// TODO: comment
-Quaternion::Quaternion(float _x, float _y, float _z, float _w)
+Quaternion::Quaternion(const float _x, const float _y, const float _z, const float _w)
+    : x(_x), y(_y), z(_z), w(_w)
 {
-    x = _x;
-    y = _y;
-    z = _z;
-    w = _w;
 }
 
 // TODO: comment

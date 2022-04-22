@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Makefile" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="lighting_technique.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

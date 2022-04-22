@@ -21,66 +21,47 @@
 
 #include "math_3d.h"
 
-//////////////////////////////////////////////////////////////////////////
-/// Класс реализующий матричный конфейер
-//////////////////////////////////////////////////////////////////////////
 class Pipeline
 {
 public:
-	// Конструктор
     Pipeline();
 	
-	// Установка коэффициентов масштабирования
     void Scale(const float x, const float y, const float z);
 
-	// Установка параметров преобразоваания сдвига
     void WorldPos(const float x, const float y, const float z);
 
-	// Установка поворота вокруг осей(в градусах)
     void Rotate(const float x, const float y, const float z);
 
-	// Установка параметров перспективной проекции(угол обзора, ширина вьюпортаб высота вьюпорта, ближняя отсекаюшая плоскость, дальняя отсекающая плоскость)
 	void SetPerspectiveProj(const float fov, const float w, const float h, const float zn, const float zf);
 
-	// Вычисление матрицы преобразования
     const Matrix4f& GetTrans();
 
 protected:
-	// Инициализация матрицы масштабирования
     void InitScaleTransform(Matrix4f& m) const;
 	
-	// Инициализация общей матрицы поворота
     void InitRotateTransform(Matrix4f& m) const;
 	
-	// Инициализация матрицы сдвига
     void InitTranslationTransform(Matrix4f& m) const;
 	
-	// Инициализация матрицы перспективной проекции
     void InitPerspectiveProj(Matrix4f& m) const;
 
 protected:
-	// параметры масштабирования
     Vector3f m_scale;
 	
-	// параметры сдвига
     Vector3f m_worldPos;
 	
-	// параметры поворота
     Vector3f m_rotateInfo;
 
-	// параметры перспективной проекции
     struct {
         float fov;
-        float w;	// ширина
-        float h;	// высота
-        float zn;	// z координата ближней отсекающей плоскости
-        float zf;	// z координата дальней отсекающей плоскости
+        float w;
+        float h;
+        float zn;
+        float zf;
     } m_persProj;
 
-	// матрица преобразования
     Matrix4f m_transformation;
 };
-
 
 #endif	/* PIPELINE_H */
 
