@@ -18,6 +18,7 @@
     Tutorial 47 - Shadow Mapping With Directional Lights
 */
 
+#include <windows.h>
 #include <math.h>
 #include <GL/glew.h>
 #include <string>
@@ -256,7 +257,7 @@ int main(int argc, char** argv)
 		return 1;
     }
 
-    SRANDOM;
+    std::srand(GetCurrentProcessId());
     
     Tutorial47* pApp = new Tutorial47();
 
