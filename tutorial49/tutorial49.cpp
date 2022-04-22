@@ -18,6 +18,7 @@
     Tutorial 49 - Cascaded Shadow Maps
 */
 
+//#include <windows.h>
 #include <cfloat>
 #include <math.h>
 #include <GL/glew.h>
@@ -416,8 +417,6 @@ int main(int argc, char** argv)
         OgldevBackendTerminate();
 		return 1;
     }
-
-    SRANDOM;
 
     Tutorial49* pApp = new Tutorial49();
 
