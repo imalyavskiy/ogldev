@@ -3,8 +3,8 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>$(SolutionDir)..\freeglut.3.0.0.exports\inc;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\freeglut.3.0.0.exports\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)deps\exports\freeglut.3.0.0\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)deps\exports\freeglut.3.0.0\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link />
