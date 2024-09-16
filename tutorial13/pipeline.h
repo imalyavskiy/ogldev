@@ -1,4 +1,4 @@
-/*
+﻿/*
 	Copyright 2010 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify

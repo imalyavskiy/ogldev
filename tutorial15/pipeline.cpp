@@ -97,11 +97,11 @@ const Matrix4f& Pipeline::GetTrans()
 
 	// Последовательность действий всегда такова:
 	// 1. Масштабирование :		m_transformation = ScaleTrans;
-	// 2. Поворот		  :		m_transformation = RotateTrans * m_transformation;
-	// 3. Сдвиг			  :		m_transformation = TranslationTrans * m_transformation;
-	// 4. Двиг камеры	  :		m_transformation = CameraTranslationTrans * m_transformation;
+	// 2. Поворот					:		m_transformation = RotateTrans * m_transformation;
+	// 3. Сдвиг						:		m_transformation = TranslationTrans * m_transformation;
+	// 4. Двиг камеры			:		m_transformation = CameraTranslationTrans * m_transformation;
 	// 5. Поворот камеры  :		m_transformation = CameraRotateTrans * m_transformation;
-	// 6. Проекция		  :		m_transformation = PersProjTrans * m_transformation;
+	// 6. Проекция				:		m_transformation = PersProjTrans * m_transformation;
 	// что то же самое, что и ниже
 
 	// Производим умножение матриц

@@ -157,40 +157,43 @@ Camera::GetUp() const
 
 void Camera::OnMouse(int x, int y)
 {
+    // mouse speed scale factor
+    constexpr float factor = 1 / 20.f;
+
     const int DeltaX = x - m_mousePos.x;
     const int DeltaY = y - m_mousePos.y;
 
     m_mousePos.x = x;
     m_mousePos.y = y;
 
-    m_AngleH += (float)DeltaX / 20.0f;
-    m_AngleV += (float)DeltaY / 20.0f;
+    m_AngleH += static_cast<float>(DeltaX) * factor;
+    m_AngleV += static_cast<float>(DeltaY) * factor;
 
-    if (DeltaX == 0) {
-        if (x <= MARGIN) {
-            m_OnLeftEdge = true;
-        }
-        else if (x >= (m_windowWidth - MARGIN)) {
-            m_OnRightEdge = true;
-        }
-    }
-    else {
-        m_OnLeftEdge = false;
-        m_OnRightEdge = false;
-    }
-
-    if (DeltaY == 0) {
-        if (y <= MARGIN) {
-            m_OnUpperEdge = true;
-        }
-        else if (y >= (m_windowHeight - MARGIN)) {
-            m_OnLowerEdge = true;
-        }
-    }
-    else {
-        m_OnUpperEdge = false;
-        m_OnLowerEdge = false;
-    }
+//    if (DeltaX == 0) {
+//        if (x <= MARGIN) {
+//            m_OnLeftEdge = true;
+//        }
+//        else if (x >= (m_windowWidth - MARGIN)) {
+//            m_OnRightEdge = true;
+//        }
+//    }
+//    else {
+//        m_OnLeftEdge = false;
+//        m_OnRightEdge = false;
+//    }
+//
+//    if (DeltaY == 0) {
+//        if (y <= MARGIN) {
+//            m_OnUpperEdge = true;
+//        }
+//        else if (y >= (m_windowHeight - MARGIN)) {
+//            m_OnLowerEdge = true;
+//        }
+//    }
+//    else {
+//        m_OnUpperEdge = false;
+//        m_OnLowerEdge = false;
+//    }
 
     Update();
 }

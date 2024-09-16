@@ -1,0 +1,3 @@
+[submodule "deps/exports"]
+	path = deps/exports
+	url = https://github.com/imalyavskiy/ogldev.deps.git
