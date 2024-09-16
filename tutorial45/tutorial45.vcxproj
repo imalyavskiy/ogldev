@@ -26,6 +26,11 @@
     <ClCompile Include="ssao_technique.cpp" />
     <ClCompile Include="tutorial45.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.vcxproj">
+      <Project>{6e9d80e7-c4f1-4ae3-8082-4a5efdce8ccc}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EF3E5A2B-9E10-4011-99D3-CBBEBEE694B0}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

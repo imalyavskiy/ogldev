@@ -21,6 +21,11 @@
     <ClInclude Include="motion_blur_technique.h" />
     <ClInclude Include="skinning_technique.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.vcxproj">
+      <Project>{6e9d80e7-c4f1-4ae3-8082-4a5efdce8ccc}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E4F57195-30D1-44C1-927C-1EC8F7633D41}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
