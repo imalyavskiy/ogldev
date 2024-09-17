@@ -1,3 +1,9 @@
 [submodule "deps/exports"]
 	path = deps/exports
 	url = https://github.com/imalyavskiy/ogldev.deps.git
+[submodule "deps/origins/FreeGLUT.3.0.0"]
+	path = deps/origins/FreeGLUT.3.0.0
+	url = https://github.com/dcnieho/FreeGLUT
+[submodule "deps/origins/glew.2.0.0"]
+	path = deps/origins/glew.2.0.0
+	url = https://github.com/nigels-com/glew.git
