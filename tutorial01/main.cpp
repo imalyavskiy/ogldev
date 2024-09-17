@@ -23,7 +23,7 @@ static void RenderSceneCB()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 	
-	/* TODO: Производим отрисовку */
+	/* TODO: Performing the draw operation */
 	
     glutSwapBuffers();
 }
