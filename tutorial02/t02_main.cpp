@@ -23,7 +23,7 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
-#include "math_3d.h"
+#include "t02_math_3d.h"
 
 GLuint VBO;
 
@@ -53,7 +53,7 @@ static void RenderSceneCB()
     constexpr GLenum draw_mode = GL_POINTS; // individual vertexes
     constexpr GLuint starting_index = 0;    // starting from index 0
     constexpr GLuint num_points = 1;        // just single vertex
-    glDrawArrays( draw_mode, starting_index, num_components);
+    glDrawArrays( draw_mode, starting_index, num_points);
       // IM: The drawing itself. The ordered drawing.
       // All the above is just a set up.
 
