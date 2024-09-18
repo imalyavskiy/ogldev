@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-    Tutorial 05 - uniform variables
+    Tutorial 10 - Indexed draws
 */
 
 #include <cstdio>
@@ -24,42 +24,55 @@
 #include <cmath>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
-#include "t05_math_3d.h"
+#include "t10_math_3d.h"
 
 GLuint VBO;
 
-GLint gScaleLocation;
+GLuint IBO;
+
+GLint gWorldLocation;
+
 
 static const char* pVertexShader =
-"#version 330                                                                     \n"\
-"layout (location = 0) in vec3 Position;                                          \n"\
-"uniform float gScale;                                                            \n"\
-"void main()                                                                      \n"\
-"{                                                                                \n"\
-"  gl_Position = vec4(gScale * Position.x, gScale * Position.y, Position.z, 1.0); \n"\
-"}                                                                                \n";
+"#version 330                                  \n"\
+"layout (location = 0) in vec3 Position;       \n"\
+"uniform mat4 gWorld;                          \n"\
+"out vec4 Color;                               \n"\
+"void main()                                   \n"\
+"{                                             \n"\
+"  gl_Position = gWorld * vec4(Position, 1.0); \n"\
+"  vec3 clamped = clamp(Position, 0.0, 1.0);   \n"\
+"  Color = vec4(clamped, 1.0);                 \n"\
+"}                                             \n";
 
 static const char* pFragmentShader =
-"#version 330                                                                     \n"\
-"out vec4 FragColor;                                                              \n"\
-"void main()                                                                      \n"\
-"{                                                                                \n"\
-"  FragColor = vec4(1.0, 0.0, 0.0, 1.0);                                          \n"\
-"}                                                                                \n";
+"#version 330                                  \n"\
+"in vec4 Color;                                \n"\
+"out vec4 FragColor;                           \n"\
+"void main()                                   \n"\
+"{                                             \n"\
+"  FragColor = Color;                          \n"\
+"}                                             \n";
 
 static void RenderSceneCB()
 {
   glClear(GL_COLOR_BUFFER_BIT);
 
   constexpr GLuint vertex_attribute_index = 0;
-    // This value correlates to value of Position attribute mentioned in vertex
-    // shader
+  // This value correlates to value of Position attribute mentioned in vertex
+  // shader
 
   static float scaleValue = 0.0f;
 
   scaleValue += 0.0005f;
 
-  glUniform1f(gScaleLocation, sinf(scaleValue));
+  Matrix4f World;
+  World.m[0][0] = cosf(scaleValue); World.m[0][1] = 0.0f; World.m[0][2] = -sinf(scaleValue);  World.m[0][3] = 0.0f;
+  World.m[1][0] = 0.0f;             World.m[1][1] = 1.0f; World.m[1][2] = 0.0f;               World.m[1][3] = 0.0f;
+  World.m[2][0] = sinf(scaleValue); World.m[2][1] = 0.0f; World.m[2][2] = cosf(scaleValue);   World.m[2][3] = 0.0f;
+  World.m[3][0] = 0.0f;             World.m[3][1] = 0.0f; World.m[3][2] = 0.0f;               World.m[3][3] = 1.0f;
+
+  glUniformMatrix4fv(gWorldLocation, 1, GL_TRUE, &World.m[0][0]);
 
   glEnableVertexAttribArray(vertex_attribute_index);
 
@@ -67,7 +80,9 @@ static void RenderSceneCB()
 
   glVertexAttribPointer(vertex_attribute_index, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
-  glDrawArrays(GL_TRIANGLES, 0, 3);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+
+  glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 
   glDisableVertexAttribArray(vertex_attribute_index);
 
@@ -85,9 +100,10 @@ static void CreateVertexBuffer()
 {
   const Vector3f vertices[]
   {
-    { -1.0f, -1.0f,  0.0f },
-    {  1.0f, -1.0f,  0.0f },
-    {  0.0f,  1.0f,  0.0f }
+    { -0.5f, -0.5f,  0.0f },
+    {  0.0f, -0.5f,  0.5f },
+    {  0.5f, -0.5f,  0.0f },
+    {  0.0f,  0.5f,  0.0f }
   };
 
   glGenBuffers(1, &VBO);
@@ -97,9 +113,26 @@ static void CreateVertexBuffer()
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 }
 
+static void CreateIndexBuffer()
+{
+  const unsigned int indices[] =
+  {
+    0, 3, 1,
+    1, 3, 2,
+    2, 3, 0,
+    0, 2, 1
+  };
+
+  glGenBuffers(1, &IBO);
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+}
+
 static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
 {
-  GLuint shaderObj = glCreateShader(ShaderType);
+  const GLuint shaderObj = glCreateShader(ShaderType);
 
   if (shaderObj == 0) {
     fprintf(stderr, "Error creating shader type %d\n", ShaderType);
@@ -113,11 +146,11 @@ static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum Shad
 
   glCompileShader(shaderObj);
 
-  GLint result = 0;
+  GLint success = 0;
 
-  glGetShaderiv(shaderObj, GL_COMPILE_STATUS, &result);
+  glGetShaderiv(shaderObj, GL_COMPILE_STATUS, &success);
 
-  if (!result) {
+  if (!success) {
     GLchar InfoLog[1024];
 
     glGetShaderInfoLog(shaderObj, 1024, nullptr, InfoLog);
@@ -141,14 +174,13 @@ static void CompileShaders()
 
   AddShader(shaderProgram, pFragmentShader, GL_FRAGMENT_SHADER);
 
-  GLint Success = 0;
+  GLint result = 0;
   GLchar ErrorLog[1024] = { 0 };
 
   glLinkProgram(shaderProgram);
 
-  glGetProgramiv(shaderProgram, GL_LINK_STATUS, &Success);
-
-  if (Success == 0) {
+  glGetProgramiv(shaderProgram, GL_LINK_STATUS, &result);
+  if (result == 0) {
     glGetProgramInfoLog(shaderProgram, sizeof(ErrorLog), nullptr, ErrorLog);
     fprintf(stderr, "Error linking shader program: '%s'\n", ErrorLog);
     exit(1);
@@ -156,8 +188,8 @@ static void CompileShaders()
 
   glValidateProgram(shaderProgram);
 
-  glGetProgramiv(shaderProgram, GL_VALIDATE_STATUS, &Success);
-  if (!Success) {
+  glGetProgramiv(shaderProgram, GL_VALIDATE_STATUS, &result);
+  if (!result) {
     glGetProgramInfoLog(shaderProgram, sizeof(ErrorLog), nullptr, ErrorLog);
     fprintf(stderr, "Invalid shader program: '%s'\n", ErrorLog);
     exit(1);
@@ -165,8 +197,9 @@ static void CompileShaders()
 
   glUseProgram(shaderProgram);
 
-  gScaleLocation = glGetUniformLocation(shaderProgram, "gScale");
-  assert(static_cast<GLuint>(gScaleLocation) != 0xFFFFFFFF);
+  gWorldLocation = glGetUniformLocation(shaderProgram, "gWorld");
+
+  assert(static_cast<GLuint>(gWorldLocation) != 0xFFFFFFFF);
 }
 
 int main(int argc, char** argv)
@@ -179,7 +212,7 @@ int main(int argc, char** argv)
 
   glutInitWindowPosition(100, 100);
 
-  glutCreateWindow("Tutorial 05");
+  glutCreateWindow("Tutorial 10");
 
   InitializeGlutCallbacks();
 
@@ -192,6 +225,8 @@ int main(int argc, char** argv)
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
   CreateVertexBuffer();
+
+  CreateIndexBuffer();
 
   CompileShaders();
 

@@ -11,10 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="t06_main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="math_3d.h" />
+    <ClInclude Include="t06_math_3d.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{76F20B02-BAC1-4DC6-80B3-B3E45D201998}</ProjectGuid>

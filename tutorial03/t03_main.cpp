@@ -18,7 +18,7 @@
     Tutorial 03 - First triangle
 */
 
-#include <stdio.h>
+#include <cstdio>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include "t03_math_3d.h"

@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2010 Etay Meiri
+  Copyright 2010 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,40 +16,40 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef PIPELINE_H
-#define	PIPELINE_H
+#ifndef T11_PIPELINE_H
+#define	T11_PIPELINE_H
 
-#include "math_3d.h"
+#include "t11_math_3d.h"
 
 class Pipeline
 {
 public:
-    Pipeline();
+  Pipeline();
 
-    void Scale(const float ScaleX, const float ScaleY, const float ScaleZ);
+  void Scale(const float ScaleX, const float ScaleY, const float ScaleZ);
 
-    void WorldPos(const float x, const float y, const float z);
+  void WorldPos(const float x, const float y, const float z);
 
-    void Rotate(const float RotateX, const float RotateY, const float RotateZ);
+  void Rotate(const float RotateX, const float RotateY, const float RotateZ);
 
-    const Matrix4f& GetTrans();
+  const Matrix4f& GetTrans();
 
 protected:
-    void InitScaleTransform(Matrix4f& m) const;
-	
-    void InitRotateTransform(Matrix4f& m) const;
-	
-    void InitTranslationTransform(Matrix4f& m) const;
-	
-protected:
-    Vector3f m_scale;
-	
-    Vector3f m_worldPos;
-	
-    Vector3f m_rotateInfo;
+  void InitScaleTransform(Matrix4f& m) const;
 
-    Matrix4f m_transformation;
+  void InitRotateTransform(Matrix4f& m) const;
+
+  void InitTranslationTransform(Matrix4f& m) const;
+
+protected:
+  Vector3f m_scale;
+
+  Vector3f m_worldPos;
+
+  Vector3f m_rotateInfo;
+
+  Matrix4f m_transformation;
 };
 
-#endif	/* PIPELINE_H */
+#endif	/* T11_PIPELINE_H */
 

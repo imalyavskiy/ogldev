@@ -28,21 +28,21 @@ GLuint VBO;
 
 // Vertex shader affects each individual vertex.
 static const char* pVertexShader =
-"#version 330                                                                  \n"\
-"layout (location = 0) in vec3 Position;                                       \n"\
-"void main()                                                                   \n"\
-"{                                                                             \n"\
-"  gl_Position = vec4(0.5 * Position.x, 0.5 * Position.y, Position.z, 1.0);    \n"\
-"}                                                                             \n";
+"#version 330                                                               \n"\
+"layout (location = 0) in vec3 Position;                                    \n"\
+"void main()                                                                \n"\
+"{                                                                          \n"\
+"  gl_Position = vec4(0.5 * Position.x, 0.5 * Position.y, Position.z, 1.0); \n"\
+"}                                                                          \n";
 
 // Fragment shader affects each pixel that geometry object projects to.
 static const char* pFragmentShader =
-"#version 330                                                                  \n"\
-"out vec4 FragColor;                                                           \n"\
-"void main()                                                                   \n"\
-"{                                                                             \n"\
-"  FragColor = vec4(1.0, 0.0, 0.0, 1.0);                                       \n"\
-"}                                                                             \n";
+"#version 330                                                               \n"\
+"out vec4 FragColor;                                                        \n"\
+"void main()                                                                \n"\
+"{                                                                          \n"\
+"  FragColor = vec4(1.0, 0.0, 0.0, 1.0);                                    \n"\
+"}                                                                          \n";
 
 static void RenderSceneCB()
 {
@@ -97,9 +97,9 @@ static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum Shad
   }
 
 	const GLchar* translationUnits[] = { pShaderText };
-  const GLint   translationUnitLengths[]   = { (GLint)strlen(pShaderText) };
-  const GLint   translationUnitsNum = sizeof(translationUnits) / sizeof(translationUnits[0]);
-  glShaderSource(shaderObj, translationUnitsNum, translationUnits, translationUnitLengths);
+  const GLint   translationUnitLengths[]   = { static_cast<GLint>(strlen(pShaderText)) };
+  const GLint   translationUnitsNumber = sizeof(translationUnits) / sizeof(translationUnits[0]);
+  glShaderSource(shaderObj, translationUnitsNumber, translationUnits, translationUnitLengths);
 
   glCompileShader(shaderObj);
 
