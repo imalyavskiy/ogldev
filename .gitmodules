@@ -7,3 +7,9 @@
 [submodule "deps/origins/glew.2.0.0"]
 	path = deps/origins/glew.2.0.0
 	url = https://github.com/nigels-com/glew.git
+[submodule "deps/origins/assimp"]
+	path = deps/origins/assimp
+	url = https://github.com/assimp/assimp.git
+[submodule "deps/origins/FreeImage3180"]
+	path = deps/origins/FreeImage3180
+	url = https://github.com/imalyavskiy/FreeImage3180.git

@@ -73,15 +73,15 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)int\$(Configuration)\$(ProjectName)\</IntDir>
-    <LibraryPath>$(SolutionDir)..\Assimp\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName);$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)..\Assimp\include;$(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName);$(SolutionDir)..\glew.2.0.0.exports\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)deps\exports\assimp\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\FreeImage3180\lib\$(PlatformShortName)\$(Configuration);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)deps\exports\assimp\inc;$(SolutionDir)deps\exports\FreeImage3180\inc;$(SolutionDir)deps\exports\glew.2.0.0\inc;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)int\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)..\Assimp\include;$(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName);$(SolutionDir)..\glew.2.0.0.exports\inc;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\Assimp\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName);$(SolutionDir)..\glew.2.0.0.exports\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)deps\exports\assimp\inc;$(SolutionDir)deps\exports\FreeImage3180\inc;$(SolutionDir)deps\exports\glew.2.0.0\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)deps\exports\Assimp\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\FreeImage3180\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\glew.2.0.0.exports\lib\$(PlatformShortName)\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -102,8 +102,8 @@
       <AdditionalDependencies>assimp-vc142-mtd.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName)\FreeImage.dll $(OutDir)FreeImage.dll
-copy $(SolutionDir)..\Assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc142-mtd.dll $(OutDir)assimp-vc142-mtd.dll</Command>
+      <Command>copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImage.dll $(OutDir)FreeImage.dll
+copy $(SolutionDir)deps\exports\Assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc142-mtd.dll $(OutDir)assimp-vc142-mtd.dll</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -125,8 +125,8 @@ copy $(SolutionDir)..\Assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc
       <AdditionalDependencies>assimp-vc142-mt.lib;FreeImage.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName)\FreeImage.dll $(OutDir)FreeImage.dll
-copy $(SolutionDir)..\Assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc142-mt.dll $(OutDir)assimp-vc142-mt.dll</Command>
+      <Command>copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImage.dll $(OutDir)FreeImage.dll
+copy $(SolutionDir)deps\exports\Assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc142-mt.dll $(OutDir)assimp-vc142-mt.dll</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
