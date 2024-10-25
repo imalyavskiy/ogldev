@@ -11,13 +11,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="math_3d.cpp" />
-    <ClCompile Include="pipeline.cpp" />
+    <ClCompile Include="t13_main.cpp" />
+    <ClCompile Include="t13_math_3d.cpp" />
+    <ClCompile Include="t13_pipeline.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="math_3d.h" />
-    <ClInclude Include="pipeline.h" />
+    <ClInclude Include="t13_math_3d.h" />
+    <ClInclude Include="t13_pipeline.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{70C3CB87-586F-4BAB-8629-C7D0F3CE8C9B}</ProjectGuid>
