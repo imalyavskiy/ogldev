@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2010 Etay Meiri
+  Copyright 2010 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,31 +19,31 @@
 #ifndef CAMERA_H
 #define	CAMERA_H
 
-#include "math_3d.h"
+#include "t14_math_3d.h"
 
 class Camera
 {
 public:
 
-	Camera();
+  Camera();
 
-	Camera(const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
+  Camera(const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
 
-	bool OnKeyboard(int Key);
+  bool OnKeyboard(int Key);
 
-	const Vector3f& GetPos() const;
+  const Vector3f& GetPos() const;
 
-	const Vector3f& GetTarget() const;
+  const Vector3f& GetTarget() const;
 
-	const Vector3f& GetUp() const;
+  const Vector3f& GetUp() const;
 
 private:
 
-	Vector3f m_pos;
+  Vector3f m_pos;
 
-	Vector3f m_target;
+  Vector3f m_target;
 
-	Vector3f m_up;
+  Vector3f m_up;
 };
 
 #endif	/* CAMERA_H */

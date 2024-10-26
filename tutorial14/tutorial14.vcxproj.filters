@@ -15,27 +15,27 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="camera.cpp">
+    <ClCompile Include="t14_camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="t14_main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="math_3d.cpp">
+    <ClCompile Include="t14_math_3d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pipeline.cpp">
+    <ClCompile Include="t14_pipeline.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="camera.h">
+    <ClInclude Include="t14_camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="math_3d.h">
+    <ClInclude Include="t14_math_3d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pipeline.h">
+    <ClInclude Include="t14_pipeline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
