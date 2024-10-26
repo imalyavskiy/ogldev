@@ -1,4 +1,4 @@
-﻿/*
+/*
 
   Copyright 2010 Etay Meiri
 
@@ -15,18 +15,18 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-    Tutorial 13 - Camera Space
+    Tutorial 15 - Camera Control - Part 2
 */
 
 #include <cstdio>
 #include <cstring>
 #include <cassert>
 #include <cmath>
-
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
-#include "t13_pipeline.h"
+#include "t15_pipeline.h"
+#include "t15_camera.h"
 
 #define VERTICAL_FOV 60.f
 #define WINDOW_WIDTH 1024
@@ -40,31 +40,34 @@ GLuint IBO;
 
 GLuint gWVPLocation;
 
+Camera* pGameCamera = nullptr;
 
 static const char* pVS =
-"#version 330                                  \n"\
-"layout (location = 0) in vec3 Position;       \n"\
-"uniform mat4 gWVP;                            \n"\
-"out vec4 Color;                               \n"\
-"void main()                                   \n"\
-"{                                             \n"\
-"    gl_Position = gWVP * vec4(Position, 1.0); \n"\
-"    vec3 clamped = clamp(Position, 0.0, 1.0); \n"\
-"    Color = vec4(clamped, 1.0);               \n"\
-"}                                             \n";
+"#version 330                                                                        \n"\
+"layout (location = 0) in vec3 Position;                                             \n"\
+"uniform mat4 gWVP;                                                                  \n"\
+"out vec4 Color;                                                                     \n"\
+"void main()                                                                         \n"\
+"{                                                                                   \n"\
+"    gl_Position = gWVP * vec4(Position, 1.0);                                       \n"\
+"    vec3 clamped = clamp(Position, 0.0, 1.0);                                       \n"\
+"    Color = vec4(clamped, 1.0);                                                     \n"\
+"}                                                                                   \n";
 
 static const char* pFS =
-"#version 330                                  \n"\
-"in vec4 Color;                                \n"\
-"out vec4 FragColor;                           \n"\
-"void main()                                   \n"\
-"{                                             \n"\
-"    FragColor = Color;                        \n"\
-"}                                             \n";
+"#version 330                                                                        \n"\
+"in vec4 Color;                                                                      \n"\
+"out vec4 FragColor;                                                                 \n"\
+"void main()                                                                         \n"\
+"{                                                                                   \n"\
+"    FragColor = Color;                                                              \n"\
+"}                                                                                   \n";
 
 static void RenderSceneCB()
 {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  pGameCamera->OnRender();
+
+  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
   glEnable(GL_DEPTH_TEST);
 
@@ -76,12 +79,9 @@ static void RenderSceneCB()
 
   pipeline.Rotate(0.0f, Scale, 0.0f);
 
-  pipeline.WorldPos(0.0f, 0.0f, 0.0f);
+  pipeline.WorldPos(0.0f, 0.0f, 3.0f);
 
-  const Vector3f CameraPos(  0.0f,  0.0f, -1.5f );
-  const Vector3f CameraTarget(  0.0f,  0.0f,  2.0f );
-  const Vector3f CameraUp(  0.0f,  1.0f,  0.0f );
-  pipeline.SetCamera(CameraPos, CameraTarget, CameraUp);
+  pipeline.SetCamera(pGameCamera->GetPos(), pGameCamera->GetTarget(), pGameCamera->GetUp());
 
   pipeline.SetPerspectiveProj(VERTICAL_FOV, WINDOW_WIDTH, WINDOW_HEIGHT, Z_NEAR_CLIPPING_PLANE, Z_FAR_CLIPPING_PLANE);
 
@@ -104,11 +104,35 @@ static void RenderSceneCB()
   glutSwapBuffers();
 }
 
+static void SpecialKeyboardCB(int Key, int x, int y)
+{
+  pGameCamera->OnKeyboard(Key);
+}
+
+static void KeyboardCB(unsigned char Key, int x, int y)
+{
+  switch (Key) {
+  case 0x1b: // Esc
+    exit(0);
+  }
+}
+
+static void PassiveMouseCB(int x, int y)
+{
+  pGameCamera->OnMouse(x, y);
+}
+
 static void InitializeGlutCallbacks()
 {
   glutDisplayFunc(RenderSceneCB);
 
   glutIdleFunc(RenderSceneCB);
+
+  glutSpecialFunc(SpecialKeyboardCB);
+
+  glutPassiveMotionFunc(PassiveMouseCB);
+
+  glutKeyboardFunc(KeyboardCB);
 }
 
 static void CreateVertexBuffer()
@@ -128,9 +152,7 @@ static void CreateVertexBuffer()
 
 
   glGenBuffers(1, &VBO);
-
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
   glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
 }
 
@@ -155,7 +177,7 @@ static void CreateIndexBuffer()
 
 static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
 {
-  const GLuint ShaderObj = glCreateShader(ShaderType);
+  GLuint ShaderObj = glCreateShader(ShaderType);
 
   if (ShaderObj == 0) {
     fprintf(stderr, "Error creating shader type %d\n", ShaderType);
@@ -235,9 +257,15 @@ int main(int argc, char** argv)
 
   glutInitWindowPosition(100, 100);
 
-  glutCreateWindow("Tutorial 13");
+  glutCreateWindow("Tutorial 15");
+
+  glutGameModeString("1280x1024@32");
+
+  glutEnterGameMode();
 
   InitializeGlutCallbacks();
+  
+  pGameCamera = new Camera(WINDOW_WIDTH, WINDOW_HEIGHT);
 
   const GLenum res = glewInit();
   if (res != GLEW_OK) {
@@ -245,7 +273,7 @@ int main(int argc, char** argv)
     return 1;
   }
 
-  glClearColor(0.0f, 0.0f, 0.0f, 0.0f );
+  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
   CreateVertexBuffer();
 

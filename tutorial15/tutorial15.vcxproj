@@ -11,15 +11,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="camera.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="math_3d.cpp" />
-    <ClCompile Include="pipeline.cpp" />
+    <ClCompile Include="t15_camera.cpp" />
+    <ClCompile Include="t15_main.cpp" />
+    <ClCompile Include="t15_math_3d.cpp" />
+    <ClCompile Include="t15_pipeline.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="camera.h" />
-    <ClInclude Include="math_3d.h" />
-    <ClInclude Include="pipeline.h" />
+    <ClInclude Include="t15_camera.h" />
+    <ClInclude Include="t15_math_3d.h" />
+    <ClInclude Include="t15_pipeline.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0F473084-8EC8-480E-87B2-A0320D7D7728}</ProjectGuid>
