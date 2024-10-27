@@ -89,17 +89,34 @@ static void RenderSceneCB()
 
   glUniformMatrix4fv(gWVPLocation, 1, GL_TRUE, reinterpret_cast<const GLfloat*>(pipeline.GetTrans()));
 
-  glEnableVertexAttribArray(0);
-  glEnableVertexAttribArray(1);
+  glEnableVertexAttribArray(0); // These magic 0 and 1 are locations(aka attributes of the vertex taken from vertex shader)
+  glEnableVertexAttribArray(1); // Please look at "in vec3 Position" and "in vec 2 TexCoord" variable definitions in the shader.
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(t16::Vertex), nullptr);
+                                // Here the actual data plugged to shader's input:
+                                //    attr - 0,
+                                //    3 - items,
+                                //    of float,
+                                //    not normalized,
+                                //    stride width of 20 bytes(float - 4bytes * 5)
+                                //    first byte addr from the attached buffer beginning
+
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(t16::Vertex), reinterpret_cast<const GLvoid*>(12));
+                                // Here the actual data plugged to shader's input:
+                                //    attr - 1,
+                                //    2 - items,
+                                //    of float,
+                                //    not normalized,
+                                //    stride width of 20 bytes(float - 4bytes * 5)
+                                //    12th(0 based) byte addr from the attached buffer beginning
+
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
   pTexture->Bind(GL_TEXTURE0);
   glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 
-  glDisableVertexAttribArray(0);
-  glDisableVertexAttribArray(1);
+  glDisableVertexAttribArray(0); // These magic 0 and 1 are locations(aka attributes of the vertex taken from vertex shader)
+  glDisableVertexAttribArray(1); // Please look at "in vec3 Position" and "in vec 2 TexCoord" variable definitions in the shader.
 
   glutSwapBuffers();
 }

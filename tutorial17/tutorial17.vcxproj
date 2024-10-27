@@ -11,24 +11,24 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="callbacks.h" />
-    <ClInclude Include="camera.h" />
-    <ClInclude Include="glut_backend.h" />
-    <ClInclude Include="lighting_technique.h" />
-    <ClInclude Include="math_3d.h" />
-    <ClInclude Include="pipeline.h" />
-    <ClInclude Include="technique.h" />
-    <ClInclude Include="texture.h" />
+    <ClInclude Include="t17_callbacks.h" />
+    <ClInclude Include="t17_camera.h" />
+    <ClInclude Include="t17_glut_backend.h" />
+    <ClInclude Include="t17_lighting_technique.h" />
+    <ClInclude Include="t17_math_3d.h" />
+    <ClInclude Include="t17_pipeline.h" />
+    <ClInclude Include="t17_technique.h" />
+    <ClInclude Include="t17_texture.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="camera.cpp" />
-    <ClCompile Include="glut_backend.cpp" />
-    <ClCompile Include="lighting_technique.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="math_3d.cpp" />
-    <ClCompile Include="pipeline.cpp" />
-    <ClCompile Include="technique.cpp" />
-    <ClCompile Include="texture.cpp" />
+    <ClCompile Include="t17_camera.cpp" />
+    <ClCompile Include="t17_glut_backend.cpp" />
+    <ClCompile Include="t17_lighting_technique.cpp" />
+    <ClCompile Include="t17_main.cpp" />
+    <ClCompile Include="t17_math_3d.cpp" />
+    <ClCompile Include="t17_pipeline.cpp" />
+    <ClCompile Include="t17_technique.cpp" />
+    <ClCompile Include="t17_texture.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{997F98FF-7861-4416-82D4-07D9965EB560}</ProjectGuid>

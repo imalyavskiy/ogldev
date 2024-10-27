@@ -50,7 +50,7 @@ static const char* pVS =
 "void main()                                                                         \n"\
 "{                                                                                   \n"\
 "    gl_Position = gWVP * vec4(Position, 1.0);                                       \n"\
-"    vec3 clamped = clamp(Position, 0.0, 1.0);                                       \n"\
+"    vec3 clamped = clamp(Position * 4, 0.2, 1.0);                                   \n"\
 "    Color = vec4(clamped, 1.0);                                                     \n"\
 "}                                                                                   \n";
 

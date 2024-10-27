@@ -1,5 +1,7 @@
-#include "lighting_technique.h"
+#include "t17_lighting_technique.h"
 
+namespace t17
+{
 static const char* pVS = "                                                          \n\
 #version 330                                                                        \n\
                                                                                     \n\
@@ -40,29 +42,29 @@ void main()                                                                     
 }";
 
 
-LightingTechnique::LightingTechnique(){
-}
+  LightingTechnique::LightingTechnique() {
+  }
 
-bool LightingTechnique::Init()
-{
+  bool LightingTechnique::Init()
+  {
     if (!Technique::Init())
     {
-        return false;
+      return false;
     }
 
     if (!AddShader(GL_VERTEX_SHADER, pVS))
     {
-        return false;
+      return false;
     }
 
     if (!AddShader(GL_FRAGMENT_SHADER, pFS))
     {
-        return false;
+      return false;
     }
 
     if (!Finalize())
     {
-        return false;
+      return false;
     }
 
     m_WVPLocation = GetUniformLocation("gWVP");
@@ -71,30 +73,31 @@ bool LightingTechnique::Init()
     m_dirLightAmbientIntensityLocation = GetUniformLocation("gDirectionalLight.AmbientIntensity");
 
     if (m_dirLightAmbientIntensityLocation == 0xFFFFFFFF ||
-        m_WVPLocation == 0xFFFFFFFF ||
-        m_samplerLocation == 0xFFFFFFFF ||
-        m_dirLightColorLocation == 0xFFFFFFFF)
+      m_WVPLocation == 0xFFFFFFFF ||
+      m_samplerLocation == 0xFFFFFFFF ||
+      m_dirLightColorLocation == 0xFFFFFFFF)
     {
-        return false;
+      return false;
     }
 
     return true;
-}
+  }
 
-void LightingTechnique::SetWVP(const Matrix4f* WVP)
-{
+  void LightingTechnique::SetWVP(const Matrix4f* WVP)
+  {
     glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP->m);
-}
+  }
 
 
-void LightingTechnique::SetTextureUnit(unsigned int TextureUnit)
-{
+  void LightingTechnique::SetTextureUnit(unsigned int TextureUnit)
+  {
     glUniform1i(m_samplerLocation, TextureUnit);
-}
+  }
 
 
-void LightingTechnique::SetDirectionalLight(const DirectionLight& Light)
-{
+  void LightingTechnique::SetDirectionalLight(const DirectionLight& Light)
+  {
     glUniform3f(m_dirLightColorLocation, Light.Color.x, Light.Color.y, Light.Color.z);
     glUniform1f(m_dirLightAmbientIntensityLocation, Light.AmbientIntensity);
+  }
 }
