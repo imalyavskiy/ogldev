@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2010 Etay Meiri
+  Copyright 2010 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,11 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "pipeline.h"
-
-
-const Matrix4f* Pipeline::GetTrans()
+#include "t16_pipeline.h"
+namespace t16
 {
+  const Matrix4f* Pipeline::GetTrans()
+  {
     Matrix4f ScaleTrans, RotateTrans, TranslationTrans, CameraTranslationTrans, CameraRotateTrans, PersProjTrans;
 
     ScaleTrans.InitScaleTransform(m_scale.x, m_scale.y, m_scale.z);
@@ -32,6 +32,5 @@ const Matrix4f* Pipeline::GetTrans()
 
     m_transformation = PersProjTrans * CameraRotateTrans * CameraTranslationTrans * TranslationTrans * RotateTrans * ScaleTrans;
     return &m_transformation;
+  }
 }
-
-
