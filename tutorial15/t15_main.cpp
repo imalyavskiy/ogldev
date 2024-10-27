@@ -40,7 +40,7 @@ GLuint IBO;
 
 GLuint gWVPLocation;
 
-Camera* pGameCamera = nullptr;
+t15::Camera* pGameCamera = nullptr;
 
 static const char* pVS =
 "#version 330                                                                        \n"\
@@ -75,7 +75,7 @@ static void RenderSceneCB()
 
   Scale += 0.05f;
 
-  Pipeline pipeline;
+  t15::Pipeline pipeline;
 
   pipeline.Rotate(0.0f, Scale, 0.0f);
 
@@ -85,7 +85,7 @@ static void RenderSceneCB()
 
   pipeline.SetPerspectiveProj(VERTICAL_FOV, WINDOW_WIDTH, WINDOW_HEIGHT, Z_NEAR_CLIPPING_PLANE, Z_FAR_CLIPPING_PLANE);
 
-  const Matrix4f& wvp = pipeline.GetTrans();
+  const t15::Matrix4f& wvp = pipeline.GetTrans();
 
   glUniformMatrix4fv(gWVPLocation, 1, GL_TRUE, reinterpret_cast<const GLfloat*>(&wvp));
 
@@ -137,7 +137,7 @@ static void InitializeGlutCallbacks()
 
 static void CreateVertexBuffer()
 {
-  const Vector3f Vertices[] =
+  const t15::Vector3f Vertices[] =
   {
     /* 0*/	{ -0.2500f, -0.2500f, -0.2500f },	/* 1*/	{ -0.0000f, -0.1001f, -0.1001f },	/* 2*/	{  0.2500f, -0.2500f, -0.2500f },
     /* 3*/	{ -0.1001f, -0.0000f, -0.1001f },	/* 4*/	{  0.0000f,  0.0000f, -0.3247f },	/* 5*/	{  0.1001f, -0.0000f, -0.1001f },
@@ -265,7 +265,7 @@ int main(int argc, char** argv)
 
   InitializeGlutCallbacks();
   
-  pGameCamera = new Camera(WINDOW_WIDTH, WINDOW_HEIGHT);
+  pGameCamera = new t15::Camera(WINDOW_WIDTH, WINDOW_HEIGHT);
 
   const GLenum res = glewInit();
   if (res != GLEW_OK) {

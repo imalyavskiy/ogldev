@@ -28,129 +28,130 @@
 
 #define ToRadian(x) ((x) * M_PI / 180.0f)
 #define ToDegree(x) ((x) * 180.0f / M_PI)
-
-struct Vector2i
+namespace t15
 {
-  int x = 0;
-  int y = 0;
-};
-
-struct Vector3f
-{
-  float x = 0.f;
-  float y = 0.f;
-  float z = 0.f;
-
-  Vector3f() = default;
-
-  Vector3f(const float _x, const float _y, const float _z)
-    : x(_x), y(_y), z(_z)
+  struct Vector2i
   {
-  }
-
-  Vector3f& operator+=(const Vector3f& r)
-  {
-    x += r.x;
-    y += r.y;
-    z += r.z;
-
-    return *this;
-  }
-
-  Vector3f& operator-=(const Vector3f& r)
-  {
-    x -= r.x;
-    y -= r.y;
-    z -= r.z;
-
-    return *this;
-  }
-
-  Vector3f& operator*=(float f)
-  {
-    x *= f;
-    y *= f;
-    z *= f;
-
-    return *this;
-  }
-
-  Vector3f Cross(const Vector3f& v) const;
-
-  Vector3f& Normalize();
-
-  void Rotate(float Angle, const Vector3f& Axis);
-
-  void Print() const
-  {
-    printf("(%.02f, %.02f, %.02f)", x, y, z);
-  }
-};
-
-inline Vector3f operator+(const Vector3f& l, const Vector3f& r)
-{
-  return Vector3f{ l.x + r.x
-           , l.y + r.y
-           , l.z + r.z
+    int x = 0;
+    int y = 0;
   };
-}
 
-inline Vector3f operator-(const Vector3f& l, const Vector3f& r)
-{
-  return Vector3f{ l.x - r.x
-         , l.y - r.y
-         , l.z - r.z
+  struct Vector3f
+  {
+    float x = 0.f;
+    float y = 0.f;
+    float z = 0.f;
+
+    Vector3f() = default;
+
+    Vector3f(const float _x, const float _y, const float _z)
+      : x(_x), y(_y), z(_z)
+    {
+    }
+
+    Vector3f& operator+=(const Vector3f& r)
+    {
+      x += r.x;
+      y += r.y;
+      z += r.z;
+
+      return *this;
+    }
+
+    Vector3f& operator-=(const Vector3f& r)
+    {
+      x -= r.x;
+      y -= r.y;
+      z -= r.z;
+
+      return *this;
+    }
+
+    Vector3f& operator*=(float f)
+    {
+      x *= f;
+      y *= f;
+      z *= f;
+
+      return *this;
+    }
+
+    Vector3f Cross(const Vector3f& v) const;
+
+    Vector3f& Normalize();
+
+    void Rotate(float Angle, const Vector3f& Axis);
+
+    void Print() const
+    {
+      printf("(%.02f, %.02f, %.02f)", x, y, z);
+    }
   };
-}
 
-inline Vector3f operator*(const Vector3f& l, float f)
-{
-  return Vector3f{ l.x * f
-           , l.y * f
-           , l.z * f
+  inline Vector3f operator+(const Vector3f& l, const Vector3f& r)
+  {
+    return Vector3f{ l.x + r.x
+             , l.y + r.y
+             , l.z + r.z
+    };
+  }
+
+  inline Vector3f operator-(const Vector3f& l, const Vector3f& r)
+  {
+    return Vector3f{ l.x - r.x
+           , l.y - r.y
+           , l.z - r.z
+    };
+  }
+
+  inline Vector3f operator*(const Vector3f& l, float f)
+  {
+    return Vector3f{ l.x * f
+             , l.y * f
+             , l.z * f
+    };
+  }
+
+  class Matrix4f
+  {
+  public:
+    float m[4][4] = { {0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f} };
+
+    static void InitIdentity(Matrix4f& m);
+
+    Matrix4f operator*(const Matrix4f& Right) const;
+
+    static void InitScaleTransform(Matrix4f& m, const float x, const float y, const float z);
+
+    static void InitRotateTransform(Matrix4f& m, const float x, const float y, const float z);
+
+    static void InitTranslationTransform(Matrix4f& m, const float x, const float y, const float z);
+
+    static void InitCameraTransform(Matrix4f& m, const Vector3f& target, const Vector3f& up);
+
+    static void InitPersProjTransform(Matrix4f& m, const float fov, const float w, const float h, const float zn, const float zf);
   };
+
+
+  struct Quaternion
+  {
+    float x = 0.f;
+    float y = 0.f;
+    float z = 0.f;
+    float w = 0.f;
+
+    Quaternion() = default;
+
+    Quaternion(const float _x, const float _y, const float _z, const float _w);
+
+    void Normalize();
+
+    Quaternion Conjugate();
+  };
+
+  Quaternion operator*(const Quaternion& l, const Quaternion& r);
+
+  Quaternion operator*(const Quaternion& q, const Vector3f& v);
 }
-
-class Matrix4f
-{
-public:
-  float m[4][4] = { {0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f} };
-
-  static void InitIdentity(Matrix4f& m);
-
-  Matrix4f operator*(const Matrix4f& Right) const;
-
-  static void InitScaleTransform(Matrix4f& m, const float x, const float y, const float z);
-
-  static void InitRotateTransform(Matrix4f& m, const float x, const float y, const float z);
-
-  static void InitTranslationTransform(Matrix4f& m, const float x, const float y, const float z);
-
-  static void InitCameraTransform(Matrix4f& m, const Vector3f& target, const Vector3f& up);
-
-  static void InitPersProjTransform(Matrix4f& m, const float fov, const float w, const float h, const float zn, const float zf);
-};
-
-
-struct Quaternion
-{
-  float x = 0.f;
-  float y = 0.f;
-  float z = 0.f;
-  float w = 0.f;
-
-  Quaternion() = default;
-
-  Quaternion(const float _x, const float _y, const float _z, const float _w);
-
-  void Normalize();
-
-  Quaternion Conjugate();
-};
-
-Quaternion operator*(const Quaternion& l, const Quaternion& r);
-
-Quaternion operator*(const Quaternion& q, const Vector3f& v);
-
 #endif	/* MATH_3D_H */
 

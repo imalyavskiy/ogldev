@@ -19,49 +19,50 @@
 #define	PIPELINE_H
 
 #include "t15_math_3d.h"
-
-class Pipeline
+namespace t15
 {
-public:
-  Pipeline();
+  class Pipeline
+  {
+  public:
+    Pipeline();
 
-  void Scale(const float x, const float y, const float z);
+    void Scale(const float x, const float y, const float z);
 
-  void WorldPos(const float x, const float y, const float z);
+    void WorldPos(const float x, const float y, const float z);
 
-  void Rotate(const float x, const float y, const float z);
+    void Rotate(const float x, const float y, const float z);
 
-  void SetPerspectiveProj(const float fov, const float w, const float h, const float zn, const float zf);
+    void SetPerspectiveProj(const float fov, const float w, const float h, const float zn, const float zf);
 
-  void SetCamera(const Vector3f& pos, const Vector3f& target, const Vector3f& up);
+    void SetCamera(const Vector3f& pos, const Vector3f& target, const Vector3f& up);
 
-  const Matrix4f& GetTrans();
+    const Matrix4f& GetTrans();
 
-protected:
-  Vector3f m_scale;
+  protected:
+    Vector3f m_scale;
 
-  Vector3f m_worldPos;
+    Vector3f m_worldPos;
 
-  Vector3f m_rotateInfo;
+    Vector3f m_rotateInfo;
 
-  struct {
-    float fov;
-    float w;
-    float h;
-    float zn;
-    float zf;
-  } m_persProj;
+    struct {
+      float fov;
+      float w;
+      float h;
+      float zn;
+      float zf;
+    } m_persProj;
 
-  struct {
-    Vector3f Pos;
+    struct {
+      Vector3f Pos;
 
-    Vector3f Target;
+      Vector3f Target;
 
-    Vector3f Up;
-  } m_camera;
+      Vector3f Up;
+    } m_camera;
 
-  Matrix4f m_transformation;
-};
-
+    Matrix4f m_transformation;
+  };
+}
 #endif	/* PIPELINE_H */
 

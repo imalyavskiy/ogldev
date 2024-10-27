@@ -20,51 +20,56 @@
 #define	CAMERA_H
 
 #include "t15_math_3d.h"
-class Camera
+
+namespace t15
 {
-public:
+  class Camera
+  {
+  public:
 
-  Camera(int WindowWidth, int WindowHeight);
+    Camera(int WindowWidth, int WindowHeight);
 
-  Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
+    Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
 
-  bool OnKeyboard(int Key);
+    bool OnKeyboard(int Key);
 
-  void OnMouse(int x, int y);
+    void OnMouse(int x, int y);
 
-  void OnRender();
+    void OnRender();
 
-  const Vector3f& GetPos() const;
+    const Vector3f& GetPos() const;
 
-  const Vector3f& GetTarget() const;
+    const Vector3f& GetTarget() const;
 
-  const Vector3f& GetUp() const;
+    const Vector3f& GetUp() const;
 
-private:
+  private:
 
-  void Init();
+    void Init();
 
-  void Update();
+    void Update();
 
-  Vector3f m_pos;
+    const int m_MARGIN;
 
-  Vector3f m_target;
+    Vector3f m_pos;
 
-  Vector3f m_up;
+    Vector3f m_target;
 
-  int m_windowWidth;
-  int m_windowHeight;
+    Vector3f m_up;
 
-  float m_HAngle;
-  float m_VAngle;
+    int m_windowWidth;
+    int m_windowHeight;
 
-  bool m_OnTEdge; // Top
-  bool m_OnBEdge; // Bottom
-  bool m_OnLEdge; // Left
-  bool m_OnREdge; // Right
+    float m_HAngle;
+    float m_VAngle;
 
-  Vector2i m_mousePos;
-};
+    bool m_OnTEdge; // Top
+    bool m_OnBEdge; // Bottom
+    bool m_OnLEdge; // Left
+    bool m_OnREdge; // Right
 
+    Vector2i m_mousePos;
+  };
+}
 #endif	/* CAMERA_H */
 
