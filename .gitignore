@@ -6,6 +6,9 @@ tutorial../tutorial(?<!cpp)
 nbproject
 .dep.inc
 build
+/_bin
+/_int
+/_lib
 /bin
 /int
 /lib

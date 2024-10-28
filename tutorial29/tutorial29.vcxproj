@@ -68,26 +68,22 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\freeglut.3.0.0.props" />
-    <Import Project="..\glew.2.0.0.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\freeglut.3.0.0.props" />
-    <Import Project="..\glew.2.0.0.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)int\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)_bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)_int\$(Configuration)\$(ProjectName)\</IntDir>
     <LibraryPath>$(SolutionDir)..\Assimp\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName);$(SolutionDir)..\ImageMagick-Windows\VisualMagick\lib;$(LibraryPath)</LibraryPath>
     <IncludePath>$(SolutionDir)..\Assimp\include;$(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName);$(SolutionDir)..\ImageMagick-Windows\ImageMagick\;$(SolutionDir)..\ImageMagick-Windows\ImageMagick\Magick++\lib\;$(SolutionDir)..\glew.2.0.0.exports\inc;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)int\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)_bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)_int\$(Configuration)\$(ProjectName)\</IntDir>
     <IncludePath>$(SolutionDir)..\Assimp\include;$(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName);$(SolutionDir)..\glew.2.0.0.exports\inc;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\Assimp\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName);$(SolutionDir)..\glew.2.0.0.exports\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>

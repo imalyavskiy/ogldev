@@ -1,8 +1,9 @@
 #ifndef LIGHTINGTECHNIQUE_H
 #define LIGHTINGTECHNIQUE_H
 
-#include "technique.h"
-#include "math_3d.h"
+#include "t19_technique.h"
+#include "t19_math_3d.h"
+#include "t19_math_3d.h"
 
 struct DirectionLight
 {

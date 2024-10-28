@@ -2,12 +2,12 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
-#include "pipeline.h"
-#include "camera.h"
-#include "texture.h"
-#include "lighting_technique.h"
-#include "glut_backend.h"
-#include "util.h"
+#include "t19_pipeline.h"
+#include "t19_camera.h"
+#include "t19_texture.h"
+#include "t19_lighting_technique.h"
+#include "t19_glut_backend.h"
+#include "t19_util.h"
 
 #define WINDOW_WIDTH  1280
 #define WINDOW_HEIGHT 1024
@@ -146,7 +146,7 @@ public:
     virtual void KeyboardCB(unsigned char Key, int x, int y)
     {
         switch (Key) {
-            case 'q':
+            case 0x1b: // Esc
                 glutLeaveMainLoop();
                 break;
 

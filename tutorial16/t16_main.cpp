@@ -41,35 +41,35 @@ GLuint gSampler;
 t16::Texture* pTexture = nullptr;
 t16::Camera* pGameCamera = nullptr;
 
-static const char* pVS = "                                                          \n\
-#version 330                                                                        \n\
-                                                                                    \n\
-layout (location = 0) in vec3 Position;                                             \n\
-layout (location = 1) in vec2 TexCoord;                                             \n\
-                                                                                    \n\
-uniform mat4 gWVP;                                                                  \n\
-                                                                                    \n\
-out vec2 TexCoord0;                                                                 \n\
-                                                                                    \n\
-void main()                                                                         \n\
-{                                                                                   \n\
-    gl_Position = gWVP * vec4(Position, 1.0);                                       \n\
-    TexCoord0 = TexCoord;                                                           \n\
-}";
+static const char* pVS =
+"#version 330                                                                        \n"\
+"                                                                                    \n"\
+"layout (location = 0) in vec3 Position;                                             \n"\
+"layout (location = 1) in vec2 TexCoord;                                             \n"\
+"                                                                                    \n"\
+"uniform mat4 gWVP;                                                                  \n"\
+"                                                                                    \n"\
+"out vec2 TexCoord0;                                                                 \n"\
+"                                                                                    \n"\
+"void main()                                                                         \n"\
+"{                                                                                   \n"\
+"    gl_Position = gWVP * vec4(Position, 1.0);                                       \n"\
+"    TexCoord0 = TexCoord;                                                           \n"\
+"}                                                                                     ";
 
-static const char* pFS = "                                                          \n\
-#version 330                                                                        \n\
-                                                                                    \n\
-in vec2 TexCoord0;                                                                  \n\
-                                                                                    \n\
-out vec4 FragColor;                                                                 \n\
-                                                                                    \n\
-uniform sampler2D gSampler;                                                         \n\
-                                                                                    \n\
-void main()                                                                         \n\
-{                                                                                   \n\
-    FragColor = texture2D(gSampler, TexCoord0.xy);                                  \n\
-}";
+static const char* pFS =
+"#version 330                                                                        \n"\
+"                                                                                    \n"\
+"in vec2 TexCoord0;                                                                  \n"\
+"                                                                                    \n"\
+"out vec4 FragColor;                                                                 \n"\
+"                                                                                    \n"\
+"uniform sampler2D gSampler;                                                         \n"\
+"                                                                                    \n"\
+"void main()                                                                         \n"\
+"{                                                                                   \n"\
+"    FragColor = texture2D(gSampler, TexCoord0.xy);                                  \n"\
+"}                                                                                     ";
 
 static void RenderSceneCB()
 {
@@ -94,22 +94,22 @@ static void RenderSceneCB()
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(t16::Vertex), nullptr);
-                                // Here the actual data plugged to shader's input:
-                                //    attr - 0,
-                                //    3 - items,
-                                //    of float,
-                                //    not normalized,
-                                //    stride width of 20 bytes(float - 4bytes * 5)
-                                //    first byte addr from the attached buffer beginning
+  // Here the actual data plugged to shader's input:
+  //    attr - 0,
+  //    3 - items,
+  //    of float,
+  //    not normalized,
+  //    stride width of 20 bytes(float - 4bytes * 5)
+  //    first byte addr from the attached buffer beginning
 
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(t16::Vertex), reinterpret_cast<const GLvoid*>(12));
-                                // Here the actual data plugged to shader's input:
-                                //    attr - 1,
-                                //    2 - items,
-                                //    of float,
-                                //    not normalized,
-                                //    stride width of 20 bytes(float - 4bytes * 5)
-                                //    12th(0 based) byte addr from the attached buffer beginning
+  // Here the actual data plugged to shader's input:
+  //    attr - 1,
+  //    2 - items,
+  //    of float,
+  //    not normalized,
+  //    stride width of 20 bytes(float - 4bytes * 5)
+  //    12th(0 based) byte addr from the attached buffer beginning
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
   pTexture->Bind(GL_TEXTURE0);
@@ -156,10 +156,10 @@ static void InitializeGlutCallbacks()
 static void CreateVertexBuffer()
 {
   t16::Vertex Vertices[4] = {
-      t16::Vertex(t16::Vector3f( -1.0f, -1.0f,  0.57730f ), t16::Vector2f(0.0f, 0.0f)),
-      t16::Vertex(t16::Vector3f(  0.0f, -1.0f, -1.15475f ), t16::Vector2f(0.5f, 0.0f)),
-      t16::Vertex(t16::Vector3f(  1.0f, -1.0f,  0.57730f ), t16::Vector2f(1.0f, 0.0f)),
-      t16::Vertex(t16::Vector3f(  0.0f,  1.0f,  0.00000f ), t16::Vector2f(0.5f, 1.0f))
+      t16::Vertex(t16::Vector3f(-1.0f, -1.0f,  0.57730f), t16::Vector2f(0.0f, 0.0f)),
+      t16::Vertex(t16::Vector3f(0.0f, -1.0f, -1.15475f), t16::Vector2f(0.5f, 0.0f)),
+      t16::Vertex(t16::Vector3f(1.0f, -1.0f,  0.57730f), t16::Vector2f(1.0f, 0.0f)),
+      t16::Vertex(t16::Vector3f(0.0f,  1.0f,  0.00000f), t16::Vector2f(0.5f, 1.0f))
   };
 
   glGenBuffers(1, &VBO);
