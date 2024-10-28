@@ -93,11 +93,11 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>FreeImage.lib;glew32sd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FreeImaged.lib;glew32sd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImage.dll $(OutDir)FreeImage.dll</Command>
+      <Command>copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImaged.dll $(OutDir)FreeImaged.dll</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

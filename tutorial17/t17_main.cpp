@@ -1,4 +1,4 @@
-#include <cmath>
+#include <iostream>
 #include <memory>
 
 #include <GL/glew.h>
@@ -25,7 +25,7 @@ namespace t17
 
     Vertex() = default;
 
-    Vertex(Vector3f pos, Vector2f tex) : m_pos(pos) , m_tex(tex)
+    Vertex(Vector3f pos, Vector2f tex) : m_pos(pos), m_tex(tex)
     { }
   };
 
@@ -81,10 +81,13 @@ namespace t17
 
     m_pEffect->SetTextureUnit(0);
 
-    m_pTexture = std::make_shared<Texture>(GL_TEXTURE_2D, "../Content/test.png");
+    const std::string texture("../Content/test.png");
+    m_pTexture = std::make_shared<Texture>(GL_TEXTURE_2D, texture);
 
-    if (!m_pTexture->Load())
+    if (!m_pTexture->Load()) {
+      std::cerr << "[ FATAL ] Failed to load image: " << texture << "\n";
       return false;
+    }
 
     return true;
   }
@@ -117,22 +120,22 @@ namespace t17
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), nullptr);
-                                  // Here the actual data plugged to shader's input:
-                                  //    attr - 0,
-                                  //    3 - items,
-                                  //    of float,
-                                  //    not normalized,
-                                  //    stride width of 20 bytes(float - 4bytes * 5)
-                                  //    first byte addr from the attached buffer beginning
+    // Here the actual data plugged to shader's input:
+    //    attr - 0,
+    //    3 - items,
+    //    of float,
+    //    not normalized,
+    //    stride width of 20 bytes(float - 4bytes * 5)
+    //    first byte addr from the attached buffer beginning
 
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>(12));
-                                  // Here the actual data plugged to shader's input:
-                                  //    attr - 1,
-                                  //    2 - items,
-                                  //    of float,
-                                  //    not normalized,
-                                  //    stride width of 20 bytes(float - 4bytes * 5)
-                                  //    12th(0 based) byte addr from the attached buffer beginning
+    // Here the actual data plugged to shader's input:
+    //    attr - 1,
+    //    2 - items,
+    //    of float,
+    //    not normalized,
+    //    stride width of 20 bytes(float - 4bytes * 5)
+    //    12th(0 based) byte addr from the attached buffer beginning
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
     m_pTexture->Bind(GL_TEXTURE0);
@@ -160,17 +163,17 @@ namespace t17
   {
     switch (Key)
     {
-      case 0x1b: // Esc
-        glutLeaveMainLoop();
-        break;
+    case 0x1b: // Esc
+      glutLeaveMainLoop();
+      break;
 
-      case 'a':
-        m_directionalLight.AmbientIntensity += 0.05f;
-        break;
+    case 'a':
+      m_directionalLight.AmbientIntensity += 0.05f;
+      break;
 
-      case 's':
-        m_directionalLight.AmbientIntensity -= 0.05f;
-        break;
+    case 's':
+      m_directionalLight.AmbientIntensity -= 0.05f;
+      break;
     }
   }
 
@@ -183,10 +186,10 @@ namespace t17
   void MainApp::CreateVertexBuffer()
   {
     const Vertex Vertices[4] = {
-      Vertex(Vector3f( -1.00000f, -1.00000f,  0.57730f), Vector2f(0.00000f, 0.00000f)),
-      Vertex(Vector3f(  0.00000f, -1.00000f, -1.15475f), Vector2f(0.50000f, 0.00000f)),
-      Vertex(Vector3f(  1.00000f, -1.00000f,  0.57730f), Vector2f(1.00000f, 0.00000f)),
-      Vertex(Vector3f(  0.00000f,  1.00000f,  0.00000f), Vector2f(0.50000f, 1.00000f))
+      Vertex(Vector3f(-1.00000f, -1.00000f,  0.57730f), Vector2f(0.00000f, 0.00000f)),
+      Vertex(Vector3f(0.00000f, -1.00000f, -1.15475f), Vector2f(0.50000f, 0.00000f)),
+      Vertex(Vector3f(1.00000f, -1.00000f,  0.57730f), Vector2f(1.00000f, 0.00000f)),
+      Vertex(Vector3f(0.00000f,  1.00000f,  0.00000f), Vector2f(0.50000f, 1.00000f))
     };
 
     glGenBuffers(1, &m_VBO);

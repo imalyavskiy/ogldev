@@ -1,7 +1,7 @@
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
-#include <math.h>
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <cassert>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
@@ -283,9 +283,11 @@ int main(int argc, char** argv)
 
   glUniform1i(gSampler, 0);
 
-  pTexture = new t16::Texture(GL_TEXTURE_2D, "../Content/test.png");
+  const std::string texture("../Content/test.png");
+  pTexture = new t16::Texture(GL_TEXTURE_2D, texture);
 
   if (!pTexture->Load()) {
+    std::cerr << "[ FATAL ] Failed to load image: " << texture << "\n";
     return 1;
   }
 

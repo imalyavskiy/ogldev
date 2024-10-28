@@ -1,3 +1,4 @@
+#include <iostream>
 #include <cstdint>
 #include <cmath>
 #include <memory>
@@ -29,8 +30,8 @@ namespace t18
     Vertex() = default;
 
     Vertex(Vector3f pos, Vector2f tex)
-    : m_pos(pos)
-    , m_tex(tex)
+      : m_pos(pos)
+      , m_tex(tex)
     { }
   };
 
@@ -49,19 +50,19 @@ namespace t18
     void IdleCB() override;
 
     void SpecialKeyboardCB(int32_t Key, int32_t x, int32_t y) override;
-    
+
     void KeyboardCB(uint8_t Key, int32_t x, int32_t y) override;
-    
+
     void PassiveMouseCB(int32_t x, int32_t y) override;
 
   private:
 
     void CalcNormals(const uint32_t* pIndices, uint32_t IndexCount, Vertex* pVertices, uint32_t VertexCount);
-    
+
     void CreateVertexBuffer(const uint32_t* pIndices, uint32_t IndexCount);
 
     void CreateIndexBuffer(const uint32_t* pIndices, uint32_t SizeInBytes);
-    
+
     GLuint m_VBO = GL_INVALID_VALUE;
     GLuint m_IBO = GL_INVALID_VALUE;
     std::shared_ptr<LightingTechnique> m_pEffect;
@@ -91,7 +92,7 @@ namespace t18
     CreateIndexBuffer(indices, sizeof(indices));
 
     CreateVertexBuffer(indices, sizeof(indices) / sizeof(indices[0]));
-    
+
 
     m_pEffect = std::make_shared<LightingTechnique>();
 
@@ -105,9 +106,11 @@ namespace t18
 
     m_pEffect->SetTextureUnit(0);
 
-    m_pTexture = std::make_shared<Texture>(GL_TEXTURE_2D, "../Content/test.png");
+    const std::string texture("../Content/test.png");
+    m_pTexture = std::make_shared<Texture>(GL_TEXTURE_2D, texture);
 
     if (!m_pTexture->Load()) {
+      std::cerr << "[ FATAL ] Failed to load image: " << texture << "\n";
       return false;
     }
 
@@ -230,7 +233,7 @@ namespace t18
       {{  0.0f,  1.0f,  0.00000f}, {0.5f, 1.0f}}
     };
 
-    constexpr uint32_t VertexCount = 
+    constexpr uint32_t VertexCount =
       sizeof(Vertices) / sizeof(Vertices[0]);
 
     CalcNormals(pIndices, IndexCount, Vertices, VertexCount);
@@ -256,7 +259,7 @@ int main(int argc, char** argv)
   if (!t18::GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_BPP, WINDOW_FULLSCREEN, WINDOW_TITLE))
     return 1;
 
-  const auto pApp = 
+  const auto pApp =
     std::make_shared<t18::MainApp>();
 
   if (!pApp->Init())
