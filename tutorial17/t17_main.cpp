@@ -213,7 +213,7 @@ int main(int argc, char** argv)
 {
   t17::GLUTBackendInit(argc, argv);
 
-  if (!t17::GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 32, false, "OpenGL tutors")) {
+  if (!t17::GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 32, false, "Tutorial 17")) {
     return 1;
   }
 

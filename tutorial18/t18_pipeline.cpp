@@ -1,7 +1,8 @@
-#include "pipeline.h"
-
-const Matrix4f& Pipeline::GetWorldTrans()
+#include "t18_pipeline.h"
+namespace t18
 {
+  const Matrix4f& Pipeline::GetWorldTrans()
+  {
     Matrix4f ScaleTrans, RotateTrans, TranslationTrans;
 
     ScaleTrans.InitScaleTransform(m_scale.x, m_scale.y, m_scale.z);
@@ -10,10 +11,10 @@ const Matrix4f& Pipeline::GetWorldTrans()
 
     m_WorldTransformation = TranslationTrans * RotateTrans * ScaleTrans;
     return m_WorldTransformation;
-}
+  }
 
-const Matrix4f& Pipeline::GetWVPTrans()
-{
+  const Matrix4f& Pipeline::GetWVPTrans()
+  {
     GetWorldTrans();
 
     Matrix4f CameraTranslationTrans, CameraRotateTrans, PersProjTrans;
@@ -24,4 +25,5 @@ const Matrix4f& Pipeline::GetWVPTrans()
 
     m_WVPtransformation = PersProjTrans * CameraRotateTrans * CameraTranslationTrans * m_WorldTransformation;
     return m_WVPtransformation;
+  }
 }
