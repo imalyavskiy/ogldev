@@ -1,5 +1,4 @@
 ﻿/*
-
     Copyright 2011 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
@@ -16,7 +15,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cassert>
 #include <iostream>
 
 #include <FreeImage.h>
@@ -40,9 +38,9 @@ namespace t20
   }
 
 
-  Texture::Texture(GLenum TextureTarget, std::string FileName)
-      : m_fileName(std::move(FileName))
-      , m_textureTarget(TextureTarget)
+  Texture::Texture(GLenum textureTarget, std::string fileName)
+      : m_fileName(std::move(fileName))
+      , m_textureTarget(textureTarget)
   {
     glGenTextures(1, &m_textureObj);
   }
@@ -53,8 +51,7 @@ namespace t20
     if (!src)
       return false;
 
-    const auto type = FreeImage_GetColorType(src);
-    if (type != FIC_RGB)
+    if (const auto type = FreeImage_GetColorType(src); type != FIC_RGB)
       return false;
 
     if (!FreeImage_HasPixels(src))
@@ -75,9 +72,9 @@ namespace t20
     return true;
   }
 
-  void Texture::Bind(const GLenum TextureUnit) const
+  void Texture::Bind(const GLenum textureUnit) const
   {
-    glActiveTexture(TextureUnit);
+    glActiveTexture(textureUnit);
     glBindTexture(m_textureTarget, m_textureObj);
   }
 }

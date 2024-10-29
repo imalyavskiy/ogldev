@@ -1,5 +1,4 @@
 /*
-
 	Copyright 2010 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
@@ -17,6 +16,7 @@
 */
 
 #include "t20_math_3d.h"
+
 namespace t20
 {
   Vector3f Vector3f::Cross(const Vector3f& v) const

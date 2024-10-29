@@ -1,30 +1,37 @@
-#include <stdio.h>
+#include <cstdio>
+
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
 #include "t20_glut_backend.h"
+
 namespace t20
 {
   static ICallbacks* s_pCallbacks = NULL;
 
-  static void SpecialKeyboardCB(int Key, int x, int y){
-    s_pCallbacks->SpecialKeyboardCB(Key, x, y);
+  static void SpecialKeyboardCB(int key, int x, int y){
+    if(s_pCallbacks)
+      s_pCallbacks->SpecialKeyboardCB(key, x, y);
   }
 
-  static void KeyboardCB(unsigned char Key, int x, int y){
-    s_pCallbacks->KeyboardCB(Key, x, y);
+  static void KeyboardCB(unsigned char key, int x, int y){
+    if (s_pCallbacks)
+      s_pCallbacks->KeyboardCB(key, x, y);
   }
 
   static void PassiveMouseCB(int x, int y){
-    s_pCallbacks->PassiveMouseCB(x, y);
+    if (s_pCallbacks)
+      s_pCallbacks->PassiveMouseCB(x, y);
   }
 
   static void RenderSceneCB(){
-    s_pCallbacks->RenderSceneCB();
+    if (s_pCallbacks)
+      s_pCallbacks->RenderSceneCB();
   }
 
   static void IdleCB(){
-    s_pCallbacks->IdleCB();
+    if (s_pCallbacks)
+      s_pCallbacks->IdleCB();
   }
 
   static void InitCallbacks(){
@@ -41,19 +48,19 @@ namespace t20
     glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
   }
 
-  bool GLUTBackendCreateWindow(unsigned int Width, unsigned int Height, unsigned int bpp, bool isFullScreen, const char* pTitle){
+  bool GLUTBackendCreateWindow(unsigned int width, unsigned int height, unsigned int bpp, bool isFullScreen, const char* pTitle){
     if (isFullScreen){
       char ModeString[64] = {0};
-      snprintf(ModeString, sizeof(ModeString), "%dx%d@%d", Width, Height, bpp);
+      snprintf(ModeString, sizeof(ModeString), "%dx%d@%d", width, height, bpp);
       glutGameModeString(ModeString);
       glutEnterGameMode();
     }
     else {
-      glutInitWindowSize(Width, Height);
+      glutInitWindowSize(width, height);
       glutCreateWindow(pTitle);
     }
 
-    GLenum res = glewInit();
+    const GLenum res = glewInit();
     if (res != GLEW_OK){
       fprintf(stderr, "Error: '%s'\n", glewGetErrorString(res));
       return false;

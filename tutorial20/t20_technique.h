@@ -5,6 +5,7 @@
 #include <list>
 
 #define INVALID_UNIFORM_LOCATION 0xFFFFFFFF
+
 namespace t20
 {
   class Technique
@@ -21,7 +22,7 @@ namespace t20
     GLint GetUniformLocation(const char* pUniformName);
 
   private:
-    GLuint m_shaderProg;
+    GLuint m_shaderProgram;
     typedef std::list<GLuint> ShaderObjList;
     ShaderObjList m_shaderObjList;
   };

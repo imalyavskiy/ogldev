@@ -78,24 +78,31 @@ namespace t20
     GLuint m_matSpecularPowerLocation;
     GLuint m_numPointLightsLocation;
 
-    struct {
+    struct LightLocation {
       GLuint Color;
       GLuint AmbientIntensity;
       GLuint Direction;
       GLuint DiffuseIntensity;
-    } m_dirLightLocation;
+    };
 
-    struct {
+    LightLocation m_dirLightLocation;
+
+    struct PointLightLocation {
       GLuint Color;
       GLuint AmbientIntensity;
       GLuint DiffuseIntensity;
       GLuint Position;
-      struct{
+
+      struct Attenuation {
         GLuint Constant;
         GLuint Linear;
         GLuint Exp;
-      } Atten;
-    } m_pointLightsLocation[MAX_POINT_LIGHTS];
+      };
+
+      Attenuation attenuation;
+    };
+
+    std::array<PointLightLocation, 3> m_pointLightsLocation;
   };
 }
 

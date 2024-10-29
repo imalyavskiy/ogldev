@@ -5,6 +5,8 @@ namespace t20
   class ICallbacks
   {
   public:
+    virtual ~ICallbacks() = default;
+
     virtual void SpecialKeyboardCB(int Key, int x, int y) = 0;
     virtual void KeyboardCB(unsigned char Key, int x, int y) = 0;
     virtual void PassiveMouseCB(int x, int y) = 0;
