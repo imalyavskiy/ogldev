@@ -20,7 +20,10 @@
 #define	UTIL_H
 
 #define ARRAY_SIZE_IN_ELEMENTS(a) (sizeof(a)/sizeof(a[0]))
-
+namespace t20
+{
+  
+}
 
 #endif	/* UTIL_H */
 
