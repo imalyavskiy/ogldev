@@ -41,15 +41,15 @@ namespace t19
     glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
   }
 
-  bool GLUTBackendCreateWindow(unsigned int Width, unsigned int Height, unsigned int bpp, bool isFullScreen, const char* pTitle){
-    if (isFullScreen){
+  bool GLUTBackendCreateWindow(unsigned int winWidth, unsigned int winHeight, unsigned int winBPP, bool isFullScreen, const char* pTitle){
+    if (isFullScreen) {
       char ModeString[64] = {0};
-      snprintf(ModeString, sizeof(ModeString), "%dx%d@%d", Width, Height, bpp);
+      snprintf(ModeString, sizeof(ModeString), "%dx%d@%d", winWidth, winHeight, winBPP);
       glutGameModeString(ModeString);
       glutEnterGameMode();
     }
     else {
-      glutInitWindowSize(Width, Height);
+      glutInitWindowSize(winWidth, winHeight);
       glutCreateWindow(pTitle);
     }
 

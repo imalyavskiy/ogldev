@@ -13,6 +13,10 @@
 
 #define WINDOW_WIDTH  1280
 #define WINDOW_HEIGHT 1024
+#define WINDOW_BPP    32
+#define WINDOW_FULLSCREEN false
+#define WINDOW_TITLE "Tutorial 19"
+
 namespace t19
 {
   struct Vertex
@@ -21,7 +25,7 @@ namespace t19
     Vector2f m_tex;
     Vector3f m_normal;
 
-    Vertex() {}
+    Vertex() = default;
 
     Vertex(Vector3f pos, Vector2f tex)
     {
@@ -31,13 +35,13 @@ namespace t19
     }
   };
 
-  class Main : public ICallbacks
+  class MainApp : public ICallbacks
   {
   public:
 
-    Main();
+    MainApp();
 
-    ~Main() override = default;
+    ~MainApp() override = default;
 
     bool Init();
 
@@ -70,7 +74,7 @@ namespace t19
     DirectionLight m_directionalLight;
   };
 
-  Main::Main()
+  MainApp::MainApp()
   {
     m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
     m_directionalLight.AmbientIntensity = 0.0f;
@@ -78,7 +82,7 @@ namespace t19
     m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
   }
 
-  bool Main::Init()
+  bool MainApp::Init()
   {
     Vector3f Pos(0.0f, 0.0f, -3.0f);
     Vector3f Target(0.0f, 0.0f, 1.0f);
@@ -114,12 +118,12 @@ namespace t19
     return true;
   }
 
-  void Main::Run()
+  void MainApp::Run()
   {
     GLUTBackendRun(this);
   }
 
-  void Main::RenderSceneCB()
+  void MainApp::RenderSceneCB()
   {
     m_pGameCamera->OnRender();
 
@@ -127,13 +131,16 @@ namespace t19
 
     m_scale += 0.1f;
 
-    Pipeline p;
-    p.Rotate(0.0f, m_scale, 0.0f);
-    p.WorldPos(0.0f, 0.0f, 1.0f);
-    p.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
-    p.SetPerspectiveProj(60.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 1.0f, 100.0f);
-    m_pEffect->SetWVP(p.GetWVPTrans());
-    const Matrix4f& WorldTransformation = p.GetWorldTrans();
+    Pipeline pipeline;
+    pipeline.Rotate(0.0f, m_scale, 0.0f);
+    pipeline.WorldPos(0.0f, 0.0f, 1.0f);
+    pipeline.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
+    pipeline.SetPerspectiveProj(60.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 1.0f, 100.0f);
+
+    m_pEffect->SetWVP(pipeline.GetWVPTrans());
+
+    const Matrix4f& WorldTransformation = pipeline.GetWorldTrans();
+
     m_pEffect->SetWorldMatrix(WorldTransformation);
     m_pEffect->SetDirectionalLight(m_directionalLight);
     m_pEffect->SetEyeWorldPos(m_pGameCamera->GetPos());
@@ -143,12 +150,18 @@ namespace t19
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
+
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)12);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)20);
+
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>( 0));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>(12));
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>(20));
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
+
     m_pTexture->Bind(GL_TEXTURE0);
+
     glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
 
     glDisableVertexAttribArray(0);
@@ -158,18 +171,17 @@ namespace t19
     glutSwapBuffers();
   }
 
-  void Main::IdleCB()
+  void MainApp::IdleCB()
   {
     RenderSceneCB();
   }
 
-  void Main::SpecialKeyboardCB(int Key, int x, int y)
+  void MainApp::SpecialKeyboardCB(int Key, int x, int y)
   {
     m_pGameCamera->OnKeyboard(Key);
   }
 
-
-  void Main::KeyboardCB(unsigned char Key, int x, int y)
+  void MainApp::KeyboardCB(unsigned char Key, int x, int y)
   {
     switch (Key) {
     case 0x1b: // Esc
@@ -194,13 +206,12 @@ namespace t19
     }
   }
 
-
-  void Main::PassiveMouseCB(int x, int y)
+  void MainApp::PassiveMouseCB(int x, int y)
   {
     m_pGameCamera->OnMouse(x, y);
   }
 
-  void Main::CalcNormals(const unsigned int* pIndices, unsigned int IndexCount,
+  void MainApp::CalcNormals(const unsigned int* pIndices, unsigned int IndexCount,
     Vertex* pVertices, unsigned int VertexCount) {
     for (unsigned int i = 0; i < IndexCount; i += 3) {
       unsigned int Index0 = pIndices[i];
@@ -222,23 +233,23 @@ namespace t19
   }
 
 
-  void Main::CreateVertexBuffer(const unsigned int* pIndices, unsigned int IndexCount)
+  void MainApp::CreateVertexBuffer(const unsigned int* pIndices, unsigned int IndexCount)
   {
-    Vertex Vertices[4] = { Vertex(Vector3f(-1.0f, -1.0f, 0.5773f), Vector2f(0.0f, 0.0f)),
-                           Vertex(Vector3f(0.0f, -1.0f, -1.15475f), Vector2f(0.5f, 0.0f)),
-                           Vertex(Vector3f(1.0f, -1.0f, 0.5773f),  Vector2f(1.0f, 0.0f)),
-                           Vertex(Vector3f(0.0f, 1.0f, 0.0f),      Vector2f(0.5f, 1.0f)) };
+    std::array<Vertex, 4> Vertices = {
+      Vertex(Vector3f(-1.0f, -1.0f, 0.5773f), Vector2f(0.0f, 0.0f)),
+      Vertex(Vector3f(0.0f, -1.0f, -1.15475f), Vector2f(0.5f, 0.0f)),
+      Vertex(Vector3f(1.0f, -1.0f, 0.5773f),  Vector2f(1.0f, 0.0f)),
+      Vertex(Vector3f(0.0f, 1.0f, 0.0f),      Vector2f(0.5f, 1.0f))
+    };
 
-    unsigned int VertexCount = ARRAY_SIZE_IN_ELEMENTS(Vertices);
-
-    CalcNormals(pIndices, IndexCount, Vertices, VertexCount);
+    CalcNormals(pIndices, IndexCount, Vertices.data(), Vertices.size());
 
     glGenBuffers(1, &m_VBO);
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, Vertices.size() * sizeof(Vertices[0]), Vertices.data(), GL_STATIC_DRAW);
   }
 
-  void Main::CreateIndexBuffer(const unsigned int* pIndices, unsigned int SizeInBytes)
+  void MainApp::CreateIndexBuffer(const unsigned int* pIndices, unsigned int SizeInBytes)
   {
     glGenBuffers(1, &m_IBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
@@ -251,20 +262,16 @@ int main(int argc, char** argv)
 {
   t19::GLUTBackendInit(argc, argv);
 
-  // Не работает на полный экран, хз почему....
-  if (!t19::GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 32, false/*true*/, "OpenGL tutors")) {
+  if (!t19::GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_BPP, WINDOW_FULLSCREEN, WINDOW_TITLE))
     return 1;
-  }
 
-  t19::Main* pApp = new t19::Main();
+  const std::shared_ptr<t19::MainApp> pApp = 
+    std::make_shared<t19::MainApp>();
 
-  if (!pApp->Init()) {
+  if (!pApp->Init())
     return 1;
-  }
 
   pApp->Run();
-
-  delete pApp;
 
   return 0;
 }

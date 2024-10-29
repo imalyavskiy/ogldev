@@ -17,8 +17,8 @@ namespace t19
   class LightingTechnique : public Technique
   {
   public:
-    LightingTechnique();
-    virtual bool Init();
+    LightingTechnique() = default;
+    bool Init() override;
 
     void SetWVP(const Matrix4f& WVP);
     void SetWorldMatrix(const Matrix4f& WVP);
@@ -30,19 +30,19 @@ namespace t19
     void SetMatSpecularPower(float Power);
 
   private:
-    GLuint m_WVPLocation;
-    GLuint m_WorldMatrixLocation;
-    GLuint m_samplerLocation;
+    GLint m_WVPLocation = 0xFFFFFFFF;
+    GLint m_WorldMatrixLocation = 0xFFFFFFFF;
+    GLint m_samplerLocation = 0xFFFFFFFF;
 
-    GLuint m_eyeWorldPosition;
-    GLuint m_matSpecularIntensityLocation;
-    GLuint m_matSpecularPowerLocation;
+    GLint m_eyeWorldPosition = 0xFFFFFFFF;
+    GLint m_matSpecularIntensityLocation = 0xFFFFFFFF;
+    GLint m_matSpecularPowerLocation = 0xFFFFFFFF;
 
     struct {
-      GLuint Color;
-      GLuint AmbientIntensity;
-      GLuint Direction;
-      GLuint DiffuseIntensity;
+      GLint Color = 0xFFFFFFFF;
+      GLint AmbientIntensity = 0xFFFFFFFF;
+      GLint Direction = 0xFFFFFFFF;
+      GLint DiffuseIntensity = 0xFFFFFFFF;
     } m_dirLightLocation;
   };
 }
