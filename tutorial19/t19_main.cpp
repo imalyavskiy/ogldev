@@ -1,4 +1,6 @@
-﻿#include <iostream>
+﻿#include <memory>
+#include <array>
+#include <iostream>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
@@ -11,63 +13,85 @@
 
 #define WINDOW_WIDTH  1280
 #define WINDOW_HEIGHT 1024
-
-struct Vertex
+namespace t19
 {
-  Vector3f m_pos;
-  Vector2f m_tex;
-  Vector3f m_normal;
-
-  Vertex() {}
-
-  Vertex(Vector3f pos, Vector2f tex)
+  struct Vertex
   {
-    m_pos = pos;
-    m_tex = tex;
-    m_normal = Vector3f(0.0f, 0.0f, 0.0f);
-  }
-};
+    Vector3f m_pos;
+    Vector2f m_tex;
+    Vector3f m_normal;
 
-class Main : public ICallbacks
-{
-public:
+    Vertex() {}
 
-  Main()
+    Vertex(Vector3f pos, Vector2f tex)
+    {
+      m_pos = pos;
+      m_tex = tex;
+      m_normal = Vector3f(0.0f, 0.0f, 0.0f);
+    }
+  };
+
+  class Main : public ICallbacks
   {
-    m_pGameCamera = NULL;
-    m_pTexture = NULL;
-    m_pEffect = NULL;
-    m_scale = 0.0f;
+  public:
+
+    Main();
+
+    ~Main() override = default;
+
+    bool Init();
+
+    void Run();
+
+    void RenderSceneCB() override;
+
+    void IdleCB() override;
+
+    void SpecialKeyboardCB(int Key, int x, int y) override;
+
+    void KeyboardCB(unsigned char Key, int x, int y) override;
+
+    void PassiveMouseCB(int x, int y) override;
+
+  private:
+
+    void CalcNormals(const unsigned int* pIndices, unsigned int IndexCount, Vertex* pVertices, unsigned int VertexCount);
+
+    void CreateVertexBuffer(const unsigned int* pIndices, unsigned int IndexCount);
+
+    void CreateIndexBuffer(const unsigned int* pIndices, unsigned int SizeInBytes);
+
+    GLuint m_VBO;
+    GLuint m_IBO;
+    std::shared_ptr<LightingTechnique> m_pEffect;
+    std::shared_ptr<Texture> m_pTexture;
+    std::shared_ptr<Camera> m_pGameCamera;
+    float m_scale = 0.0f;
+    DirectionLight m_directionalLight;
+  };
+
+  Main::Main()
+  {
     m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
     m_directionalLight.AmbientIntensity = 0.0f;
     m_directionalLight.DiffuseIntensity = 0.75f;
     m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
   }
 
-  ~Main()
-  {
-    delete m_pEffect;
-    delete m_pGameCamera;
-    delete m_pTexture;
-  }
-
-  bool Init()
+  bool Main::Init()
   {
     Vector3f Pos(0.0f, 0.0f, -3.0f);
     Vector3f Target(0.0f, 0.0f, 1.0f);
     Vector3f Up(0.0, 1.0f, 0.0f);
-    m_pGameCamera = new Camera(WINDOW_WIDTH, WINDOW_HEIGHT, Pos, Target, Up);
+    m_pGameCamera = std::make_shared<Camera>(WINDOW_WIDTH, WINDOW_HEIGHT, Pos, Target, Up);
 
-    unsigned int Indices[] = { 0, 3, 1,
-                               1, 3, 2,
-                               2, 3, 0,
-                               1, 2, 0 };
+    const std::array<uint32_t, 12> Indices { 0, 3, 1,  1, 3, 2,  2, 3, 0,  1, 2, 0 };
 
-    CreateIndexBuffer(Indices, sizeof(Indices));
+    CreateIndexBuffer(Indices.data(), Indices.size() * sizeof(Indices[0]));
 
-    CreateVertexBuffer(Indices, ARRAY_SIZE_IN_ELEMENTS(Indices));
+    CreateVertexBuffer(Indices.data(), Indices.size());
 
-    m_pEffect = new LightingTechnique();
+    m_pEffect = std::make_shared<LightingTechnique>();
 
     if (!m_pEffect->Init())
     {
@@ -80,7 +104,7 @@ public:
     m_pEffect->SetTextureUnit(0);
 
     const std::string texture("../Content/test.png");
-    m_pTexture = new Texture(GL_TEXTURE_2D, texture);
+    m_pTexture = std::make_shared<Texture>(GL_TEXTURE_2D, texture);
 
     if (!m_pTexture->Load()) {
       std::cerr << "[ FATAL ] Failed to load image: " << texture << "\n";
@@ -90,12 +114,12 @@ public:
     return true;
   }
 
-  void Run()
+  void Main::Run()
   {
     GLUTBackendRun(this);
   }
 
-  virtual void RenderSceneCB()
+  void Main::RenderSceneCB()
   {
     m_pGameCamera->OnRender();
 
@@ -134,18 +158,18 @@ public:
     glutSwapBuffers();
   }
 
-  virtual void IdleCB()
+  void Main::IdleCB()
   {
     RenderSceneCB();
   }
 
-  virtual void SpecialKeyboardCB(int Key, int x, int y)
+  void Main::SpecialKeyboardCB(int Key, int x, int y)
   {
     m_pGameCamera->OnKeyboard(Key);
   }
 
 
-  virtual void KeyboardCB(unsigned char Key, int x, int y)
+  void Main::KeyboardCB(unsigned char Key, int x, int y)
   {
     switch (Key) {
     case 0x1b: // Esc
@@ -171,14 +195,12 @@ public:
   }
 
 
-  virtual void PassiveMouseCB(int x, int y)
+  void Main::PassiveMouseCB(int x, int y)
   {
     m_pGameCamera->OnMouse(x, y);
   }
 
-private:
-
-  void CalcNormals(const unsigned int* pIndices, unsigned int IndexCount,
+  void Main::CalcNormals(const unsigned int* pIndices, unsigned int IndexCount,
     Vertex* pVertices, unsigned int VertexCount) {
     for (unsigned int i = 0; i < IndexCount; i += 3) {
       unsigned int Index0 = pIndices[i];
@@ -200,7 +222,7 @@ private:
   }
 
 
-  void CreateVertexBuffer(const unsigned int* pIndices, unsigned int IndexCount)
+  void Main::CreateVertexBuffer(const unsigned int* pIndices, unsigned int IndexCount)
   {
     Vertex Vertices[4] = { Vertex(Vector3f(-1.0f, -1.0f, 0.5773f), Vector2f(0.0f, 0.0f)),
                            Vertex(Vector3f(0.0f, -1.0f, -1.15475f), Vector2f(0.5f, 0.0f)),
@@ -216,34 +238,25 @@ private:
     glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
   }
 
-  void CreateIndexBuffer(const unsigned int* pIndices, unsigned int SizeInBytes)
+  void Main::CreateIndexBuffer(const unsigned int* pIndices, unsigned int SizeInBytes)
   {
     glGenBuffers(1, &m_IBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, SizeInBytes, pIndices, GL_STATIC_DRAW);
   }
-
-
-  GLuint m_VBO;
-  GLuint m_IBO;
-  LightingTechnique* m_pEffect;
-  Texture* m_pTexture;
-  Camera* m_pGameCamera;
-  float m_scale;
-  DirectionLight m_directionalLight;
-};
+}
 
 
 int main(int argc, char** argv)
 {
-  GLUTBackendInit(argc, argv);
+  t19::GLUTBackendInit(argc, argv);
 
   // Не работает на полный экран, хз почему....
-  if (!GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 32, false/*true*/, "OpenGL tutors")) {
+  if (!t19::GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 32, false/*true*/, "OpenGL tutors")) {
     return 1;
   }
 
-  Main* pApp = new Main();
+  t19::Main* pApp = new t19::Main();
 
   if (!pApp->Init()) {
     return 1;
