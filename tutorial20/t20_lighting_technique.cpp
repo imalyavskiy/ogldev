@@ -1,8 +1,8 @@
 #include <limits.h>
 #include <string.h>
 
-#include "lighting_technique.h"
-#include "util.h"
+#include "t20_lighting_technique.h"
+#include "t20_util.h"
 
 static const char* pVS = "                                                          \n\
 #version 330                                                                        \n\

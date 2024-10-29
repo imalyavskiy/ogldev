@@ -1,8 +1,8 @@
 #ifndef LIGHTINGTECHNIQUE_H
 #define LIGHTINGTECHNIQUE_H
 
-#include "technique.h"
-#include "math_3d.h"
+#include "t20_technique.h"
+#include "t20_math_3d.h"
 
 #define MAX_POINT_LIGHTS 3
 
