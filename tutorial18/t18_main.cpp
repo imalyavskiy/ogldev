@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <cmath>
 #include <memory>
+#include <array>
 
 #include <GL/glew.h>
 #include <GL/freeglut.h>
@@ -87,11 +88,11 @@ namespace t18
     Vector3f Up(0.0, 1.0f, 0.0f);
     m_pGameCamera = std::make_shared<Camera>(WINDOW_WIDTH, WINDOW_HEIGHT, Pos, Target, Up);
 
-    const uint32_t indices[] = { 0, 3, 1,  1, 3, 2,  2, 3, 0,  1, 2, 0 };
+    const std::array<uint32_t, 12> indices{ 0, 3, 1,  1, 3, 2,  2, 3, 0,  1, 2, 0 };
 
-    CreateIndexBuffer(indices, sizeof(indices));
+    CreateIndexBuffer(indices.data(), indices.size() * sizeof(indices[0]));
 
-    CreateVertexBuffer(indices, sizeof(indices) / sizeof(indices[0]));
+    CreateVertexBuffer(indices.data(), indices.size());
 
 
     m_pEffect = std::make_shared<LightingTechnique>();
@@ -146,7 +147,7 @@ namespace t18
 
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), nullptr);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>( 0));
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>(12));
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>(20));
 
@@ -154,7 +155,7 @@ namespace t18
 
     m_pTexture->Bind(GL_TEXTURE0);
 
-    glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);

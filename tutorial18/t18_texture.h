@@ -36,7 +36,7 @@ namespace t18
   private:
     std::string m_fileName;
     GLenum m_textureTarget;
-    GLuint m_textureObj;
+    GLuint m_textureObj = -1;
   };
 }
 

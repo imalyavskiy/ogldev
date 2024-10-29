@@ -42,8 +42,8 @@ namespace t18
 
 
   Texture::Texture(GLenum TextureTarget, std::string FileName)
-      : m_fileName(std::move(FileName))
-      , m_textureTarget(TextureTarget)
+  : m_fileName(std::move(FileName))
+  , m_textureTarget(TextureTarget)
   {
     glGenTextures(1, &m_textureObj);
   }
