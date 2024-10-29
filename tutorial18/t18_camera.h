@@ -9,9 +9,9 @@ namespace t18
   {
   public:
 
-    Camera(int32_t WindowWidth, int32_t WindowHeight);
+    Camera(int32_t winWidth, int32_t winHeight);
 
-    Camera(int32_t WindowWidth, int32_t WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
+    Camera(int32_t winWidth, int32_t winHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
 
     bool OnKeyboard(int32_t Key);
 
@@ -33,15 +33,15 @@ namespace t18
     void Init();
     void Update();
 
+    int m_winWidth;
+    int m_winHeight;
+
     Vector3f m_position;
     Vector3f m_target;
     Vector3f m_lookup;
 
-    int m_winWidth;
-    int m_winHeight;
-
-    float m_AngleH;
-    float m_AngleV;
+    float m_AngleH = 0.f;
+    float m_AngleV = 0.f;
 
     Vector2i m_mousePos;
   };

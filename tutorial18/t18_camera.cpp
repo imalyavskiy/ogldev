@@ -7,28 +7,25 @@ namespace t18
   const static float STEP_SCALE = 0.1f;
   const static int MARGIN = 10;
 
-  Camera::Camera(int32_t WindowWidth, int32_t WindowHeight)
+  Camera::Camera(int32_t winWidth, int32_t winHeight)
+  : m_winWidth(winWidth)
+  , m_winHeight(winHeight)
+  , m_position(Vector3f(0.0f, 0.0f, 0.0f))
+  , m_target(Vector3f(0.0f, 0.0f, 1.0f).Normalize())
+  , m_lookup(Vector3f(0.0f, 1.0f, 0.0f))
   {
-    m_winWidth  = WindowWidth;
-    m_winHeight = WindowHeight;
-    m_position  = Vector3f(0.0f, 0.0f, 0.0f);
-    m_target    = Vector3f(0.0f, 0.0f, 1.0f).Normalize();
-    m_lookup    = Vector3f(0.0f, 1.0f, 0.0f);
-
     Init();
   }
 
 
-  Camera::Camera(int32_t WindowWidth, int32_t WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up)
+  Camera::Camera(int32_t winWidth, int32_t winHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up)
+  : m_winWidth(winWidth)
+  , m_winHeight(winHeight)
+  , m_position(Pos)
+  , m_target(Target)
+  , m_lookup(Up)
   {
-    m_winWidth  = WindowWidth;
-    m_winHeight = WindowHeight;
-    m_position = Pos;
-
-    m_target = Target;
     m_target.Normalize();
-
-    m_lookup = Up;
     m_lookup.Normalize();
 
     Init();
@@ -43,24 +40,16 @@ namespace t18
     if (HTarget.z >= 0.0f)
     {
       if (HTarget.x >= 0.0f)
-      {
         m_AngleH = 360.0f - ToDegree(asinf(HTarget.z));
-      }
       else
-      {
         m_AngleH = 180.0f + ToDegree(asinf(HTarget.z));
-      }
     }
     else
     {
       if (HTarget.x >= 0.0f)
-      {
         m_AngleH = ToDegree(asinf(-HTarget.z));
-      }
       else
-      {
         m_AngleH = 90.0f + ToDegree(asinf(-HTarget.z));
-      }
     }
 
     m_AngleV = -ToDegree(asinf(m_target.y));
