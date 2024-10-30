@@ -1,6 +1,6 @@
-#include <assert.h>
+#include <cassert>
 
-#include "mesh.h"
+#include "t22_mesh.h"
 
 Mesh::MeshEntry::MeshEntry()
 {

@@ -1,9 +1,9 @@
 
-#include <limits.h>
-#include <string.h>
+#include <climits>
+#include <cstring>
 
-#include "lighting_technique.h"
-#include "util.h"
+#include "t22_lighting_technique.h"
+#include "t22_util.h"
 
 static const char* pVS = "                                                                  \n\
 #version 330                                                                                \n\

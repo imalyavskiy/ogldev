@@ -1,8 +1,9 @@
 #ifndef TEXHNIQUE_H
 #define TEXHNIQUE_H
 
-#include <GL/glew.h>
 #include <list>
+
+#include <GL/glew.h>
 
 #define INVALID_UNIFORM_LOCATION 0xFFFFFFFF
 

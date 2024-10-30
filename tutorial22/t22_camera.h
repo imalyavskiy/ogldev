@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define	CAMERA_H
 
-#include "math_3d.h"
+#include "t22_math_3d.h"
 
 
 class Camera

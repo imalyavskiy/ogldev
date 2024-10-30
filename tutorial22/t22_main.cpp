@@ -1,14 +1,15 @@
-#include <math.h>
+#include <cmath>
+
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
-#include "pipeline.h"
-#include "camera.h"
-#include "texture.h"
-#include "lighting_technique.h"
-#include "glut_backend.h"
-#include "util.h"
-#include "mesh.h"
+#include "t22_pipeline.h"
+#include "t22_camera.h"
+#include "t22_texture.h"
+#include "t22_lighting_technique.h"
+#include "t22_glut_backend.h"
+#include "t22_util.h"
+#include "t22_mesh.h"
 
 #define WINDOW_WIDTH  1280
 #define WINDOW_HEIGHT 1024

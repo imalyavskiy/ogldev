@@ -18,8 +18,8 @@
 
 #include <cassert>
 #include <iostream>
-#include "texture.h"
 #include <FreeImage.h>
+#include "t22_texture.h"
 
 FIBITMAP* GenericLoader(const char* lpszPathName, int flag) {
     auto fif = FIF_UNKNOWN;
