@@ -5,70 +5,70 @@
 #include "lighting_technique.h"
 #include "util.h"
 
-static const char* pVS = "                                                          \n\
-#version 330                                                                        \n\
-                                                                                    \n\
-layout (location = 0) in vec3 Position;                                             \n\
-layout (location = 1) in vec2 TexCoord;                                             \n\
-layout (location = 2) in vec3 Normal;                                               \n\
-                                                                                    \n\
-uniform mat4 gWVP;                                                                  \n\
-uniform mat4 gWorld;                                                                \n\
-                                                                                    \n\
-out vec2 TexCoord0;                                                                 \n\
-out vec3 Normal0;                                                                   \n\
-out vec3 WorldPos0;                                                                 \n\
-                                                                                    \n\
-void main()                                                                         \n\
-{                                                                                   \n\
-    gl_Position = gWVP * vec4(Position, 1.0);                                       \n\
-    TexCoord0   = TexCoord;                                                         \n\
-    Normal0     = (gWorld * vec4(Normal, 0.0)).xyz;                                 \n\
-    WorldPos0   = (gWorld * vec4(Position, 1.0)).xyz;                               \n\
+static const char* pVS = "                                                                  \n\
+#version 330                                                                                \n\
+                                                                                            \n\
+layout (location = 0) in vec3 Position;                                                     \n\
+layout (location = 1) in vec2 TexCoord;                                                     \n\
+layout (location = 2) in vec3 Normal;                                                       \n\
+                                                                                            \n\
+uniform mat4 gWVP;                                                                          \n\
+uniform mat4 gWorld;                                                                        \n\
+                                                                                            \n\
+out vec2 TexCoord0;                                                                         \n\
+out vec3 Normal0;                                                                           \n\
+out vec3 WorldPos0;                                                                         \n\
+                                                                                            \n\
+void main()                                                                                 \n\
+{                                                                                           \n\
+    gl_Position = gWVP * vec4(Position, 1.0);                                               \n\
+    TexCoord0   = TexCoord;                                                                 \n\
+    Normal0     = (gWorld * vec4(Normal, 0.0)).xyz;                                         \n\
+    WorldPos0   = (gWorld * vec4(Position, 1.0)).xyz;                                       \n\
 }";
 
-static const char* pFS = "                                                          \n\
-#version 330                                                                        \n\
-                                                                                    \n\
-const int MAX_POINT_LIGHTS = 2;                                                     \n\
-const int MAX_SPOT_LIGHTS = 2;                                                      \n\
-                                                                                    \n\
-in vec2 TexCoord0;                                                                  \n\
-in vec3 Normal0;                                                                    \n\
-in vec3 WorldPos0;                                                                  \n\
-                                                                                    \n\
-out vec4 FragColor;                                                                 \n\
-                                                                                    \n\
-struct BaseLight                                                                    \n\
-{                                                                                   \n\
-    vec3 Color;                                                                     \n\
-    float AmbientIntensity;                                                         \n\
-    float DiffuseIntensity;                                                         \n\
-};                                                                                  \n\
-                                                                                    \n\
-struct DirectionalLight                                                             \n\
-{                                                                                   \n\
-    struct BaseLight Base;                                                          \n\
-    vec3 Direction;                                                                 \n\
-};                                                                                  \n\
-                                                                                    \n\
-struct Attenuation                                                                  \n\
-{                                                                                   \n\
-    float Constant;                                                                 \n\
-    float Linear;                                                                   \n\
-    float Exp;                                                                      \n\
-};                                                                                  \n\
-                                                                                    \n\
+static const char* pFS = "                                                                  \n\
+#version 330                                                                                \n\
+                                                                                            \n\
+const int MAX_POINT_LIGHTS = 2;                                                             \n\
+const int MAX_SPOT_LIGHTS = 2;                                                              \n\
+                                                                                            \n\
+in vec2 TexCoord0;                                                                          \n\
+in vec3 Normal0;                                                                            \n\
+in vec3 WorldPos0;                                                                          \n\
+                                                                                            \n\
+out vec4 FragColor;                                                                         \n\
+                                                                                            \n\
+struct BaseLight                                                                            \n\
+{                                                                                           \n\
+    vec3 Color;                                                                             \n\
+    float AmbientIntensity;                                                                 \n\
+    float DiffuseIntensity;                                                                 \n\
+};                                                                                          \n\
+                                                                                            \n\
+struct DirectionalLight                                                                     \n\
+{                                                                                           \n\
+    BaseLight Base;                                                                         \n\
+    vec3 Direction;                                                                         \n\
+};                                                                                          \n\
+                                                                                            \n\
+struct Attenuation                                                                          \n\
+{                                                                                           \n\
+    float Constant;                                                                         \n\
+    float Linear;                                                                           \n\
+    float Exp;                                                                              \n\
+};                                                                                          \n\
+                                                                                            \n\
 struct PointLight                                                                           \n\
 {                                                                                           \n\
-    struct BaseLight Base;                                                                  \n\
+    BaseLight Base;                                                                         \n\
     vec3 Position;                                                                          \n\
     Attenuation Atten;                                                                      \n\
 };                                                                                          \n\
                                                                                             \n\
 struct SpotLight                                                                            \n\
 {                                                                                           \n\
-    struct PointLight Base;                                                                 \n\
+    PointLight Base;                                                                        \n\
     vec3 Direction;                                                                         \n\
     float Cutoff;                                                                           \n\
 };                                                                                          \n\
@@ -83,7 +83,7 @@ uniform vec3 gEyeWorldPos;                                                      
 uniform float gMatSpecularIntensity;                                                        \n\
 uniform float gSpecularPower;                                                               \n\
                                                                                             \n\
-vec4 CalcLightInternal(BaseLight Light, vec3 LightDirection, vec3 Normal)            \n\
+vec4 CalcLightInternal(BaseLight Light, vec3 LightDirection, vec3 Normal)                   \n\
 {                                                                                           \n\
     vec4 AmbientColor = vec4(Light.Color, 1.0f) * Light.AmbientIntensity;                   \n\
     float DiffuseFactor = dot(Normal, -LightDirection);                                     \n\
@@ -112,7 +112,7 @@ vec4 CalcDirectionalLight(vec3 Normal)                                          
     return CalcLightInternal(gDirectionalLight.Base, gDirectionalLight.Direction, Normal);  \n\
 }                                                                                           \n\
                                                                                             \n\
-vec4 CalcPointLight(PointLight l, vec3 Normal)                                       \n\
+vec4 CalcPointLight(PointLight l, vec3 Normal)                                              \n\
 {                                                                                           \n\
     vec3 LightDirection = WorldPos0 - l.Position;                                           \n\
     float Distance = length(LightDirection);                                                \n\
@@ -126,7 +126,7 @@ vec4 CalcPointLight(PointLight l, vec3 Normal)                                  
     return Color / Attenuation;                                                             \n\
 }                                                                                           \n\
                                                                                             \n\
-vec4 CalcSpotLight(SpotLight l, vec3 Normal)                                         \n\
+vec4 CalcSpotLight(SpotLight l, vec3 Normal)                                                \n\
 {                                                                                           \n\
     vec3 LightToPixel = normalize(WorldPos0 - l.Base.Position);                             \n\
     float SpotFactor = dot(LightToPixel, l.Direction);                                      \n\
