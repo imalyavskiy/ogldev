@@ -1,19 +1,22 @@
+#include <cstdint>
 #include <cstdio>
+
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
 #include "t21_glut_backend.h"
 
+
 namespace t21
 {
-  static ICallbacks* s_pCallbacks = NULL;
+  static ICallbacks* s_pCallbacks = nullptr;
 
-  static void SpecialKeyboardCB(int Key, int x, int y){
-    s_pCallbacks->SpecialKeyboardCB(Key, x, y);
+  static void SpecialKeyboardCB(int key, int x, int y){
+    s_pCallbacks->SpecialKeyboardCB(key, x, y);
   }
 
-  static void KeyboardCB(unsigned char Key, int x, int y){
-    s_pCallbacks->KeyboardCB(Key, x, y);
+  static void KeyboardCB(unsigned char key, int x, int y){
+    s_pCallbacks->KeyboardCB(key, x, y);
   }
 
   static void PassiveMouseCB(int x, int y){
@@ -42,15 +45,15 @@ namespace t21
     glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
   }
 
-  bool GLUTBackendCreateWindow(unsigned int Width, unsigned int Height, unsigned int bpp, bool isFullScreen, const char* pTitle){
+  bool GLUTBackendCreateWindow(uint32_t width, uint32_t height, uint32_t bpp, bool isFullScreen, const char* pTitle){
     if (isFullScreen){
       char ModeString[64] = {0};
-      snprintf(ModeString, sizeof(ModeString), "%dx%d@%d", Width, Height, bpp);
+      snprintf(ModeString, sizeof(ModeString), "%dx%d@%d", width, height, bpp);
       glutGameModeString(ModeString);
       glutEnterGameMode();
     }
     else {
-      glutInitWindowSize(Width, Height);
+      glutInitWindowSize(width, height);
       glutCreateWindow(pTitle);
     }
 

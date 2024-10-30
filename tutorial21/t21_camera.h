@@ -9,26 +9,29 @@ namespace t21
   {
   public:
 
-    Camera(int WindowWidth, int WindowHeight);
+    Camera(int winWidth, int winHeight);
 
-    Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
+    Camera(int winWidth, int winHeight, const Vector3f& pos, const Vector3f& target, const Vector3f& up);
 
-    bool OnKeyboard(int Key);
+    bool OnKeyboard(int key);
 
     void OnMouse(int x, int y);
 
     void OnRender();
 
+    [[nodiscard]]
     const Vector3f& GetPos() const
     {
       return m_pos;
     }
 
+    [[nodiscard]]
     const Vector3f& GetTarget() const
     {
       return m_target;
     }
 
+    [[nodiscard]]
     const Vector3f& GetUp() const
     {
       return m_up;
@@ -46,8 +49,8 @@ namespace t21
     int m_windowWidth;
     int m_windowHeight;
 
-    float m_AngleH;
-    float m_AngleV;
+    float m_hAngle = 0.f;
+    float m_vAngle = 0.f;
 
     Vector2i m_mousePos;
   };

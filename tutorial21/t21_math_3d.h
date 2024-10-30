@@ -93,7 +93,7 @@ namespace t21
 
     Vector3f& Normalize();
 
-    void Rotate(float Angle, const Vector3f& Axis);
+    void Rotate(float angle, const Vector3f& Axis);
 
     void Print() const
     {
@@ -161,11 +161,11 @@ namespace t21
       return Ret;
     }
 
-    void InitScaleTransform(float ScaleX, float ScaleY, float ScaleZ);
-    void InitRotateTransform(float RotateX, float RotateY, float RotateZ);
+    void InitScaleTransform(float scaleX, float scaleY, float scaleZ);
+    void InitRotateTransform(float rotateX, float rotateY, float rotateZ);
     void InitTranslationTransform(float x, float y, float z);
-    void InitCameraTransform(const Vector3f& Target, const Vector3f& Up);
-    void InitPersProjTransform(float FOV, float Width, float Height, float zNear, float zFar);
+    void InitCameraTransform(const Vector3f& target, const Vector3f& up);
+    void InitPersProjTransform(float FOV, float width, float Height, float zNear, float zFar);
   };
 
 

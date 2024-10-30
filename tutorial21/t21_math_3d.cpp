@@ -40,14 +40,14 @@ namespace t21
     return *this;
   }
 
-  void Vector3f::Rotate(float Angle, const Vector3f& Axe)
+  void Vector3f::Rotate(float angle, const Vector3f& axe)
   {
-    const float SinHalfAngle = sinf(ToRadian(Angle/2));
-    const float CosHalfAngle = cosf(ToRadian(Angle/2));
+    const float SinHalfAngle = sinf(ToRadian(angle/2));
+    const float CosHalfAngle = cosf(ToRadian(angle/2));
 
-    const float Rx = Axe.x * SinHalfAngle;
-    const float Ry = Axe.y * SinHalfAngle;
-    const float Rz = Axe.z * SinHalfAngle;
+    const float Rx = axe.x * SinHalfAngle;
+    const float Ry = axe.y * SinHalfAngle;
+    const float Rz = axe.z * SinHalfAngle;
     const float Rw = CosHalfAngle;
     Quaternion RotationQ(Rx, Ry, Rz, Rw);
 
@@ -61,21 +61,21 @@ namespace t21
   }
 
 
-  void Matrix4f::InitScaleTransform(float ScaleX, float ScaleY, float ScaleZ)
+  void Matrix4f::InitScaleTransform(float scaleX, float scaleY, float scaleZ)
   {
-    m[0][0] = ScaleX; m[0][1] = 0.0f;   m[0][2] = 0.0f;   m[0][3] = 0.0f;
-    m[1][0] = 0.0f;   m[1][1] = ScaleY; m[1][2] = 0.0f;   m[1][3] = 0.0f;
-    m[2][0] = 0.0f;   m[2][1] = 0.0f;   m[2][2] = ScaleZ; m[2][3] = 0.0f;
+    m[0][0] = scaleX; m[0][1] = 0.0f;   m[0][2] = 0.0f;   m[0][3] = 0.0f;
+    m[1][0] = 0.0f;   m[1][1] = scaleY; m[1][2] = 0.0f;   m[1][3] = 0.0f;
+    m[2][0] = 0.0f;   m[2][1] = 0.0f;   m[2][2] = scaleZ; m[2][3] = 0.0f;
     m[3][0] = 0.0f;   m[3][1] = 0.0f;   m[3][2] = 0.0f;   m[3][3] = 1.0f;
   }
 
-  void Matrix4f::InitRotateTransform(float RotateX, float RotateY, float RotateZ)
+  void Matrix4f::InitRotateTransform(float rotateX, float rotateY, float rotateZ)
   {
     Matrix4f rx, ry, rz;
 
-    const float x = ToRadian(RotateX);
-    const float y = ToRadian(RotateY);
-    const float z = ToRadian(RotateZ);
+    const float x = ToRadian(rotateX);
+    const float y = ToRadian(rotateY);
+    const float z = ToRadian(rotateZ);
 
     rx.m[0][0] = 1.0f; rx.m[0][1] = 0.0f   ; rx.m[0][2] = 0.0f    ; rx.m[0][3] = 0.0f;
     rx.m[1][0] = 0.0f; rx.m[1][1] = cosf(x); rx.m[1][2] = -sinf(x); rx.m[1][3] = 0.0f;
@@ -104,11 +104,11 @@ namespace t21
   }
 
 
-  void Matrix4f::InitCameraTransform(const Vector3f& Target, const Vector3f& Up)
+  void Matrix4f::InitCameraTransform(const Vector3f& target, const Vector3f& up)
   {
-    Vector3f N = Target;
+    Vector3f N = target;
     N.Normalize();
-    Vector3f U = Up;
+    Vector3f U = up;
     U.Normalize();
     U = U.Cross(N);
     Vector3f V = N.Cross(U);
@@ -119,9 +119,9 @@ namespace t21
     m[3][0] = 0.0f;  m[3][1] = 0.0f;  m[3][2] = 0.0f;  m[3][3] = 1.0f;
   }
 
-  void Matrix4f::InitPersProjTransform(float FOV, float Width, float Height, float zNear, float zFar)
+  void Matrix4f::InitPersProjTransform(float FOV, float width, float Height, float zNear, float zFar)
   {
-    const float ar         = Width / Height;
+    const float ar         = width / Height;
     const float zRange     = zNear - zFar;
     const float tanHalfFOV = tanf(ToRadian(FOV / 2.0f));
 
@@ -139,19 +139,18 @@ namespace t21
 
   void Quaternion::Normalize()
   {
-    float Length = sqrtf(x * x + y * y + z * z + w * w);
+    const float length = sqrtf(x * x + y * y + z * z + w * w);
 
-    x /= Length;
-    y /= Length;
-    z /= Length;
-    w /= Length;
+    x /= length;
+    y /= length;
+    z /= length;
+    w /= length;
   }
 
 
   Quaternion Quaternion::Conjugate()
   {
-    Quaternion ret(-x, -y, -z, w);
-    return ret;
+    return { -x, -y, -z, w };
   }
 
   Quaternion operator*(const Quaternion& l, const Quaternion& r)
@@ -161,9 +160,7 @@ namespace t21
     const float y = (l.y * r.w) + (l.w * r.y) + (l.z * r.x) - (l.x * r.z);
     const float z = (l.z * r.w) + (l.w * r.z) + (l.x * r.y) - (l.y * r.x);
 
-    Quaternion ret(x, y, z, w);
-
-    return ret;
+    return { x, y, z, w };
   }
 
   Quaternion operator*(const Quaternion& q, const Vector3f& v)
@@ -173,8 +170,6 @@ namespace t21
     const float y =   (q.w * v.y) + (q.z * v.x) - (q.x * v.z);
     const float z =   (q.w * v.z) + (q.x * v.y) - (q.y * v.x);
 
-    Quaternion ret(x, y, z, w);
-
-    return ret;
+    return { x, y, z, w };
   }
 }

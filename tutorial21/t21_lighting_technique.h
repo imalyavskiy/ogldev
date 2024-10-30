@@ -1,6 +1,7 @@
 #ifndef LIGHTING_TECHNIQUE_H
 #define	LIGHTING_TECHNIQUE_H
 
+#include <array>
 #include "t21_technique.h"
 #include "t21_math_3d.h"
 
@@ -62,45 +63,38 @@ namespace t21
     }
   };
 
-  class LightingTechnique : public Technique {
+  class LightingTechnique
+  : public Technique
+  {
   public:
 
-    static const unsigned int MAX_POINT_LIGHTS = 2;
-    static const unsigned int MAX_SPOT_LIGHTS = 2;
+    static constexpr uint32_t MAX_POINT_LIGHTS = 2;
+    static constexpr uint32_t MAX_SPOT_LIGHTS = 2;
 
-    LightingTechnique();
+    LightingTechnique() = default;
 
-    virtual bool Init();
+    bool Init() override;
 
     void SetWVP(const Matrix4f& WVP);
     void SetWorldMatrix(const Matrix4f& WVP);
-    void SetTextureUnit(unsigned int TextureUnit);
-    void SetDirectionalLight(const DirectionalLight& Light);
-    void SetPointLights(unsigned int NumLights, const PointLight* pLights);
-    void SetSpotLights(unsigned int NumLights, const SpotLight* pLights);
+    void SetTextureUnit(uint32_t textureUnit);
+    void SetDirectionalLight(const DirectionalLight& light);
+    void SetPointLights(uint32_t NumLights, const PointLight* pLights);
+    void SetSpotLights(uint32_t numLights, const SpotLight* pLights);
     void SetEyeWorldPos(const Vector3f& EyeWorldPos);
-    void SetMatSpecularIntensity(float Intensity);
-    void SetMatSpecularPower(float Power);
+    void SetMatSpecularIntensity(float intensity);
+    void SetMatSpecularPower(float power);
 
   private:
 
-    GLuint m_WVPLocation;
-    GLuint m_WorldMatrixLocation;
-    GLuint m_samplerLocation;
-    GLuint m_eyeWorldPosLocation;
-    GLuint m_matSpecularIntensityLocation;
-    GLuint m_matSpecularPowerLocation;
-    GLuint m_numPointLightsLocation;
-    GLuint m_numSpotLightsLocation;
-
-    struct {
+    struct DirectionLightLocation {
       GLuint Color;
       GLuint AmbientIntensity;
       GLuint DiffuseIntensity;
       GLuint Direction;
-    } m_dirLightLocation;
+    };
 
-    struct {
+    struct PointLightLocations {
       GLuint Color;
       GLuint AmbientIntensity;
       GLuint DiffuseIntensity;
@@ -110,9 +104,9 @@ namespace t21
         GLuint Linear;
         GLuint Exp;
       } Atten;
-    } m_pointLightsLocation[MAX_POINT_LIGHTS];
+    };
 
-    struct {
+    struct SpotLightLocations {
       GLuint Color;
       GLuint AmbientIntensity;
       GLuint DiffuseIntensity;
@@ -124,7 +118,22 @@ namespace t21
         GLuint Linear;
         GLuint Exp;
       } Atten;
-    } m_spotLightsLocation[MAX_SPOT_LIGHTS];
+    };
+
+    GLuint m_WVPLocation;
+    GLuint m_WorldMatrixLocation;
+    GLuint m_samplerLocation;
+    GLuint m_eyeWorldPosLocation;
+    GLuint m_matSpecularIntensityLocation;
+    GLuint m_matSpecularPowerLocation;
+    GLuint m_numPointLightsLocation;
+    GLuint m_numSpotLightsLocation;
+
+    DirectionLightLocation m_dirLightLocation;
+
+    std::array<PointLightLocations, MAX_POINT_LIGHTS> m_pointLightsLocation;
+
+    std::array<SpotLightLocations, MAX_SPOT_LIGHTS> m_spotLightsLocation;
   };
 }
 
