@@ -1,13 +1,13 @@
-#include <math.h>
+#include <cmath>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
-#include "pipeline.h"
-#include "camera.h"
-#include "texture.h"
-#include "lighting_technique.h"
-#include "glut_backend.h"
-#include "util.h"
+#include "t21_pipeline.h"
+#include "t21_camera.h"
+#include "t21_texture.h"
+#include "t21_lighting_technique.h"
+#include "t21_glut_backend.h"
+#include "t21_util.h"
 
 #define WINDOW_WIDTH  1280
 #define WINDOW_HEIGHT 1024
@@ -162,7 +162,7 @@ public:
     virtual void KeyboardCB(unsigned char Key, int x, int y)
     {
         switch (Key) {
-            case 'q':
+            case 0x1b:
                 glutLeaveMainLoop();
                 break;
 

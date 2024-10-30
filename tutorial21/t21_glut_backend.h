@@ -1,7 +1,7 @@
 #ifndef GLUT_BACKEND_H
 #define GLUT_BACKEND_H
 
-#include "callbacks.h"
+#include "t21_callbacks.h"
 
 void GLUTBackendInit(int argc, char** argv);
 
