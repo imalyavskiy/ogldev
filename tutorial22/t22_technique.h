@@ -12,18 +12,23 @@ namespace t22
   class Technique
   {
   public:
-    Technique();
+    Technique() = default;
+
     virtual ~Technique();
+
     virtual bool Init();
+
     void Enable();
 
   protected:
-    bool AddShader(GLenum ShaderType, const char* pShaderText);
+    bool AddShader(GLenum shaderType, const char* pShaderText);
+
     bool Finalize();
+
     GLint GetUniformLocation(const char* pUniformName);
 
   private:
-    GLuint m_shaderProg;
+    GLuint m_shaderProg = 0;
     typedef std::list<GLuint> ShaderObjList;
     ShaderObjList m_shaderObjList;
   };

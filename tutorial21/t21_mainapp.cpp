@@ -13,6 +13,13 @@
 
 namespace t21
 {
+  Vertex::Vertex(const Vector3f& pos, const Vector2f& tex)
+  : m_pos(pos)
+  , m_tex(tex)
+  , m_normal{ 0.0f, 0.0f, 0.0f }
+  {
+  }
+
   MainApp::MainApp(GLint winWidth, GLint winHeight)
   : m_winWidth(winWidth)
   , m_winHeight(winHeight)

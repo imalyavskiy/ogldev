@@ -22,46 +22,37 @@ namespace t22
     Vector2f m_tex;
     Vector3f m_normal;
 
-    Vertex() {}
+    Vertex() = default;
 
-    Vertex(const Vector3f& pos, const Vector2f& tex, const Vector3f& normal)
-    {
-      m_pos    = pos;
-      m_tex    = tex;
-      m_normal = normal;
-    }
+    Vertex(const Vector3f& pos, const Vector2f& tex, const Vector3f& normal);
   };
 
   class Mesh
   {
   public:
-    Mesh(){};
-    ~Mesh(){
-      Clear();
-    };
-    bool LoadMesh(const std::string& Filename);
-    void Render();
+    Mesh() = default;
+    ~Mesh();
+
+    bool LoadMesh(const std::string& filename);
+    void Render() const;
 
   private:
-    bool InitFromScene(const aiScene* pScene, const std::string& Filename);
-    void InitMesh(unsigned int Index, const aiMesh* paiMesh);
+    bool InitFromScene(const aiScene* pScene, const std::string& filename);
+    void InitMesh(GLuint index, const aiMesh* pAiMesh);
     bool InitMaterials(const aiScene* pScene, const std::string& Filename);
     void Clear();
 
-#define INVALID_MATERIAL 0xFFFFFFFF
-
-    struct MeshEntry{
-      MeshEntry();
+    struct MeshEntry {
+      MeshEntry() = default;
       ~MeshEntry();
 
-      bool Init(const std::vector<Vertex>& Vertices,
-                const std::vector<unsigned int>& Indices);
+      bool Init(const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices);
 
-      GLuint VB;
-      GLuint IB;
+      GLuint VBO = INVALID_OGL_VALUE;
+      GLuint IBO = INVALID_OGL_VALUE;
 
-      unsigned int NumIndices;
-      unsigned int MaterialIndex;
+      GLuint NumIndices = 0;
+      GLuint MaterialIndex = INVALID_MATERIAL;
     };
 
     std::vector<MeshEntry> m_Entries;

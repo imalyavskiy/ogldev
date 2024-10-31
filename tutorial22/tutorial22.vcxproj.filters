@@ -45,6 +45,9 @@
     <ClInclude Include="t22_util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="t22_mainapp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="t22_camera.cpp">
@@ -72,6 +75,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="t22_texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="t22_mainapp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

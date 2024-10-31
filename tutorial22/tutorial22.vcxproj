@@ -15,6 +15,7 @@
     <ClInclude Include="t22_camera.h" />
     <ClInclude Include="t22_glut_backend.h" />
     <ClInclude Include="t22_lighting_technique.h" />
+    <ClInclude Include="t22_mainapp.h" />
     <ClInclude Include="t22_math_3d.h" />
     <ClInclude Include="t22_mesh.h" />
     <ClInclude Include="t22_pipeline.h" />
@@ -27,6 +28,7 @@
     <ClCompile Include="t22_glut_backend.cpp" />
     <ClCompile Include="t22_lighting_technique.cpp" />
     <ClCompile Include="t22_main.cpp" />
+    <ClCompile Include="t22_mainapp.cpp" />
     <ClCompile Include="t22_math_3d.cpp" />
     <ClCompile Include="t22_mesh.cpp" />
     <ClCompile Include="t22_pipeline.cpp" />

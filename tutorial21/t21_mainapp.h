@@ -18,12 +18,7 @@ namespace t21
 
     Vertex() = default;
 
-    Vertex(Vector3f pos, Vector2f tex)
-    {
-      m_pos = pos;
-      m_tex = tex;
-      m_normal = Vector3f(0.0f, 0.0f, 0.0f);
-    }
+    Vertex(const Vector3f& pos, const Vector2f& tex);
   };
 
   class MainApp : public ICallbacks

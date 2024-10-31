@@ -23,6 +23,8 @@
 
 #define INVALID_OGL_VALUE 0xFFFFFFFF
 
+#define INVALID_MATERIAL 0xFFFFFFFF
+
 #define SAFE_DELETE(p) if (p) { delete p; p = NULL; }
 
 #endif	/* UTIL_H */

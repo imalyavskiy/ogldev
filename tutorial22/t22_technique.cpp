@@ -5,12 +5,8 @@
 
 namespace t22
 {
-  Technique::Technique(){
-    m_shaderProg = 0;
-  }
-
   Technique::~Technique(){
-    for (ShaderObjList::iterator it = m_shaderObjList.begin(); it != m_shaderObjList.end(); it++){
+    for (auto it = m_shaderObjList.begin(); it != m_shaderObjList.end(); ++it){
       glDeleteShader(*it);
     }
 
@@ -31,43 +27,39 @@ namespace t22
     return true;
   }
 
-  //Используем этот метод для добавления шейдеров в программу. Когда заканчиваем - вызываем finalize()
-  bool Technique::AddShader(GLenum ShaderType, const char* pShaderText){
-    GLuint ShaderObj = glCreateShader(ShaderType);
+  bool Technique::AddShader(GLenum shaderType, const char* pShaderText){
+    const GLuint shaderObj = glCreateShader(shaderType);
 
-    if (ShaderObj == 0){
-      fprintf(stderr, "Error creating shader type %d\n", ShaderType);
+    if (shaderObj == 0){
+      fprintf(stderr, "Error creating shader type %d\n", shaderType);
       return false;
     }
 
-    // Сохраним объект шейдера - он будет удален в декструкторе
-    m_shaderObjList.push_back(ShaderObj);
+    m_shaderObjList.push_back(shaderObj);
 
     const GLchar* p[1];
     p[0] = pShaderText;
     GLint Lengths[1];
     Lengths[0] = strlen(pShaderText);
-    glShaderSource(ShaderObj, 1, p, Lengths);
+    glShaderSource(shaderObj, 1, p, Lengths);
 
-    glCompileShader(ShaderObj);
+    glCompileShader(shaderObj);
 
     GLint success;
-    glGetShaderiv(ShaderObj, GL_COMPILE_STATUS, &success);
+    glGetShaderiv(shaderObj, GL_COMPILE_STATUS, &success);
 
     if (!success){
       GLchar InfoLog[1024];
-      glGetShaderInfoLog(ShaderObj, 1024, NULL, InfoLog);
-      fprintf(stderr, "Error compiling shader type %d: '%s'\n", ShaderType, InfoLog);
+      glGetShaderInfoLog(shaderObj, 1024, nullptr, InfoLog);
+      fprintf(stderr, "Error compiling shader type %d: '%s'\n", shaderType, InfoLog);
       return false;
     }
 
-    glAttachShader(m_shaderProg, ShaderObj);
+    glAttachShader(m_shaderProg, shaderObj);
 
     return true;
   }
 
-  // После добавления всех шейдеров в программу вызываем эту функцию
-  // для линковки и проверки программу на ошибки
   bool Technique::Finalize(){
     GLint Success = 0;
     GLchar ErrorLog[1024] = {0};
@@ -76,7 +68,7 @@ namespace t22
 
     glGetProgramiv(m_shaderProg, GL_LINK_STATUS, &Success);
     if (Success == 0){
-      glGetProgramInfoLog(m_shaderProg, sizeof(ErrorLog), NULL, ErrorLog);
+      glGetProgramInfoLog(m_shaderProg, sizeof(ErrorLog), nullptr, ErrorLog);
       fprintf(stderr, "Error linking shader program: '%s'\n", ErrorLog);
       return false;
     }
@@ -84,13 +76,12 @@ namespace t22
     glValidateProgram(m_shaderProg);
     glGetProgramiv(m_shaderProg, GL_VALIDATE_STATUS, &Success);
     if (Success == 0){
-      glGetProgramInfoLog(m_shaderProg, sizeof(ErrorLog), NULL, ErrorLog);
+      glGetProgramInfoLog(m_shaderProg, sizeof(ErrorLog), nullptr, ErrorLog);
       fprintf(stderr, "Invalid shader program: '%s'\n", ErrorLog);
       return false;
     }
 
-    // Удаляем промежуточные объекты шейдеров, которые были добавлены в программу
-    for (ShaderObjList::iterator it = m_shaderObjList.begin(); it != m_shaderObjList.end(); it++){
+    for (auto it = m_shaderObjList.begin(); it != m_shaderObjList.end(); ++it){
       glDeleteShader(*it);
     }
 
@@ -104,12 +95,12 @@ namespace t22
   }
 
   GLint Technique::GetUniformLocation(const char* pUniformName){
-    GLint Location = glGetUniformLocation(m_shaderProg, pUniformName);
+    const GLint location = glGetUniformLocation(m_shaderProg, pUniformName);
 
-    if ((unsigned int)Location == 0xFFFFFFFF){
+    if (location == 0xFFFFFFFF){
       fprintf(stderr, "Warning! Unable to get the location of uniform '%s'\n", pUniformName);
     }
 
-    return Location;
+    return location;
   }
 }
