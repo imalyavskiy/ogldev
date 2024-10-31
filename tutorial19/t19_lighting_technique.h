@@ -30,19 +30,19 @@ namespace t19
     void SetMatSpecularPower(float Power);
 
   private:
-    GLint m_WVPLocation = 0xFFFFFFFF;
-    GLint m_WorldMatrixLocation = 0xFFFFFFFF;
-    GLint m_samplerLocation = 0xFFFFFFFF;
+    GLint m_WVPLocation              = -1; // 0xFFFFFFFF
+    GLint m_WorldMatrixLocation      = -1; // 0xFFFFFFFF
+    GLint m_samplerLocation          = -1; // 0xFFFFFFFF
 
-    GLint m_eyeWorldPosition = 0xFFFFFFFF;
-    GLint m_matSpecularIntensityLocation = 0xFFFFFFFF;
-    GLint m_matSpecularPowerLocation = 0xFFFFFFFF;
+    GLint m_eyeWorldPosition         = -1; // 0xFFFFFFFF
+    GLint m_matSpecularIntensityLocation = -1; // 0xFFFFFFFF
+    GLint m_matSpecularPowerLocation = -1; // 0xFFFFFFFF
 
     struct {
-      GLint Color = 0xFFFFFFFF;
-      GLint AmbientIntensity = 0xFFFFFFFF;
-      GLint Direction = 0xFFFFFFFF;
-      GLint DiffuseIntensity = 0xFFFFFFFF;
+      GLint Color                    = -1; // 0xFFFFFFFF
+      GLint AmbientIntensity         = -1; // 0xFFFFFFFF
+      GLint Direction                = -1; // 0xFFFFFFFF
+      GLint DiffuseIntensity         = -1; // 0xFFFFFFFF
     } m_dirLightLocation;
   };
 }

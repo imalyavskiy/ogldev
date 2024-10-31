@@ -43,16 +43,16 @@ namespace t18
   "    vec4 AmbientColor = vec4(gDirectionalLight.Color, 1.0f) *                         \n"\
   "                        gDirectionalLight.AmbientIntensity;                           \n"\
   "                                                                                      \n"\
-  "    float DiffuseFactor = dot(normalize(Normal0), -gDirectionalLight.Direction);      \n"\
+  "    vec3 LightDirection = -gDirectionalLight.Direction;                               \n"\
+  "    vec3 Normal = normalize(Normal0);                                                 \n"\
   "                                                                                      \n"\
-  "    vec4 DiffuseColor;                                                                \n"\
+  "    float DiffuseFactor = dot(Normal, LightDirection);                                \n"\
+  "                                                                                      \n"\
+  "    vec4 DiffuseColor = vec4(0,0,0,0);                                                \n"\
   "    if (DiffuseFactor > 0) {                                                          \n"\
   "      DiffuseColor = vec4(gDirectionalLight.Color, 1.0f) *                            \n"\
   "                     gDirectionalLight.DiffuseIntensity *                             \n"\
   "                     DiffuseFactor;                                                   \n"\
-  "    }                                                                                 \n"\
-  "    else {                                                                            \n"\
-  "      DiffuseColor = vec4(0,0,0,0);                                                   \n"\
   "    }                                                                                 \n"\
   "                                                                                      \n"\
   "    FragColor = texture2D(gSampler, TexCoord0.xy) *                                   \n"\
