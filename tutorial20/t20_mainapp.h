@@ -1,6 +1,6 @@
 #pragma once
-#ifndef MAIN_APP_H
-#define MAIN_APP_H
+#ifndef T20_MAIN_APP_H
+#define T20_MAIN_APP_H
 
 #include <GL/glew.h>
 #include "t20_lighting_technique.h"
@@ -65,5 +65,5 @@ namespace t20
     DirectionalLight m_directionalLight;
   };
 }
-#endif MAIN_APP_H
+#endif // T20_MAIN_APP_H
 

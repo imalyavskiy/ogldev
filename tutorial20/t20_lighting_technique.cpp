@@ -145,9 +145,9 @@ namespace t20
   PointLight::PointLight()
   {
     Position = Vector3f(0.0f, 0.0f, 0.0f);
-    attenuation.Constant = 1.0f;
-    attenuation.Linear = 0.0f;
-    attenuation.Exp = 0.0f;
+    Attenuation.Constant = 1.0f;
+    Attenuation.Linear = 0.0f;
+    Attenuation.Exp = 0.0f;
   }
 
   LightingTechnique::LightingTechnique()
@@ -306,9 +306,9 @@ namespace t20
       glUniform1f(m_pointLightsLocation[i].AmbientIntensity, pLights[i].AmbientIntensity);
       glUniform1f(m_pointLightsLocation[i].DiffuseIntensity, pLights[i].DiffuseIntensity);
       glUniform3f(m_pointLightsLocation[i].Position, pLights[i].Position.x, pLights[i].Position.y, pLights[i].Position.z);
-      glUniform1f(m_pointLightsLocation[i].attenuation.Constant, pLights[i].attenuation.Constant);
-      glUniform1f(m_pointLightsLocation[i].attenuation.Linear, pLights[i].attenuation.Linear);
-      glUniform1f(m_pointLightsLocation[i].attenuation.Exp, pLights[i].attenuation.Exp);
+      glUniform1f(m_pointLightsLocation[i].attenuation.Constant, pLights[i].Attenuation.Constant);
+      glUniform1f(m_pointLightsLocation[i].attenuation.Linear, pLights[i].Attenuation.Linear);
+      glUniform1f(m_pointLightsLocation[i].attenuation.Exp, pLights[i].Attenuation.Exp);
     }
   }
 }

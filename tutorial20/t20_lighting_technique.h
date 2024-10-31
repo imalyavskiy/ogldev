@@ -32,14 +32,14 @@ namespace t20
   {
     Vector3f Position;
 
-    struct Attenuation
+    struct AttenuationT
     {
       float Constant;
       float Linear;
       float Exp;
     };
 
-    Attenuation attenuation;
+    AttenuationT Attenuation;
 
     PointLight();
   };

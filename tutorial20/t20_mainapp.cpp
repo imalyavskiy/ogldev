@@ -78,17 +78,17 @@ namespace t20
     pointLights[0].DiffuseIntensity = 0.5f;
     pointLights[0].Color = Vector3f(1.0f, 0.0f, 0.0f);
     pointLights[0].Position = Vector3f(sinf(m_scale) * 10, 1.0f, cosf(m_scale) * 10);
-    pointLights[0].attenuation.Linear = 0.1f;
+    pointLights[0].Attenuation.Linear = 0.1f;
 
     pointLights[1].DiffuseIntensity = 0.5f;
     pointLights[1].Color = Vector3f(0.0f, 1.0f, 0.0f);
     pointLights[1].Position = Vector3f(sinf(m_scale + 2.1f) * 10, 1.0f, cosf(m_scale + 2.1f) * 10);
-    pointLights[1].attenuation.Linear = 0.1f;
+    pointLights[1].Attenuation.Linear = 0.1f;
 
     pointLights[2].DiffuseIntensity = 0.5f;
     pointLights[2].Color = Vector3f(0.0f, 0.0f, 1.0f);
     pointLights[2].Position = Vector3f(sinf(m_scale + 4.2f) * 10, 1.0f, cosf(m_scale + 4.2f) * 10);
-    pointLights[2].attenuation.Linear = 0.1f;
+    pointLights[2].Attenuation.Linear = 0.1f;
 
     m_pEffect->SetPointLights(pointLights.size(), pointLights.data());
 
