@@ -2,23 +2,25 @@
 #define SHADOWMAPFBO_H
 
 #include <GL/glew.h>
-
-class ShadowMapFBO
+namespace t23
 {
-    public:
-        ShadowMapFBO();
+  class ShadowMapFBO
+  {
+  public:
+    ShadowMapFBO();
 
-        ~ShadowMapFBO();
+    ~ShadowMapFBO();
 
-        bool Init(unsigned int WindowWidth, unsigned int WindowHeight);
+    bool Init(unsigned int WindowWidth, unsigned int WindowHeight);
 
-        void BindForWriting();
+    void BindForWriting();
 
-        void BindForReading(GLenum TextureUnit);
+    void BindForReading(GLenum TextureUnit);
 
-    private:
-        GLuint m_fbo;
-        GLuint m_shadowMap;
-};
+  private:
+    GLuint m_fbo;
+    GLuint m_shadowMap;
+  };
+}
 
 #endif /* SHADOWMAPFBO_H */

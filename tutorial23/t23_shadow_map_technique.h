@@ -4,18 +4,21 @@
 #include "t23_technique.h"
 #include "t23_math_3d.h"
 
-class ShadowMapTechnique : public Technique {
+namespace t23
+{
+  class ShadowMapTechnique : public Technique {
 
-public:
+  public:
     ShadowMapTechnique();
     virtual bool Init();
     void SetWVP(const Matrix4f& WVP);
     void SetTextureUnit(unsigned int TextureUnit);
 
-private:
+  private:
 
     GLuint m_WVPLocation;
     GLuint m_textureLocation;
-};
+  };
+}
 
 #endif	/* SHADOW_MAP_TECHNIQUE_H */
