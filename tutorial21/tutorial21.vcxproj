@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="t21_mainapp.h" />
     <ClInclude Include="t21_callbacks.h" />
     <ClInclude Include="t21_camera.h" />
     <ClInclude Include="t21_glut_backend.h" />
@@ -22,6 +23,7 @@
     <ClInclude Include="t21_util.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="t21_mainapp.cpp" />
     <ClCompile Include="t21_camera.cpp" />
     <ClCompile Include="t21_glut_backend.cpp" />
     <ClCompile Include="t21_lighting_technique.cpp" />

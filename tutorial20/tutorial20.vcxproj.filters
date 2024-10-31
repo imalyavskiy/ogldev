@@ -42,6 +42,9 @@
     <ClInclude Include="t20_camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="t20_mainapp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="t20_camera.cpp">
@@ -66,6 +69,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="t20_texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="t20_mainapp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

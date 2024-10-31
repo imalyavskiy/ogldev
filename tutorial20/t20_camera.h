@@ -43,11 +43,11 @@ namespace t20
     Vector3f m_target;
     Vector3f m_up;
 
-    int m_windowWidth;
-    int m_windowHeight;
+    int m_windowWidth = 0;
+    int m_windowHeight = 0;
 
-    float m_hAngle;
-    float m_vAngle;
+    float m_hAngle = 0.f;
+    float m_vAngle = 0.f;
 
     Vector2i m_mousePos;
   };

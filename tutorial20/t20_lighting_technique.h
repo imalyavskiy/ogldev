@@ -1,10 +1,15 @@
 #ifndef LIGHTINGTECHNIQUE_H
 #define LIGHTINGTECHNIQUE_H
 
+#include <array>
+
+#include "t20_camera.h"
+#include "t20_texture.h"
 #include "t20_technique.h"
 #include "t20_math_3d.h"
 
 #define MAX_POINT_LIGHTS 3
+
 namespace t20
 {
   struct BaseLight
@@ -13,52 +18,40 @@ namespace t20
     float AmbientIntensity;
     float DiffuseIntensity;
 
-    BaseLight()
-    {
-      Color = Vector3f(0.0f, 0.0f, 0.0f);
-      AmbientIntensity = 0.0f;
-      DiffuseIntensity = 0.0f;
-    }
+    BaseLight();
   };
 
   struct DirectionalLight : public BaseLight
   {
     Vector3f Direction;
 
-    DirectionalLight()
-    {
-      Direction = Vector3f(0.0f, 0.0f, 0.0f);
-    }
+    DirectionalLight();
   };
 
   struct PointLight : public BaseLight
   {
     Vector3f Position;
 
-    struct
+    struct Attenuation
     {
       float Constant;
       float Linear;
       float Exp;
-    } Attenuation;
+    };
 
-    PointLight()
-    {
-      Position = Vector3f(0.0f, 0.0f, 0.0f);
-      Attenuation.Constant = 1.0f;
-      Attenuation.Linear = 0.0f;
-      Attenuation.Exp = 0.0f;
-    }
+    Attenuation attenuation;
+
+    PointLight();
   };
 
   class LightingTechnique : public Technique
   {
   public:
     LightingTechnique();
-    virtual bool Init();
+    bool Init() override;
 
     void SetWVP(const Matrix4f& WVP);
-    void SetWorldMatrix(const Matrix4f& WVP);
+    void SetWorldMatrix(const Matrix4f& WorldInverse);
     void SetTextureUnit(unsigned int TextureUnit);
     void SetDirectionalLight(const DirectionalLight& Light);
 
