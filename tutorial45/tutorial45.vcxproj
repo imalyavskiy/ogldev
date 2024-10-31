@@ -67,15 +67,11 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)_bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)_int\$(Configuration)\$(ProjectName)\</IntDir>
-    <LibraryPath>$(SolutionDir)..\GLFW\src\$(Configuration);$(SolutionDir)lib\$(Configuration)\$(PlatformShortName);$(SolutionDir)..\AntTweakBar_116\lib;$(SolutionDir)..\glfx\_bin\$(PlatformShortName)\debug-dll;$(SolutionDir)..\Assimp\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName);$(SolutionDir)..\ImageMagick-Windows\VisualMagick\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)..\GLFW\include;$(SolutionDir)..\AntTweakBar_116\include;$(SolutionDir)..\glfx\include;$(SolutionDir)..\Assimp\include;$(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName);$(SolutionDir)..\glew.2.0.0.exports\inc;$(SolutionDir)Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)_bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)_int\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)..\GLFW\include;$(SolutionDir)..\AntTweakBar_116\include;$(SolutionDir)..\glfx\include;$(SolutionDir)..\Assimp\include;$(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName);$(SolutionDir)..\glew.2.0.0.exports\inc;$(SolutionDir)Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\GLFW\src\$(Configuration);$(SolutionDir)lib\$(Configuration)\$(PlatformShortName);$(SolutionDir)..\AntTweakBar_116\lib;$(SolutionDir)..\glfx\_bin\$(PlatformShortName)\debug-dll;$(SolutionDir)..\Assimp\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName);$(SolutionDir)..\ImageMagick-Windows\VisualMagick\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -87,20 +83,14 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;Common.lib;AntTweakBar.lib;glfx.lib;assimp-vc142-mtd.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PostBuildEvent>
-      <Command>copy $(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName)\FreeImage.dll $(OutDir)FreeImage.dll
-copy $(SolutionDir)..\Assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc142-mtd.dll $(OutDir)assimp-vc142-mtd.dll
-copy $(SolutionDir)..\glfx\_bin\x86\debug-dll\glfx.dll $(OutDir)glfx.dll
-copy $(SolutionDir)..\AntTweakBar_116\lib\AntTweakBar.dll $(OutDir)AntTweakBar.dll</Command>
-    </PostBuildEvent>
+    <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -112,20 +102,16 @@ copy $(SolutionDir)..\AntTweakBar_116\lib\AntTweakBar.dll $(OutDir)AntTweakBar.d
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;Common.lib;AntTweakBar.lib;glfx.lib;assimp-vc142-mt.lib;FreeImage.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PostBuildEvent>
-      <Command>copy $(SolutionDir)..\FreeImage3180\Dist\$(PlatformShortName)\FreeImage.dll $(OutDir)FreeImage.dll
-copy $(SolutionDir)..\Assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc142-mt.dll $(OutDir)assimp-vc142-mt.dll
-copy $(SolutionDir)..\glfx\_bin\x86\release-dll\glfx.dll $(OutDir)glfx.dll
-copy $(SolutionDir)..\AntTweakBar_116\lib\AntTweakBar.dll $(OutDir)AntTweakBar.dll</Command>
-    </PostBuildEvent>
+    <PostBuildEvent />
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
