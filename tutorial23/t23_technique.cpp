@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "technique.h"
+#include "t23_technique.h"
 
 Technique::Technique(){
     m_shaderProg = 0;
