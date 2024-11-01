@@ -15,6 +15,7 @@
     <ClInclude Include="t24_camera.h" />
     <ClInclude Include="t24_glut_backend.h" />
     <ClInclude Include="t24_lighting_technique.h" />
+    <ClInclude Include="t24_mainapp.h" />
     <ClInclude Include="t24_math_3d.h" />
     <ClInclude Include="t24_mesh.h" />
     <ClInclude Include="t24_pipeline.h" />
@@ -29,6 +30,7 @@
     <ClCompile Include="t24_glut_backend.cpp" />
     <ClCompile Include="t24_lighting_technique.cpp" />
     <ClCompile Include="t24_main.cpp" />
+    <ClCompile Include="t24_mainapp.cpp" />
     <ClCompile Include="t24_math_3d.cpp" />
     <ClCompile Include="t24_mesh.cpp" />
     <ClCompile Include="t24_pipeline.cpp" />
