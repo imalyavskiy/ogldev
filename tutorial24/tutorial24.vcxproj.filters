@@ -15,75 +15,75 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="callbacks.h">
+    <ClInclude Include="t24_callbacks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="camera.h">
+    <ClInclude Include="t24_camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="glut_backend.h">
+    <ClInclude Include="t24_glut_backend.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="lighting_technique.h">
+    <ClInclude Include="t24_lighting_technique.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="math_3d.h">
+    <ClInclude Include="t24_math_3d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mesh.h">
+    <ClInclude Include="t24_mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pipeline.h">
+    <ClInclude Include="t24_pipeline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="shadow_map_fbo.h">
+    <ClInclude Include="t24_shadow_map_fbo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="shadow_map_technique.h">
+    <ClInclude Include="t24_shadow_map_technique.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="technique.h">
+    <ClInclude Include="t24_technique.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="texture.h">
+    <ClInclude Include="t24_texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="util.h">
+    <ClInclude Include="t24_util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="camera.cpp">
+    <ClCompile Include="t24_camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="glut_backend.cpp">
+    <ClCompile Include="t24_glut_backend.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lighting_technique.cpp">
+    <ClCompile Include="t24_lighting_technique.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="t24_main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="math_3d.cpp">
+    <ClCompile Include="t24_math_3d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mesh.cpp">
+    <ClCompile Include="t24_mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pipeline.cpp">
+    <ClCompile Include="t24_pipeline.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="shadow_map_fbo.cpp">
+    <ClCompile Include="t24_shadow_map_fbo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="shadow_map_technique.cpp">
+    <ClCompile Include="t24_shadow_map_technique.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="technique.cpp">
+    <ClCompile Include="t24_technique.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="texture.cpp">
+    <ClCompile Include="t24_texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

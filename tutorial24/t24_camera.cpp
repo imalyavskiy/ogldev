@@ -1,6 +1,6 @@
 #include <GL/freeglut.h>
 
-#include "camera.h"
+#include "t24_camera.h"
 
 const static float STEP_SCALE = 0.4f;
 const static int MARGIN = 10;

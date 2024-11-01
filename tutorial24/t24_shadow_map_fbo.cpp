@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "shadow_map_fbo.h"
+#include "t24_shadow_map_fbo.h"
 
 ShadowMapFBO::ShadowMapFBO()
 {

@@ -1,4 +1,4 @@
-#include "shadow_map_technique.h"
+#include "t24_shadow_map_technique.h"
 
 static const char* pVS = "                                                          \n\
 #version 330                                                                        \n\

@@ -18,7 +18,7 @@
 
 #include <cassert>
 #include <iostream>
-#include "texture.h"
+#include "t24_texture.h"
 #include <FreeImage.h>
 
 FIBITMAP* GenericLoader(const char* lpszPathName, int flag) {

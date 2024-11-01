@@ -2,15 +2,15 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
-#include "pipeline.h"
-#include "camera.h"
-#include "texture.h"
-#include "lighting_technique.h"
-#include "glut_backend.h"
-#include "util.h"
-#include "mesh.h"
-#include "shadow_map_fbo.h"
-#include "shadow_map_technique.h"
+#include "t24_pipeline.h"
+#include "t24_camera.h"
+#include "t24_texture.h"
+#include "t24_lighting_technique.h"
+#include "t24_glut_backend.h"
+#include "t24_util.h"
+#include "t24_mesh.h"
+#include "t24_shadow_map_fbo.h"
+#include "t24_shadow_map_technique.h"
 
 #define WINDOW_WIDTH  1280
 #define WINDOW_HEIGHT 1024
