@@ -2,25 +2,27 @@
 
 #include "t24_shadow_map_fbo.h"
 
-ShadowMapFBO::ShadowMapFBO()
+namespace t24
 {
+  ShadowMapFBO::ShadowMapFBO()
+  {
     m_fbo = 0;
     m_shadowMap = 0;
-}
+  }
 
-ShadowMapFBO::~ShadowMapFBO()
-{
+  ShadowMapFBO::~ShadowMapFBO()
+  {
     if (m_fbo != 0){
-        glDeleteFramebuffers(1, &m_fbo);
+      glDeleteFramebuffers(1, &m_fbo);
     }
 
     if (m_shadowMap != 0){
-        glDeleteFramebuffers(1, &m_shadowMap);
+      glDeleteFramebuffers(1, &m_shadowMap);
     }
-}
+  }
 
-bool ShadowMapFBO::Init(unsigned int WindowWidth, unsigned int WindowHeight)
-{
+  bool ShadowMapFBO::Init(unsigned int WindowWidth, unsigned int WindowHeight)
+  {
     // Создаем FBO
     glGenFramebuffers(1, &m_fbo);
 
@@ -43,20 +45,21 @@ bool ShadowMapFBO::Init(unsigned int WindowWidth, unsigned int WindowHeight)
     GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 
     if (Status != GL_FRAMEBUFFER_COMPLETE){
-        printf("FB error, status: 0x%x\n", Status);
-        return false;
+      printf("FB error, status: 0x%x\n", Status);
+      return false;
     }
 
     return true;
-}
+  }
 
-void ShadowMapFBO::BindForWriting()
-{
+  void ShadowMapFBO::BindForWriting()
+  {
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fbo);
-}
+  }
 
-void ShadowMapFBO::BindForReading(GLenum TextureUnit)
-{
+  void ShadowMapFBO::BindForReading(GLenum TextureUnit)
+  {
     glActiveTexture(TextureUnit);
     glBindTexture(GL_TEXTURE_2D, m_shadowMap);
+  }
 }

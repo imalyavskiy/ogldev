@@ -21,56 +21,58 @@
 #include "t24_texture.h"
 #include <FreeImage.h>
 
-FIBITMAP* GenericLoader(const char* lpszPathName, int flag) {
+namespace t24
+{
+  FIBITMAP* GenericLoader(const char* lpszPathName, int flag) {
     auto fif = FIF_UNKNOWN;
 
     fif = FreeImage_GetFileType(lpszPathName, 0);
     if (fif == FIF_UNKNOWN) {
-        fif = FreeImage_GetFIFFromFilename(lpszPathName);
+      fif = FreeImage_GetFIFFromFilename(lpszPathName);
     }
 
     if ((fif != FIF_UNKNOWN) && FreeImage_FIFSupportsReading(fif)) {
-        return FreeImage_Load(fif, lpszPathName, flag);
+      return FreeImage_Load(fif, lpszPathName, flag);
     }
 
     return nullptr;
-}
+  }
 
-bool GenericWriter(FIBITMAP* dib, const std::string& lpszPathName, int flag) {
+  bool GenericWriter(FIBITMAP* dib, const std::string& lpszPathName, int flag) {
     FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
     BOOL bSuccess = FALSE;
 
     if (dib) {
-        fif = FreeImage_GetFIFFromFilename(lpszPathName.c_str());
-        if (fif != FIF_UNKNOWN) {
-            WORD bpp = FreeImage_GetBPP(dib);
-            if (FreeImage_FIFSupportsWriting(fif) && FreeImage_FIFSupportsExportBPP(fif, bpp)) {
-                bSuccess = FreeImage_Save(fif, dib, lpszPathName.c_str(), flag);
-            }
+      fif = FreeImage_GetFIFFromFilename(lpszPathName.c_str());
+      if (fif != FIF_UNKNOWN) {
+        WORD bpp = FreeImage_GetBPP(dib);
+        if (FreeImage_FIFSupportsWriting(fif) && FreeImage_FIFSupportsExportBPP(fif, bpp)) {
+          bSuccess = FreeImage_Save(fif, dib, lpszPathName.c_str(), flag);
         }
+      }
     }
     return (bSuccess == TRUE) ? true : false;
-}
+  }
 
-Texture::Texture(GLenum TextureTarget, std::string FileName)
-    : m_fileName(std::move(FileName))
-    , m_textureTarget(TextureTarget)
-{
+  Texture::Texture(GLenum TextureTarget, std::string FileName)
+      : m_fileName(std::move(FileName))
+      , m_textureTarget(TextureTarget)
+  {
     glGenTextures(1, &m_textureObj);
-}
+  }
 
-bool Texture::Load() const
-{
+  bool Texture::Load() const
+  {
     auto src = GenericLoader(m_fileName.c_str(), 0);
     if (!src)
-        return false;
+      return false;
 
     const auto type = FreeImage_GetColorType(src);
     if (type != FIC_RGB)
-        return false;
+      return false;
 
     if (!FreeImage_HasPixels(src))
-        return false;
+      return false;
 
     const GLsizei width = FreeImage_GetWidth(src);
     const GLsizei height = FreeImage_GetHeight(src);
@@ -85,10 +87,11 @@ bool Texture::Load() const
     FreeImage_Unload(src);
 
     return true;
-}
+  }
 
-void Texture::Bind(const GLenum TextureUnit) const
-{
+  void Texture::Bind(const GLenum TextureUnit) const
+  {
     glActiveTexture(TextureUnit);
     glBindTexture(m_textureTarget, m_textureObj);
+  }
 }

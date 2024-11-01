@@ -23,20 +23,23 @@
 
 #include <GL/glew.h>
 
-class Texture
+namespace t24
 {
-public:
+  class Texture
+  {
+  public:
     Texture(GLenum TextureTarget, std::string FileName);
 
     bool Load() const;
 
     void Bind(const GLenum TextureUnit) const;
 
-private:
+  private:
     std::string m_fileName;
     GLenum m_textureTarget;
     GLuint m_textureObj;
-};
+  };
+}
 
 
 #endif	/* TEXTURE_H */
