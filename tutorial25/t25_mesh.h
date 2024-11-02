@@ -9,9 +9,9 @@
 #include <vector>
 #include <GL/glew.h>
 
-#include "util.h"
-#include "math_3d.h"
-#include "texture.h"
+#include "t25_util.h"
+#include "t25_math_3d.h"
+#include "t25_texture.h"
 
 struct Vertex
 {

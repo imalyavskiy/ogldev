@@ -16,9 +16,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "skybox.h"
-#include "pipeline.h"
-#include "util.h"
+#include "t25_skybox.h"
+#include "t25_pipeline.h"
+#include "t25_util.h"
 
 
 SkyBox::SkyBox(const Camera* pCamera,

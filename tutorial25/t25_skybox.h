@@ -19,10 +19,10 @@
 #ifndef SKYBOX_H
 #define	SKYBOX_H
 
-#include "camera.h"
-#include "skybox_technique.h"
-#include "cubemap_texture.h"
-#include "mesh.h"
+#include "t25_camera.h"
+#include "t25_skybox_technique.h"
+#include "t25_cubemap_texture.h"
+#include "t25_mesh.h"
 
 class SkyBox
 {

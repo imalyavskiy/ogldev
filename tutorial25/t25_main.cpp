@@ -22,14 +22,14 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
-#include "util.h"
-#include "pipeline.h"
-#include "camera.h"
-#include "texture.h"
-#include "lighting_technique.h"
-#include "glut_backend.h"
-#include "mesh.h"
-#include "skybox.h"
+#include "t25_util.h"
+#include "t25_pipeline.h"
+#include "t25_camera.h"
+#include "t25_texture.h"
+#include "t25_lighting_technique.h"
+#include "t25_glut_backend.h"
+#include "t25_mesh.h"
+#include "t25_skybox.h"
 
 #define WINDOW_WIDTH      1280
 #define WINDOW_HEIGHT     1024

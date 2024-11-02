@@ -19,8 +19,8 @@
 #include <limits.h>
 #include <string.h>
 
-#include "skybox_technique.h"
-#include "util.h"
+#include "t25_skybox_technique.h"
+#include "t25_util.h"
 
 static const char* pVS = "                                                          \n\
 #version 330                                                                        \n\

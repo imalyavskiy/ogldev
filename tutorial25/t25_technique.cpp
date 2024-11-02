@@ -20,7 +20,7 @@
 #include <string.h>
 #include <assert.h>
 
-#include "technique.h"
+#include "t25_technique.h"
 
 static const char* pVSName = "VS";
 static const char* pFSName = "FS";

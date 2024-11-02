@@ -11,33 +11,33 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="callbacks.h" />
-    <ClInclude Include="camera.h" />
-    <ClInclude Include="cubemap_texture.h" />
-    <ClInclude Include="glut_backend.h" />
-    <ClInclude Include="lighting_technique.h" />
-    <ClInclude Include="math_3d.h" />
-    <ClInclude Include="mesh.h" />
-    <ClInclude Include="pipeline.h" />
-    <ClInclude Include="skybox.h" />
-    <ClInclude Include="skybox_technique.h" />
-    <ClInclude Include="technique.h" />
-    <ClInclude Include="texture.h" />
-    <ClInclude Include="util.h" />
+    <ClInclude Include="t25_callbacks.h" />
+    <ClInclude Include="t25_camera.h" />
+    <ClInclude Include="t25_cubemap_texture.h" />
+    <ClInclude Include="t25_glut_backend.h" />
+    <ClInclude Include="t25_lighting_technique.h" />
+    <ClInclude Include="t25_math_3d.h" />
+    <ClInclude Include="t25_mesh.h" />
+    <ClInclude Include="t25_pipeline.h" />
+    <ClInclude Include="t25_skybox.h" />
+    <ClInclude Include="t25_skybox_technique.h" />
+    <ClInclude Include="t25_technique.h" />
+    <ClInclude Include="t25_texture.h" />
+    <ClInclude Include="t25_util.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="camera.cpp" />
-    <ClCompile Include="cubemap_texture.cpp" />
-    <ClCompile Include="glut_backend.cpp" />
-    <ClCompile Include="lighting_technique.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="math_3d.cpp" />
-    <ClCompile Include="mesh.cpp" />
-    <ClCompile Include="pipeline.cpp" />
-    <ClCompile Include="skybox.cpp" />
-    <ClCompile Include="skybox_technique.cpp" />
-    <ClCompile Include="technique.cpp" />
-    <ClCompile Include="texture.cpp" />
+    <ClCompile Include="t25_camera.cpp" />
+    <ClCompile Include="t25_cubemap_texture.cpp" />
+    <ClCompile Include="t25_glut_backend.cpp" />
+    <ClCompile Include="t25_lighting_technique.cpp" />
+    <ClCompile Include="t25_main.cpp" />
+    <ClCompile Include="t25_math_3d.cpp" />
+    <ClCompile Include="t25_mesh.cpp" />
+    <ClCompile Include="t25_pipeline.cpp" />
+    <ClCompile Include="t25_skybox.cpp" />
+    <ClCompile Include="t25_skybox_technique.cpp" />
+    <ClCompile Include="t25_technique.cpp" />
+    <ClCompile Include="t25_texture.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8E9F31BF-A36E-4A5C-9A07-3E9C4321B7B4}</ProjectGuid>

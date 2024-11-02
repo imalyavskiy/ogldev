@@ -20,7 +20,7 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
-#include "glut_backend.h"
+#include "t25_glut_backend.h"
 
 // Points to the object implementing the ICallbacks interface which was delivered to
 // GLUTBackendRun(). All events are forwarded to this object.

@@ -1,6 +1,5 @@
 /*
-
-	Copyright 2011 Etay Meiri
+        Copyright 2011 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,16 +15,30 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GLUT_BACKEND_H
-#define	GLUT_BACKEND_H
+#ifndef SKYBOX_TECHNIQUE_H
+#define	SKYBOX_TECHNIQUE_H
 
-#include "callbacks.h"
+#include "t25_technique.h"
+#include "t25_math_3d.h"
 
-void GLUTBackendInit(int argc, char** argv);
 
-bool GLUTBackendCreateWindow(unsigned int Width, unsigned int Height, unsigned int bpp, bool isFullScreen, const char* pTitle);
+class SkyboxTechnique : public Technique {
+public:
 
-void GLUTBackendRun(ICallbacks* pCallbacks);
+    SkyboxTechnique();
 
-#endif	/* GLUT_BACKEND_H */
+    virtual bool Init();
 
+    void SetWVP(const Matrix4f& WVP);
+    void SetTextureUnit(unsigned int TextureUnit);
+
+    virtual ~SkyboxTechnique();
+
+private:
+
+    GLuint m_WVPLocation;
+    GLuint m_textureLocation;
+};
+
+
+#endif	/* SKYBOX_TECHNIQUE_H */

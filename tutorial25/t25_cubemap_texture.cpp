@@ -17,9 +17,9 @@
 */
 
 #include <iostream>
-#include "util.h"
-#include "cubemap_texture.h"
-#include "texture.h"
+#include "t25_util.h"
+#include "t25_cubemap_texture.h"
+#include "t25_texture.h"
 
 static const GLenum types[6] = {  GL_TEXTURE_CUBE_MAP_POSITIVE_X,
                                   GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
