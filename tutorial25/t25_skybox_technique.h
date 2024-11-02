@@ -21,9 +21,10 @@
 #include "t25_technique.h"
 #include "t25_math_3d.h"
 
-
-class SkyboxTechnique : public Technique {
-public:
+namespace t25
+{
+  class SkyboxTechnique : public Technique {
+  public:
 
     SkyboxTechnique();
 
@@ -34,11 +35,11 @@ public:
 
     virtual ~SkyboxTechnique();
 
-private:
+  private:
 
     GLuint m_WVPLocation;
     GLuint m_textureLocation;
-};
-
+  };
+}
 
 #endif	/* SKYBOX_TECHNIQUE_H */

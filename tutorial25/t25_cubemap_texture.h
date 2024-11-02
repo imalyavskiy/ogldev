@@ -22,9 +22,11 @@
 #include <string>
 #include <GL/glew.h>
 
-class CubemapTexture
+namespace t25
 {
-public:
+  class CubemapTexture
+  {
+  public:
     
     CubemapTexture(const std::string& Directory,
                    const std::string& PosXFilename,
@@ -40,11 +42,12 @@ public:
 
     void Bind(GLenum TextureUnit);
 
-private:
+  private:
    
     std::string m_fileNames[6];
     GLuint m_textureObj;
-};
+  };
+}
 
 #endif	/* CUBEMAP_H */
 

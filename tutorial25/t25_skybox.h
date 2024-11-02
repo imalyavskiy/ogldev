@@ -24,9 +24,11 @@
 #include "t25_cubemap_texture.h"
 #include "t25_mesh.h"
 
-class SkyBox
+namespace t25
 {
-public:
+  class SkyBox
+  {
+  public:
     SkyBox(const Camera* pCamera, const PersProjInfo& p);
 
     ~SkyBox();
@@ -41,13 +43,14 @@ public:
     
     void Render();
     
-private:    
+  private:    
     SkyboxTechnique* m_pSkyboxTechnique;
     const Camera* m_pCamera;
     CubemapTexture* m_pCubemapTex;
     Mesh* m_pMesh;
     PersProjInfo m_persProjInfo;
-};
+  };
+}
 
 #endif	/* SKYBOX_H */
 

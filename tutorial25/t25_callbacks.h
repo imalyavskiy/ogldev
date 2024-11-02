@@ -18,10 +18,11 @@
 
 #ifndef CALLBACKS_H
 #define	CALLBACKS_H
-
-class ICallbacks
+namespace t25
 {
-public:
+  class ICallbacks
+  {
+  public:
 
     virtual void SpecialKeyboardCB(int Key, int x, int y) = 0;
 
@@ -34,7 +35,8 @@ public:
     virtual void IdleCB() = 0;
     
     //virtual ~ICallbacks() {};
-};
+  };
+}
 
 #endif	/* I3DAPPLICATION_H */
 

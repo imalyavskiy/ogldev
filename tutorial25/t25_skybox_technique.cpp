@@ -22,62 +22,64 @@
 #include "t25_skybox_technique.h"
 #include "t25_util.h"
 
-static const char* pVS =
-"  #version 330                                                                        \n"\
-"                                                                                      \n"\
-"  layout (location = 0) in vec3 Position;                                             \n"\
-"                                                                                      \n"\
-"  uniform mat4 gWVP;                                                                  \n"\
-"                                                                                      \n"\
-"  out vec3 TexCoord0;                                                                 \n"\
-"                                                                                      \n"\
-"  void main()                                                                         \n"\
-"  {                                                                                   \n"\
-"      vec4 WVP_Pos = gWVP * vec4(Position, 1.0);                                      \n"\
-"      gl_Position = WVP_Pos.xyww;                                                     \n"\
-"      TexCoord0   = Position;                                                         \n"\
-"  }                                                                                     ";
-
-static const char* pFS =
-"  #version 330                                                                        \n"\
-"                                                                                      \n"\
-"  in vec3 TexCoord0;                                                                  \n"\
-"                                                                                      \n"\
-"  out vec4 FragColor;                                                                 \n"\
-"                                                                                      \n"\
-"  uniform samplerCube gCubemapTexture;                                                \n"\
-"                                                                                      \n"\
-"  void main()                                                                         \n"\
-"  {                                                                                   \n"\
-"      FragColor = texture(gCubemapTexture, TexCoord0);                                \n"\
-"  }                                                                                     ";
-
-
-
-SkyboxTechnique::SkyboxTechnique()
-{   
-}
-
-SkyboxTechnique::~SkyboxTechnique()
-{   
-}
-
-bool SkyboxTechnique::Init()
+namespace t25
 {
+  static const char* pVS =
+  "  #version 330                                                                        \n"\
+  "                                                                                      \n"\
+  "  layout (location = 0) in vec3 Position;                                             \n"\
+  "                                                                                      \n"\
+  "  uniform mat4 gWVP;                                                                  \n"\
+  "                                                                                      \n"\
+  "  out vec3 TexCoord0;                                                                 \n"\
+  "                                                                                      \n"\
+  "  void main()                                                                         \n"\
+  "  {                                                                                   \n"\
+  "      vec4 WVP_Pos = gWVP * vec4(Position, 1.0);                                      \n"\
+  "      gl_Position = WVP_Pos.xyww;                                                     \n"\
+  "      TexCoord0   = Position;                                                         \n"\
+  "  }                                                                                     ";
+
+  static const char* pFS =
+  "  #version 330                                                                        \n"\
+  "                                                                                      \n"\
+  "  in vec3 TexCoord0;                                                                  \n"\
+  "                                                                                      \n"\
+  "  out vec4 FragColor;                                                                 \n"\
+  "                                                                                      \n"\
+  "  uniform samplerCube gCubemapTexture;                                                \n"\
+  "                                                                                      \n"\
+  "  void main()                                                                         \n"\
+  "  {                                                                                   \n"\
+  "      FragColor = texture(gCubemapTexture, TexCoord0);                                \n"\
+  "  }                                                                                     ";
+
+
+
+  SkyboxTechnique::SkyboxTechnique()
+  {   
+  }
+
+  SkyboxTechnique::~SkyboxTechnique()
+  {   
+  }
+
+  bool SkyboxTechnique::Init()
+  {
     if (!Technique::Init()) {
-        return false;
+      return false;
     }
 
     if (!AddShader(GL_VERTEX_SHADER, pVS)) {
-        return false;
+      return false;
     }
 
     if (!AddShader(GL_FRAGMENT_SHADER, pFS)) {
-        return false;
+      return false;
     }
 
     if (!Finalize()) {
-        return false;
+      return false;
     }
 
     m_WVPLocation = GetUniformLocation("gWVP");
@@ -85,22 +87,21 @@ bool SkyboxTechnique::Init()
  
     if (m_WVPLocation == INVALID_UNIFORM_LOCATION ||
         m_textureLocation == INVALID_UNIFORM_LOCATION) {
-        return false;
-    }
+      return false;
+        }
 
     return true;
-}
+  }
 
 
-void SkyboxTechnique::SetWVP(const Matrix4f& WVP)
-{
+  void SkyboxTechnique::SetWVP(const Matrix4f& WVP)
+  {
     glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP.m);    
-}
+  }
 
 
-void SkyboxTechnique::SetTextureUnit(unsigned int TextureUnit)
-{
+  void SkyboxTechnique::SetTextureUnit(unsigned int TextureUnit)
+  {
     glUniform1i(m_textureLocation, TextureUnit);
+  }
 }
-
-

@@ -20,40 +20,41 @@
 #include "t25_pipeline.h"
 #include "t25_util.h"
 
-
-SkyBox::SkyBox(const Camera* pCamera,
-               const PersProjInfo& p)
+namespace t25
 {
+  SkyBox::SkyBox(const Camera* pCamera,
+                const PersProjInfo& p)
+  {
     m_pCamera = pCamera;
     m_persProjInfo = p;            
     
     m_pSkyboxTechnique = NULL;
     m_pCubemapTex = NULL;
     m_pMesh = NULL;
-}
+  }
 
 
-SkyBox::~SkyBox()
-{
+  SkyBox::~SkyBox()
+  {
     SAFE_DELETE(m_pSkyboxTechnique);
     SAFE_DELETE(m_pCubemapTex);
     SAFE_DELETE(m_pMesh);
-}
+  }
 
 
-bool SkyBox::Init(const std::string& Directory,
-                  const std::string& PosXFilename,
-                  const std::string& NegXFilename,
-                  const std::string& PosYFilename,
-                  const std::string& NegYFilename,
-                  const std::string& PosZFilename,
-                  const std::string& NegZFilename)
-{
+  bool SkyBox::Init(const std::string& Directory,
+                    const std::string& PosXFilename,
+                    const std::string& NegXFilename,
+                    const std::string& PosYFilename,
+                    const std::string& NegYFilename,
+                    const std::string& PosZFilename,
+                    const std::string& NegZFilename)
+  {
     m_pSkyboxTechnique = new SkyboxTechnique();
 
     if (!m_pSkyboxTechnique->Init()) {
-        printf("Error initializing the skybox technique\n");
-        return false;
+      printf("Error initializing the skybox technique\n");
+      return false;
     }
 
     m_pSkyboxTechnique->Enable();
@@ -68,17 +69,17 @@ bool SkyBox::Init(const std::string& Directory,
                                        NegZFilename);
 
     if (!m_pCubemapTex->Load()) {
-        return false;
+      return false;
     }
         
     m_pMesh = new Mesh();
 
     return m_pMesh->LoadMesh("../Content/sphere.obj");
-}
+  }
 
 
-void SkyBox::Render()
-{
+  void SkyBox::Render()
+  {
     m_pSkyboxTechnique->Enable();
     
     GLint OldCullFaceMode;
@@ -101,4 +102,5 @@ void SkyBox::Render()
     
     glCullFace(OldCullFaceMode);        
     glDepthFunc(OldDepthFuncMode);
+  }
 }
