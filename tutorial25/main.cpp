@@ -31,8 +31,11 @@
 #include "mesh.h"
 #include "skybox.h"
 
-#define WINDOW_WIDTH  1920
-#define WINDOW_HEIGHT 1200
+#define WINDOW_WIDTH      1280
+#define WINDOW_HEIGHT     1024
+#define WINDOW_BPP        32
+#define WINDOW_FULLSCREEN false
+#define WINDOW_TITTLE     "tutorial 25"
 
 
 class Main : public ICallbacks
@@ -157,7 +160,7 @@ public:
     virtual void KeyboardCB(unsigned char Key, int x, int y)
     {
         switch (Key) {
-            case 'q':
+            case 0x1b: // Esc
                 glutLeaveMainLoop();
                 break;
         }
@@ -185,7 +188,7 @@ int main(int argc, char** argv)
 {
     GLUTBackendInit(argc, argv);
 
-    if (!GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 32, false, "Tutorial 25")) {
+    if (!GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_BPP, WINDOW_FULLSCREEN, WINDOW_TITTLE)) {
         return 1;
     }
 
