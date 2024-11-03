@@ -180,7 +180,7 @@ public:
     virtual void KeyboardCB(unsigned char Key, int x, int y)
     {
         switch (Key) {
-            case 'q':
+            case 0x1b: // Esc
                 glutLeaveMainLoop();
                 break;
             
