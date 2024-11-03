@@ -4,12 +4,8 @@
 #include "t23_technique.h"
 namespace t23
 {
-  Technique::Technique(){
-    m_shaderProg = 0;
-  }
-
-  Technique::~Technique(){
-    for (ShaderObjList::iterator it = m_shaderObjList.begin(); it != m_shaderObjList.end(); it++){
+  Technique::~Technique() {
+    for (auto it = m_shaderObjList.begin(); it != m_shaderObjList.end(); ++it){
       glDeleteShader(*it);
     }
 
@@ -19,7 +15,7 @@ namespace t23
     }
   }
 
-  bool Technique::Init(){
+  bool Technique::Init() {
     m_shaderProg = glCreateProgram();
 
     if (m_shaderProg == 0){
@@ -30,40 +26,40 @@ namespace t23
     return true;
   }
 
-  bool Technique::AddShader(GLenum ShaderType, const char* pShaderText){
-    GLuint ShaderObj = glCreateShader(ShaderType);
+  bool Technique::AddShader(GLenum shaderType, const char* pShaderText) {
+    const GLuint shaderObj = glCreateShader(shaderType);
 
-    if (ShaderObj == 0){
-      fprintf(stderr, "Error creating shader type %d\n", ShaderType);
+    if (shaderObj == 0) {
+      fprintf(stderr, "Error creating shader type %d\n", shaderType);
       return false;
     }
 
-    m_shaderObjList.push_back(ShaderObj);
+    m_shaderObjList.push_back(shaderObj);
 
     const GLchar* p[1];
     p[0] = pShaderText;
     GLint Lengths[1];
     Lengths[0] = strlen(pShaderText);
-    glShaderSource(ShaderObj, 1, p, Lengths);
+    glShaderSource(shaderObj, 1, p, Lengths);
 
-    glCompileShader(ShaderObj);
+    glCompileShader(shaderObj);
 
     GLint success;
-    glGetShaderiv(ShaderObj, GL_COMPILE_STATUS, &success);
+    glGetShaderiv(shaderObj, GL_COMPILE_STATUS, &success);
 
-    if (!success){
+    if (!success) {
       GLchar InfoLog[1024];
-      glGetShaderInfoLog(ShaderObj, 1024, NULL, InfoLog);
-      fprintf(stderr, "Error compiling shader type %d: '%s'\n", ShaderType, InfoLog);
+      glGetShaderInfoLog(shaderObj, 1024, nullptr, InfoLog);
+      fprintf(stderr, "Error compiling shader type %d: '%s'\n", shaderType, InfoLog);
       return false;
     }
 
-    glAttachShader(m_shaderProg, ShaderObj);
+    glAttachShader(m_shaderProg, shaderObj);
 
     return true;
   }
 
-  bool Technique::Finalize(){
+  bool Technique::Finalize() {
     GLint Success = 0;
     GLchar ErrorLog[1024] = {0};
 
@@ -93,11 +89,11 @@ namespace t23
     return true;
   }
 
-  void Technique::Enable(){
+  void Technique::Enable() {
     glUseProgram(m_shaderProg);
   }
 
-  GLint Technique::GetUniformLocation(const char* pUniformName){
+  GLint Technique::GetUniformLocation(const char* pUniformName) {
     GLint Location = glGetUniformLocation(m_shaderProg, pUniformName);
 
     if ((unsigned int)Location == 0xFFFFFFFF){

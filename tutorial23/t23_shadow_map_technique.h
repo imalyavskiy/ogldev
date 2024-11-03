@@ -6,18 +6,22 @@
 
 namespace t23
 {
-  class ShadowMapTechnique : public Technique {
-
+  class ShadowMapTechnique
+    : public Technique
+  {
   public:
-    ShadowMapTechnique();
-    virtual bool Init();
+    ShadowMapTechnique() = default;
+
+    bool Init() override;
+
     void SetWVP(const Matrix4f& WVP);
+
     void SetTextureUnit(unsigned int TextureUnit);
 
   private:
 
-    GLuint m_WVPLocation;
-    GLuint m_textureLocation;
+    GLuint m_WVPLocation = INVALID_UNIFORM_LOCATION;
+    GLuint m_textureLocation = INVALID_UNIFORM_LOCATION;
   };
 }
 

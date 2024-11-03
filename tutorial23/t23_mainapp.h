@@ -2,6 +2,7 @@
 #ifndef T23_MAIN_APP_H
 #define T23_MAIN_APP_H
 
+#include <memory>
 #include "t23_callbacks.h"
 #include "t23_camera.h"
 #include "t23_lighting_technique.h"
@@ -21,39 +22,40 @@ namespace t23
   public:
 
     MainApp(GLint winWidth, GLint winHeight);
-      
-    virtual ~MainApp();
+
+    ~MainApp() override = default;
 
     bool Init();
 
     void Run();
 
-    virtual void RenderSceneCB();
+    void RenderSceneCB() override;
 
     virtual void ShadowMapPass();
 
     virtual void RenderPass();
 
-    virtual void IdleCB();
+    void IdleCB() override;
 
-    virtual void SpecialKeyboardCB(int Key, int x, int y);
+    void SpecialKeyboardCB(int Key, int x, int y) override;
 
-    virtual void KeyboardCB(unsigned char Key, int x, int y);
+    void KeyboardCB(unsigned char Key, int x, int y) override;
 
-    virtual void PassiveMouseCB(int x, int y);
+    void PassiveMouseCB(int x, int y) override;
 
   private:
 
     GLint m_winWidth;
     GLint m_winHeight;
 
-    LightingTechnique* m_pEffect;
-    ShadowMapTechnique* m_pShadowMapTech;
-    Camera* m_pGameCamera;
-    float m_scale;
+    std::shared_ptr<LightingTechnique> m_pEffect;
+    std::shared_ptr<ShadowMapTechnique> m_pShadowMapTech;
+    std::shared_ptr<Camera> m_pGameCamera;
+    float m_scale = 0.0f;
+
     SpotLight m_spotLight;
-    Mesh* m_pMesh;
-    Mesh* m_pQuad;
+    std::shared_ptr<Mesh> m_pMesh;
+    std::shared_ptr<Mesh> m_pQuad;
     ShadowMapFBO m_shadowMapFBO;
   };
 }

@@ -7,19 +7,19 @@ namespace t23
   class ShadowMapFBO
   {
   public:
-    ShadowMapFBO();
+    ShadowMapFBO() = default;
 
     ~ShadowMapFBO();
 
-    bool Init(unsigned int WindowWidth, unsigned int WindowHeight);
+    bool Init(GLuint winWidth, GLuint winHeight);
 
     void BindForWriting();
 
     void BindForReading(GLenum TextureUnit);
 
   private:
-    GLuint m_fbo;
-    GLuint m_shadowMap;
+    GLuint m_FrameBufferObject = 0;
+    GLuint m_ShadowMapTexture = 0;
   };
 }
 
