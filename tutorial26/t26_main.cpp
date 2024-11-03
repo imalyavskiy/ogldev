@@ -18,18 +18,18 @@
     Tutorial 26 - Bump Mapping
 */
 
-#include <math.h>
+#include <cmath>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
-#include "engine_common.h"
-#include "util.h"
-#include "pipeline.h"
-#include "camera.h"
-#include "texture.h"
-#include "lighting_technique.h"
-#include "glut_backend.h"
-#include "mesh.h"
+#include "t26_engine_common.h"
+#include "t26_util.h"
+#include "t26_pipeline.h"
+#include "t26_camera.h"
+#include "t26_texture.h"
+#include "t26_lighting_technique.h"
+#include "t26_glut_backend.h"
+#include "t26_mesh.h"
 
 #define WINDOW_WIDTH  1920
 #define WINDOW_HEIGHT 1200

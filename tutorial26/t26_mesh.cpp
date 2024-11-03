@@ -16,10 +16,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <assert.h>
+#include <cassert>
 
-#include "mesh.h"
-#include "engine_common.h"
+#include "t26_mesh.h"
+#include "t26_engine_common.h"
 
 Mesh::MeshEntry::MeshEntry()
 {

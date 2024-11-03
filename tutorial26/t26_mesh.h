@@ -27,9 +27,9 @@
 #include <assimp/postprocess.h>
 
 
-#include "util.h"
-#include "math_3d.h"
-#include "texture.h"
+#include "t26_util.h"
+#include "t26_math_3d.h"
+#include "t26_texture.h"
 
 struct Vertex
 {

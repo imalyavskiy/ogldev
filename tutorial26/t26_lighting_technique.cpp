@@ -16,11 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <limits.h>
-#include <string.h>
+#include <climits>
+#include <cstring>
 
-#include "lighting_technique.h"
-#include "util.h"
+#include "t26_lighting_technique.h"
+#include "t26_util.h"
 
 static const char* pVS = "                                                          \n\
 #version 330                                                                        \n\
