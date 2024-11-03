@@ -45,7 +45,7 @@ namespace t24
     if (dib) {
       fif = FreeImage_GetFIFFromFilename(lpszPathName.c_str());
       if (fif != FIF_UNKNOWN) {
-        WORD bpp = FreeImage_GetBPP(dib);
+        const WORD bpp = FreeImage_GetBPP(dib);
         if (FreeImage_FIFSupportsWriting(fif) && FreeImage_FIFSupportsExportBPP(fif, bpp)) {
           bSuccess = FreeImage_Save(fif, dib, lpszPathName.c_str(), flag);
         }
@@ -54,9 +54,9 @@ namespace t24
     return (bSuccess == TRUE) ? true : false;
   }
 
-  Texture::Texture(GLenum TextureTarget, std::string FileName)
-      : m_fileName(std::move(FileName))
-      , m_textureTarget(TextureTarget)
+  Texture::Texture(GLenum textureTarget, std::string fileName)
+      : m_fileName(std::move(fileName))
+      , m_textureTarget(textureTarget)
   {
     glGenTextures(1, &m_textureObj);
   }

@@ -6,7 +6,7 @@
 
 namespace t24
 {
-  static ICallbacks* s_pCallbacks = NULL;
+  static ICallbacks* s_pCallbacks = nullptr;
 
   static void SpecialKeyboardCB(int Key, int x, int y){
     s_pCallbacks->SpecialKeyboardCB(Key, x, y);

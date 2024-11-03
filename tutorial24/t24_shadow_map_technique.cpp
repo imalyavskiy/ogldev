@@ -39,29 +39,25 @@ namespace t24
 
   bool ShadowMapTechnique::Init()
   {
-    if (!Technique::Init()) {
+    if (!Technique::Init())
       return false;
-    }
 
-    if (!AddShader(GL_VERTEX_SHADER, pVS)) {
+    if (!AddShader(GL_VERTEX_SHADER, pVS))
       return false;
-    }
 
-    if (!AddShader(GL_FRAGMENT_SHADER, pFS)) {
+    if (!AddShader(GL_FRAGMENT_SHADER, pFS))
       return false;
-    }
 
-    if (!Finalize()) {
+    if (!Finalize())
       return false;
-    }
 
     m_WVPLocation = GetUniformLocation("gWVP");
-    m_textureLocation = GetUniformLocation("gShadowMap");
-
-    if (m_WVPLocation == INVALID_UNIFORM_LOCATION ||
-        m_textureLocation == INVALID_UNIFORM_LOCATION) {
+    if (m_WVPLocation == INVALID_UNIFORM_LOCATION)
       return false;
-        }
+
+    m_textureLocation = GetUniformLocation("gShadowMap");
+    if (m_textureLocation == INVALID_UNIFORM_LOCATION)
+      return false;
 
     return true;
   }

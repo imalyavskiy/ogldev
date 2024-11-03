@@ -18,14 +18,12 @@ int main(int argc, char** argv)
   if (!t24::GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_BPP, WINDOW_FULLSCREEN, WINDOW_TITTLE))
     return 1;
 
-  const auto pApp = new t24::MainApp(WINDOW_WIDTH, WINDOW_HEIGHT);
+  const auto pMainApp = std::make_shared<t24::MainApp>(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-  if (!pApp->Init())
+  if (!pMainApp->Init())
     return 1;
 
-  pApp->Run();
-
-  delete pApp;
+  pMainApp->Run();
 
   return 0;
 }

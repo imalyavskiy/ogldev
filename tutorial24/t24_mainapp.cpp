@@ -12,14 +12,6 @@ namespace t24
   : m_winWidth(winWidth)
   , m_winHeight(winHeight)
   {
-    m_pLightingEffect = NULL;
-    m_pShadowMapEffect = NULL;
-    m_pGameCamera = NULL;
-    m_pMesh = NULL;
-    m_pQuad = NULL;
-    m_scale = 0.0f;
-    m_pGroundTex = NULL;
-
     m_spotLight.AmbientIntensity = 0.1f;
     m_spotLight.DiffuseIntensity = 0.9f;
     m_spotLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
@@ -29,29 +21,19 @@ namespace t24
     m_spotLight.Cutoff = 20.0f;
   }
 
-  MainApp::~MainApp()
-  {
-    SAFE_DELETE(m_pLightingEffect);
-    SAFE_DELETE(m_pShadowMapEffect);
-    SAFE_DELETE(m_pGameCamera);
-    SAFE_DELETE(m_pMesh);
-    SAFE_DELETE(m_pQuad);
-    SAFE_DELETE(m_pGroundTex);
-  }
-
   bool MainApp::Init()
   {
-    Vector3f Pos(3.0f, 8.0f, -10.0f);
-    Vector3f Target(0.0f, -0.2f, 1.0f);
-    Vector3f Up(0.0, 1.0f, 0.0f);
+    const Vector3f pos(3.0f, 8.0f, -10.0f);
+    const Vector3f target(0.0f, -0.2f, 1.0f);
+    const Vector3f up(0.0, 1.0f, 0.0f);
 
     if (!m_shadowMapFBO.Init(m_winWidth, m_winHeight)) {
       return false;
     }
 
-    m_pGameCamera = new Camera(m_winWidth, m_winHeight, Pos, Target, Up);
+    m_pGameCamera = std::make_shared<Camera>(m_winWidth, m_winHeight, pos, target, up);
 
-    m_pLightingEffect = new LightingTechnique();
+    m_pLightingEffect = std::make_shared<LightingTechnique>();
 
     if (!m_pLightingEffect->Init()) {
       printf("Error initializing the lighting technique\n");
@@ -63,26 +45,26 @@ namespace t24
     m_pLightingEffect->SetTextureUnit(0);
     m_pLightingEffect->SetShadowMapTextureUnit(1);
 
-    m_pShadowMapEffect = new ShadowMapTechnique();
+    m_pShadowMapEffect = std::make_shared<ShadowMapTechnique>();
 
     if (!m_pShadowMapEffect->Init()) {
       printf("Error initializing the shadow map technique\n");
       return false;
     }
 
-    m_pQuad = new Mesh();
+    m_pQuad = std::make_shared<Mesh>();
 
     if (!m_pQuad->LoadMesh("../Content/quad.obj")) {
       return false;
     }
 
-    m_pGroundTex = new Texture(GL_TEXTURE_2D, "../Content/test.png");
+    m_pGroundTex = std::make_shared<Texture>(GL_TEXTURE_2D, "../Content/test.png");
 
     if (!m_pGroundTex->Load()) {
       return false;
     }
 
-    m_pMesh = new Mesh();
+    m_pMesh = std::make_shared<Mesh>();
 
     return m_pMesh->LoadMesh("../Content/phoenix_ugv.md2");
   }
@@ -111,13 +93,14 @@ namespace t24
 
     m_pShadowMapEffect->Enable();
 
-    Pipeline p;
-    p.Scale(0.1f, 0.1f, 0.1f);
-    p.Rotate(0.0f, m_scale, 0.0f);
-    p.WorldPos(0.0f, 0.0f, 5.0f);
-    p.SetCamera(m_spotLight.Position, m_spotLight.Direction, Vector3f(0.0f, 1.0f, 0.0f));
-    p.SetPerspectiveProj(60.0f, m_winWidth, m_winHeight, 1.0f, 50.0f);
-    m_pShadowMapEffect->SetWVP(p.GetWVPTrans());
+    Pipeline pipeline;
+    pipeline.Scale(0.1f, 0.1f, 0.1f);
+    pipeline.Rotate(0.0f, m_scale, 0.0f);
+    pipeline.WorldPos(0.0f, 0.0f, 5.0f);
+    pipeline.SetCamera(m_spotLight.Position, m_spotLight.Direction, Vector3f(0.0f, 1.0f, 0.0f));
+    pipeline.SetPerspectiveProj(60.0f, m_winWidth, m_winHeight, 1.0f, 50.0f);
+
+    m_pShadowMapEffect->SetWVP(pipeline.GetWVPTrans());
     m_pMesh->Render();
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -131,29 +114,29 @@ namespace t24
 
     m_shadowMapFBO.BindForReading(GL_TEXTURE1);
 
-    Pipeline p;
-    p.SetPerspectiveProj(60.0f, m_winWidth, m_winHeight, 1.0f, 50.0f);
-    p.Scale(10.0f, 10.0f, 10.0f);
-    p.WorldPos(0.0f, 0.0f, 1.0f);
-    p.Rotate(90.0f, 0.0f, 0.0f);
-    p.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
+    Pipeline pipeline;
+    pipeline.SetPerspectiveProj(60.0f, m_winWidth, m_winHeight, 1.0f, 50.0f);
+    pipeline.Scale(10.0f, 10.0f, 10.0f);
+    pipeline.WorldPos(0.0f, 0.0f, 1.0f);
+    pipeline.Rotate(90.0f, 0.0f, 0.0f);
+    pipeline.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
 
-    m_pLightingEffect->SetWVP(p.GetWVPTrans());
-    m_pLightingEffect->SetWorldMatrix(p.GetWorldTrans());
-    p.SetCamera(m_spotLight.Position, m_spotLight.Direction, Vector3f(0.0f, 1.0f, 0.0f));
-    m_pLightingEffect->SetLightWVP(p.GetWVPTrans());
+    m_pLightingEffect->SetWVP(pipeline.GetWVPTrans());
+    m_pLightingEffect->SetWorldMatrix(pipeline.GetWorldTrans());
+    pipeline.SetCamera(m_spotLight.Position, m_spotLight.Direction, Vector3f(0.0f, 1.0f, 0.0f));
+    m_pLightingEffect->SetLightWVP(pipeline.GetWVPTrans());
     m_pLightingEffect->SetEyeWorldPos(m_pGameCamera->GetPos());
     m_pGroundTex->Bind(GL_TEXTURE0);
     m_pQuad->Render();
 
-    p.Scale(0.1f, 0.1f, 0.1f);
-    p.Rotate(0.0f, m_scale, 0.0f);
-    p.WorldPos(0.0f, 0.0f, 3.0f);
-    p.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
-    m_pLightingEffect->SetWVP(p.GetWVPTrans());
-    m_pLightingEffect->SetWorldMatrix(p.GetWorldTrans());
-    p.SetCamera(m_spotLight.Position, m_spotLight.Direction, Vector3f(0.0f, 1.0f, 0.0f));
-    m_pLightingEffect->SetLightWVP(p.GetWVPTrans());
+    pipeline.Scale(0.1f, 0.1f, 0.1f);
+    pipeline.Rotate(0.0f, m_scale, 0.0f);
+    pipeline.WorldPos(0.0f, 0.0f, 3.0f);
+    pipeline.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
+    m_pLightingEffect->SetWVP(pipeline.GetWVPTrans());
+    m_pLightingEffect->SetWorldMatrix(pipeline.GetWorldTrans());
+    pipeline.SetCamera(m_spotLight.Position, m_spotLight.Direction, Vector3f(0.0f, 1.0f, 0.0f));
+    m_pLightingEffect->SetLightWVP(pipeline.GetWVPTrans());
 
     m_pMesh->Render();
   }
@@ -163,17 +146,17 @@ namespace t24
     RenderSceneCB();
   }
 
-  void MainApp::SpecialKeyboardCB(int Key, int x, int y)
+  void MainApp::SpecialKeyboardCB(int key, int x, int y)
   {
-    m_pGameCamera->OnKeyboard(Key);
+    m_pGameCamera->OnKeyboard(key);
   }
 
-  void MainApp::KeyboardCB(unsigned char Key, int x, int y)
+  void MainApp::KeyboardCB(unsigned char key, int x, int y)
   {
-    switch (Key) {
-    case 0x1b: // Esc
-      glutLeaveMainLoop();
-      break;
+    switch (key) {
+      case 0x1b: // Esc
+        glutLeaveMainLoop();
+        break;
     }
   }
 

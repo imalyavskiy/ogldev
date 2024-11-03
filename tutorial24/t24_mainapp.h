@@ -2,6 +2,7 @@
 #ifndef T24_MAIN_APP_H
 #define T24_MAIN_APP_H
 
+#include <memory>
 #include "t24_callbacks.h"
 #include "t24_camera.h"
 #include "t24_lighting_technique.h"
@@ -17,7 +18,7 @@ namespace t24
 
     MainApp(GLint winWidth, GLint winHeight);
 
-    ~MainApp() override;
+    ~MainApp() override = default;
 
     bool Init();
 
@@ -31,9 +32,9 @@ namespace t24
 
     void IdleCB() override;
 
-    void SpecialKeyboardCB(int Key, int x, int y) override;
+    void SpecialKeyboardCB(int key, int x, int y) override;
 
-    void KeyboardCB(unsigned char Key, int x, int y) override;
+    void KeyboardCB(unsigned char key, int x, int y) override;
 
     void PassiveMouseCB(int x, int y) override;
 
@@ -41,15 +42,15 @@ namespace t24
     GLint m_winWidth;
     GLint m_winHeight;
 
-    LightingTechnique* m_pLightingEffect;
-    ShadowMapTechnique* m_pShadowMapEffect;
-    Camera* m_pGameCamera;
-    float m_scale;
+    std::shared_ptr<LightingTechnique> m_pLightingEffect;
+    std::shared_ptr<ShadowMapTechnique> m_pShadowMapEffect;
+    std::shared_ptr<Camera> m_pGameCamera;
+    float m_scale = 0.0f;
     SpotLight m_spotLight;
-    Mesh* m_pMesh;
-    Mesh* m_pQuad;
+    std::shared_ptr<Mesh> m_pMesh;
+    std::shared_ptr<Mesh> m_pQuad;
     ShadowMapFBO m_shadowMapFBO;
-    Texture* m_pGroundTex;
+    std::shared_ptr<Texture> m_pGroundTex;
   };
 }
 #endif // T24_MAIN_APP_H
