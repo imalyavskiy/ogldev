@@ -14,10 +14,13 @@ namespace t24
     "  layout (location = 2) in vec3 Normal;                                                            \n"\
     "                                                                                                   \n"\
     "  uniform mat4 gWVP;                                                                               \n"\
-    "  uniform mat4 gLightWVP;                                                                          \n"\
+    "                                                                                                   \n"\
+    "    uniform mat4 gLightWVP;  //!                                                                   \n"\
+    "                                                                                                   \n"\
     "  uniform mat4 gWorld;                                                                             \n"\
     "                                                                                                   \n"\
-    "  out vec4 LightSpacePos;                                                                          \n"\
+    "    out vec4 LightSpacePos;  //!                                                                   \n"\
+    "                                                                                                   \n"\
     "  out vec2 TexCoord0;                                                                              \n"\
     "  out vec3 Normal0;                                                                                \n"\
     "  out vec3 WorldPos0;                                                                              \n"\
@@ -25,7 +28,9 @@ namespace t24
     "  void main()                                                                                      \n"\
     "  {                                                                                                \n"\
     "      gl_Position      = gWVP * vec4(Position, 1.0);                                               \n"\
-    "      LightSpacePos    = gLightWVP * vec4(Position, 1.0);                                          \n"\
+    "                                                                                                   \n"\
+    "        LightSpacePos    = gLightWVP * vec4(Position, 1.0);  //!                                   \n"\
+    "                                                                                                   \n"\
     "      TexCoord0        = TexCoord;                                                                 \n"\
     "      Normal0          = (gWorld * vec4(Normal, 0.0)).xyz;                                         \n"\
     "      WorldPos0        = (gWorld * vec4(Position, 1.0)).xyz;                                       \n"\
@@ -138,7 +143,8 @@ namespace t24
     "      vec3 LightDirection = WorldPos0 - l.Position;                                                \n"\
     "      float Distance = length(LightDirection);                                                     \n"\
     "      LightDirection = normalize(LightDirection);                                                  \n"\
-    "      float ShadowFactor = CalcShadowFactor(LightSpacePos);                                        \n"\
+    "                                                                                                   \n"\
+    "        float ShadowFactor = CalcShadowFactor(LightSpacePos);                                      \n"\
     "                                                                                                   \n"\
     "      vec4 Color = CalcLightInternal(l.Base, LightDirection, Normal, ShadowFactor);                \n"\
     "      float Attenuation =  l.Atten.Constant +                                                      \n"\

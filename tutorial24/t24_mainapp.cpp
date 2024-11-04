@@ -34,12 +34,10 @@ namespace t24
     m_pGameCamera = std::make_shared<Camera>(m_winWidth, m_winHeight, pos, target, up);
 
     m_pLightingEffect = std::make_shared<LightingTechnique>();
-
     if (!m_pLightingEffect->Init()) {
       printf("Error initializing the lighting technique\n");
       return false;
     }
-
     m_pLightingEffect->Enable();
     m_pLightingEffect->SetSpotLights(1, &m_spotLight);
     m_pLightingEffect->SetTextureUnit(0);

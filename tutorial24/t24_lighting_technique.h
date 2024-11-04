@@ -82,8 +82,8 @@ namespace t24
   class LightingTechnique : public Technique {
   public:
 
-    static const unsigned int MAX_POINT_LIGHTS = 2;
-    static const unsigned int MAX_SPOT_LIGHTS = 2;
+    static constexpr GLuint MAX_POINT_LIGHTS = 2;
+    static constexpr GLuint MAX_SPOT_LIGHTS = 2;
 
     LightingTechnique();
 
