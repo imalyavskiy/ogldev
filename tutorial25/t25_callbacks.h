@@ -24,6 +24,8 @@ namespace t25
   {
   public:
 
+    virtual ~ICallbacks() = default;
+
     virtual void SpecialKeyboardCB(int Key, int x, int y) = 0;
 
     virtual void KeyboardCB(unsigned char Key, int x, int y) = 0;

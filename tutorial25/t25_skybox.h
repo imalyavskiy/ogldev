@@ -19,6 +19,7 @@
 #ifndef SKYBOX_H
 #define	SKYBOX_H
 
+#include <memory>
 #include "t25_camera.h"
 #include "t25_skybox_technique.h"
 #include "t25_cubemap_texture.h"
@@ -29,25 +30,22 @@ namespace t25
   class SkyBox
   {
   public:
-    SkyBox(const Camera* pCamera, const PersProjInfo& p);
+    SkyBox(std::shared_ptr<Camera> pCamera, const PersProjInfo& p);
 
-    ~SkyBox();
+    ~SkyBox() = default;
     
     bool Init(const std::string& Directory,
-              const std::string& PosXFilename,
-              const std::string& NegXFilename,
-              const std::string& PosYFilename,
-              const std::string& NegYFilename,
-              const std::string& PosZFilename,
-              const std::string& NegZFilename);
+              const std::string& PosXFilename, const std::string& NegXFilename,
+              const std::string& PosYFilename, const std::string& NegYFilename,
+              const std::string& PosZFilename, const std::string& NegZFilename);
     
-    void Render();
+    void Render() const;
     
   private:    
-    SkyboxTechnique* m_pSkyboxTechnique;
-    const Camera* m_pCamera;
-    CubemapTexture* m_pCubemapTex;
-    Mesh* m_pMesh;
+    std::shared_ptr<SkyboxTechnique> m_pSkyboxTechnique;
+    std::shared_ptr<Camera> m_pCamera;
+    std::shared_ptr<CubemapTexture> m_pCubemapTex;
+    std::shared_ptr<Mesh> m_pMesh;
     PersProjInfo m_persProjInfo;
   };
 }

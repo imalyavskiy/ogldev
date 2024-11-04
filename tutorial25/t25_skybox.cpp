@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2011 Etay Meiri
+  Copyright 2011 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,41 +16,27 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <utility>
 #include "t25_skybox.h"
 #include "t25_pipeline.h"
-#include "t25_util.h"
 
 namespace t25
 {
-  SkyBox::SkyBox(const Camera* pCamera,
-                const PersProjInfo& p)
+  SkyBox::SkyBox(std::shared_ptr<Camera> pCamera, const PersProjInfo& p)
+    : m_pCamera(std::move(pCamera))
+    , m_persProjInfo(p)
   {
-    m_pCamera = pCamera;
-    m_persProjInfo = p;            
-    
-    m_pSkyboxTechnique = NULL;
-    m_pCubemapTex = NULL;
-    m_pMesh = NULL;
   }
-
-
-  SkyBox::~SkyBox()
-  {
-    SAFE_DELETE(m_pSkyboxTechnique);
-    SAFE_DELETE(m_pCubemapTex);
-    SAFE_DELETE(m_pMesh);
-  }
-
 
   bool SkyBox::Init(const std::string& Directory,
-                    const std::string& PosXFilename,
-                    const std::string& NegXFilename,
-                    const std::string& PosYFilename,
-                    const std::string& NegYFilename,
-                    const std::string& PosZFilename,
-                    const std::string& NegZFilename)
+    const std::string& PosXFilename,
+    const std::string& NegXFilename,
+    const std::string& PosYFilename,
+    const std::string& NegYFilename,
+    const std::string& PosZFilename,
+    const std::string& NegZFilename)
   {
-    m_pSkyboxTechnique = new SkyboxTechnique();
+    m_pSkyboxTechnique = std::make_shared<SkyboxTechnique>();
 
     if (!m_pSkyboxTechnique->Init()) {
       printf("Error initializing the skybox technique\n");
@@ -59,48 +45,45 @@ namespace t25
 
     m_pSkyboxTechnique->Enable();
     m_pSkyboxTechnique->SetTextureUnit(0);
-    
-    m_pCubemapTex = new CubemapTexture(Directory,
-                                       PosXFilename,
-                                       NegXFilename,
-                                       PosYFilename,
-                                       NegYFilename,
-                                       PosZFilename,
-                                       NegZFilename);
+
+    m_pCubemapTex = std::make_shared<CubemapTexture>(Directory,
+      PosXFilename, NegXFilename,
+      PosYFilename, NegYFilename,
+      PosZFilename, NegZFilename);
 
     if (!m_pCubemapTex->Load()) {
       return false;
     }
-        
-    m_pMesh = new Mesh();
 
+    m_pMesh = std::make_shared<Mesh>();
     return m_pMesh->LoadMesh("../Content/sphere.obj");
   }
 
-
-  void SkyBox::Render()
+  void SkyBox::Render() const
   {
     m_pSkyboxTechnique->Enable();
-    
-    GLint OldCullFaceMode;
+
+    GLint OldCullFaceMode = INVALID_OGL_VALUE;
     glGetIntegerv(GL_CULL_FACE_MODE, &OldCullFaceMode);
-    GLint OldDepthFuncMode;
+
+    GLint OldDepthFuncMode = INVALID_OGL_VALUE;
     glGetIntegerv(GL_DEPTH_FUNC, &OldDepthFuncMode);
-    
+
     glCullFace(GL_FRONT);
     glDepthFunc(GL_LEQUAL);
 
-    Pipeline p;    
-    p.Scale(20.0f, 20.0f, 20.0f);
-    p.Rotate(0.0f, 0.0f, 0.0f);
-    p.WorldPos(m_pCamera->GetPos().x, m_pCamera->GetPos().y, m_pCamera->GetPos().z);
-    p.SetCamera(m_pCamera->GetPos(), m_pCamera->GetTarget(), m_pCamera->GetUp());
-    p.SetPerspectiveProj(m_persProjInfo);
-    m_pSkyboxTechnique->SetWVP(p.GetWVPTrans());
+    Pipeline pipeline;
+    pipeline.Scale(20.0f, 20.0f, 20.0f);
+    pipeline.Rotate(0.0f, 0.0f, 0.0f);
+    pipeline.WorldPos(m_pCamera->GetPos().x, m_pCamera->GetPos().y, m_pCamera->GetPos().z);
+    pipeline.SetCamera(m_pCamera->GetPos(), m_pCamera->GetTarget(), m_pCamera->GetUp());
+    pipeline.SetPerspectiveProj(m_persProjInfo);
+
+    m_pSkyboxTechnique->SetWVP(pipeline.GetWVPTrans());
     m_pCubemapTex->Bind(GL_TEXTURE0);
-    m_pMesh->Render();  
-    
-    glCullFace(OldCullFaceMode);        
+    m_pMesh->Render();
+
+    glCullFace(OldCullFaceMode);
     glDepthFunc(OldDepthFuncMode);
   }
 }
