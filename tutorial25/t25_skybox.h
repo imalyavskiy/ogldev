@@ -42,7 +42,7 @@ namespace t25
     void Render() const;
     
   private:    
-    std::shared_ptr<SkyboxTechnique> m_pSkyboxTechnique;
+    std::shared_ptr<SkyBoxTechnique> m_pSkyboxTechnique;
     std::shared_ptr<Camera> m_pCamera;
     std::shared_ptr<CubemapTexture> m_pCubemapTex;
     std::shared_ptr<Mesh> m_pMesh;

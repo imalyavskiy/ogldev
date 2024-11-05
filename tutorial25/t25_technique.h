@@ -28,9 +28,9 @@ namespace t25
   {
   public:
 
-    Technique();
+    Technique() = default;
 
-    ~Technique();
+    virtual ~Technique();
 
     virtual bool Init();
 
@@ -46,7 +46,7 @@ namespace t25
 
   private:
 
-    GLuint m_shaderProg;
+    GLuint m_shaderProg = 0;
 
     typedef std::list<GLuint> ShaderObjList;
     ShaderObjList m_shaderObjList;

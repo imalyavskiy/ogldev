@@ -36,7 +36,7 @@ namespace t25
     const std::string& PosZFilename,
     const std::string& NegZFilename)
   {
-    m_pSkyboxTechnique = std::make_shared<SkyboxTechnique>();
+    m_pSkyboxTechnique = std::make_shared<SkyBoxTechnique>();
 
     if (!m_pSkyboxTechnique->Init()) {
       printf("Error initializing the skybox technique\n");

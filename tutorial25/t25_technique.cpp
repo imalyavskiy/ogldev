@@ -16,9 +16,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
+#include <cstdio>
+#include <cstring>
+#include <cassert>
 
 #include "t25_technique.h"
 
@@ -38,23 +38,16 @@ namespace t25
       assert(0);
     }
 
-    return NULL;
+    return nullptr;
   }
-  Technique::Technique()
-  {
-    m_shaderProg = 0;
-  }
-
 
   Technique::~Technique()
   {
     // Delete the intermediate shader objects that have been added to the program
     // The list will only contain something if shaders were compiled but the object itself
     // was destroyed prior to linking.
-    for (ShaderObjList::iterator it = m_shaderObjList.begin() ; it != m_shaderObjList.end() ; it++)
-    {
+    for (auto it = m_shaderObjList.begin() ; it != m_shaderObjList.end() ; ++it)
       glDeleteShader(*it);
-    }
 
     if (m_shaderProg != 0)
     {

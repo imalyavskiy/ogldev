@@ -23,17 +23,17 @@
 
 namespace t25
 {
-  class SkyboxTechnique : public Technique {
+  class SkyBoxTechnique : public Technique {
   public:
 
-    SkyboxTechnique();
+    SkyBoxTechnique() = default;
 
-    virtual bool Init();
+    bool Init() override;
 
     void SetWVP(const Matrix4f& WVP);
     void SetTextureUnit(unsigned int TextureUnit);
 
-    virtual ~SkyboxTechnique();
+    ~SkyBoxTechnique() override = default;
 
   private:
 

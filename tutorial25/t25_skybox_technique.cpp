@@ -16,11 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <limits.h>
-#include <string.h>
-
 #include "t25_skybox_technique.h"
-#include "t25_util.h"
 
 namespace t25
 {
@@ -55,52 +51,39 @@ namespace t25
   "  }                                                                                     ";
 
 
-
-  SkyboxTechnique::SkyboxTechnique()
-  {   
-  }
-
-  SkyboxTechnique::~SkyboxTechnique()
-  {   
-  }
-
-  bool SkyboxTechnique::Init()
+  bool SkyBoxTechnique::Init()
   {
-    if (!Technique::Init()) {
+    if (!Technique::Init())
       return false;
-    }
 
-    if (!AddShader(GL_VERTEX_SHADER, pVS)) {
+    if (!AddShader(GL_VERTEX_SHADER, pVS))
       return false;
-    }
 
-    if (!AddShader(GL_FRAGMENT_SHADER, pFS)) {
+    if (!AddShader(GL_FRAGMENT_SHADER, pFS))
       return false;
-    }
 
-    if (!Finalize()) {
+    if (!Finalize())
       return false;
-    }
 
     m_WVPLocation = GetUniformLocation("gWVP");
-    m_textureLocation = GetUniformLocation("gCubemapTexture");
- 
-    if (m_WVPLocation == INVALID_UNIFORM_LOCATION ||
-        m_textureLocation == INVALID_UNIFORM_LOCATION) {
+    if (m_WVPLocation == INVALID_UNIFORM_LOCATION)
       return false;
-        }
+
+    m_textureLocation = GetUniformLocation("gCubemapTexture");
+    if (m_textureLocation == INVALID_UNIFORM_LOCATION)
+      return false;
 
     return true;
   }
 
 
-  void SkyboxTechnique::SetWVP(const Matrix4f& WVP)
+  void SkyBoxTechnique::SetWVP(const Matrix4f& WVP)
   {
-    glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP.m);    
+    glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, reinterpret_cast<const GLfloat*>(WVP.m));    
   }
 
 
-  void SkyboxTechnique::SetTextureUnit(unsigned int TextureUnit)
+  void SkyBoxTechnique::SetTextureUnit(unsigned int TextureUnit)
   {
     glUniform1i(m_textureLocation, TextureUnit);
   }
