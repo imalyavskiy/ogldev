@@ -25,69 +25,43 @@ namespace t25
 {
   struct BaseLight
   {
-    Vector3f Color;
-    float AmbientIntensity;
-    float DiffuseIntensity;
-
-    BaseLight()
-    {
-      Color = Vector3f(0.0f, 0.0f, 0.0f);
-      AmbientIntensity = 0.0f;
-      DiffuseIntensity = 0.0f;
-    }
+    Vector3f Color{0.f, 0.f, 0.f};
+    float AmbientIntensity = 0.f;
+    float DiffuseIntensity = 0.f;
   };
 
   struct DirectionalLight : public BaseLight
-  {        
-    Vector3f Direction;
-
-    DirectionalLight()
-    {
-      Direction = Vector3f(0.0f, 0.0f, 0.0f);
-    }
+  {
+    Vector3f Direction{ 0.f, 0.f, 0.f };
   };
 
   struct PointLight : public BaseLight
   {
-    Vector3f Position;
+    Vector3f Position{0.f, 0.f, 0.f};
 
     struct
     {
-      float Constant;
-      float Linear;
-      float Exp;
+      float Constant = 1.f;
+      float Linear = 0.f;
+      float Exp = 0.f;
     } Attenuation;
-
-    PointLight()
-    {
-      Position = Vector3f(0.0f, 0.0f, 0.0f);
-      Attenuation.Constant = 1.0f;
-      Attenuation.Linear = 0.0f;
-      Attenuation.Exp = 0.0f;
-    }
   };
 
   struct SpotLight : public PointLight
   {
-    Vector3f Direction;
-    float Cutoff;
-
-    SpotLight()
-    {
-      Direction = Vector3f(0.0f, 0.0f, 0.0f);
-      Cutoff = 0.0f;
-    }
+    Vector3f Direction{0.f, 0.f, 0.f};
+    float Cutoff = 0.f;
   };
 
   class LightingTechnique : public Technique {
   public:
 
-    static const unsigned int MAX_POINT_LIGHTS = 2;
-    static const unsigned int MAX_SPOT_LIGHTS = 2;
+    static constexpr GLuint MAX_POINT_LIGHTS = 2;
+    static constexpr GLuint MAX_SPOT_LIGHTS = 2;
 
-    LightingTechnique();
+    LightingTechnique() = default;
 
-    virtual bool Init();
+    bool Init() override;
 
     void SetWVP(const Matrix4f& WVP);
     void SetLightWVP(const Matrix4f& LightWVP);

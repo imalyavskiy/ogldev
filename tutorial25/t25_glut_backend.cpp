@@ -76,16 +76,16 @@ namespace t25
   }
 
 
-  bool GLUTBackendCreateWindow(unsigned int Width, unsigned int Height, unsigned int bpp, bool isFullScreen, const char* pTitle)
+  bool GLUTBackendCreateWindow(unsigned int width, unsigned int height, unsigned int bpp, bool isFullScreen, const char* pTitle)
   {
     if (isFullScreen) {
       char ModeString[64] = { 0 };
-      snprintf(ModeString, sizeof(ModeString), "%dx%d@%d", Width, Height, bpp);
+      snprintf(ModeString, sizeof(ModeString), "%dx%d@%d", width, height, bpp);
       glutGameModeString(ModeString);
       glutEnterGameMode();
     }
     else {
-      glutInitWindowSize(Width, Height);
+      glutInitWindowSize(width, height);
       glutCreateWindow(pTitle);
     }
 

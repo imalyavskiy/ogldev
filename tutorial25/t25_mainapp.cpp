@@ -11,11 +11,6 @@ namespace t25
   : m_winWidth(winWidth)
   , m_winHeight(winHeight)
   {
-    m_pLightingTechnique = nullptr;
-    m_pGameCamera = nullptr;
-    m_pTankMesh = nullptr;
-    m_pSkyBox = nullptr;
-
     m_dirLight.AmbientIntensity = 0.2f;
     m_dirLight.DiffuseIntensity = 0.8f;
     m_dirLight.Color = Vector3f(1.0f, 1.0f, 1.0f);

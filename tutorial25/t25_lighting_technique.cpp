@@ -197,11 +197,6 @@ namespace t25
   "  }                                                                                                  ";
 
 
-
-  LightingTechnique::LightingTechnique()
-  {   
-  }
-
   bool LightingTechnique::Init()
   {
     if (!Technique::Init()) {
