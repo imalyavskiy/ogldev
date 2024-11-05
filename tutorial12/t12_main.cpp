@@ -158,7 +158,7 @@ namespace t12
 
     const GLchar* translationUnits[] = { pShaderText };
     const GLint   translationUnitLengths[] = { static_cast<GLint>(strlen(pShaderText)) };
-    const GLint   translationUnitsNumber = sizeof(translationUnits) / sizeof translationUnits[0];
+    const GLint   translationUnitsNumber = std::size(translationUnits);
     glShaderSource(shaderObj, translationUnitsNumber, translationUnits, translationUnitLengths);
 
     glCompileShader(shaderObj);

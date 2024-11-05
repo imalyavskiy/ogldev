@@ -21,30 +21,33 @@
 
 #include "t14_math_3d.h"
 
-class Camera
+namespace t14
 {
-public:
+  class Camera
+  {
+  public:
 
-  Camera();
+    Camera();
 
-  Camera(const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
+    Camera(const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
 
-  bool OnKeyboard(int Key);
+    bool OnKeyboard(int Key);
 
-  const Vector3f& GetPos() const;
+    const Vector3f& GetPos() const;
 
-  const Vector3f& GetTarget() const;
+    const Vector3f& GetTarget() const;
 
-  const Vector3f& GetUp() const;
+    const Vector3f& GetUp() const;
 
-private:
+  private:
 
-  Vector3f m_pos;
+    Vector3f m_pos;
 
-  Vector3f m_target;
+    Vector3f m_target;
 
-  Vector3f m_up;
-};
+    Vector3f m_up;
+  };
+}
 
 #endif	/* CAMERA_H */
 

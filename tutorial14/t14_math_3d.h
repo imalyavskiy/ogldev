@@ -29,93 +29,96 @@
 #define ToRadian(x) ((x) * M_PI / 180.0f)
 #define ToDegree(x) ((x) * 180.0f / M_PI)
 
-struct Vector3f
+namespace t14
 {
-  float x = 0.f;
-  float y = 0.f;
-  float z = 0.f;
-
-  Vector3f() = default;
-
-  Vector3f(const float _x, const float _y, const float _z)
-    : x(_x), y(_y), z(_z)
+  struct Vector3f
   {
+    float x = 0.f;
+    float y = 0.f;
+    float z = 0.f;
+
+    Vector3f() = default;
+
+    Vector3f(const float _x, const float _y, const float _z)
+      : x(_x), y(_y), z(_z)
+    {
+    }
+
+    Vector3f& operator+=(const Vector3f& r)
+    {
+      x += r.x;
+      y += r.y;
+      z += r.z;
+
+      return *this;
+    }
+
+    Vector3f& operator-=(const Vector3f& r)
+    {
+      x -= r.x;
+      y -= r.y;
+      z -= r.z;
+
+      return *this;
+    }
+
+    Vector3f& operator*=(float f)
+    {
+      x *= f;
+      y *= f;
+      z *= f;
+
+      return *this;
+    }
+
+    Vector3f Cross(const Vector3f& v) const;
+
+    Vector3f& Normalize();
+
+    void Print() const
+    {
+      printf("(%.02f, %.02f, %.02f", x, y, z);
+    }
+  };
+
+  inline Vector3f operator-(const Vector3f& l, const Vector3f& r)
+  {
+    Vector3f Ret(l.x - r.x,
+      l.y - r.y,
+      l.z - r.z);
+
+    return Ret;
   }
 
-  Vector3f& operator+=(const Vector3f& r)
+  inline Vector3f operator*(const Vector3f& l, float f)
   {
-    x += r.x;
-    y += r.y;
-    z += r.z;
+    Vector3f Ret(l.x * f,
+      l.y * f,
+      l.z * f);
 
-    return *this;
+    return Ret;
   }
 
-  Vector3f& operator-=(const Vector3f& r)
+  class Matrix4f
   {
-    x -= r.x;
-    y -= r.y;
-    z -= r.z;
+  public:
+    float m[4][4] = { {0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f} };
 
-    return *this;
-  }
+    static void InitIdentity(Matrix4f& m);
 
-  Vector3f& operator*=(float f)
-  {
-    x *= f;
-    y *= f;
-    z *= f;
+    Matrix4f operator*(const Matrix4f& Right) const;
 
-    return *this;
-  }
+    static void InitScaleTransform(Matrix4f& m, const float x, const float y, const float z);
 
-  Vector3f Cross(const Vector3f& v) const;
+    static void InitRotateTransform(Matrix4f& m, const float x, const float y, const float z);
 
-  Vector3f& Normalize();
+    static void InitTranslationTransform(Matrix4f& m, const float x, const float y, const float z);
 
-  void Print() const
-  {
-    printf("(%.02f, %.02f, %.02f", x, y, z);
-  }
-};
+    static void InitCameraTransform(Matrix4f& m, const Vector3f& target, const Vector3f& up);
 
-inline Vector3f operator-(const Vector3f& l, const Vector3f& r)
-{
-  Vector3f Ret(l.x - r.x,
-    l.y - r.y,
-    l.z - r.z);
-
-  return Ret;
+    static void InitPersProjTransform(Matrix4f& m, const float fov, const float w, const float h, const float zn, const float zf);
+  };
 }
-
-inline Vector3f operator*(const Vector3f& l, float f)
-{
-  Vector3f Ret(l.x * f,
-    l.y * f,
-    l.z * f);
-
-  return Ret;
-}
-
-class Matrix4f
-{
-public:
-  float m[4][4] = { {0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f} };
-
-  static void InitIdentity(Matrix4f& m);
-
-  Matrix4f operator*(const Matrix4f& Right) const;
-
-  static void InitScaleTransform(Matrix4f& m, const float x, const float y, const float z);
-
-  static void InitRotateTransform(Matrix4f& m, const float x, const float y, const float z);
-
-  static void InitTranslationTransform(Matrix4f& m, const float x, const float y, const float z);
-
-  static void InitCameraTransform(Matrix4f& m, const Vector3f& target, const Vector3f& up);
-
-  static void InitPersProjTransform(Matrix4f& m, const float fov, const float w, const float h, const float zn, const float zf);
-};
 
 
 #endif	/* MATH_3D_H */
