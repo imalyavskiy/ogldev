@@ -20,48 +20,50 @@
 #define	T12_PIPELINE_H
 
 #include "t12_math_3d.h"
-
-class Pipeline
+namespace t12
 {
-public:
-  Pipeline();
+  class Pipeline
+  {
+  public:
+    Pipeline();
 
-  void Scale(const float x, const float y, const float z);
+    void Scale(const float x, const float y, const float z);
 
-  void WorldPos(const float x, const float y, const float z);
+    void WorldPos(const float x, const float y, const float z);
 
-  void Rotate(const float x, const float y, const float z);
+    void Rotate(const float x, const float y, const float z);
 
-  void SetPerspectiveProj(const float fov, const float w, const float h, const float zn, const float zf);
+    void SetPerspectiveProj(const float fov, const float w, const float h, const float zn, const float zf);
 
-  const Matrix4f& GetTrans();
+    const Matrix4f& GetTrans();
 
-protected:
-  void InitScaleTransform(Matrix4f& m) const;
+  protected:
+    void InitScaleTransform(Matrix4f& m) const;
 
-  void InitRotateTransform(Matrix4f& m) const;
+    void InitRotateTransform(Matrix4f& m) const;
 
-  void InitTranslationTransform(Matrix4f& m) const;
+    void InitTranslationTransform(Matrix4f& m) const;
 
-  void InitPerspectiveProjection(Matrix4f& m) const;
+    void InitPerspectiveProjection(Matrix4f& m) const;
 
-protected:
-  Vector3f m_scale;
+  protected:
+    Vector3f m_scale;
 
-  Vector3f m_worldPos;
+    Vector3f m_worldPos;
 
-  Vector3f m_rotateInfo;
+    Vector3f m_rotateInfo;
 
-  struct {
-    float fov;
-    float w;
-    float h;
-    float zn;
-    float zf;
-  } m_persProj;
+    struct {
+      float fov;
+      float w;
+      float h;
+      float zn;
+      float zf;
+    } m_persProj;
 
-  Matrix4f m_transformation;
-};
+    Matrix4f m_transformation;
+  };
+}
 
 #endif	/* T12_PIPELINE_H */
 

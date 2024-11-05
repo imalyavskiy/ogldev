@@ -23,18 +23,21 @@
 #define WINDOW_HEIGHT 768
 #define WINDOW_TITLE  "Tutorial 01"
 
-static void RenderSceneCB()
+namespace t01
 {
-  glClear(GL_COLOR_BUFFER_BIT);
+  static void RenderSceneCB()
+  {
+    glClear(GL_COLOR_BUFFER_BIT);
 
-  /* TODO: Performing the draw operation */
+    /* TODO: Performing the draw operation */
 
-  glutSwapBuffers();
-}
+    glutSwapBuffers();
+  }
 
-static void InitializeGlutCallbacks()
-{
-  glutDisplayFunc(RenderSceneCB);
+  static void InitializeGlutCallbacks()
+  {
+    glutDisplayFunc(RenderSceneCB);
+  }
 }
 
 int main(int argc, char** argv)
@@ -49,7 +52,7 @@ int main(int argc, char** argv)
 
   glutCreateWindow(WINDOW_TITLE);
 
-  InitializeGlutCallbacks();
+  t01::InitializeGlutCallbacks();
 
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 

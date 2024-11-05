@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2010 Etay Meiri
+  Copyright 2010 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,169 +18,173 @@
     Tutorial 04 - shaders
 */
 
-#include <cstdio>
-#include <cstring>
+#include <format>
+#include <iostream>
+
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include "t04_math_3d.h"
 
-GLuint VBO;
+#define WINDOW_WIDTH  1024
+#define WINDOW_HEIGHT 768
+#define WINDOW_TITLE  "Totorial 04"
 
-// Vertex shader affects each individual vertex.
-static const char* pVertexShader =
-"#version 330                                                               \n"\
-"layout (location = 0) in vec3 Position;                                    \n"\
-"void main()                                                                \n"\
-"{                                                                          \n"\
-"  gl_Position = vec4(0.5 * Position.x, 0.5 * Position.y, Position.z, 1.0); \n"\
-"}                                                                          \n";
-
-// Fragment shader affects each pixel that geometry object projects to.
-static const char* pFragmentShader =
-"#version 330                                                               \n"\
-"out vec4 FragColor;                                                        \n"\
-"void main()                                                                \n"\
-"{                                                                          \n"\
-"  FragColor = vec4(1.0, 0.0, 0.0, 1.0);                                    \n"\
-"}                                                                          \n";
-
-static void RenderSceneCB()
+namespace t04
 {
-  glClear(GL_COLOR_BUFFER_BIT);
+  GLuint VBO;
 
-  constexpr GLuint vertex_attribute_index = 0;
-    // This value correlates to value of Position attribute mentioned in vertex
-    // shader
+  static const char* pVertexShader =
+  "  #version 330                                                               \n"\
+  "  layout (location = 0) in vec3 Position;                                    \n"\
+  "  void main()                                                                \n"\
+  "  {                                                                          \n"\
+  "    gl_Position = vec4(0.5 * Position.x, 0.5 * Position.y, Position.z, 1.0); \n"\
+  "  }                                                                          \n";
 
-  glEnableVertexAttribArray(vertex_attribute_index);
+  static const char* pFragmentShader =
+  "  #version 330                                                               \n"\
+  "  out vec4 FragColor;                                                        \n"\
+  "  void main()                                                                \n"\
+  "  {                                                                          \n"\
+  "    FragColor = vec4(1.0, 0.0, 0.0, 1.0);                                    \n"\
+  "  }                                                                          \n";
 
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-  glVertexAttribPointer(vertex_attribute_index, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-  glDrawArrays(GL_TRIANGLES, 0, 3);
-
-  glDisableVertexAttribArray(vertex_attribute_index);
-
-  glutSwapBuffers();
-}
-
-static void InitializeGlutCallbacks()
-{
-  glutDisplayFunc(RenderSceneCB);
-}
-
-static void CreateVertexBuffer()
-{
-  const Vector3f vertices[]
+  static void RenderSceneCB()
   {
-    { -1.0f, -1.0f,  0.0f },
-    {  1.0f, -1.0f,  0.0f },
-    {  0.0f,  1.0f,  0.0f }
-  };
+    glClear(GL_COLOR_BUFFER_BIT);
 
-  glGenBuffers(1, &VBO );
+    constexpr GLuint vertex_attribute_index = 0;
 
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glEnableVertexAttribArray(vertex_attribute_index);
 
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-}
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
-{
-  const GLuint shaderObj = glCreateShader(ShaderType);
+    glVertexAttribPointer(vertex_attribute_index, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
-  if (shaderObj == 0) {
-	  // Something went wrong
-    fprintf(stderr, "Error creating shader type %d\n", ShaderType);
-    exit(0);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glDisableVertexAttribArray(vertex_attribute_index);
+
+    glutSwapBuffers();
   }
 
-	const GLchar* translationUnits[] = { pShaderText };
-  const GLint   translationUnitLengths[]   = { static_cast<GLint>(strlen(pShaderText)) };
-  const GLint   translationUnitsNumber = sizeof(translationUnits) / sizeof(translationUnits[0]);
-  glShaderSource(shaderObj, translationUnitsNumber, translationUnits, translationUnitLengths);
-
-  glCompileShader(shaderObj);
-
-  GLint success = 0;
-
-  glGetShaderiv(shaderObj, GL_COMPILE_STATUS, &success);
-
-  if (!success) {
-    GLchar InfoLog[1024];
-
-    glGetShaderInfoLog(shaderObj, 1024, nullptr, InfoLog);
-    fprintf(stderr, "Error compiling shader type %d: '%s'\n", ShaderType, InfoLog);
-    exit(1);
+  static void InitializeGlutCallbacks()
+  {
+    glutDisplayFunc(RenderSceneCB);
   }
 
-  glAttachShader(ShaderProgram, shaderObj);
-}
+  static void CreateVertexBuffer()
+  {
+    const Vector3f vertices[]
+    {
+      { -1.0f, -1.0f,  0.0f },
+      {  1.0f, -1.0f,  0.0f },
+      {  0.0f,  1.0f,  0.0f }
+    };
 
-static void CompileShaders()
-{
-  const GLuint shaderProgram = glCreateProgram();
+    glGenBuffers(1, &VBO);
 
-  if (shaderProgram == 0) {
-    fprintf(stderr, "Error creating shader program\n");
-    exit(1);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
   }
 
-  AddShader(shaderProgram, pVertexShader, GL_VERTEX_SHADER);
+  static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
+  {
+    const GLuint shaderObj = glCreateShader(ShaderType);
 
-  AddShader(shaderProgram, pFragmentShader, GL_FRAGMENT_SHADER);
+    if (shaderObj == 0) {
+      fprintf(stderr, "Error creating shader type %d\n", ShaderType);
+      exit(0);
+    }
 
-  GLint result = 0;
-  GLchar ErrorLog[1024] = { 0 };
-  GLsizei actualLogLen = 0;
+    const GLchar* translationUnits[] = { pShaderText };
+    const GLint   translationUnitLengths[] = { static_cast<GLint>(strlen(pShaderText)) };
+    const GLint   translationUnitsNumber = sizeof(translationUnits) / sizeof(translationUnits[0]);
+    glShaderSource(shaderObj, translationUnitsNumber, translationUnits, translationUnitLengths);
 
-  glLinkProgram(shaderProgram);
+    glCompileShader(shaderObj);
 
-  glGetProgramiv(shaderProgram, GL_LINK_STATUS, &result);
-	if (result == 0) {
-		glGetProgramInfoLog(shaderProgram, sizeof(ErrorLog), &actualLogLen, ErrorLog);
-		fprintf(stderr, "Error linking shader program: '%s'\n", ErrorLog);
-    exit(1);
-	}
+    GLint success = 0;
 
-  glValidateProgram(shaderProgram);
+    glGetShaderiv(shaderObj, GL_COMPILE_STATUS, &success);
 
-  glGetProgramiv(shaderProgram, GL_VALIDATE_STATUS, &result);
-  if (!result) {
-    glGetProgramInfoLog(shaderProgram, sizeof(ErrorLog), &actualLogLen, ErrorLog);
-    fprintf(stderr, "Invalid shader program: '%s'\n", ErrorLog);
-    exit(1);
+    if (!success) {
+      GLchar InfoLog[1024];
+
+      glGetShaderInfoLog(shaderObj, 1024, nullptr, InfoLog);
+      std::cerr << std::format("Error compiling shader type {}: '{}'\n", ShaderType, InfoLog);
+      exit(1);
+    }
+
+    glAttachShader(ShaderProgram, shaderObj);
   }
 
-  glUseProgram(shaderProgram);
+  static void CompileShaders()
+  {
+    const GLuint shaderProgram = glCreateProgram();
+
+    if (shaderProgram == 0) {
+      std::cerr << "Error creating shader program\n";
+
+      exit(1);
+    }
+
+    AddShader(shaderProgram, pVertexShader, GL_VERTEX_SHADER);
+
+    AddShader(shaderProgram, pFragmentShader, GL_FRAGMENT_SHADER);
+
+    GLint result = 0;
+    GLchar ErrorLog[1024] = { 0 };
+    GLsizei actualLogLen = 0;
+
+    glLinkProgram(shaderProgram);
+
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &result);
+    if (result == 0) {
+      glGetProgramInfoLog(shaderProgram, sizeof(ErrorLog), &actualLogLen, ErrorLog);
+      std::cerr << std::format("Error linking shader program: '{}'\n", ErrorLog);
+      exit(1);
+    }
+
+    glValidateProgram(shaderProgram);
+
+    glGetProgramiv(shaderProgram, GL_VALIDATE_STATUS, &result);
+    if (!result) {
+      glGetProgramInfoLog(shaderProgram, sizeof(ErrorLog), &actualLogLen, ErrorLog);
+      std::cerr << std::format("Invalid shader program: '{}'\n", ErrorLog);
+      exit(1);
+    }
+
+    glUseProgram(shaderProgram);
+  }
 }
 
 int main(int argc, char** argv)
 {
   glutInit(&argc, argv);
 
-  glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA);
+  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 
-  glutInitWindowSize(1024, 768);
+  glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
   glutInitWindowPosition(100, 100);
 
-  glutCreateWindow("Tutorial 04");
+  glutCreateWindow(WINDOW_TITLE);
 
-  InitializeGlutCallbacks();
+  t04::InitializeGlutCallbacks();
 
   const GLenum res = glewInit();
   if (res != GLEW_OK) {
-    fprintf(stderr, "Error: '%s'\n", glewGetErrorString(res));
+    std::cerr << std::format("Error: '{}'\n", reinterpret_cast<const char*>(glewGetErrorString(res)));
     return 1;
   }
 
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-  CreateVertexBuffer();
+  t04::CreateVertexBuffer();
 
-  CompileShaders();
+  t04::CompileShaders();
 
   glutMainLoop();
 

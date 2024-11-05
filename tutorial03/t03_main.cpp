@@ -18,53 +18,64 @@
     Tutorial 03 - First triangle
 */
 
-#include <cstdio>
+#include <format>
+#include <iostream>
+
 #include <GL/glew.h>
 #include <GL/freeglut.h>
+
 #include "t03_math_3d.h"
 
-GLuint VBO;
+#define WINDOW_WIDTH  1024
+#define WINDOW_HEIGHT 768
+#define WINDOW_TITLE  "Tutorial 03"
 
-static void RenderSceneCB()
+namespace t03
 {
-  glClear(GL_COLOR_BUFFER_BIT);
+  GLuint VBO;
 
-  constexpr GLuint vertex_attribute_index = 0;
+  static void RenderSceneCB()
+  {
+    glClear(GL_COLOR_BUFFER_BIT);
 
-  glEnableVertexAttribArray(vertex_attribute_index);
+    constexpr GLuint vertex_attribute_index = 0;
 
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glEnableVertexAttribArray(vertex_attribute_index);
 
-  glVertexAttribPointer(vertex_attribute_index, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-  constexpr GLenum draw_mode = GL_TRIANGLES; // Vertices 0, 1, and 2 form a triangle.Vertices 3, 4, and 5 form a triangle.And so on.
-  constexpr GLuint starting_index = 0;       // starting from index 0
-  constexpr GLuint num_points = 3;           // just single vertex
-  glDrawArrays(draw_mode, starting_index, num_points);
+    glVertexAttribPointer(vertex_attribute_index, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
-  glDisableVertexAttribArray(vertex_attribute_index);
+    constexpr GLenum draw_mode = GL_TRIANGLES;
+    constexpr GLuint starting_index = 0;
+    constexpr GLuint num_points = 3;
 
-  glutSwapBuffers();
-}
+    glDrawArrays(draw_mode, starting_index, num_points);
 
-void InitializeGlutCallbacks()
-{
-  glutDisplayFunc(RenderSceneCB);
-}
+    glDisableVertexAttribArray(vertex_attribute_index);
 
-void CreateVertexBuffer()
-{
-  const Vector3f vertices[] {
-    { -1.0f, -1.0f,  0.0f },
-    {  1.0f, -1.0f,  0.0f },
-    {  0.0f,  1.0f,  0.0f }
-  };
+    glutSwapBuffers();
+  }
 
-  glGenBuffers(1, &VBO);
+  void InitializeGlutCallbacks()
+  {
+    glutDisplayFunc(RenderSceneCB);
+  }
 
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  void CreateVertexBuffer()
+  {
+    const Vector3f vertices[] {
+      { -1.0f, -1.0f,  0.0f },
+      {  1.0f, -1.0f,  0.0f },
+      {  0.0f,  1.0f,  0.0f }
+    };
 
-  glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glGenBuffers(1, &VBO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+    glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+  }
 }
 
 int main(int argc, char** argv)
@@ -73,23 +84,23 @@ int main(int argc, char** argv)
 
   glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA);
 
-  glutInitWindowSize(1024, 768);
+  glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
   glutInitWindowPosition(100, 100);
 
-  glutCreateWindow("Tutorial 03");
+  glutCreateWindow(WINDOW_TITLE);
 
-  InitializeGlutCallbacks();
+  t03::InitializeGlutCallbacks();
 
   const GLenum res = glewInit();
   if (res != GLEW_OK) {
-    fprintf(stderr, "Error: '%s'\n", glewGetErrorString(res));
+    std::cerr << std::format("Error: '{}'\n", reinterpret_cast<const char*>(glewGetErrorString(res)));
     return 1;
   }
 
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-  CreateVertexBuffer();
+  t03::CreateVertexBuffer();
 
   glutMainLoop();
 

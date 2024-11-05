@@ -18,171 +18,177 @@
     Tutorial 09 - Interpolation
 */
 
-#include <cstdio>
-#include <cstring>
+#include <format>
+#include <iostream>
 #include <cassert>
 #include <cmath>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include "t09_math_3d.h"
 
-GLuint VBO;
+#define WINDOW_WIDTH  1024
+#define WINDOW_HEIGHT 768
+#define WINDOW_TITLE  "Tutorial 09"
 
-GLint gWorldLocation;
-
-
-static const char* pVS =
-"#version 330                                  \n"\
-"layout (location = 0) in vec3 Position;       \n"\
-"uniform mat4 gWorld;                          \n"\
-"out vec4 Color;                               \n"\
-"void main()                                   \n"\
-"{                                             \n"\
-"  gl_Position = gWorld * vec4(Position, 1.0); \n"\
-"  vec3 clamped = clamp(Position, 0.0, 1.0);   \n"\
-"  Color = vec4(clamped, 1.0);                 \n"\
-"}                                             \n";
-
-static const char* pFS =
-"#version 330                                  \n"\
-"in vec4 Color;                                \n"\
-"out vec4 FragColor;                           \n"\
-"void main()                                   \n"\
-"{                                             \n"\
-"  FragColor = Color;                          \n"\
-"}                                             \n";
-
-static void RenderSceneCB()
+namespace t09
 {
-  glClear(GL_COLOR_BUFFER_BIT);
+  GLuint VBO;
 
-  constexpr GLuint vertex_attribute_index = 0;
-  // This value correlates to value of Position attribute mentioned in vertex
-  // shader
+  GLint gWorldLocation;
 
-  static float scaleValue = 0.0f;
+  static const char* pVertexShader =
+  "  #version 330                                  \n"\
+  "  layout (location = 0) in vec3 Position;       \n"\
+  "  uniform mat4 gWorld;                          \n"\
+  "  out vec4 Color;                               \n"\
+  "  void main()                                   \n"\
+  "  {                                             \n"\
+  "    gl_Position = gWorld * vec4(Position, 1.0); \n"\
+  "    vec3 clamped = clamp(Position, 0.0, 1.0);   \n"\
+  "    Color = vec4(clamped, 1.0);                 \n"\
+  "  }                                             \n";
 
-  scaleValue += 0.0005f;
+  static const char* pFragmentShader =
+  "  #version 330                                  \n"\
+  "  in vec4 Color;                                \n"\
+  "  out vec4 FragColor;                           \n"\
+  "  void main()                                   \n"\
+  "  {                                             \n"\
+  "    FragColor = Color;                          \n"\
+  "  }                                             \n";
 
-  // Scale matrix:
-  // A 0 0 0
-  // 0 B 0 0
-  // 0 0 C 0
-  // 0 0 0 1
-  Matrix4f world;
-  const float val = (cosf(scaleValue) + 1) / 3.0f + 0.333f; // [0.3, 1.0]
-  world.m[0][0] = val;   world.m[0][1] = 0.0f;  world.m[0][2] = 0.0f;  world.m[0][3] = 0.0f;
-  world.m[1][0] = 0.0f;  world.m[1][1] = val;   world.m[1][2] = 0.0f;  world.m[1][3] = 0.0f;
-  world.m[2][0] = 0.0f;  world.m[2][1] = 0.0f;  world.m[2][2] = val;   world.m[2][3] = 0.0f;
-  world.m[3][0] = 0.0f;  world.m[3][1] = 0.0f;  world.m[3][2] = 0.0f;  world.m[3][3] = 1.0f;
+  static void RenderSceneCB()
+  {
+    glClear(GL_COLOR_BUFFER_BIT);
 
-  glUniformMatrix4fv(gWorldLocation, 1, GL_TRUE, &world.m[0][0]);
+    constexpr GLuint vertex_attribute_index = 0;
+    // This value correlates to value of Position attribute mentioned in vertex
+    // shader
 
-  glEnableVertexAttribArray(vertex_attribute_index);
+    static float scaleValue = 0.0f;
 
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    scaleValue += 0.0005f;
 
-  glVertexAttribPointer(vertex_attribute_index, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    // Scale matrix:
+    // A 0 0 0
+    // 0 B 0 0
+    // 0 0 C 0
+    // 0 0 0 1
+    Matrix4f world;
+    const float val = (cosf(scaleValue) + 1) / 3.0f + 0.333f; // [0.3, 1.0]
+    world.m[0][0] = val;   world.m[0][1] = 0.0f;  world.m[0][2] = 0.0f;  world.m[0][3] = 0.0f;
+    world.m[1][0] = 0.0f;  world.m[1][1] = val;   world.m[1][2] = 0.0f;  world.m[1][3] = 0.0f;
+    world.m[2][0] = 0.0f;  world.m[2][1] = 0.0f;  world.m[2][2] = val;   world.m[2][3] = 0.0f;
+    world.m[3][0] = 0.0f;  world.m[3][1] = 0.0f;  world.m[3][2] = 0.0f;  world.m[3][3] = 1.0f;
 
-  glDrawArrays(GL_TRIANGLES, 0, 3);
+    glUniformMatrix4fv(gWorldLocation, 1, GL_TRUE, &world.m[0][0]);
 
-  glDisableVertexAttribArray(vertex_attribute_index);
+    glEnableVertexAttribArray(vertex_attribute_index);
 
-  glutSwapBuffers();
-}
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-static void InitializeGlutCallbacks()
-{
-  glutDisplayFunc(RenderSceneCB);
+    glVertexAttribPointer(vertex_attribute_index, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
-  glutIdleFunc(RenderSceneCB);
-}
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 
-static void CreateVertexBuffer()
-{
-  Vector3f Vertices[3];
+    glDisableVertexAttribArray(vertex_attribute_index);
 
-  Vertices[0] = Vector3f(-1.0f, -1.0f, 0.0f);
-  Vertices[1] = Vector3f(1.0f, -1.0f, 0.0f);
-  Vertices[2] = Vector3f(0.0f, 1.0f, 0.0f);
-
-  glGenBuffers(1, &VBO);
-
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-  glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
-}
-
-static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
-{
-  const GLuint shaderObj = glCreateShader(ShaderType);
-
-  if (shaderObj == 0) {
-    fprintf(stderr, "Error creating shader type %d\n", ShaderType);
-    exit(0);
+    glutSwapBuffers();
   }
 
-  const GLchar* translationUnits[] = { pShaderText };
-  const GLint   translationUnitLengths[] = { static_cast<GLint>(strlen(pShaderText)) };
-  const GLint   translationUnitsNumber = sizeof(translationUnits) / sizeof(translationUnits[0]);
-  glShaderSource(shaderObj, translationUnitsNumber, translationUnits, translationUnitLengths);
+  static void InitializeGlutCallbacks()
+  {
+    glutDisplayFunc(RenderSceneCB);
 
-  glCompileShader(shaderObj);
-
-  GLint success = 0;
-
-  glGetShaderiv(shaderObj, GL_COMPILE_STATUS, &success);
-
-  if (!success) {
-    GLchar InfoLog[1024];
-
-    glGetShaderInfoLog(shaderObj, 1024, nullptr, InfoLog);
-    fprintf(stderr, "Error compiling shader type %d: '%s'\n", ShaderType, InfoLog);
-    exit(1);
+    glutIdleFunc(RenderSceneCB);
   }
 
-  glAttachShader(ShaderProgram, shaderObj);
-}
+  static void CreateVertexBuffer()
+  {
+    Vector3f Vertices[3];
 
-static void CompileShaders()
-{
-  const GLuint shaderProgram = glCreateProgram();
+    Vertices[0] = Vector3f(-1.0f, -1.0f, 0.0f);
+    Vertices[1] = Vector3f(1.0f, -1.0f, 0.0f);
+    Vertices[2] = Vector3f(0.0f, 1.0f, 0.0f);
 
-  if (shaderProgram == 0) {
-    fprintf(stderr, "Error creating shader program\n");
-    exit(1);
+    glGenBuffers(1, &VBO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
   }
 
-  AddShader(shaderProgram, pVS, GL_VERTEX_SHADER);
+  static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
+  {
+    const GLuint shaderObj = glCreateShader(ShaderType);
 
-  AddShader(shaderProgram, pFS, GL_FRAGMENT_SHADER);
+    if (shaderObj == 0) {
+      std::cerr << std::format("Error creating shader type {}\n", ShaderType);
+      exit(0);
+    }
 
-  GLint result = 0;
-  GLchar ErrorLog[1024] = { 0 };
+    const GLchar* translationUnits[] = { pShaderText };
+    const GLint   translationUnitLengths[] = { static_cast<GLint>(strlen(pShaderText)) };
+    const GLint   translationUnitsNumber = sizeof(translationUnits) / sizeof(translationUnits[0]);
+    glShaderSource(shaderObj, translationUnitsNumber, translationUnits, translationUnitLengths);
 
-  glLinkProgram(shaderProgram);
+    glCompileShader(shaderObj);
 
-  glGetProgramiv(shaderProgram, GL_LINK_STATUS, &result);
-  if (result == 0) {
-    glGetProgramInfoLog(shaderProgram, sizeof(ErrorLog), nullptr, ErrorLog);
-    fprintf(stderr, "Error linking shader program: '%s'\n", ErrorLog);
-    exit(1);
+    GLint success = 0;
+
+    glGetShaderiv(shaderObj, GL_COMPILE_STATUS, &success);
+
+    if (!success) {
+      GLchar InfoLog[1024];
+
+      glGetShaderInfoLog(shaderObj, 1024, nullptr, InfoLog);
+      std::cerr << std::format("Error compiling shader type {}: '{}'\n", ShaderType, InfoLog);
+      exit(1);
+    }
+
+    glAttachShader(ShaderProgram, shaderObj);
   }
 
-  glValidateProgram(shaderProgram);
+  static void CompileShaders()
+  {
+    const GLuint shaderProgram = glCreateProgram();
 
-  glGetProgramiv(shaderProgram, GL_VALIDATE_STATUS, &result);
-  if (!result) {
-    glGetProgramInfoLog(shaderProgram, sizeof(ErrorLog), nullptr, ErrorLog);
-    fprintf(stderr, "Invalid shader program: '%s'\n", ErrorLog);
-    exit(1);
+    if (shaderProgram == 0) {
+      std::cerr << std::format("Error creating shader program\n");
+      exit(1);
+    }
+
+    AddShader(shaderProgram, pVertexShader, GL_VERTEX_SHADER);
+
+    AddShader(shaderProgram, pFragmentShader, GL_FRAGMENT_SHADER);
+
+    GLint result = 0;
+    GLchar ErrorLog[1024] = { 0 };
+
+    glLinkProgram(shaderProgram);
+
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &result);
+    if (result == 0) {
+      glGetProgramInfoLog(shaderProgram, sizeof(ErrorLog), nullptr, ErrorLog);
+      std::cerr << std::format("Error linking shader program: '{}'\n", ErrorLog);
+      exit(1);
+    }
+
+    glValidateProgram(shaderProgram);
+
+    glGetProgramiv(shaderProgram, GL_VALIDATE_STATUS, &result);
+    if (!result) {
+      glGetProgramInfoLog(shaderProgram, sizeof(ErrorLog), nullptr, ErrorLog);
+      std::cerr << std::format("Invalid shader program: '{}'\n", ErrorLog);
+      exit(1);
+    }
+
+    glUseProgram(shaderProgram);
+
+    gWorldLocation = glGetUniformLocation(shaderProgram, "gWorld");
+
+    assert(static_cast<GLuint>(gWorldLocation) != 0xFFFFFFFF);
   }
-
-  glUseProgram(shaderProgram);
-
-  gWorldLocation = glGetUniformLocation(shaderProgram, "gWorld");
-
-  assert(static_cast<GLuint>(gWorldLocation) != 0xFFFFFFFF);
 }
 
 int main(int argc, char** argv)
@@ -191,25 +197,25 @@ int main(int argc, char** argv)
 
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 
-  glutInitWindowSize(1024, 768);
+  glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
   glutInitWindowPosition(100, 100);
 
-  glutCreateWindow("Tutorial 09");
+  glutCreateWindow(WINDOW_TITLE);
 
-  InitializeGlutCallbacks();
+  t09::InitializeGlutCallbacks();
 
   const GLenum result = glewInit();
   if (result != GLEW_OK) {
-    fprintf(stderr, "Error: '%s'\n", glewGetErrorString(result));
+    std::cerr << std::format("Error: '{}'\n", reinterpret_cast<const char*>(glewGetErrorString(result)));
     return 1;
   }
 
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-  CreateVertexBuffer();
+  t09::CreateVertexBuffer();
 
-  CompileShaders();
+  t09::CompileShaders();
 
   glutMainLoop();
 

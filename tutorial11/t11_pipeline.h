@@ -20,36 +20,38 @@
 #define	T11_PIPELINE_H
 
 #include "t11_math_3d.h"
-
-class Pipeline
+namespace t11
 {
-public:
-  Pipeline();
+  class Pipeline
+  {
+  public:
+    Pipeline();
 
-  void Scale(const float ScaleX, const float ScaleY, const float ScaleZ);
+    void Scale(const float scaleX, const float scaleY, const float scaleZ);
 
-  void WorldPos(const float x, const float y, const float z);
+    void WorldPos(const float x, const float y, const float z);
 
-  void Rotate(const float RotateX, const float RotateY, const float RotateZ);
+    void Rotate(const float RotateX, const float RotateY, const float RotateZ);
 
-  const Matrix4f& GetTrans();
+    const Matrix4f& GetTrans();
 
-protected:
-  void InitScaleTransform(Matrix4f& m) const;
+  protected:
+    void InitScaleTransform(Matrix4f& m) const;
 
-  void InitRotateTransform(Matrix4f& m) const;
+    void InitRotateTransform(Matrix4f& m) const;
 
-  void InitTranslationTransform(Matrix4f& m) const;
+    void InitTranslationTransform(Matrix4f& m) const;
 
-protected:
-  Vector3f m_scale;
+  protected:
+    Vector3f m_scale;
 
-  Vector3f m_worldPos;
+    Vector3f m_worldPos;
 
-  Vector3f m_rotateInfo;
+    Vector3f m_rotateInfo;
 
-  Matrix4f m_transformation;
-};
+    Matrix4f m_transformation;
+  };
+}
 
 #endif	/* T11_PIPELINE_H */
 

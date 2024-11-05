@@ -19,7 +19,7 @@
 #ifndef T12_MATH_3D_H
 #define	T12_MATH_3D_H
 
-#include <math.h>
+#include <cmath>
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846f   // pi
@@ -27,50 +27,52 @@
 
 #define ToRadian(x) ((x) * M_PI / 180.0f)
 #define ToDegree(x) ((x) * 180.0f / M_PI)
-
-struct Vector3f
+namespace t12
 {
-  float x = 0.f;
-  float y = 0.f;
-  float z = 0.f;
-
-  Vector3f() = default;
-
-  Vector3f(const float _x, const float _y, const float _z)
-    : x(_x), y(_y), z(_z)
+  struct Vector3f
   {
-  }
-};
+    float x = 0.f;
+    float y = 0.f;
+    float z = 0.f;
 
-class Matrix4f
-{
-public:
-  float m[4][4] = { {0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f} };
+    Vector3f() = default;
 
-  inline void InitIdentity()
+    Vector3f(const float _x, const float _y, const float _z)
+      : x(_x), y(_y), z(_z)
+    {
+    }
+  };
+
+  class Matrix4f
   {
-    m[0][0] = 1.0f; m[0][1] = 0.0f; m[0][2] = 0.0f; m[0][3] = 0.0f;
-    m[1][0] = 0.0f; m[1][1] = 1.0f; m[1][2] = 0.0f; m[1][3] = 0.0f;
-    m[2][0] = 0.0f; m[2][1] = 0.0f; m[2][2] = 1.0f; m[2][3] = 0.0f;
-    m[3][0] = 0.0f; m[3][1] = 0.0f; m[3][2] = 0.0f; m[3][3] = 1.0f;
-  }
+  public:
+    float m[4][4] = { {0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f} };
 
-  inline Matrix4f operator*(const Matrix4f& Right) const
-  {
-    Matrix4f Ret;
-
-    for (unsigned int i = 0; i < 4; i++) {
-      for (unsigned int j = 0; j < 4; j++) {
-        Ret.m[i][j] = m[i][0] * Right.m[0][j] +
-          m[i][1] * Right.m[1][j] +
-          m[i][2] * Right.m[2][j] +
-          m[i][3] * Right.m[3][j];
-      }
+    void InitIdentity()
+    {
+      m[0][0] = 1.0f; m[0][1] = 0.0f; m[0][2] = 0.0f; m[0][3] = 0.0f;
+      m[1][0] = 0.0f; m[1][1] = 1.0f; m[1][2] = 0.0f; m[1][3] = 0.0f;
+      m[2][0] = 0.0f; m[2][1] = 0.0f; m[2][2] = 1.0f; m[2][3] = 0.0f;
+      m[3][0] = 0.0f; m[3][1] = 0.0f; m[3][2] = 0.0f; m[3][3] = 1.0f;
     }
 
-    return Ret;
-  }
-};
+    Matrix4f operator*(const Matrix4f& Right) const
+    {
+      Matrix4f Ret;
+
+      for (unsigned int i = 0; i < 4; i++) {
+        for (unsigned int j = 0; j < 4; j++) {
+          Ret.m[i][j] = m[i][0] * Right.m[0][j] +
+            m[i][1] * Right.m[1][j] +
+            m[i][2] * Right.m[2][j] +
+            m[i][3] * Right.m[3][j];
+        }
+      }
+
+      return Ret;
+    }
+  };
+}
 
 
 #endif	/* T12_MATH_3D_H */
