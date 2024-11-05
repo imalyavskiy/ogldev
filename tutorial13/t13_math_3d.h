@@ -19,8 +19,8 @@
 #ifndef MATH_3D_H
 #define	MATH_3D_H
 
-#include <stdio.h>
-#include <math.h>
+#include <cstdio>
+#include <cmath>
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846f   // pi
@@ -29,49 +29,51 @@
 #define ToRadian(x) ((x) * M_PI / 180.0f)
 #define ToDegree(x) ((x) * 180.0f / M_PI)
 
-struct Vector3f
+namespace t13
 {
+  struct Vector3f
+  {
     float x = 0.f;
     float y = 0.f;
     float z = 0.f;
 
     Vector3f() = default;
 
-	Vector3f(const float _x, const float _y, const float _z)
-		: x(_x), y(_y), z(_z)
-	{
-	}
+    Vector3f(const float _x, const float _y, const float _z)
+      : x(_x), y(_y), z(_z)
+    {
+    }
 
-	Vector3f Cross(const Vector3f& v) const;
+    Vector3f Cross(const Vector3f& v) const;
 
-	Vector3f& Normalize();
+    Vector3f& Normalize();
 
     void Print() const
     {
-        printf("(%.02f, %.02f, %.02f", x, y, z);
+      printf("(%.02f, %.02f, %.02f", x, y, z);
     }
-};
+  };
 
-class Matrix4f
-{
-public:
+  class Matrix4f
+  {
+  public:
     float m[4][4] = { {0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f} };
 
-	static void InitIdentity(Matrix4f& m);
+    static void InitIdentity(Matrix4f& m);
 
-	Matrix4f operator*(const Matrix4f& Right) const;
+    Matrix4f operator*(const Matrix4f& Right) const;
 
-	static void InitScaleTransform(Matrix4f& m, const float x, const float y, const float z);
+    static void InitScaleTransform(Matrix4f& m, const float x, const float y, const float z);
 	
-	static void InitRotateTransform(Matrix4f& m, const float x, const float y, const float z);
+    static void InitRotateTransform(Matrix4f& m, const float x, const float y, const float z);
 	
-	static void InitTranslationTransform(Matrix4f& m, const float x, const float y, const float z);
+    static void InitTranslationTransform(Matrix4f& m, const float x, const float y, const float z);
 	
-	static void InitCameraTransform(Matrix4f& m, const Vector3f& target, const Vector3f& up);
+    static void InitCameraTransform(Matrix4f& m, const Vector3f& target, const Vector3f& up);
 	
-	static void InitPersProjTransform(Matrix4f& m, const float fov, const float w, const float h, const float zn, const float zf);
-};
-
+    static void InitPersProjTransform(Matrix4f& m, const float fov, const float w, const float h, const float zn, const float zf);
+  };
+}
 
 #endif	/* MATH_3D_H */
 

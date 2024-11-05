@@ -39,7 +39,7 @@ namespace t12
 
   GLuint gWorldLocation;
 
-  static const char* pVS =
+  static const char* pVertexShader =
   "  #version 330                                    \n"\
   "  layout (location = 0) in vec3 Position;         \n"\
   "  uniform mat4 gWorld;                            \n"\
@@ -51,7 +51,7 @@ namespace t12
   "      Color = vec4(clamped, 1.0);                 \n"\
   "  }                                               \n";
 
-  static const char* pFS =
+  static const char* pFragmentShader =
   "  #version 330                                    \n"\
   "  in vec4 Color;                                  \n"\
   "  out vec4 FragColor;                             \n"\
@@ -67,8 +67,6 @@ namespace t12
     glEnable(GL_DEPTH_TEST);
 
     constexpr GLuint vertex_attribute_index = 0;
-    // This value correlates to value of Position attribute mentioned in vertex
-    // shader
 
     static float scaleValue = 0.0f;
 
@@ -160,7 +158,7 @@ namespace t12
 
     const GLchar* translationUnits[] = { pShaderText };
     const GLint   translationUnitLengths[] = { static_cast<GLint>(strlen(pShaderText)) };
-    const GLint   translationUnitsNumber = sizeof(translationUnits) / sizeof(translationUnits[0]);
+    const GLint   translationUnitsNumber = sizeof(translationUnits) / sizeof translationUnits[0];
     glShaderSource(shaderObj, translationUnitsNumber, translationUnits, translationUnitLengths);
 
     glCompileShader(shaderObj);
@@ -189,9 +187,9 @@ namespace t12
       exit(1);
     }
 
-    AddShader(ShaderProgram, pVS, GL_VERTEX_SHADER);
+    AddShader(ShaderProgram, pVertexShader, GL_VERTEX_SHADER);
 
-    AddShader(ShaderProgram, pFS, GL_FRAGMENT_SHADER);
+    AddShader(ShaderProgram, pFragmentShader, GL_FRAGMENT_SHADER);
 
     GLint Success = 0;
     GLchar ErrorLog[1024] = { 0 };

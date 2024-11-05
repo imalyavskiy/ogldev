@@ -17,18 +17,19 @@
 */
 
 #include "t13_math_3d.h"
-#pragma region -- Vector3f --
-Vector3f Vector3f::Cross(const Vector3f& v) const
+namespace t13
 {
+  Vector3f Vector3f::Cross(const Vector3f& v) const
+  {
     const float _x = y * v.z - z * v.y;
     const float _y = z * v.x - x * v.z;
     const float _z = x * v.y - y * v.x;
 
     return Vector3f(_x, _y, _z);
-}
+  }
 
-Vector3f& Vector3f::Normalize()
-{
+  Vector3f& Vector3f::Normalize()
+  {
     const float Length = sqrtf(x * x + y * y + z * z);
 
     x /= Length;
@@ -36,138 +37,136 @@ Vector3f& Vector3f::Normalize()
     z /= Length;
 
     return *this;
-}
-#pragma endregion -- Vector3f --
-#pragma region -- Matrix4f --
-void Matrix4f::InitIdentity(Matrix4f& m)
-{
-	m = Matrix4f
-	{
-		1.0f, 0.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 1.0f,
-	};
-}
+  }
 
-Matrix4f Matrix4f::operator*(const Matrix4f& r) const
-{
-	Matrix4f Ret;
+  void Matrix4f::InitIdentity(Matrix4f& m)
+  {
+    m = Matrix4f
+    {
+      1.0f, 0.0f, 0.0f, 0.0f,
+      0.0f, 1.0f, 0.0f, 0.0f,
+      0.0f, 0.0f, 1.0f, 0.0f,
+      0.0f, 0.0f, 0.0f, 1.0f,
+    };
+  }
 
-	for (unsigned int i = 0; i < 4; i++) {
-		for (unsigned int j = 0; j < 4; j++) {
-			Ret.m[i][j] = m[i][0] * r.m[0][j] + 
-						  m[i][1] * r.m[1][j] + 
-						  m[i][2] * r.m[2][j] + 
-						  m[i][3] * r.m[3][j];
-		}
-	}
+  Matrix4f Matrix4f::operator*(const Matrix4f& r) const
+  {
+    Matrix4f Ret;
 
-	return Ret;
-}
+    for (unsigned int i = 0; i < 4; i++) {
+      for (unsigned int j = 0; j < 4; j++) {
+        Ret.m[i][j] = m[i][0] * r.m[0][j] + 
+                m[i][1] * r.m[1][j] + 
+                m[i][2] * r.m[2][j] + 
+                m[i][3] * r.m[3][j];
+      }
+    }
 
-void Matrix4f::InitScaleTransform(Matrix4f& m, const float x, const float y, const float z)
-{
-	m = Matrix4f
-	{
-		  x  ,  0.0f,  0.0f,  0.0f,
-		 0.0f,   y  ,  0.0f,  0.0f,
-		 0.0f,  0.0f,   z  ,  0.0f,
-		 0.0f,  0.0f,  0.0f,  1.0f,
-	};
-}
+    return Ret;
+  }
 
-void Matrix4f::InitRotateTransform(Matrix4f& m, const float RotateX, const float RotateY, const float RotateZ)
-{
-	const float x = ToRadian(RotateX);
+  void Matrix4f::InitScaleTransform(Matrix4f& m, const float x, const float y, const float z)
+  {
+    m = Matrix4f
+    {
+      x  ,  0.0f,  0.0f,  0.0f,
+     0.0f,   y  ,  0.0f,  0.0f,
+     0.0f,  0.0f,   z  ,  0.0f,
+     0.0f,  0.0f,  0.0f,  1.0f,
+  };
+  }
+
+  void Matrix4f::InitRotateTransform(Matrix4f& m, const float RotateX, const float RotateY, const float RotateZ)
+  {
+    const float x = ToRadian(RotateX);
     const float y = ToRadian(RotateY);
     const float z = ToRadian(RotateZ);
 
-  Matrix4f rx
-	{
-		1.0f,     0.0f,      0.0f,     0.0f,
-		0.0f,    cosf(x),  -sinf(x),   0.0f,
-		0.0f,    sinf(x),   cosf(x),   0.0f,
-		0.0f,     0.0f,      0.0f,     1.0f,
-	};
+    Matrix4f rx
+    {
+      1.0f,     0.0f,      0.0f,     0.0f,
+      0.0f,    cosf(x),  -sinf(x),   0.0f,
+      0.0f,    sinf(x),   cosf(x),   0.0f,
+      0.0f,     0.0f,      0.0f,     1.0f,
+    };
 
-	Matrix4f ry
-	{
-		cosf(y),   0.0f,    -sinf(y),   0.0f,
-		 0.0f  ,   1.0f,     0.0f  ,    0.0f,
-		sinf(y),   0.0f,    cosf(y),    0.0f,
-		 0.0f  ,   0.0f,     0.0f  ,    1.0f,
-	};
+    Matrix4f ry
+    {
+      cosf(y),   0.0f,    -sinf(y),   0.0f,
+       0.0f  ,   1.0f,     0.0f  ,    0.0f,
+      sinf(y),   0.0f,    cosf(y),    0.0f,
+       0.0f  ,   0.0f,     0.0f  ,    1.0f,
+    };
 
-	Matrix4f rz
-	{
-		cosf(z), -sinf(z),   0.0f,      0.0f,
-		sinf(z),  cosf(z),   0.0f,      0.0f,
-		0.0f  ,   0.0f  ,    1.0f,      0.0f,
-		0.0f  ,   0.0f  ,    0.0f,      1.0f,
-	};
+    Matrix4f rz
+    {
+      cosf(z), -sinf(z),   0.0f,      0.0f,
+      sinf(z),  cosf(z),   0.0f,      0.0f,
+      0.0f  ,   0.0f  ,    1.0f,      0.0f,
+      0.0f  ,   0.0f  ,    0.0f,      1.0f,
+    };
 
     m = rz * ry * rx;
-}
+  }
 
-void Matrix4f::InitTranslationTransform(Matrix4f& m, const float x, const float y, const float z)
-{
-	m = Matrix4f
-	{
-		1.0f, 0.0f, 0.0f,  x  ,
-		0.0f, 1.0f, 0.0f,  y  ,
-		0.0f, 0.0f, 1.0f,  z  ,
-		0.0f, 0.0f, 0.0f, 1.0f,
-	};
-}
+  void Matrix4f::InitTranslationTransform(Matrix4f& m, const float x, const float y, const float z)
+  {
+    m = Matrix4f
+    {
+      1.0f, 0.0f, 0.0f,  x  ,
+      0.0f, 1.0f, 0.0f,  y  ,
+      0.0f, 0.0f, 1.0f,  z  ,
+      0.0f, 0.0f, 0.0f, 1.0f,
+    };
+  }
 
-// Инициализация UVN матрицы камеры, где:
-// N - вектор "взгляда" камеры, т.н. "Looak At"
-// V - вектор "вверх"
-// U - вектор "право"
-void Matrix4f::InitCameraTransform(Matrix4f& m, const Vector3f& target, const Vector3f& up)
-{
+  // Инициализация UVN матрицы камеры, где:
+  // N - вектор "взгляда" камеры, т.н. "Looak At"
+  // V - вектор "вверх"
+  // U - вектор "право"
+  void Matrix4f::InitCameraTransform(Matrix4f& m, const Vector3f& target, const Vector3f& up)
+  {
     Vector3f N = target;
     Vector3f V = up;
-	Vector3f U;
+    Vector3f U;
 	
-	N.Normalize();
+    N.Normalize();
 	
-	V.Normalize();
+    V.Normalize();
     
-	U = V.Cross(N);
+    U = V.Cross(N);
     
-	// Перевычисляем вектор V, как векторное произведение векторов N и U(U у нас теперь перпендикулярен плоскости VN), и,
-	// что очень ВАЖНО - вектор V, даже если изначально он был (0, 1, 0, 0) и угол между V и N не был равен 90
-	// теперь становится перпендикулярен плоскости NU, т.о. UVN образуют полноценный базис, где скалярное произведение 
-	// любой пары векторов даёт 0
-	V = N.Cross(U);
+    // Перевычисляем вектор V, как векторное произведение векторов N и U(U у нас теперь перпендикулярен плоскости VN), и,
+    // что очень ВАЖНО - вектор V, даже если изначально он был (0, 1, 0, 0) и угол между V и N не был равен 90
+    // теперь становится перпендикулярен плоскости NU, т.о. UVN образуют полноценный базис, где скалярное произведение 
+    // любой пары векторов даёт 0
+    V = N.Cross(U);
 
-	m = Matrix4f
-	{
-		 U.x,   U.y,   U.z,  0.0f,
-		 V.x,   V.y,   V.z,  0.0f,
-		 N.x,   N.y,   N.z,  0.0f,
-		0.0f,  0.0f,  0.0f,  1.0f,
-	};
+    m = Matrix4f
+    {
+      U.x,   U.y,   U.z,  0.0f,
+      V.x,   V.y,   V.z,  0.0f,
+      N.x,   N.y,   N.z,  0.0f,
+     0.0f,  0.0f,  0.0f,  1.0f,
+   };
+  }
+
+  void Matrix4f::InitPersProjTransform(Matrix4f& m, const float fov, const float w, const float h, const float zn, const float zf)
+  {
+    const float ar		= w / h;
+    const float zNear	= zn;
+    const float zFar	= zf;
+    const float zRange	= zf - zn;
+
+    const float ctanHalfFOV = 1.0f / tanf(ToRadian(fov / 2.0f));
+
+    m = Matrix4f
+    {
+      ctanHalfFOV / ar,			0.0f,				0.0f,						0.0,
+        0.0f,				ctanHalfFOV,			0.0f,						0.0,
+        0.0f,					0.0f,		(zNear + zFar) / zRange,	-2.0f * zFar * zNear / zRange,
+        0.0f,					0.0f,				1.0f,						0.0,
+      };
+  }
 }
-
-void Matrix4f::InitPersProjTransform(Matrix4f& m, const float fov, const float w, const float h, const float zn, const float zf)
-{
-	const float ar		= w / h;
-	const float zNear	= zn;
-	const float zFar	= zf;
-	const float zRange	= zf - zn;
-
-	const float ctanHalfFOV = 1.0f / tanf(ToRadian(fov / 2.0f));
-
-	m = Matrix4f
-	{
-	ctanHalfFOV / ar,			0.0f,				0.0f,						0.0,
-		0.0f,				ctanHalfFOV,			0.0f,						0.0,
-		0.0f,					0.0f,		(zNear + zFar) / zRange,	-2.0f * zFar * zNear / zRange,
-		0.0f,					0.0f,				1.0f,						0.0,
-	};
-}
-#pragma endregion -- Matrix4f --
-
