@@ -1,6 +1,6 @@
 ﻿/*
 
-	Copyright 2010 Etay Meiri
+  Copyright 2010 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,9 +16,20 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <format>
+#include <iostream>
+
 #include "t13_math_3d.h"
+
 namespace t13
 {
+  Vector3f::Vector3f(const float _x, const float _y, const float _z)
+    : x(_x)
+    , y(_y)
+    , z(_z)
+  {
+  }
+
   Vector3f Vector3f::Cross(const Vector3f& v) const
   {
     const float _x = y * v.z - z * v.y;
@@ -39,6 +50,16 @@ namespace t13
     return *this;
   }
 
+  Vector3f Vector3f::Normalized(const Vector3f& v)
+  {
+    return Vector3f(v).Normalize();
+  }
+
+  void Vector3f::Print() const
+  {
+    std::cout << std::format("({}, {}, {}", x, y, z);
+  }
+
   void Matrix4f::InitIdentity(Matrix4f& m)
   {
     m = Matrix4f
@@ -56,10 +77,10 @@ namespace t13
 
     for (unsigned int i = 0; i < 4; i++) {
       for (unsigned int j = 0; j < 4; j++) {
-        Ret.m[i][j] = m[i][0] * r.m[0][j] + 
-                m[i][1] * r.m[1][j] + 
-                m[i][2] * r.m[2][j] + 
-                m[i][3] * r.m[3][j];
+        Ret.m[i][j] = m[i][0] * r.m[0][j] +
+          m[i][1] * r.m[1][j] +
+          m[i][2] * r.m[2][j] +
+          m[i][3] * r.m[3][j];
       }
     }
 
@@ -74,7 +95,7 @@ namespace t13
      0.0f,   y  ,  0.0f,  0.0f,
      0.0f,  0.0f,   z  ,  0.0f,
      0.0f,  0.0f,  0.0f,  1.0f,
-  };
+    };
   }
 
   void Matrix4f::InitRotateTransform(Matrix4f& m, const float RotateX, const float RotateY, const float RotateZ)
@@ -121,26 +142,12 @@ namespace t13
     };
   }
 
-  // Инициализация UVN матрицы камеры, где:
-  // N - вектор "взгляда" камеры, т.н. "Looak At"
-  // V - вектор "вверх"
-  // U - вектор "право"
   void Matrix4f::InitCameraTransform(Matrix4f& m, const Vector3f& target, const Vector3f& up)
   {
-    Vector3f N = target;
-    Vector3f V = up;
-    Vector3f U;
-	
-    N.Normalize();
-	
-    V.Normalize();
-    
-    U = V.Cross(N);
-    
-    // Перевычисляем вектор V, как векторное произведение векторов N и U(U у нас теперь перпендикулярен плоскости VN), и,
-    // что очень ВАЖНО - вектор V, даже если изначально он был (0, 1, 0, 0) и угол между V и N не был равен 90
-    // теперь становится перпендикулярен плоскости NU, т.о. UVN образуют полноценный базис, где скалярное произведение 
-    // любой пары векторов даёт 0
+    Vector3f N = Vector3f::Normalized(target);
+    Vector3f V = Vector3f::Normalized(up);
+    Vector3f U = V.Cross(N);
+
     V = N.Cross(U);
 
     m = Matrix4f
@@ -149,15 +156,15 @@ namespace t13
       V.x,   V.y,   V.z,  0.0f,
       N.x,   N.y,   N.z,  0.0f,
      0.0f,  0.0f,  0.0f,  1.0f,
-   };
+    };
   }
 
   void Matrix4f::InitPersProjTransform(Matrix4f& m, const float fov, const float w, const float h, const float zn, const float zf)
   {
-    const float ar		= w / h;
-    const float zNear	= zn;
-    const float zFar	= zf;
-    const float zRange	= zf - zn;
+    const float ar = w / h;
+    const float zNear = zn;
+    const float zFar = zf;
+    const float zRange = zf - zn;
 
     const float ctanHalfFOV = 1.0f / tanf(ToRadian(fov / 2.0f));
 
@@ -167,6 +174,6 @@ namespace t13
         0.0f,				ctanHalfFOV,			0.0f,						0.0,
         0.0f,					0.0f,		(zNear + zFar) / zRange,	-2.0f * zFar * zNear / zRange,
         0.0f,					0.0f,				1.0f,						0.0,
-      };
+    };
   }
 }

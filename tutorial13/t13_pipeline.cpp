@@ -65,25 +65,25 @@ namespace t13
 
   const Matrix4f& Pipeline::GetTrans()
   {
-    Matrix4f ScaleTrans;
-    Matrix4f::InitScaleTransform(ScaleTrans, m_scale.x, m_scale.y, m_scale.z);
+    Matrix4f scaleTrans;
+    Matrix4f::InitScaleTransform(scaleTrans, m_scale.x, m_scale.y, m_scale.z);
   
-    Matrix4f RotateTrans;
-    Matrix4f::InitRotateTransform(RotateTrans, m_rotateInfo.x, m_rotateInfo.y, m_rotateInfo.z);
+    Matrix4f rotateTrans;
+    Matrix4f::InitRotateTransform(rotateTrans, m_rotateInfo.x, m_rotateInfo.y, m_rotateInfo.z);
   
-    Matrix4f TranslationTrans;
-    Matrix4f::InitTranslationTransform(TranslationTrans, m_worldPos.x, m_worldPos.y, m_worldPos.z);
+    Matrix4f translationTrans;
+    Matrix4f::InitTranslationTransform(translationTrans, m_worldPos.x, m_worldPos.y, m_worldPos.z);
 
-    Matrix4f CameraTranslationTrans;
-    Matrix4f::InitTranslationTransform(CameraTranslationTrans, -m_camera.Pos.x, -m_camera.Pos.y, -m_camera.Pos.z);
+    Matrix4f cameraTranslationTrans;
+    Matrix4f::InitTranslationTransform(cameraTranslationTrans, -m_camera.Pos.x, -m_camera.Pos.y, -m_camera.Pos.z);
   
-    Matrix4f CameraRotateTrans;
-    Matrix4f::InitCameraTransform(CameraRotateTrans, m_camera.Target, m_camera.Up);
+    Matrix4f cameraRotateTrans;
+    Matrix4f::InitCameraTransform(cameraRotateTrans, m_camera.Target, m_camera.Up);
 
-    Matrix4f PersProjTrans;
-    Matrix4f::InitPersProjTransform(PersProjTrans, m_persProj.fov, m_persProj.w, m_persProj.h, m_persProj.zn, m_persProj.zf);
+    Matrix4f perspProjTrans;
+    Matrix4f::InitPersProjTransform(perspProjTrans, m_persProj.fov, m_persProj.w, m_persProj.h, m_persProj.zn, m_persProj.zf);
 
-    m_transformation = PersProjTrans * CameraRotateTrans * CameraTranslationTrans * TranslationTrans * RotateTrans * ScaleTrans;
+    m_transformation = perspProjTrans * cameraRotateTrans * cameraTranslationTrans * translationTrans * rotateTrans * scaleTrans;
 
     return m_transformation;
   }

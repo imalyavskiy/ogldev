@@ -19,6 +19,7 @@
 #define	PIPELINE_H
 
 #include "t13_math_3d.h"
+
 namespace t13
 {
   class Pipeline
@@ -54,13 +55,13 @@ namespace t13
       float zf;
     } m_persProj;
 
-    struct {
+    struct Camera {
       Vector3f Pos;
-
       Vector3f Target;
-
       Vector3f Up;
-    } m_camera;
+    };
+
+    Camera m_camera;
 
     Matrix4f m_transformation;
   };

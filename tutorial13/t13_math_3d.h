@@ -19,7 +19,7 @@
 #ifndef MATH_3D_H
 #define	MATH_3D_H
 
-#include <cstdio>
+#include <string>
 #include <cmath>
 
 #ifndef M_PI
@@ -39,25 +39,22 @@ namespace t13
 
     Vector3f() = default;
 
-    Vector3f(const float _x, const float _y, const float _z)
-      : x(_x), y(_y), z(_z)
-    {
-    }
+    Vector3f(float _x, float _y, float _z);
 
     Vector3f Cross(const Vector3f& v) const;
 
     Vector3f& Normalize();
 
-    void Print() const
-    {
-      printf("(%.02f, %.02f, %.02f", x, y, z);
-    }
+    static Vector3f Normalized(const Vector3f& v);
+
+    void Print() const;
   };
 
   class Matrix4f
   {
   public:
     float m[4][4] = { {0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f},{0.f, 0.f, 0.f, 0.f} };
+    std::string name_;
 
     static void InitIdentity(Matrix4f& m);
 
