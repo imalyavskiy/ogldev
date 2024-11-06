@@ -75,6 +75,8 @@ namespace t14
 
     Vector3f& Normalize();
 
+    Vector3f Normalized() const;
+
     void Print() const
     {
       printf("(%.02f, %.02f, %.02f", x, y, z);

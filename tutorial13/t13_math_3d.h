@@ -45,7 +45,7 @@ namespace t13
 
     Vector3f& Normalize();
 
-    static Vector3f Normalized(const Vector3f& v);
+    Vector3f Normalized() const;
 
     void Print() const;
   };
@@ -68,7 +68,7 @@ namespace t13
 	
     static void InitCameraTransform(Matrix4f& m, const Vector3f& target, const Vector3f& up);
 	
-    static void InitPersProjTransform(Matrix4f& m, const float fov, const float w, const float h, const float zn, const float zf);
+    static void InitPerspProjTransform(Matrix4f& m, const float fov, const float w, const float h, const float zn, const float zf);
   };
 }
 

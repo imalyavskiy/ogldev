@@ -81,7 +81,7 @@ namespace t13
     Matrix4f::InitCameraTransform(cameraRotateTrans, m_camera.Target, m_camera.Up);
 
     Matrix4f perspProjTrans;
-    Matrix4f::InitPersProjTransform(perspProjTrans, m_persProj.fov, m_persProj.w, m_persProj.h, m_persProj.zn, m_persProj.zf);
+    Matrix4f::InitPerspProjTransform(perspProjTrans, m_persProj.fov, m_persProj.w, m_persProj.h, m_persProj.zn, m_persProj.zf);
 
     m_transformation = perspProjTrans * cameraRotateTrans * cameraTranslationTrans * translationTrans * rotateTrans * scaleTrans;
 

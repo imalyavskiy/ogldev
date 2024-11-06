@@ -29,9 +29,9 @@ namespace t14
 
     Camera();
 
-    Camera(const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
+    Camera(const Vector3f& pos, const Vector3f& target, const Vector3f& up);
 
-    bool OnKeyboard(int Key);
+    bool OnKeyboard(int key);
 
     const Vector3f& GetPos() const;
 

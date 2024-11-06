@@ -50,9 +50,9 @@ namespace t13
     return *this;
   }
 
-  Vector3f Vector3f::Normalized(const Vector3f& v)
+  Vector3f Vector3f::Normalized() const
   {
-    return Vector3f(v).Normalize();
+    return Vector3f(*this).Normalize();
   }
 
   void Vector3f::Print() const
@@ -144,8 +144,8 @@ namespace t13
 
   void Matrix4f::InitCameraTransform(Matrix4f& m, const Vector3f& target, const Vector3f& up)
   {
-    Vector3f N = Vector3f::Normalized(target);
-    Vector3f V = Vector3f::Normalized(up);
+    Vector3f N = target.Normalized();
+    Vector3f V = up.Normalized();
     Vector3f U = V.Cross(N);
 
     V = N.Cross(U);
@@ -159,7 +159,7 @@ namespace t13
     };
   }
 
-  void Matrix4f::InitPersProjTransform(Matrix4f& m, const float fov, const float w, const float h, const float zn, const float zf)
+  void Matrix4f::InitPerspProjTransform(Matrix4f& m, const float fov, const float w, const float h, const float zn, const float zf)
   {
     const float ar = w / h;
     const float zNear = zn;

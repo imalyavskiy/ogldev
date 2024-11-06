@@ -40,6 +40,11 @@ namespace t14
     return *this;
   }
 
+  Vector3f Vector3f::Normalized() const
+  {
+    return Vector3f(*this).Normalize();
+  }
+
   void Matrix4f::InitIdentity(Matrix4f& m)
   {
     m = Matrix4f
