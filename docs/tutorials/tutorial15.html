@@ -53,119 +53,120 @@ ga('send', 'pageview');</script></head><body><div class="row header"><div class=
 
 <p><img src="../images/t15_h_angle.png" alt="" /></p>
 
-<p>Наш вектор (x,z), и мы хотим найти способ получить горизонтальный угол, представленный альфой (координата Y участвует только в вертикальном углу). Так как длина радиуса окружности равна 1, то очень легко заметить, что синус альфы - это z. Согласно этому, нахождение арксинуса z и будет наш угол альфа. Все готово? - еще нет. Так как z в промежутке [-1,1], то результат арксинуса в пределах от -90 градусов до 90 градусов. Но горизонтальный угол должен меняться по всей окружности, то есть 360 градусов. К тому же, наш кватернион не поворачивает по часовой стрелке. Это значит, что когда мы вращаем на 90 градусов кватернионом, то мы попадем в точку с z равным -1, а это противоположная точка. ИМХО, самый простой путь получить значение арксинуса используя положительное значение Z, и комбинируя результат с указанным кватернионом круга, в котором расположен вектор. Для примера, когда вектор направления (0,1) мы вычисляем арксинус 1, который равен 90, и вычитаем 360. Итого 270. Арксинус от [0,1] принимает значения от 0 до 90 градусов. Комбинируя это с указанным кватернионом для круга получим итоговое значение горизонтального угла.</p>
+<p>Наш вектор (x,z), и мы хотим найти способ получить горизонтальный угол, представленный углом &#x3b1; (координата Y меняется только с изменением вертикального угла). Так как длина радиуса окружности равна 1, то очень легко заметить, что синус угла &#x3b1; - это z. Согласно этому, нахождение arcsin(z) и будет наш угол альфа. Все готово? - еще нет. Так как z в промежутке [-1,1], то результат arcsin(z) лежит в промежутке [-90&#xb0;, 90&#xb0;], всего 180&#xb0;, но горизонтальный угол должен меняться по всей окружности, то есть 360&#xb0;. К тому же, наш кватернион не поворачивает по часовой стрелке. Это значит, что когда мы вращаем на 90&#xb0; кватернионом, то мы попадем в точку с z равным -1, а это противоположная точка. ИМХО, самый простой путь получить значение arcsin(z) используя положительное значение Z, и комбинируя результат с указанным кватернионом круга, в котором расположен вектор. Для примера, когда вектор направления (0,1) мы вычисляем arcsin(1), который равен 90&#xb0;, и вычитаем 360&#xb0; - итого 270&#xb0;. arcsin от [0,1] принимает значения в диапазоне [0&#xb0;, 90&#xb0;]. Комбинируя это с указанным кватернионом для круга получим итоговое значение горизонтального угла.</p>
 
-<p>Вычисление вертикального угла немного проще. Мы собираемся ограничить наклон от -90 градусов (смотрим вверх) до +90 градусов (направлена вниз). Это значит, что нам требуется только отрицательное значение арксинуса от Y координаты вектора направления. Когда Y равен 1 (смотрим вверх) арксинус равен 90, то есть нужно изменить знак. Когда Y равен -1 (смотрим вниз) арксинус равен -90, и если изменить знак, получим 90 градусов. Если у вас затруднения посмотрите на диаграмму еще раз и замените Z Y'ком, и X Z'том.</p>
+<p>Вычисление вертикального угла немного проще. Мы собираемся ограничить наклон от -90&#xb0; (смотрим вверх) до +90&#xb0; (направлена вниз). Это значит, что нам требуется только отрицательное значение arcsin от Y координаты вектора направления. Когда Y равен 1 (смотрим вверх) arcsin равен 90&#xb0;, то есть нужно изменить знак. Когда Y равен -1 (смотрим вниз) arcsin равен -90&#xb0;, и если изменить знак, получим 90&#xb0; градусов. Если у вас затруднения посмотрите на диаграмму еще раз и замените Z на Y, а X на Z.</p>
 
 <h2 id="httpsgithubcomtriplepointfiveogldevtreemastertutorial15"><a href="https://github.com/triplepointfive/ogldev/tree/master/tutorial15">Прямиком к коду!</a></h2>
 
 <blockquote>
-  <p>camera.cpp:38</p>
+  <p>camera.cpp:41</p>
 </blockquote>
 
-<pre><code>Camera::Camera(int WindowWidth, int WindowHeight, const Vector3f&amp; Pos, const Vector3f&amp; Target, const Vector3f&amp; Up)
+<pre><code>Camera::Camera(int winWidth, int winHeight, const Vector3f& pos, const Vector3f& target, const Vector3f& up)
+  : m_MARGIN(winWidth / 3)
+  , m_pos(pos)
+  , m_target(target)
+  , m_up(up)
+  , m_winWidth(winWidth)
+  , m_winHeight(winHeight)
 {
-    m_windowWidth  = WindowWidth;
-    m_windowHeight = WindowHeight;
-    m_pos = Pos;
+  m_target.Normalize();
+  m_up.Normalize();
 
-    m_target = Target;
-    m_target.Normalize();
-
-    m_up = Up;
-    m_up.Normalize();
-
-    Init();
+  Init();
 }
+
 </code></pre>
 
 <p>Конструктор камеры теперь принимает размеры окна. Нам это потребуется для перемещения курсора в центр экрана. Заметим, что мы вызываем функцию <em>Init()</em>, которая установит внутренние параметры камеры.</p>
 
 <blockquote>
-  <p>camera.cpp:54</p>
+  <p>camera.cpp:55</p>
 </blockquote>
 
 <pre><code>void Camera::Init()
 {
-    Vector3f HTarget(m_target.x, 0.0, m_target.z);
-    HTarget.Normalize();
+  Vector3f hTarget(m_target.x, 0.0, m_target.z);
+  hTarget.Normalize();
 
-    if (HTarget.z &gt;= 0.0f){
-        if (HTarget.x &gt;= 0.0f){
-            m_AngleH = 360.0f - ToDegree(asin(HTarget.z));
-        }
-        else{
-            m_AngleH = 180.0f + ToDegree(asin(HTarget.z));
-        }
-    }
-    else{
-        if (HTarget.x &gt;= 0.0f){
-            m_AngleH = ToDegree(asin(-HTarget.z));
-        }
-        else{
-            m_AngleH = 90.0f + ToDegree(asin(-HTarget.z));
-        }
-    }
+  if (hTarget.z >= 0.0f)
+  {
+    if (hTarget.x >= 0.0f)
+      m_hAngle = 360.0f - toDegree(asinf(hTarget.z));
+    else
+    if (hTarget.x < 0.0f)
+      m_hAngle = 180.0f + toDegree(asinf(hTarget.z));
+  }
+  else
+  if (hTarget.z < 0.0f)
+  {
+    if (hTarget.x >= 0.0f)
+      m_hAngle = toDegree(asinf((-1.f) * hTarget.z));
+    else
+    if (hTarget.x < 0.0f)
+      m_hAngle = 90.0f + toDegree(asinf((-1.f) * hTarget.z));
+  }
 
-    m_AngleV = -ToDegree(asin(m_target.y));
+  m_vAngle = (-1.f) * toDegree(asinf(m_target.y));
 
-    m_OnUpperEdge = false;
-    m_OnLowerEdge = false;
-    m_OnLeftEdge  = false;
-    m_OnRightEdge = false;
-    m_mousePos.x  = m_windowWidth / 2;
-    m_mousePos.y  = m_windowHeight / 2;
+  m_OnTEdge = false;
+  m_OnBEdge = false;
+  m_OnLEdge = false;
+  m_OnREdge = false;
+  m_mousePos.x = m_winWidth / 2;
+  m_mousePos.y = m_winHeight / 2;
 
-    glutWarpPointer(m_mousePos.x, m_mousePos.y);
+  glutWarpPointer(m_mousePos.x, m_mousePos.y);
 }
 </code></pre>
 
-<p>В функции Init() мы начинаем с вычисления горизонтального угла. Мы создаем новый вектор, названый HTarget (направление по горизонтали), который является проекцией исходного вектора направления на плоскость XZ. Затем мы его нормируем (так как для выводов выше требуется единичный вектор на плоскости XZ). Затем мы проверяем какой кватернион соответствует вектору для конечного подсчета значения координаты Z. Далее мы подсчитываем вертикальный угол; сделать это гораздо проще.</p>
+<p>В функции Init() мы начинаем с вычисления горизонтального угла. Мы создаем новый вектор, названый hTarget (направление по горизонтали), который является проекцией исходного вектора направления на плоскость XZ. Затем мы его нормируем (так как для выводов выше требуется единичный вектор на плоскости XZ). Затем мы проверяем какой кватернион соответствует вектору для конечного подсчета значения координаты Z. Далее мы подсчитываем вертикальный угол; сделать это гораздо проще.</p>
 
 <p>У камеры появилось 4 новых параметра для проверки не касается ли курсор границ экрана. Мы собираемся добавить автоматическое вращение в этом случае, это позволит нам поворачиваться на все 360 градусов. Мы назначаем все флаги в false, так как курсор в начале в центре экрана. Следующие 2 строки кода вычисляют центр экрана (основывается на разрешении экрана), и новая функция glutWarpPointer перемещает курсор. Старт с курсором в центре экрана упростит нам жизнь.</p>
 
 <blockquote>
-  <p>camera.cpp:140</p>
+  <p>camera.cpp:145</p>
 </blockquote>
 
 <pre><code>void Camera::OnMouse(int x, int y)
 {
-    const int DeltaX = x - m_mousePos.x;
-    const int DeltaY = y - m_mousePos.y;
+  const int dx = x - m_mousePos.x;
+  const int dy = y - m_mousePos.y;
 
-    m_mousePos.x = x;
-    m_mousePos.y = y;
+  m_mousePos.x = x;
+  m_mousePos.y = y;
 
-    m_AngleH += (float)DeltaX / 20.0f;
-    m_AngleV += (float)DeltaY / 20.0f;
+  m_hAngle += dx / 20.0f;
+  m_vAngle += dy / 20.0f;
 
-    if (DeltaX == 0){
-        if (x &lt;= MARGIN){
-            m_OnLeftEdge = true;
-        }
-        else if (x &gt;= (m_windowWidth - MARGIN)){
-            m_OnRightEdge = true;
-        }
+  if (0 == dx) {
+    if (x <= m_MARGIN) {
+      m_onLEdge = true;
     }
-    else{
-        m_OnLeftEdge = false;
-        m_OnRightEdge = false;
+    else if (x >= (m_winWidth - m_MARGIN)) {
+      m_onREdge = true;
     }
+  }
+  else {
+    m_onLEdge = false;
+    m_onREdge = false;
+  }
 
-    if (DeltaY == 0){
-        if (y &lt;= MARGIN){
-            m_OnUpperEdge = true;
-        }
-        else if (y &gt;= (m_windowHeight - MARGIN)){
-            m_OnLowerEdge = true;
-        }
+  if (0 == dy) {
+    if (y <= m_MARGIN) {
+      m_onTEdge = true;
     }
-    else {
-        m_OnUpperEdge = false;
-        m_OnLowerEdge = false;
+    else if (y >= (m_winHeight - m_MARGIN)) {
+      m_onBEdge = true;
     }
+  }
+  else {
+    m_onTEdge = false;
+    m_onBEdge = false;
+  }
 
-    Update();
+  Update();
 }
 </code></pre>
 
@@ -174,67 +175,64 @@ ga('send', 'pageview');</script></head><body><div class="row header"><div class=
 <p>После проверки мы обновляем значения 'm_On<em>Edge' согласно положению курсора. Граница по умолчанию равна 10 пикселям, и триггер сработает, если мышь будет достаточна близка к границе. Наконец, мы вызываем *Update()</em> для перерасчета векторов направления и вектора вверх, основанных на новых горизонтальном и вертикальном углах.</p>
 
 <blockquote>
-  <p>camera.cpp:183</p>
+  <p>camera.cpp:185</p>
 </blockquote>
 
 <pre><code>void Camera::OnRender()
 {
-    bool ShouldUpdate = false;
+  bool shouldUpdate = false;
 
-    if (m_OnLeftEdge){
-        m_AngleH -= 0.1f;
-        ShouldUpdate = true;
-    }
-    else if (m_OnRightEdge){
-        m_AngleH += 0.1f;
-        ShouldUpdate = true;
-    }
+  if (m_onLEdge) {
+    m_hAngle -= 0.1f;
+    shouldUpdate = true;
+  }
+  else if (m_onREdge) {
+    m_hAngle += 0.1f;
+    shouldUpdate = true;
+  }
 
-    if (m_OnUpperEdge){
-        if (m_AngleV &gt; -90.0f){
-            m_AngleV -= 0.1f;
-            ShouldUpdate = true;
-        }
+  if (m_onTEdge) {
+    if (m_vAngle > -90.0f) {
+      m_vAngle -= 0.1f;
+      shouldUpdate = true;
     }
-    else if (m_OnLowerEdge){
-        if (m_AngleV &lt; 90.0f){
-            m_AngleV += 0.1f;
-            ShouldUpdate = true;
-        }
+  }
+  else if (m_onBEdge) {
+    if (m_vAngle < 90.0f) {
+      m_vAngle += 0.1f;
+      shouldUpdate = true;
     }
+  }
 
-    if (ShouldUpdate){
-        Update();
-    }
+  if (shouldUpdate) {
+    Update();
+  }
 }
 </code></pre>
 
 <p>Эта функция вызывается из главного цикла рендера. Она нам необходима для случаев, когда мышь не движется, но находится около одной из границ экрана. В этом случае мышь не будет передавать событий, но мы все еще хотим, что бы камера вращалась (до тех пор, пока курсор не отведут от края экрана). Мы проверяем не установлен ли хоть один из флагов, и если таковой найден, то изменится один из углов. В этом случае будет вызвана функция Update() для обновления векторов камеры. Если мышь не находится в окне, то нам передается это событие, и все флаги снимаются. Заметим, что вертикальный угол находится в пределах от -90 градусов и до +90 градусов. Это необходимо для запрета полного круга, когда мы наклоняемся вверх или вниз.</p>
 
 <blockquote>
-  <p>camera.cpp:214</p>
+  <p>camera.cpp:216</p>
 </blockquote>
 
 <pre><code>void Camera::Update()
 {
-    const Vector3f Vaxis(0.0f, 1.0f, 0.0f);
+  const Vector3f vAxis(0.0f, 1.0f, 0.0f);
 
-    // Rotate the view vector by the horizontal angle around the vertical axis
-    Vector3f View(1.0f, 0.0f, 0.0f);
-    View.Rotate(m_AngleH, Vaxis);
-    View.Normalize();
+  Vector3f view(1.0f, 0.0f, 0.0f);
+  view.Rotate(m_hAngle, vAxis);
+  view.Normalize();
 
-    // Rotate the view vector by the vertical angle around the horizontal axis
-    Vector3f Haxis = Vaxis.Cross(View);
-    Haxis.Normalize();
-    View.Rotate(m_AngleV, Haxis);
-    View.Normalize();
+  Vector3f hAxis = vAxis.Cross(view);
+  hAxis.Normalize();
+  view.Rotate(m_vAngle, hAxis);
 
-    m_target = View;
-    m_target.Normalize();
+  m_target = view;
+  m_target.Normalize();
 
-    m_up = m_target.Cross(Haxis);
-    m_up.Normalize();
+  m_up = m_target.Cross(hAxis);
+  m_up.Normalize();
 }
 </code></pre>
 
@@ -251,7 +249,7 @@ glutEnterGameMode();
 <p>Эта функция glut'а разрешает вашему приложению запускаться в полноэкранном режиме, называемом как 'игровой режим'. Это упростит поворот на 360 градусов, так как все что вам требуется сделать, это передвинуть курсор к одному из краев экрана. Заметим, что разрешение и количество цветов задаются через строку в функции. 32 бита для пикселя обеспечивают наибольшее количество цветов для рендера.</p>
 
 <blockquote>
-  <p>main.cpp:227</p>
+  <p>main.cpp:268</p>
 </blockquote>
 
 <pre><code>pGameCamera = new Camera(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -260,7 +258,7 @@ glutEnterGameMode();
 <p>Камера теперь автоматически установится в нужное положение, так как в конструкторе она установит положение курсора в центре экрана (используя функцию glutWarpPointer). Этот вызов вернет код ошибки если glut еще не был инициализирован.</p>
 
 <blockquote>
-  <p>main.cpp:122</p>
+  <p>main.cpp:133</p>
 </blockquote>
 
 <pre><code>glutPassiveMotionFunc(PassiveMouseCB);
@@ -270,32 +268,33 @@ glutKeyboardFunc(KeyboardCB);
 <p>Мы регистрируем 2 новых функции обратного вызова. Одна для мыши и другая для нажатия специальных клавиш (это клавиши направление и функциональные клавиши). Пассивное движение означает, что мышь движется без нажатия каких-либо кнопок.</p>
 
 <blockquote>
-  <p>main.cpp:104</p>
+  <p>main.cpp:112</p>
 </blockquote>
 
 <pre><code>static void KeyboardCB(unsigned char Key, int x, int y)
 {
-     switch (Key) {
-        case 'q':
-        exit(0);
-     }
+  switch (Key) {
+  case 0x1b: // Esc
+    exit(0);
+  }
 }
 
 static void PassiveMouseCB(int x, int y)
 {
-     pGameCamera-&gt;OnMouse(x, y);
+  pGameCamera-&gt;OnMouse(x, y);
 }
 </code></pre>
 
-<p>Теперь мы используем полноэкранный режим, поэтому может возникнуть проблема с выходом из приложения. При нажатии 'q' мы выходим. Обратный вызов для мыши просто передает ее координаты в камеру.</p>
+<p>Теперь мы используем полноэкранный режим, поэтому может возникнуть проблема с выходом из приложения. При нажатии 'Esc' мы выходим. Обратный вызов для мыши просто передает ее координаты в камеру.</p>
 
 <blockquote>
-  <p>main.cpp:67</p>
+  <p>main.cpp:66</p>
 </blockquote>
 
 <pre><code>static void RenderSceneCB()
 {
-    pGameCamera-&gt;OnRender();
+  pGameCamera-&gt;OnRender();
+}
 </code></pre>
 
 <p>Где-то в функции рендера мы должны вызвать камеру. Это дает ей шанс для действий, если мышь не двигалась, но находится около границы экрана.</p>

@@ -24,31 +24,29 @@ namespace t15
 {
   const static float StepScale = 0.1f;
 
-  Camera::Camera(int WindowWidth, int WindowHeight)
-    : m_MARGIN(WindowWidth / 3)
+  Camera::Camera(int winWidth, int winHeight)
+    : m_MARGIN(winWidth / 3)
+    , m_winWidth(winWidth)
+    , m_winHeight(winHeight)
   {
     m_pos = Vector3f(0.0f, 0.0f, 0.0f);
     m_target = Vector3f(0.0f, 0.0f, 1.0f);
     m_up = Vector3f(0.0f, 1.0f, 0.0f);
 
-    m_windowWidth = WindowWidth;
-    m_windowHeight = WindowHeight;
     m_target.Normalize();
 
     Init();
   }
 
-  Camera::Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up)
-    : m_MARGIN(WindowWidth / 3)
+  Camera::Camera(int winWidth, int winHeight, const Vector3f& pos, const Vector3f& target, const Vector3f& up)
+    : m_MARGIN(winWidth / 3)
+    , m_pos(pos)
+    , m_target(target)
+    , m_up(up)
+    , m_winWidth(winWidth)
+    , m_winHeight(winHeight)
   {
-    m_pos = Pos;
-
-    m_windowWidth = WindowWidth;
-    m_windowHeight = WindowHeight;
-
-    m_target = Target;
     m_target.Normalize();
-    m_up = Up;
     m_up.Normalize();
 
     Init();
@@ -56,41 +54,44 @@ namespace t15
 
   void Camera::Init()
   {
-    Vector3f HTarget(m_target.x, 0.0, m_target.z);
-    HTarget.Normalize();
+    Vector3f hTarget(m_target.x, 0.0, m_target.z);
+    hTarget.Normalize();
 
-    if (HTarget.z >= 0.0f)
+    if (hTarget.z >= 0.0f)
     {
-      if (HTarget.x >= 0.0f)
-        m_HAngle = 360.0f - ToDegree(asinf(HTarget.z));
+      if (hTarget.x >= 0.0f)
+        m_hAngle = 360.0f - toDegree(asinf(hTarget.z));
       else
-        m_HAngle = 180.0f + ToDegree(asinf(HTarget.z));
+      if (hTarget.x < 0.0f)
+        m_hAngle = 180.0f + toDegree(asinf(hTarget.z));
     }
     else
+    if (hTarget.z < 0.0f)
     {
-      if (HTarget.x >= 0.0f)
-        m_HAngle = ToDegree(asinf(-HTarget.z));
+      if (hTarget.x >= 0.0f)
+        m_hAngle = toDegree(asinf((-1.f) * hTarget.z));
       else
-        m_HAngle = 90.0f + ToDegree(asinf(-HTarget.z));
+      if (hTarget.x < 0.0f)
+        m_hAngle = 90.0f + toDegree(asinf((-1.f) * hTarget.z));
     }
 
-    m_VAngle = -ToDegree(asinf(m_target.y));
+    m_vAngle = (-1.f) * toDegree(asinf(m_target.y));
 
-    m_OnTEdge = false;
-    m_OnBEdge = false;
-    m_OnLEdge = false;
-    m_OnREdge = false;
-    m_mousePos.x = m_windowWidth / 2;
-    m_mousePos.y = m_windowHeight / 2;
+    m_onTEdge = false;
+    m_onBEdge = false;
+    m_onLEdge = false;
+    m_onREdge = false;
+    m_mousePos.x = m_winWidth / 2;
+    m_mousePos.y = m_winHeight / 2;
 
     glutWarpPointer(m_mousePos.x, m_mousePos.y);
   }
 
-  bool Camera::OnKeyboard(int Key)
+  bool Camera::OnKeyboard(int key)
   {
     bool Ret = false;
 
-    switch (Key)
+    switch (key)
     {
       case GLUT_KEY_UP: {
         m_pos += (m_target * StepScale);
@@ -149,33 +150,33 @@ namespace t15
     m_mousePos.x = x;
     m_mousePos.y = y;
 
-    m_HAngle += dx / 20.0f;
-    m_VAngle += dy / 20.0f;
+    m_hAngle += dx / 20.0f;
+    m_vAngle += dy / 20.0f;
 
     if (0 == dx) {
       if (x <= m_MARGIN) {
-        m_OnLEdge = true;
+        m_onLEdge = true;
       }
-      else if (x >= (m_windowWidth - m_MARGIN)) {
-        m_OnREdge = true;
+      else if (x >= (m_winWidth - m_MARGIN)) {
+        m_onREdge = true;
       }
     }
     else {
-      m_OnLEdge = false;
-      m_OnREdge = false;
+      m_onLEdge = false;
+      m_onREdge = false;
     }
 
     if (0 == dy) {
       if (y <= m_MARGIN) {
-        m_OnTEdge = true;
+        m_onTEdge = true;
       }
-      else if (y >= (m_windowHeight - m_MARGIN)) {
-        m_OnBEdge = true;
+      else if (y >= (m_winHeight - m_MARGIN)) {
+        m_onBEdge = true;
       }
     }
     else {
-      m_OnTEdge = false;
-      m_OnBEdge = false;
+      m_onTEdge = false;
+      m_onBEdge = false;
     }
 
     Update();
@@ -183,51 +184,51 @@ namespace t15
 
   void Camera::OnRender()
   {
-    bool ShouldUpdate = false;
+    bool shouldUpdate = false;
 
-    if (m_OnLEdge) {
-      m_HAngle -= 0.1f;
-      ShouldUpdate = true;
+    if (m_onLEdge) {
+      m_hAngle -= 0.1f;
+      shouldUpdate = true;
     }
-    else if (m_OnREdge) {
-      m_HAngle += 0.1f;
-      ShouldUpdate = true;
+    else if (m_onREdge) {
+      m_hAngle += 0.1f;
+      shouldUpdate = true;
     }
 
-    if (m_OnTEdge) {
-      if (m_VAngle > -90.0f) {
-        m_VAngle -= 0.1f;
-        ShouldUpdate = true;
+    if (m_onTEdge) {
+      if (m_vAngle > -90.0f) {
+        m_vAngle -= 0.1f;
+        shouldUpdate = true;
       }
     }
-    else if (m_OnBEdge) {
-      if (m_VAngle < 90.0f) {
-        m_VAngle += 0.1f;
-        ShouldUpdate = true;
+    else if (m_onBEdge) {
+      if (m_vAngle < 90.0f) {
+        m_vAngle += 0.1f;
+        shouldUpdate = true;
       }
     }
 
-    if (ShouldUpdate) {
+    if (shouldUpdate) {
       Update();
     }
   }
 
   void Camera::Update()
   {
-    const Vector3f VAxis(0.0f, 1.0f, 0.0f);
+    const Vector3f vAxis(0.0f, 1.0f, 0.0f);
 
-    Vector3f View(1.0f, 0.0f, 0.0f);
-    View.Rotate(m_HAngle, VAxis);
-    View.Normalize();
+    Vector3f view(1.0f, 0.0f, 0.0f);
+    view.Rotate(m_hAngle, vAxis);
+    view.Normalize();
 
-    Vector3f HAxis = VAxis.Cross(View);
-    HAxis.Normalize();
-    View.Rotate(m_VAngle, HAxis);
+    Vector3f hAxis = vAxis.Cross(view);
+    hAxis.Normalize();
+    view.Rotate(m_vAngle, hAxis);
 
-    m_target = View;
+    m_target = view;
     m_target.Normalize();
 
-    m_up = m_target.Cross(HAxis);
+    m_up = m_target.Cross(hAxis);
     m_up.Normalize();
   }
 }

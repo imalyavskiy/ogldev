@@ -26,10 +26,18 @@
 #define M_PI       3.14159265358979323846f   // pi
 #endif
 
-#define ToRadian(x) ((x) * M_PI / 180.0f)
-#define ToDegree(x) ((x) * 180.0f / M_PI)
 namespace t15
 {
+  inline float toRadian(float x)
+  {
+    return ((x) * M_PI / 180.0f);
+  }
+
+  inline float toDegree(float x)
+  {
+    return ((x) * 180.0f / M_PI);
+  }
+
   struct Vector2i
   {
     int x = 0;

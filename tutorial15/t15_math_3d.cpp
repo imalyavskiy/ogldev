@@ -71,8 +71,8 @@ namespace t15
 
   void Vector3f::Rotate(float Angle, const Vector3f& Axe)
   {
-    const float SinHalfAngle = sinf(ToRadian(Angle / 2));
-    const float CosHalfAngle = cosf(ToRadian(Angle / 2));
+    const float SinHalfAngle = sinf(toRadian(Angle / 2));
+    const float CosHalfAngle = cosf(toRadian(Angle / 2));
 
     const float Rx = Axe.x * SinHalfAngle;
     const float Ry = Axe.y * SinHalfAngle;
@@ -102,9 +102,9 @@ namespace t15
 
   void Matrix4f::InitRotateTransform(Matrix4f& m, const float RotateX, const float RotateY, const float RotateZ)
   {
-    const float x = ToRadian(RotateX);
-    const float y = ToRadian(RotateY);
-    const float z = ToRadian(RotateZ);
+    const float x = toRadian(RotateX);
+    const float y = toRadian(RotateY);
+    const float z = toRadian(RotateZ);
 
     Matrix4f rx
     {
@@ -174,7 +174,7 @@ namespace t15
     const float zFar = zf;
     const float zRange = zf - zn;
 
-    const float ctanHalfFOV = 1.0f / tanf(ToRadian(fov / 2.0f));
+    const float ctanHalfFOV = 1.0f / tanf(toRadian(fov / 2.0f));
 
     m = Matrix4f
     {
