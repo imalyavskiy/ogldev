@@ -29,10 +29,6 @@ namespace t15
     , m_winWidth(winWidth)
     , m_winHeight(winHeight)
   {
-    m_pos = Vector3f(0.0f, 0.0f, 0.0f);
-    m_target = Vector3f(0.0f, 0.0f, 1.0f);
-    m_up = Vector3f(0.0f, 1.0f, 0.0f);
-
     m_target.Normalize();
 
     Init();
@@ -57,21 +53,21 @@ namespace t15
     Vector3f hTarget(m_target.x, 0.0, m_target.z);
     hTarget.Normalize();
 
-    if (hTarget.z >= 0.0f)
+    if (hTarget.z >= 0.0f) // upper half
     {
-      if (hTarget.x >= 0.0f)
+      if (hTarget.x >= 0.0f) // upper-right quarter
         m_hAngle = 360.0f - toDegree(asinf(hTarget.z));
       else
-      if (hTarget.x < 0.0f)
+      if (hTarget.x < 0.0f)  // upper-left quarter
         m_hAngle = 180.0f + toDegree(asinf(hTarget.z));
     }
     else
-    if (hTarget.z < 0.0f)
+    if (hTarget.z < 0.0f) // lower half
     {
-      if (hTarget.x >= 0.0f)
+      if (hTarget.x >= 0.0f) // lower-right quarter
         m_hAngle = toDegree(asinf((-1.f) * hTarget.z));
       else
-      if (hTarget.x < 0.0f)
+      if (hTarget.x < 0.0f)  // lower-left quarter
         m_hAngle = 90.0f + toDegree(asinf((-1.f) * hTarget.z));
     }
 
@@ -89,42 +85,38 @@ namespace t15
 
   bool Camera::OnKeyboard(int key)
   {
-    bool Ret = false;
+    bool ret = false;
 
     switch (key)
     {
       case GLUT_KEY_UP: {
         m_pos += (m_target * StepScale);
-        Ret = true;
+        return true;
       }
-      break;
 
       case GLUT_KEY_DOWN: {
         m_pos -= (m_target * StepScale);
-        Ret = true;
+        return true;
       }
-      break;
 
       case GLUT_KEY_LEFT: {
-        Vector3f Left = m_target.Cross(m_up);
-        Left.Normalize();
-        Left *= StepScale;
-        m_pos += Left;
-        Ret = true;
+        Vector3f left = m_target.Cross(m_up);
+        left.Normalize();
+        left *= StepScale;
+        m_pos += left;
+        return true;
       }
-      break;
 
       case GLUT_KEY_RIGHT: {
-        Vector3f Right = m_up.Cross(m_target);
-        Right.Normalize();
-        Right *= StepScale;
-        m_pos += Right;
-        Ret = true;
+        Vector3f right = m_up.Cross(m_target);
+        right.Normalize();
+        right *= StepScale;
+        m_pos += right;
+        return true;
       }
-      break;
     }
 
-    return Ret;
+    return false;
   }
 
   const Vector3f& Camera::GetPos() const
@@ -186,11 +178,14 @@ namespace t15
   {
     bool shouldUpdate = false;
 
-    if (m_onLEdge) {
+    if (m_onLEdge) 
+    {
       m_hAngle -= 0.1f;
       shouldUpdate = true;
     }
-    else if (m_onREdge) {
+    else 
+    if (m_onREdge) 
+    {
       m_hAngle += 0.1f;
       shouldUpdate = true;
     }
@@ -201,7 +196,9 @@ namespace t15
         shouldUpdate = true;
       }
     }
-    else if (m_onBEdge) {
+    else 
+    if (m_onBEdge) 
+    {
       if (m_vAngle < 90.0f) {
         m_vAngle += 0.1f;
         shouldUpdate = true;

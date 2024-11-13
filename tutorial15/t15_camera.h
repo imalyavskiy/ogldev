@@ -51,11 +51,9 @@ namespace t15
 
     const int m_MARGIN;
 
-    Vector3f m_pos;
-
-    Vector3f m_target;
-
-    Vector3f m_up;
+    Vector3f m_pos    { 0.0f, 0.0f, 0.0f };
+    Vector3f m_target { 0.0f, 0.0f, 1.0f };
+    Vector3f m_up     { 0.0f, 1.0f, 0.0f };
 
     int m_winWidth;
     int m_winHeight;

@@ -69,24 +69,25 @@ namespace t15
     return Ret;
   }
 
-  void Vector3f::Rotate(float Angle, const Vector3f& Axe)
+  void Vector3f::Rotate(float angle, const Vector3f& axis)
   {
-    const float SinHalfAngle = sinf(toRadian(Angle / 2));
-    const float CosHalfAngle = cosf(toRadian(Angle / 2));
+    const float sinHalfAngle = sinf(toRadian(angle / 2));
+    const float cosHalfAngle = cosf(toRadian(angle / 2));
 
-    const float Rx = Axe.x * SinHalfAngle;
-    const float Ry = Axe.y * SinHalfAngle;
-    const float Rz = Axe.z * SinHalfAngle;
-    const float Rw = CosHalfAngle;
-    Quaternion RotationQ(Rx, Ry, Rz, Rw);
+    const Quaternion rotationQ {
+      axis.x* sinHalfAngle,
+      axis.y* sinHalfAngle,
+      axis.z* sinHalfAngle,
+      cosHalfAngle
+    };
 
-    Quaternion ConjugateQ = RotationQ.Conjugate();
-    //  ConjugateQ.Normalize();
-    Quaternion W = RotationQ * (*this) * ConjugateQ;
+    const Quaternion conjugateQ = rotationQ.Conjugate();
 
-    x = W.x;
-    y = W.y;
-    z = W.z;
+    const Quaternion rotated = rotationQ * (*this) * conjugateQ;
+
+    x = rotated.x;
+    y = rotated.y;
+    z = rotated.z;
   }
 
   void Matrix4f::InitScaleTransform(Matrix4f& m, const float x, const float y, const float z)
@@ -203,10 +204,9 @@ namespace t15
   }
 
   // TODO: comment
-  Quaternion Quaternion::Conjugate()
+  Quaternion Quaternion::Conjugate() const
   {
-    Quaternion ret(-x, -y, -z, w);
-    return ret;
+    return { -x, -y, -z, w };
   }
 
   // TODO: comment

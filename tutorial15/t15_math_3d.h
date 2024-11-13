@@ -88,7 +88,7 @@ namespace t15
 
     Vector3f& Normalize();
 
-    void Rotate(float Angle, const Vector3f& Axis);
+    void Rotate(float angle, const Vector3f& Axis);
 
     void Print() const
     {
@@ -154,7 +154,7 @@ namespace t15
 
     void Normalize();
 
-    Quaternion Conjugate();
+    Quaternion Conjugate() const;
   };
 
   Quaternion operator*(const Quaternion& l, const Quaternion& r);

@@ -42,26 +42,26 @@ GLuint gWVPLocation;
 
 t15::Camera* pGameCamera = nullptr;
 
-static const char* pVS =
-"#version 330                                                                        \n"\
-"layout (location = 0) in vec3 Position;                                             \n"\
-"uniform mat4 gWVP;                                                                  \n"\
-"out vec4 Color;                                                                     \n"\
-"void main()                                                                         \n"\
-"{                                                                                   \n"\
-"    gl_Position = gWVP * vec4(Position, 1.0);                                       \n"\
-"    vec3 clamped = clamp(Position * 4, 0.2, 1.0);                                   \n"\
-"    Color = vec4(clamped, 1.0);                                                     \n"\
-"}                                                                                   \n";
+static const char* pVertexShader =
+"  #version 330                                       \n"\
+"  layout (location = 0) in vec3 Position;            \n"\
+"  uniform mat4 gWVP;                                 \n"\
+"  out vec4 Color;                                    \n"\
+"  void main()                                        \n"\
+"  {                                                  \n"\
+"    gl_Position = gWVP * vec4(Position, 1.0);        \n"\
+"    vec3 clamped = clamp(Position * 4, 0.2, 1.0);    \n"\
+"    Color = vec4(clamped, 1.0);                      \n"\
+"  }                                                  \n";
 
-static const char* pFS =
-"#version 330                                                                        \n"\
-"in vec4 Color;                                                                      \n"\
-"out vec4 FragColor;                                                                 \n"\
-"void main()                                                                         \n"\
-"{                                                                                   \n"\
-"    FragColor = Color;                                                              \n"\
-"}                                                                                   \n";
+static const char* pFragmentShader =
+"  #version 330                                       \n"\
+"  in vec4 Color;                                     \n"\
+"  out vec4 FragColor;                                \n"\
+"  void main()                                        \n"\
+"  {                                                  \n"\
+"    FragColor = Color;                               \n"\
+"  }                                                  \n";
 
 static void RenderSceneCB()
 {
@@ -71,13 +71,13 @@ static void RenderSceneCB()
 
   glEnable(GL_DEPTH_TEST);
 
-  static float Scale = 0.0f;
+  static float scale = 0.0f;
 
-  Scale += 0.05f;
+  scale += 0.05f;
 
   t15::Pipeline pipeline;
 
-  pipeline.Rotate(0.0f, Scale, 0.0f);
+  pipeline.Rotate(0.0f, scale, 0.0f);
 
   pipeline.WorldPos(0.0f, 0.0f, 3.0f);
 
@@ -104,16 +104,17 @@ static void RenderSceneCB()
   glutSwapBuffers();
 }
 
-static void SpecialKeyboardCB(int Key, int x, int y)
+static void SpecialKeyboardCB(int key, int x, int y)
 {
-  pGameCamera->OnKeyboard(Key);
+  pGameCamera->OnKeyboard(key);
 }
 
-static void KeyboardCB(unsigned char Key, int x, int y)
+static void KeyboardCB(unsigned char key, int x, int y)
 {
-  switch (Key) {
-  case 0x1b: // Esc
-    exit(0);
+  switch (key)
+  {
+    case 0x1b: // Esc
+      exit(0);
   }
 }
 
@@ -137,7 +138,7 @@ static void InitializeGlutCallbacks()
 
 static void CreateVertexBuffer()
 {
-  const t15::Vector3f Vertices[] =
+  const t15::Vector3f vertices[] =
   {
     /* 0*/	{ -0.2500f, -0.2500f, -0.2500f },	/* 1*/	{ -0.0000f, -0.1001f, -0.1001f },	/* 2*/	{  0.2500f, -0.2500f, -0.2500f },
     /* 3*/	{ -0.1001f, -0.0000f, -0.1001f },	/* 4*/	{  0.0000f,  0.0000f, -0.3247f },	/* 5*/	{  0.1001f, -0.0000f, -0.1001f },
@@ -153,12 +154,12 @@ static void CreateVertexBuffer()
 
   glGenBuffers(1, &VBO);
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 }
 
 static void CreateIndexBuffer()
 {
-  const unsigned int Indices[] =
+  const unsigned int indices[] =
   {
     /* 0*/  0,  3,  1,	/* 1*/  1,  5,  2,	/* 2*/  3,  6,  7,	/* 3*/  7,  8,  5,	/* 4*/ 10, 13, 12,	/* 5*/ 10, 14, 13,	/* 6*/ 12, 13, 16,	/* 7*/ 13, 14, 16,
     /* 8*/  0,  1, 18,	/* 9*/  1,  2, 20,	/*10*/ 18, 10,  9,	/*11*/ 20, 11, 10,	/*12*/  2,  5, 20,	/*13*/  5,  8, 22,	/*14*/ 20, 14, 11,	/*15*/ 22, 17, 14,
@@ -172,77 +173,77 @@ static void CreateIndexBuffer()
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
 
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 }
 
-static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
+static void AddShader(GLuint shaderProgram, const char* pShaderText, GLenum shaderType)
 {
-  GLuint ShaderObj = glCreateShader(ShaderType);
+  const GLuint shaderObj = glCreateShader(shaderType);
 
-  if (ShaderObj == 0) {
-    fprintf(stderr, "Error creating shader type %d\n", ShaderType);
+  if (shaderObj == 0) {
+    fprintf(stderr, "Error creating shader type %d\n", shaderType);
     exit(0);
   }
 
   const GLchar* p[] = { pShaderText };
-  const GLint Lengths[] = { static_cast<GLint>(strlen(pShaderText)) };
+  const GLint lengths[] = { static_cast<GLint>(strlen(pShaderText)) };
 
-  glShaderSource(ShaderObj, 1, p, Lengths);
+  glShaderSource(shaderObj, 1, p, lengths);
 
-  glCompileShader(ShaderObj);
+  glCompileShader(shaderObj);
 
   GLint success = 0;
 
-  glGetShaderiv(ShaderObj, GL_COMPILE_STATUS, &success);
+  glGetShaderiv(shaderObj, GL_COMPILE_STATUS, &success);
 
   if (!success) {
-    GLchar InfoLog[1024];
+    GLchar infoLog[1024];
 
-    glGetShaderInfoLog(ShaderObj, 1024, nullptr, InfoLog);
-    fprintf(stderr, "Error compiling shader type %d: '%s'\n", ShaderType, InfoLog);
+    glGetShaderInfoLog(shaderObj, 1024, nullptr, infoLog);
+    fprintf(stderr, "Error compiling shader type %d: '%s'\n", shaderType, infoLog);
     exit(1);
   }
 
-  glAttachShader(ShaderProgram, ShaderObj);
+  glAttachShader(shaderProgram, shaderObj);
 }
 
 static void CompileShaders()
 {
-  const GLuint ShaderProgram = glCreateProgram();
+  const GLuint shaderProgram = glCreateProgram();
 
-  if (ShaderProgram == 0) {
+  if (shaderProgram == 0) {
     fprintf(stderr, "Error creating shader program\n");
     exit(1);
   }
 
-  AddShader(ShaderProgram, pVS, GL_VERTEX_SHADER);
+  AddShader(shaderProgram, pVertexShader, GL_VERTEX_SHADER);
 
-  AddShader(ShaderProgram, pFS, GL_FRAGMENT_SHADER);
+  AddShader(shaderProgram, pFragmentShader, GL_FRAGMENT_SHADER);
 
-  GLint Success = 0;
-  GLchar ErrorLog[1024] = { 0 };
+  GLint success = 0;
+  GLchar errorLog[1024] = { 0 };
 
-  glLinkProgram(ShaderProgram);
+  glLinkProgram(shaderProgram);
 
-  glGetProgramiv(ShaderProgram, GL_LINK_STATUS, &Success);
-  if (Success == 0) {
-    glGetProgramInfoLog(ShaderProgram, sizeof(ErrorLog), nullptr, ErrorLog);
-    fprintf(stderr, "Error linking shader program: '%s'\n", ErrorLog);
+  glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+  if (success == 0) {
+    glGetProgramInfoLog(shaderProgram, sizeof(errorLog), nullptr, errorLog);
+    fprintf(stderr, "Error linking shader program: '%s'\n", errorLog);
     exit(1);
   }
 
-  glValidateProgram(ShaderProgram);
+  glValidateProgram(shaderProgram);
 
-  glGetProgramiv(ShaderProgram, GL_VALIDATE_STATUS, &Success);
-  if (!Success) {
-    glGetProgramInfoLog(ShaderProgram, sizeof(ErrorLog), nullptr, ErrorLog);
-    fprintf(stderr, "Invalid shader program: '%s'\n", ErrorLog);
+  glGetProgramiv(shaderProgram, GL_VALIDATE_STATUS, &success);
+  if (!success) {
+    glGetProgramInfoLog(shaderProgram, sizeof(errorLog), nullptr, errorLog);
+    fprintf(stderr, "Invalid shader program: '%s'\n", errorLog);
     exit(1);
   }
 
-  glUseProgram(ShaderProgram);
+  glUseProgram(shaderProgram);
 
-  gWVPLocation = glGetUniformLocation(ShaderProgram, "gWVP");
+  gWVPLocation = glGetUniformLocation(shaderProgram, "gWVP");
 
   assert(gWVPLocation != 0xFFFFFFFF);
 }
