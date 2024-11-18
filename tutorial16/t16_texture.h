@@ -28,15 +28,16 @@ namespace t16
   class Texture
   {
   public:
-    Texture(GLenum TextureTarget, std::string FileName);
+    Texture(GLenum textureTarget, std::string textureFileName);
 
     bool Load() const;
 
-    void Bind(const GLenum TextureUnit) const;
+    // Activates tex unit and then binds tex target(type) to tex object 
+    void ActivateAndBind(const GLenum textureUnit) const;
 
   private:
-    std::string m_fileName;
-    GLenum m_textureTarget;
+    std::string m_textureFileName;
+    GLenum m_textureTarget; // aka type, 1D, 2D, etc.
     GLuint m_textureObj;
   };
 }

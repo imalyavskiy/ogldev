@@ -27,7 +27,7 @@ namespace t17
   class Texture
   {
   public:
-    Texture(GLenum TextureTarget, std::string FileName);
+    Texture(GLenum textureTarget, std::string fileName);
 
     bool Load() const;
 

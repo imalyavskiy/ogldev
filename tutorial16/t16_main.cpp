@@ -42,34 +42,34 @@ t16::Texture* pTexture = nullptr;
 t16::Camera* pGameCamera = nullptr;
 
 static const char* pVS =
-"#version 330                                                                        \n"\
-"                                                                                    \n"\
-"layout (location = 0) in vec3 Position;                                             \n"\
-"layout (location = 1) in vec2 TexCoord;                                             \n"\
-"                                                                                    \n"\
-"uniform mat4 gWVP;                                                                  \n"\
-"                                                                                    \n"\
-"out vec2 TexCoord0;                                                                 \n"\
-"                                                                                    \n"\
-"void main()                                                                         \n"\
-"{                                                                                   \n"\
-"    gl_Position = gWVP * vec4(Position, 1.0);                                       \n"\
-"    TexCoord0 = TexCoord;                                                           \n"\
-"}                                                                                     ";
+"  #version 330                                                                        \n"\
+"                                                                                      \n"\
+"  layout (location = 0) in vec3 Position;                                             \n"\
+"  layout (location = 1) in vec2 TexCoord;                                             \n"\
+"                                                                                      \n"\
+"  uniform mat4 gWVP;                                                                  \n"\
+"                                                                                      \n"\
+"  out vec2 TexCoord0;                                                                 \n"\
+"                                                                                      \n"\
+"  void main()                                                                         \n"\
+"  {                                                                                   \n"\
+"      gl_Position = gWVP * vec4(Position, 1.0);                                       \n"\
+"      TexCoord0 = TexCoord;                                                           \n"\
+"  }                                                                                     ";
 
 static const char* pFS =
-"#version 330                                                                        \n"\
-"                                                                                    \n"\
-"in vec2 TexCoord0;                                                                  \n"\
-"                                                                                    \n"\
-"out vec4 FragColor;                                                                 \n"\
-"                                                                                    \n"\
-"uniform sampler2D gSampler;                                                         \n"\
-"                                                                                    \n"\
-"void main()                                                                         \n"\
-"{                                                                                   \n"\
-"    FragColor = texture2D(gSampler, TexCoord0.xy);                                  \n"\
-"}                                                                                     ";
+"  #version 330                                                                        \n"\
+"                                                                                      \n"\
+"  in vec2 TexCoord0;                                                                  \n"\
+"                                                                                      \n"\
+"  out vec4 FragColor;                                                                 \n"\
+"                                                                                      \n"\
+"  uniform sampler2D gSampler;                                                         \n"\
+"                                                                                      \n"\
+"  void main()                                                                         \n"\
+"  {                                                                                   \n"\
+"      FragColor = texture2D(gSampler, TexCoord0.xy);                                  \n"\
+"  }                                                                                     ";
 
 static void RenderSceneCB()
 {
@@ -89,50 +89,38 @@ static void RenderSceneCB()
 
   glUniformMatrix4fv(gWVPLocation, 1, GL_TRUE, reinterpret_cast<const GLfloat*>(pipeline.GetTrans()));
 
-  glEnableVertexAttribArray(0); // These magic 0 and 1 are locations(aka attributes of the vertex taken from vertex shader)
-  glEnableVertexAttribArray(1); // Please look at "in vec3 Position" and "in vec 2 TexCoord" variable definitions in the shader.
+  glEnableVertexAttribArray(0);
+  glEnableVertexAttribArray(1);
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(t16::Vertex), nullptr);
-  // Here the actual data plugged to shader's input:
-  //    attr - 0,
-  //    3 - items,
-  //    of float,
-  //    not normalized,
-  //    stride width of 20 bytes(float - 4bytes * 5)
-  //    first byte addr from the attached buffer beginning
 
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(t16::Vertex), reinterpret_cast<const GLvoid*>(12));
-  // Here the actual data plugged to shader's input:
-  //    attr - 1,
-  //    2 - items,
-  //    of float,
-  //    not normalized,
-  //    stride width of 20 bytes(float - 4bytes * 5)
-  //    12th(0 based) byte addr from the attached buffer beginning
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-  pTexture->Bind(GL_TEXTURE0);
+  pTexture->ActivateAndBind(GL_TEXTURE0);
   glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 
-  glDisableVertexAttribArray(0); // These magic 0 and 1 are locations(aka attributes of the vertex taken from vertex shader)
-  glDisableVertexAttribArray(1); // Please look at "in vec3 Position" and "in vec 2 TexCoord" variable definitions in the shader.
+  glDisableVertexAttribArray(0);
+  glDisableVertexAttribArray(1);
 
   glutSwapBuffers();
 }
 
 
-static void SpecialKeyboardCB(int Key, int x, int y)
+static void SpecialKeyboardCB(int key, int x, int y)
 {
-  pGameCamera->OnKeyboard(Key);
+  pGameCamera->OnKeyboard(key);
 }
 
 
-static void KeyboardCB(unsigned char Key, int x, int y)
+static void KeyboardCB(unsigned char key, int x, int y)
 {
-  switch (Key) {
-  case 0x1b: // Esc
-    glutLeaveMainLoop();
+  switch (key)
+  {
+    case 0x1b: // Esc
+      glutLeaveMainLoop();
+      break;
   }
 }
 
@@ -155,7 +143,8 @@ static void InitializeGlutCallbacks()
 
 static void CreateVertexBuffer()
 {
-  t16::Vertex Vertices[4] = {
+  const t16::Vertex vertices[4] = 
+  {
       t16::Vertex(t16::Vector3f(-1.0f, -1.0f,  0.57730f), t16::Vector2f(0.0f, 0.0f)),
       t16::Vertex(t16::Vector3f(0.0f, -1.0f, -1.15475f), t16::Vector2f(0.5f, 0.0f)),
       t16::Vertex(t16::Vector3f(1.0f, -1.0f,  0.57730f), t16::Vector2f(1.0f, 0.0f)),
@@ -164,87 +153,84 @@ static void CreateVertexBuffer()
 
   glGenBuffers(1, &VBO);
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 }
 
 
 static void CreateIndexBuffer()
 {
-  unsigned int Indices[] = { 0, 3, 1,
-                             1, 3, 2,
-                             2, 3, 0,
-                             1, 2, 0 };
+  const uint32_t indices[] = { 0, 3, 1,  1, 3, 2,  2, 3, 0,  1, 2, 0 };
 
   glGenBuffers(1, &IBO);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 }
 
 
-static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
+static void AddShader(GLuint shaderProgram, const char* pShaderText, GLenum shaderType)
 {
-  GLuint ShaderObj = glCreateShader(ShaderType);
+  const GLuint shaderObj = glCreateShader(shaderType);
 
-  if (ShaderObj == 0) {
-    fprintf(stderr, "Error creating shader type %d\n", ShaderType);
+  if (shaderObj == 0) {
+    fprintf(stderr, "Error creating shader type %d\n", shaderType);
     exit(0);
   }
 
   const GLchar* p[1];
   p[0] = pShaderText;
-  GLint Lengths[1];
-  Lengths[0] = strlen(pShaderText);
-  glShaderSource(ShaderObj, 1, p, Lengths);
-  glCompileShader(ShaderObj);
+  GLint lengths[1];
+  lengths[0] = strlen(pShaderText);
+  glShaderSource(shaderObj, 1, p, lengths);
+  glCompileShader(shaderObj);
   GLint success;
-  glGetShaderiv(ShaderObj, GL_COMPILE_STATUS, &success);
+  glGetShaderiv(shaderObj, GL_COMPILE_STATUS, &success);
   if (!success) {
     GLchar InfoLog[1024];
-    glGetShaderInfoLog(ShaderObj, 1024, nullptr, InfoLog);
-    fprintf(stderr, "Error compiling shader type %d: '%s'\n", ShaderType, InfoLog);
+    glGetShaderInfoLog(shaderObj, 1024, nullptr, InfoLog);
+    fprintf(stderr, "Error compiling shader type %d: '%s'\n", shaderType, InfoLog);
     exit(1);
   }
 
-  glAttachShader(ShaderProgram, ShaderObj);
+  glAttachShader(shaderProgram, shaderObj);
 }
 
 
 static void CompileShaders()
 {
-  const GLuint ShaderProgram = glCreateProgram();
+  const GLuint shaderProgram = glCreateProgram();
 
-  if (ShaderProgram == 0) {
+  if (shaderProgram == 0) {
     fprintf(stderr, "Error creating shader program\n");
     exit(1);
   }
 
-  AddShader(ShaderProgram, pVS, GL_VERTEX_SHADER);
-  AddShader(ShaderProgram, pFS, GL_FRAGMENT_SHADER);
+  AddShader(shaderProgram, pVS, GL_VERTEX_SHADER);
+  AddShader(shaderProgram, pFS, GL_FRAGMENT_SHADER);
 
-  GLint Success = 0;
-  GLchar ErrorLog[1024] = { 0 };
+  GLint success = 0;
+  GLchar errorLog[1024] = { 0 };
 
-  glLinkProgram(ShaderProgram);
-  glGetProgramiv(ShaderProgram, GL_LINK_STATUS, &Success);
-  if (Success == 0) {
-    glGetProgramInfoLog(ShaderProgram, sizeof(ErrorLog), nullptr, ErrorLog);
-    fprintf(stderr, "Error linking shader program: '%s'\n", ErrorLog);
+  glLinkProgram(shaderProgram);
+  glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+  if (success == 0) {
+    glGetProgramInfoLog(shaderProgram, sizeof(errorLog), nullptr, errorLog);
+    fprintf(stderr, "Error linking shader program: '%s'\n", errorLog);
     exit(1);
   }
 
-  glValidateProgram(ShaderProgram);
-  glGetProgramiv(ShaderProgram, GL_VALIDATE_STATUS, &Success);
-  if (!Success) {
-    glGetProgramInfoLog(ShaderProgram, sizeof(ErrorLog), nullptr, ErrorLog);
-    fprintf(stderr, "Invalid shader program: '%s'\n", ErrorLog);
+  glValidateProgram(shaderProgram);
+  glGetProgramiv(shaderProgram, GL_VALIDATE_STATUS, &success);
+  if (!success) {
+    glGetProgramInfoLog(shaderProgram, sizeof(errorLog), nullptr, errorLog);
+    fprintf(stderr, "Invalid shader program: '%s'\n", errorLog);
     exit(1);
   }
 
-  glUseProgram(ShaderProgram);
+  glUseProgram(shaderProgram);
 
-  gWVPLocation = glGetUniformLocation(ShaderProgram, "gWVP");
+  gWVPLocation = glGetUniformLocation(shaderProgram, "gWVP");
   assert(gWVPLocation != 0xFFFFFFFF);
-  gSampler = glGetUniformLocation(ShaderProgram, "gSampler");
+  gSampler = glGetUniformLocation(shaderProgram, "gSampler");
   assert(gSampler != 0xFFFFFFFF);
 }
 
@@ -281,13 +267,13 @@ int main(int argc, char** argv)
 
   CompileShaders();
 
-  glUniform1i(gSampler, 0);
+  glUniform1i(gSampler, 0); // index of the texture unit to use
 
-  const std::string texture("../Content/test.png");
-  pTexture = new t16::Texture(GL_TEXTURE_2D, texture);
+  const std::string textureFileName("../Content/test.png");
+  pTexture = new t16::Texture(GL_TEXTURE_2D, textureFileName);
 
   if (!pTexture->Load()) {
-    std::cerr << "[ FATAL ] Failed to load image: " << texture << "\n";
+    std::cerr << "[ FATAL ] Failed to load image: " << textureFileName << "\n";
     return 1;
   }
 

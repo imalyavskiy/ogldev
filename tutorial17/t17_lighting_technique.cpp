@@ -2,7 +2,7 @@
 
 namespace t17
 {
-static const char* pVS =
+static const char* pVertexShader =
 "  #version 330                                                                        \n"\
 "                                                                                      \n"\
 "  layout (location = 0) in vec3 Position;                                             \n"\
@@ -18,7 +18,7 @@ static const char* pVS =
 "    TexCoord0 = TexCoord;                                                             \n"\
 "  }                                                                                     ";
 
-static const char* pFS =
+static const char* pFragmentShader =
 "  #version 330                                                                        \n"\
 "                                                                                      \n"\
 "  in vec2 TexCoord0;                                                                  \n"\
@@ -43,62 +43,54 @@ static const char* pFS =
 "  }                                                                                     ";
 
 
-  LightingTechnique::LightingTechnique() {
-  }
-
   bool LightingTechnique::Init()
   {
     if (!Technique::Init())
-    {
       return false;
-    }
 
-    if (!AddShader(GL_VERTEX_SHADER, pVS))
-    {
+    if (!AddShader(GL_VERTEX_SHADER, pVertexShader))
       return false;
-    }
 
-    if (!AddShader(GL_FRAGMENT_SHADER, pFS))
-    {
+    if (!AddShader(GL_FRAGMENT_SHADER, pFragmentShader))
       return false;
-    }
 
     if (!Finalize())
-    {
       return false;
-    }
 
     m_WVPLocation = GetUniformLocation("gWVP");
-    m_samplerLocation = GetUniformLocation("gSampler");
-    m_dirLightColorLocation = GetUniformLocation("gDirectionalLight.Color");
-    m_dirLightAmbientIntensityLocation = GetUniformLocation("gDirectionalLight.AmbientIntensity");
-
-    if (m_dirLightAmbientIntensityLocation == 0xFFFFFFFF ||
-      m_WVPLocation == 0xFFFFFFFF ||
-      m_samplerLocation == 0xFFFFFFFF ||
-      m_dirLightColorLocation == 0xFFFFFFFF)
-    {
+    if (m_WVPLocation == 0xFFFFFFFF)
       return false;
-    }
+
+    m_samplerLocation = GetUniformLocation("gSampler");
+    if (m_samplerLocation == 0xFFFFFFFF)
+      return false;
+
+    m_dirLightColorLocation = GetUniformLocation("gDirectionalLight.Color");
+    if (m_dirLightColorLocation == 0xFFFFFFFF)
+      return false;
+
+    m_dirLightAmbientIntensityLocation = GetUniformLocation("gDirectionalLight.AmbientIntensity");
+    if (m_dirLightAmbientIntensityLocation == 0xFFFFFFFF)
+      return false;
 
     return true;
   }
 
   void LightingTechnique::SetWVP(const Matrix4f* WVP)
   {
-    glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP->m);
+    glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, reinterpret_cast<const GLfloat*>(WVP->m));
   }
 
 
-  void LightingTechnique::SetTextureUnit(unsigned int TextureUnit)
+  void LightingTechnique::SetTextureUnit(unsigned int textureUnit)
   {
-    glUniform1i(m_samplerLocation, TextureUnit);
+    glUniform1i(m_samplerLocation, textureUnit);
   }
 
 
-  void LightingTechnique::SetDirectionalLight(const DirectionLight& Light)
+  void LightingTechnique::SetDirectionalLight(const DirectionLight& light)
   {
-    glUniform3f(m_dirLightColorLocation, Light.Color.x, Light.Color.y, Light.Color.z);
-    glUniform1f(m_dirLightAmbientIntensityLocation, Light.AmbientIntensity);
+    glUniform3f(m_dirLightColorLocation, light.Color.x, light.Color.y, light.Color.z);
+    glUniform1f(m_dirLightAmbientIntensityLocation, light.AmbientIntensity);
   }
 }

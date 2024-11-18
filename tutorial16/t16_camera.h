@@ -29,9 +29,9 @@ namespace t16
 
     Camera(int WindowWidth, int WindowHeight);
 
-    Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
+    Camera(int winWidth, int winHeight, const Vector3f& pos, const Vector3f& target, const Vector3f& up);
 
-    bool OnKeyboard(int Key);
+    bool OnKeyboard(int key);
 
     void OnMouse(int x, int y);
 
@@ -55,8 +55,8 @@ namespace t16
 
     Vector3f m_up;
 
-    int m_windowWidth;
-    int m_windowHeight;
+    int m_winWidth;
+    int m_winHeight;
 
     float m_AngleH;
     float m_AngleV;

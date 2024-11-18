@@ -24,7 +24,6 @@
 
 namespace t16
 {
-
   FIBITMAP* GenericLoader(const char* lpszPathName, int flag) {
     auto fif = FIF_UNKNOWN;
 
@@ -39,45 +38,45 @@ namespace t16
 
     return nullptr;
   }
-
-
-  Texture::Texture(GLenum TextureTarget, std::string FileName)
-    : m_fileName(std::move(FileName))
-    , m_textureTarget(TextureTarget)
+  
+  Texture::Texture(GLenum textureTarget, std::string textureFileName)
+    : m_textureFileName(std::move(textureFileName))
+    , m_textureTarget(textureTarget)
   {
-    glGenTextures(1, &m_textureObj);
+    constexpr GLsizei numObjects = 1;
+    glGenTextures(numObjects, &m_textureObj);
   }
 
   bool Texture::Load() const
   {
-    const auto src = GenericLoader(m_fileName.c_str(), 0);
-    if (!src)
+    const auto bitmap = GenericLoader(m_textureFileName.c_str(), 0);
+    if (!bitmap)
+      return false;
+    if (const auto type = FreeImage_GetColorType(bitmap); type != FIC_RGB)
+      return false;
+    if (!FreeImage_HasPixels(bitmap))
       return false;
 
-    const auto type = FreeImage_GetColorType(src);
-    if (type != FIC_RGB)
-      return false;
-
-    if (!FreeImage_HasPixels(src))
-      return false;
-
-    const auto width = FreeImage_GetWidth(src);
-    const auto height = FreeImage_GetHeight(src);
-    const auto data = FreeImage_GetBits(src);
+    const auto textureWidth  = static_cast<GLsizei>(FreeImage_GetWidth(bitmap));
+    const auto textureHeight = static_cast<GLsizei>(FreeImage_GetHeight(bitmap));
+    const auto textureData = FreeImage_GetBits(bitmap);
 
     glBindTexture(m_textureTarget, m_textureObj);
-    glTexImage2D(m_textureTarget, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+
+    constexpr GLint level = 0; // LOD aka MIP level
+    glTexImage2D(m_textureTarget, level, GL_RGB, textureWidth, textureHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, textureData);
+
     glTexParameterf(m_textureTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(m_textureTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    FreeImage_Unload(src);
+    FreeImage_Unload(bitmap);
 
     return true;
   }
 
-  void Texture::Bind(const GLenum TextureUnit) const
+  void Texture::ActivateAndBind(const GLenum textureUnit) const
   {
-    glActiveTexture(TextureUnit);
+    glActiveTexture(textureUnit);
     glBindTexture(m_textureTarget, m_textureObj);
   }
 }

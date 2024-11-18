@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="t17_main_app.h" />
     <ClInclude Include="t17_callbacks.h" />
     <ClInclude Include="t17_camera.h" />
     <ClInclude Include="t17_glut_backend.h" />
@@ -21,6 +22,7 @@
     <ClInclude Include="t17_texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="t17_main_app.cpp" />
     <ClCompile Include="t17_camera.cpp" />
     <ClCompile Include="t17_glut_backend.cpp" />
     <ClCompile Include="t17_lighting_technique.cpp" />

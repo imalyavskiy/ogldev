@@ -23,24 +23,24 @@
 namespace t17
 {
   FIBITMAP* GenericLoader(const char* lpszPathName, int flag) {
-    auto fif = FIF_UNKNOWN;
+    auto imageFormat = FIF_UNKNOWN;
 
-    fif = FreeImage_GetFileType(lpszPathName, 0);
-    if (fif == FIF_UNKNOWN) {
-      fif = FreeImage_GetFIFFromFilename(lpszPathName);
+    imageFormat = FreeImage_GetFileType(lpszPathName, 0);
+    if (imageFormat == FIF_UNKNOWN) {
+      imageFormat = FreeImage_GetFIFFromFilename(lpszPathName);
     }
 
-    if ((fif != FIF_UNKNOWN) && FreeImage_FIFSupportsReading(fif)) {
-      return FreeImage_Load(fif, lpszPathName, flag);
+    if ((imageFormat != FIF_UNKNOWN) && FreeImage_FIFSupportsReading(imageFormat)) {
+      return FreeImage_Load(imageFormat, lpszPathName, flag);
     }
 
     return nullptr;
   }
 
 
-  Texture::Texture(GLenum TextureTarget, std::string FileName)
-    : m_fileName(std::move(FileName))
-    , m_textureTarget(TextureTarget)
+  Texture::Texture(GLenum textureTarget, std::string fileName)
+    : m_fileName(std::move(fileName))
+    , m_textureTarget(textureTarget)
   {
     glGenTextures(1, &m_textureObj);
   }

@@ -14,18 +14,18 @@ namespace t17
   class LightingTechnique : public Technique
   {
   public:
-    LightingTechnique();
+    LightingTechnique() = default;
     bool Init() override;
 
     void SetWVP(const Matrix4f* WVP);
-    void SetTextureUnit(unsigned int TextureUnit);
-    void SetDirectionalLight(const DirectionLight& Light);
+    void SetTextureUnit(unsigned int textureUnit);
+    void SetDirectionalLight(const DirectionLight& light);
 
   private:
-    GLuint m_WVPLocation;
-    GLuint m_samplerLocation;
-    GLuint m_dirLightColorLocation;
-    GLuint m_dirLightAmbientIntensityLocation;
+    GLuint m_WVPLocation = 0xFFFFFFFF;
+    GLuint m_samplerLocation = 0xFFFFFFFF;
+    GLuint m_dirLightColorLocation = 0xFFFFFFFF;
+    GLuint m_dirLightAmbientIntensityLocation = 0xFFFFFFFF;
   };
 }
 

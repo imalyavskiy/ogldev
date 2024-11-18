@@ -28,8 +28,8 @@ namespace t16
 
   Camera::Camera(int WindowWidth, int WindowHeight)
   {
-    m_windowWidth = WindowWidth;
-    m_windowHeight = WindowHeight;
+    m_winWidth = WindowWidth;
+    m_winHeight = WindowHeight;
     m_pos = Vector3f(0.0f, 0.0f, 0.0f);
     m_target = Vector3f(0.0f, 0.0f, 1.0f);
     m_target.Normalize();
@@ -39,16 +39,16 @@ namespace t16
   }
 
 
-  Camera::Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up)
+  Camera::Camera(int winWidth, int winHeight, const Vector3f& pos, const Vector3f& target, const Vector3f& up)
   {
-    m_pos = Pos;
+    m_pos = pos;
 
-    m_windowWidth = WindowWidth;
-    m_windowHeight = WindowHeight;
+    m_winWidth = winWidth;
+    m_winHeight = winHeight;
 
-    m_target = Target;
+    m_target = target;
     m_target.Normalize();
-    m_up = Up;
+    m_up = up;
     m_up.Normalize();
 
     Init();
@@ -56,22 +56,22 @@ namespace t16
 
   void Camera::Init()
   {
-    Vector3f HTarget(m_target.x, 0.0, m_target.z);
-    HTarget.Normalize();
+    Vector3f hTarget(m_target.x, 0.0, m_target.z);
+    hTarget.Normalize();
 
-    if (HTarget.z >= 0.0f)
+    if (hTarget.z >= 0.0f)
     {
-      if (HTarget.x >= 0.0f)
-        m_AngleH = 360.0f - ToDegree(asinf(HTarget.z));
+      if (hTarget.x >= 0.0f)
+        m_AngleH = 360.0f - ToDegree(asinf(hTarget.z));
       else
-        m_AngleH = 180.0f + ToDegree(asinf(HTarget.z));
+        m_AngleH = 180.0f + ToDegree(asinf(hTarget.z));
     }
     else
     {
-      if (HTarget.x >= 0.0f)
-        m_AngleH = ToDegree(asinf(-HTarget.z));
+      if (hTarget.x >= 0.0f)
+        m_AngleH = ToDegree(asinf(-hTarget.z));
       else
-        m_AngleH = 90.0f + ToDegree(asinf(-HTarget.z));
+        m_AngleH = 90.0f + ToDegree(asinf(-hTarget.z));
     }
 
     m_AngleV = -ToDegree(asinf(m_target.y));
@@ -80,27 +80,27 @@ namespace t16
 
 
 
-    m_mousePos.x = m_windowWidth / 2;
-    m_mousePos.y = m_windowHeight / 2;
+    m_mousePos.x = m_winWidth / 2;
+    m_mousePos.y = m_winHeight / 2;
 
     glutWarpPointer(m_mousePos.x, m_mousePos.y);
   }
 
-  bool Camera::OnKeyboard(int Key)
+  bool Camera::OnKeyboard(int key)
   {
-    bool Ret = false;
+    bool ret = false;
 
-    switch (Key)
+    switch (key)
     {
       case GLUT_KEY_UP: {
         m_pos += (m_target * StepScale);
-        Ret = true;
+        ret = true;
       }
       break;
 
       case GLUT_KEY_DOWN: {
         m_pos -= (m_target * StepScale);
-        Ret = true;
+        ret = true;
       }
       break;
 
@@ -109,7 +109,7 @@ namespace t16
         Left.Normalize();
         Left *= StepScale;
         m_pos += Left;
-        Ret = true;
+        ret = true;
       }
       break;
 
@@ -118,12 +118,12 @@ namespace t16
         Right.Normalize();
         Right *= StepScale;
         m_pos += Right;
-        Ret = true;
+        ret = true;
       }
       break;
     }
 
-    return Ret;
+    return ret;
   }
 
   const Vector3f& Camera::GetPos() const
@@ -153,37 +153,37 @@ namespace t16
     m_AngleV += dy / 20.0f;
     
     Update();
-    glutWarpPointer(m_windowWidth / 2, m_windowHeight / 2);
+    glutWarpPointer(m_winWidth / 2, m_winHeight / 2);
   }
 
 
   void Camera::OnRender()
   {
-    bool ShouldUpdate = false;
+    const bool shouldUpdate = false;
 
-    if (ShouldUpdate) {
+    if (shouldUpdate) {
       Update();
     }
   }
 
   void Camera::Update()
   {
-    const Vector3f Vaxis(0.0f, 1.0f, 0.0f);
+    const Vector3f vAxis(0.0f, 1.0f, 0.0f);
 
     // Rotate the view vector by the horizontal angle around the vertical axis
-    Vector3f View(1.0f, 0.0f, 0.0f);
-    View.Rotate(m_AngleH, Vaxis);
-    View.Normalize();
+    Vector3f view(1.0f, 0.0f, 0.0f);
+    view.Rotate(m_AngleH, vAxis);
+    view.Normalize();
 
     // Rotate the view vector by the vertical angle around the horizontal axis
-    Vector3f Haxis = Vaxis.Cross(View);
-    Haxis.Normalize();
-    View.Rotate(m_AngleV, Haxis);
+    Vector3f hAxis = vAxis.Cross(view);
+    hAxis.Normalize();
+    view.Rotate(m_AngleV, hAxis);
 
-    m_target = View;
+    m_target = view;
     m_target.Normalize();
 
-    m_up = m_target.Cross(Haxis);
+    m_up = m_target.Cross(hAxis);
     m_up.Normalize();
   }
 }
