@@ -15,6 +15,7 @@
     <ClInclude Include="t18_camera.h" />
     <ClInclude Include="t18_glut_backend.h" />
     <ClInclude Include="t18_lighting_technique.h" />
+    <ClInclude Include="t18_main_app.h" />
     <ClInclude Include="t18_math_3d.h" />
     <ClInclude Include="t18_pipeline.h" />
     <ClInclude Include="t18_technique.h" />
@@ -26,6 +27,7 @@
     <ClCompile Include="t18_glut_backend.cpp" />
     <ClCompile Include="t18_lighting_technique.cpp" />
     <ClCompile Include="t18_main.cpp" />
+    <ClCompile Include="t18_main_app.cpp" />
     <ClCompile Include="t18_math_3d.cpp" />
     <ClCompile Include="t18_pipeline.cpp" />
     <ClCompile Include="t18_technique.cpp" />
