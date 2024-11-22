@@ -20,9 +20,9 @@ namespace t18
     bool Init() override;
 
     void SetWVP(const Matrix4f& WVP);
-    void SetWorldMatrix(const Matrix4f& WVP);
-    void SetTextureUnit(uint32_t TextureUnit);
-    void SetDirectionalLight(const DirectionLight& Light);
+    void SetWorldMatrix(const Matrix4f& W);
+    void SetTextureUnit(uint32_t textureUnit);
+    void SetDirectionalLight(const DirectionLight& light);
 
   private:
     GLuint m_WVPLocation;

@@ -25,9 +25,9 @@ namespace t19
     void SetTextureUnit(unsigned int TextureUnit);
     void SetDirectionalLight(const DirectionLight& Light);
 
-    void SetEyeWorldPos(const Vector3f& EyeWorldPos);
-    void SetMatSpecularIntensity(float Intensity);
-    void SetMatSpecularPower(float Power);
+    void SetEyeWorldPos(const Vector3f& eyeWorldPos);
+    void SetMatSpecularIntensity(float intensity);
+    void SetMatSpecularPower(float power);
 
   private:
     GLint m_WVPLocation              = -1; // 0xFFFFFFFF

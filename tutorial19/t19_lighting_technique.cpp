@@ -62,7 +62,7 @@ namespace t19
   "                     DiffuseFactor;                                                     \n"\
   "                                                                                        \n"\
   "      vec3 VertexToEye = normalize(gEyeWorldPos - WorldPos0);                           \n"\
-  "      vec3 LightReflect = normalize(reflect(gDirectionalLight.Direction, Normal));      \n"\
+  "      vec3 LightReflect = normalize( reflect( gDirectionalLight.Direction, Normal ) );  \n"\
   "      float SpecularFactor = dot(VertexToEye, LightReflect);                            \n"\
   "      SpecularFactor = pow(SpecularFactor, gSpecularPower);                             \n"\
   "                                                                                        \n"\
@@ -142,19 +142,19 @@ namespace t19
     glUniform1i(m_samplerLocation, TextureUnit);
   }
 
-  void LightingTechnique::SetMatSpecularIntensity(float Intensity)
+  void LightingTechnique::SetMatSpecularIntensity(float intensity)
   {
-    glUniform1f(m_matSpecularIntensityLocation, Intensity);
+    glUniform1f(m_matSpecularIntensityLocation, intensity);
   }
 
-  void LightingTechnique::SetMatSpecularPower(float Power)
+  void LightingTechnique::SetMatSpecularPower(float power)
   {
-    glUniform1f(m_matSpecularPowerLocation, Power);
+    glUniform1f(m_matSpecularPowerLocation, power);
   }
 
-  void LightingTechnique::SetEyeWorldPos(const Vector3f& EyeWorldPos)
+  void LightingTechnique::SetEyeWorldPos(const Vector3f& eyeWorldPos)
   {
-    glUniform3f(m_eyeWorldPosition, EyeWorldPos.x, EyeWorldPos.y, EyeWorldPos.z);
+    glUniform3f(m_eyeWorldPosition, eyeWorldPos.x, eyeWorldPos.y, eyeWorldPos.z);
   }
 
   void LightingTechnique::SetDirectionalLight(const DirectionLight& Light)

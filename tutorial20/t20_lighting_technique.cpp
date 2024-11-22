@@ -130,26 +130,6 @@ static const char* pFS =
 
 namespace t20
 {
-  BaseLight::BaseLight()
-  {
-    Color = Vector3f(0.0f, 0.0f, 0.0f);
-    AmbientIntensity = 0.0f;
-    DiffuseIntensity = 0.0f;
-  }
-
-  DirectionalLight::DirectionalLight()
-  {
-    Direction = Vector3f(0.0f, 0.0f, 0.0f);
-  }
-
-  PointLight::PointLight()
-  {
-    Position = Vector3f(0.0f, 0.0f, 0.0f);
-    Attenuation.Constant = 1.0f;
-    Attenuation.Linear = 0.0f;
-    Attenuation.Exp = 0.0f;
-  }
-
   LightingTechnique::LightingTechnique()
   {
   }
@@ -274,12 +254,12 @@ namespace t20
 
   void LightingTechnique::SetDirectionalLight(const DirectionalLight& Light)
   {
-    glUniform3f(m_dirLightLocation.Color, Light.Color.x, Light.Color.y, Light.Color.z);
-    glUniform1f(m_dirLightLocation.AmbientIntensity, Light.AmbientIntensity);
-    Vector3f Direction = Light.Direction;
+    glUniform3f(m_dirLightLocation.Color, Light.color.x, Light.color.y, Light.color.z);
+    glUniform1f(m_dirLightLocation.AmbientIntensity, Light.ambientIntensity);
+    Vector3f Direction = Light.direction;
     Direction.Normalize();
     glUniform3f(m_dirLightLocation.Direction, Direction.x, Direction.y, Direction.z);
-    glUniform1f(m_dirLightLocation.DiffuseIntensity, Light.DiffuseIntensity);
+    glUniform1f(m_dirLightLocation.DiffuseIntensity, Light.diffuseIntensity);
   }
 
   void LightingTechnique::SetEyeWorldPos(const Vector3f& EyeWorldPos)
@@ -302,13 +282,13 @@ namespace t20
     glUniform1i(m_numPointLightsLocation, NumLights);
 
     for (unsigned int i = 0 ; i < NumLights ; i++) {
-      glUniform3f(m_pointLightsLocation[i].Color, pLights[i].Color.x, pLights[i].Color.y, pLights[i].Color.z);
-      glUniform1f(m_pointLightsLocation[i].AmbientIntensity, pLights[i].AmbientIntensity);
-      glUniform1f(m_pointLightsLocation[i].DiffuseIntensity, pLights[i].DiffuseIntensity);
-      glUniform3f(m_pointLightsLocation[i].Position, pLights[i].Position.x, pLights[i].Position.y, pLights[i].Position.z);
-      glUniform1f(m_pointLightsLocation[i].attenuation.Constant, pLights[i].Attenuation.Constant);
-      glUniform1f(m_pointLightsLocation[i].attenuation.Linear, pLights[i].Attenuation.Linear);
-      glUniform1f(m_pointLightsLocation[i].attenuation.Exp, pLights[i].Attenuation.Exp);
+      glUniform3f(m_pointLightsLocation[i].Color, pLights[i].color.x, pLights[i].color.y, pLights[i].color.z);
+      glUniform1f(m_pointLightsLocation[i].AmbientIntensity, pLights[i].ambientIntensity);
+      glUniform1f(m_pointLightsLocation[i].DiffuseIntensity, pLights[i].diffuseIntensity);
+      glUniform3f(m_pointLightsLocation[i].Position, pLights[i].position.x, pLights[i].position.y, pLights[i].position.z);
+      glUniform1f(m_pointLightsLocation[i].attenuation.Constant, pLights[i].attenuation.constant);
+      glUniform1f(m_pointLightsLocation[i].attenuation.Linear, pLights[i].attenuation.linear);
+      glUniform1f(m_pointLightsLocation[i].attenuation.Exp, pLights[i].attenuation.exp);
     }
   }
 }

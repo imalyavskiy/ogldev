@@ -1,7 +1,7 @@
 #include "t18_lighting_technique.h"
 namespace t18
 {
-  static const char* pVS =
+  static const char* pVertexShader =
   "  #version 330                                                                        \n"\
   "                                                                                      \n"\
   "  layout (location = 0) in vec3 Position;                                             \n"\
@@ -21,7 +21,7 @@ namespace t18
   "    Normal0 = (gWorld * vec4(Normal, 0.0)).xyz;                                       \n"\
   "  }                                                                                     ";
 
-  static const char* pFS =
+  static const char* pFragmentShader =
   "  #version 330                                                                        \n"\
   "                                                                                      \n"\
   "  in vec2 TexCoord0;                                                                  \n"\
@@ -43,31 +43,27 @@ namespace t18
   "    vec4 AmbientColor = vec4(gDirectionalLight.Color, 1.0f) *                         \n"\
   "                        gDirectionalLight.AmbientIntensity;                           \n"\
   "                                                                                      \n"\
-  "    vec3 LightDirection = -gDirectionalLight.Direction;                               \n"\
+  "    vec3 LightDirection = (-1) * gDirectionalLight.Direction;                         \n"\
   "    vec3 Normal = normalize(Normal0);                                                 \n"\
   "                                                                                      \n"\
-  "    float DiffuseFactor = dot(Normal, LightDirection);                                \n"\
+  "    float DiffuseFactor = clamp( dot( Normal, LightDirection ), 0, 1 );               \n"\
   "                                                                                      \n"\
-  "    vec4 DiffuseColor = vec4(0,0,0,0);                                                \n"\
-  "    if (DiffuseFactor > 0) {                                                          \n"\
-  "      DiffuseColor = vec4(gDirectionalLight.Color, 1.0f) *                            \n"\
-  "                     gDirectionalLight.DiffuseIntensity *                             \n"\
-  "                     DiffuseFactor;                                                   \n"\
-  "    }                                                                                 \n"\
+  "    vec4  DiffuseColor = vec4(gDirectionalLight.Color, 1.0f) *                        \n"\
+  "                         gDirectionalLight.DiffuseIntensity *                         \n"\
+  "                         DiffuseFactor;                                               \n"\
   "                                                                                      \n"\
   "    FragColor = texture2D(gSampler, TexCoord0.xy) *                                   \n"\
   "                (AmbientColor + DiffuseColor);                                        \n"\
   "  }                                                                                     ";
-
   bool LightingTechnique::Init()
   {
     if (!Technique::Init())
       return false;
 
-    if (!AddShader(GL_VERTEX_SHADER, pVS))
+    if (!AddShader(GL_VERTEX_SHADER, pVertexShader))
       return false;
 
-    if (!AddShader(GL_FRAGMENT_SHADER, pFS))
+    if (!AddShader(GL_FRAGMENT_SHADER, pFragmentShader))
       return false;
 
     if (!Finalize())
@@ -116,25 +112,24 @@ namespace t18
     glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, reinterpret_cast<const GLfloat*>(WVP.m));
   }
 
-  void LightingTechnique::SetWorldMatrix(const Matrix4f& WorldInverse)
+  void LightingTechnique::SetWorldMatrix(const Matrix4f& W)
   {
-    glUniformMatrix4fv(m_WorldMatrixLocation, 1, GL_TRUE, reinterpret_cast<const GLfloat*>(WorldInverse.m));
+    glUniformMatrix4fv(m_WorldMatrixLocation, 1, GL_TRUE, reinterpret_cast<const GLfloat*>(W.m));
   }
   
-  void LightingTechnique::SetTextureUnit(uint32_t TextureUnit)
+  void LightingTechnique::SetTextureUnit(uint32_t textureUnit)
   {
-    glUniform1i(m_samplerLocation, TextureUnit);
+    glUniform1i(m_samplerLocation, textureUnit);
   }
   
-  void LightingTechnique::SetDirectionalLight(const DirectionLight& Light)
+  void LightingTechnique::SetDirectionalLight(const DirectionLight& light)
   {
-    glUniform3f(m_dirLightLocation.Color, Light.Color.x, Light.Color.y, Light.Color.z);
-    glUniform1f(m_dirLightLocation.AmbientIntensity, Light.AmbientIntensity);
+    glUniform3f(m_dirLightLocation.Color, light.Color.x, light.Color.y, light.Color.z);
+    glUniform1f(m_dirLightLocation.AmbientIntensity, light.AmbientIntensity);
 
-    Vector3f Direction = Light.Direction;
-    Direction.Normalize();
+    const Vector3f direction = light.Direction.Normalized();
 
-    glUniform3f(m_dirLightLocation.Direction, Direction.x, Direction.y, Direction.z);
-    glUniform1f(m_dirLightLocation.DiffuseIntensity, Light.DiffuseIntensity);
+    glUniform3f(m_dirLightLocation.Direction, direction.x, direction.y, direction.z);
+    glUniform1f(m_dirLightLocation.DiffuseIntensity, light.DiffuseIntensity);
   }
 }

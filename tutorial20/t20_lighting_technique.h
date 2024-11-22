@@ -12,36 +12,30 @@
 
 namespace t20
 {
+  struct AttenuationT
+  {
+    float constant = 0.f;
+    float linear = 0.f;
+    float exp = 0.f;
+  };
+
   struct BaseLight
   {
-    Vector3f Color;
-    float AmbientIntensity;
-    float DiffuseIntensity;
-
-    BaseLight();
+    Vector3f color;
+    float ambientIntensity = 0.f;
+    float diffuseIntensity = 0.f;
   };
 
   struct DirectionalLight : public BaseLight
   {
-    Vector3f Direction;
-
-    DirectionalLight();
+    Vector3f direction;
   };
 
   struct PointLight : public BaseLight
   {
-    Vector3f Position;
+    Vector3f position;
 
-    struct AttenuationT
-    {
-      float Constant;
-      float Linear;
-      float Exp;
-    };
-
-    AttenuationT Attenuation;
-
-    PointLight();
+    AttenuationT attenuation{1.f, 0.f, 0.f};
   };
 
   class LightingTechnique : public Technique

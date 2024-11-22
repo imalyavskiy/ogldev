@@ -26,10 +26,10 @@ namespace t20
   : m_winWidth(winWidth)
   , m_winHeight(winHeight)
   {
-    m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
-    m_directionalLight.AmbientIntensity = -0.1f;
-    m_directionalLight.DiffuseIntensity = 0.0f;
-    m_directionalLight.Direction = Vector3f(1.0f, 0.0f, 0.0f);
+    m_directionalLight.color = Vector3f(1.0f, 1.0f, 1.0f);
+    m_directionalLight.ambientIntensity = -0.1f;
+    m_directionalLight.diffuseIntensity = 0.0f;
+    m_directionalLight.direction = Vector3f(1.0f, 0.0f, 0.0f);
   }
 
   bool MainApp::Init()
@@ -81,20 +81,20 @@ namespace t20
 
     std::array<PointLight, MAX_POINT_LIGHTS> pointLights;
 
-    pointLights[0].DiffuseIntensity = 0.5f;
-    pointLights[0].Color = Vector3f(1.0f, 0.0f, 0.0f);
-    pointLights[0].Position = Vector3f(sinf(m_scale) * 10, 1.0f, cosf(m_scale) * 10);
-    pointLights[0].Attenuation.Linear = 0.1f;
+    pointLights[0].diffuseIntensity = 0.5f;
+    pointLights[0].color = Vector3f(1.0f, 0.0f, 0.0f);
+    pointLights[0].position = Vector3f(sinf(m_scale) * 10, 1.0f, cosf(m_scale) * 10);
+    pointLights[0].attenuation.linear = 0.1f;
 
-    pointLights[1].DiffuseIntensity = 0.5f;
-    pointLights[1].Color = Vector3f(0.0f, 1.0f, 0.0f);
-    pointLights[1].Position = Vector3f(sinf(m_scale + 2.1f) * 10, 1.0f, cosf(m_scale + 2.1f) * 10);
-    pointLights[1].Attenuation.Linear = 0.1f;
+    pointLights[1].diffuseIntensity = 0.5f;
+    pointLights[1].color = Vector3f(0.0f, 1.0f, 0.0f);
+    pointLights[1].position = Vector3f(sinf(m_scale + 2.1f) * 10, 1.0f, cosf(m_scale + 2.1f) * 10);
+    pointLights[1].attenuation.linear = 0.1f;
 
-    pointLights[2].DiffuseIntensity = 0.5f;
-    pointLights[2].Color = Vector3f(0.0f, 0.0f, 1.0f);
-    pointLights[2].Position = Vector3f(sinf(m_scale + 4.2f) * 10, 1.0f, cosf(m_scale + 4.2f) * 10);
-    pointLights[2].Attenuation.Linear = 0.1f;
+    pointLights[2].diffuseIntensity = 0.5f;
+    pointLights[2].color = Vector3f(0.0f, 0.0f, 1.0f);
+    pointLights[2].position = Vector3f(sinf(m_scale + 4.2f) * 10, 1.0f, cosf(m_scale + 4.2f) * 10);
+    pointLights[2].attenuation.linear = 0.1f;
 
     m_pEffect->SetPointLights(pointLights.size(), pointLights.data());
 
@@ -154,16 +154,16 @@ namespace t20
       glutLeaveMainLoop();
       break;
     case 'a':
-      m_directionalLight.AmbientIntensity -= 0.05f;
+      m_directionalLight.ambientIntensity -= 0.05f;
       break;
     case 's':
-      m_directionalLight.AmbientIntensity += 0.05f;
+      m_directionalLight.ambientIntensity += 0.05f;
       break;
     case 'z':
-      m_directionalLight.DiffuseIntensity -= 0.05f;
+      m_directionalLight.diffuseIntensity -= 0.05f;
       break;
     case 'x':
-      m_directionalLight.DiffuseIntensity += 0.05f;
+      m_directionalLight.diffuseIntensity += 0.05f;
       break;
     }
   }

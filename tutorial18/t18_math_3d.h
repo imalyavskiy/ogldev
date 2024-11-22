@@ -93,6 +93,8 @@ namespace t18
 
     Vector3f& Normalize();
 
+    Vector3f Normalized() const;
+
     void Rotate(float Angle, const Vector3f& Axis);
 
     void Print() const

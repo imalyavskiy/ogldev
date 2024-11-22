@@ -39,6 +39,13 @@ namespace t18
     return *this;
   }
 
+  Vector3f Vector3f::Normalized() const
+  {
+    Vector3f r(*this);
+    r.Normalize();
+    return r;
+  }
+
   void Vector3f::Rotate(float Angle, const Vector3f& Axe)
   {
     const float SinHalfAngle = sinf(ToRadian(Angle/2));

@@ -4,10 +4,10 @@
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
 ga('create', 'UA-35259428-1', 'auto');
-ga('send', 'pageview');</script></head><body><div class="row header"><div class="large-12 columns"><div class="nav-bar right"><ul class="button-group"><li><a href="../index.html" class="button nav-left">Содержание</a></li><li><a href="../instr.html" class="button">Инструкции</a></li><li><a href="../cont.html" class="button nav-right">Контакты</a></li></ul></div><h1><small>Уроки по OpenGL с сайта OGLDev</small></h1><hr /></div></div><div class="row"><div class="large-12 columns"><div class="tutorial"><h2><a href="http://ogldev.atspace.co.uk/www/tutorial20/tutorial20.html">Урок 20 - Точечный источник света</a></h2><p>Мы изучили 3 основные модели освещения (фоновую, рассеянную и отраженную), представляющие направленный свет. Это такой свет, который характеризуется направлением, но у него отсутствует какая-либо позиция. Поэтому он не ослабевает на расстоянии (на самом деле вы и не можете найти расстояние от источника этого вида света до объекта). Теперь мы собираемся рассмотреть точечный источник света, который имеет и позицию и эффект ослабевания при удалении от объекта. Классический пример точечного света - лампочка. Вы не замечаете эффекта ослабевания, когда она светит внутри небольшой комнаты, но если вынести ее на улицу, то будет сразу видна ограниченность дистанции, на которой она светит. Заметим, что направление света, которое постоянно для направленного света, будет динамическим для точечного. Это происходит из-за того, что точечный свет освещает равномерно во всех направлениях, поэтому направление должно быть подсчитано для каждого объекта через взятие вектора от него до позиции точечного источника. Вот почему
-мы указываем позицию, а не направление для точечного света.</p>
+ga('send', 'pageview');</script></head><body><div class="row header"><div class="large-12 columns"><div class="nav-bar right"><ul class="button-group"><li><a href="../index.html" class="button nav-left">Содержание</a></li><li><a href="../instr.html" class="button">Инструкции</a></li><li><a href="../cont.html" class="button nav-right">Контакты</a></li></ul></div><h1><small>Уроки по OpenGL с сайта OGLDev</small></h1><hr /></div></div><div class="row"><div class="large-12 columns"><div class="tutorial"><h2><a href="http://ogldev.atspace.co.uk/www/tutorial20/tutorial20.html">Урок 20 - Точечный источник света</a></h2><p>Мы изучили 3 основные модели освещения (<i>фоновую, рассеянную и отраженную</i>), представляющие <em>направленный</em> свет. Это такой свет, который характеризуется только направлением, т.к. у него отсутствует какая-либо позиция. Поэтому он не ослабевает на расстоянии (на самом деле вы и не можете найти расстояние от источника этого типа света до объекта). Теперь мы собираемся рассмотреть точечный источник света, который имеет и позицию и эффект ослабевания света при удалении от объекта. Классический пример точечного света - <i>лампочка</i>. Вы не замечаете эффекта ослабевания, когда она светит внутри небольшой комнаты, но если вынести ее на улицу, то будет сразу видна ограниченность дистанции, на которой она светит. Заметим, что направление света, которое постоянно для направленного света, будет варьироваться для точечного. Это происходит из-за того, что точечный свет освещает равномерно во всех направлениях, поэтому направление должно быть подсчитано для каждого объекта через взятие вектора от него до позиции точечного источника света. Вот почему для него 
+мы указываем позицию, а не направление.</p>
 
-<p>Эффект ослабевания точечного света обычно называют "затуханием" (attenuation). Ослабление реального света подчиняется закону обратных квадратов, который говорит о том, что сила света обратно пропорциональна квадрату расстояния от источника света. Это описано в математическом выражении в следующей формуле:</p>
+<p>Эффект ослабевания точечного света обычно называют "<i>затуханием</i>" (<i>attenuation</i>). Ослабление реального света подчиняется закону обратных квадратов, который говорит о том, что сила света обратно пропорциональна квадрату расстояния от источника света. Это описано в математическом выражении в следующей формуле:</p>
 
 <p><img src="../images/t20_inverse_.png" alt="" /></p>
 
@@ -29,55 +29,50 @@ ga('send', 'pageview');</script></head><body><div class="row header"><div class=
 <h2 id="httpsgithubcomtriplepointfiveogldevtreemastertutorial20"><a href="https://github.com/triplepointfive/ogldev/tree/master/tutorial20">Прямиком к коду!</a></h2>
 
 <blockquote>
-  <p>lighting_technique.h:24</p>
+  <p>lighting_technique.h:15</p>
 </blockquote>
 
-<pre><code>struct BaseLight
+<pre><code>struct AttenuationT
 {
-    Vector3f Color;
-    float AmbientIntensity;
-    float DiffuseIntensity;
-
-    BaseLight()
-    {
-        Color = Vector3f(0.0f, 0.0f, 0.0f);
-        AmbientIntensity = 0.0f;
-        DiffuseIntensity = 0.0f;
-    }
+  float constant = 0.f;
+  float linear = 0.f;
+  float exp = 0.f;
 };
-.
-.
-.
+
+struct BaseLight
+{
+  Vector3f color;
+  float ambientIntensity = 0.f;
+  float diffuseIntensity = 0.f;
+};
+
+struct DirectionalLight : public BaseLight
+{
+  Vector3f direction;
+};
+
 struct PointLight : public BaseLight
 {
-    Vector3f Position;
+  Vector3f position;
 
-    struct
-    {
-        float Constant;
-        float Linear;
-        float Exp;
-    } Attenuation;
-
-    PointLight()
-    {
-        Position = Vector3f(0.0f, 0.0f, 0.0f);
-        Attenuation.Constant = 1.0f;
-        Attenuation.Linear = 0.0f;
-        Attenuation.Exp = 0.0f;
-    }
-}
+  AttenuationT attenuation{1.f, 0.f, 0.f};
+};
 </code></pre>
 
 <p>Несмотря на различия, направленный и точечный свет по прежнему имеют много общего. Все это было перемещено в структуру BaseLight, которую наследуют оба типа света. Направленный свет добавляет еще и направление в свой класс, в то время как точечный добавил свою позицию (в мировых координатах) и три коэффициента затухания.</p>
 
 <blockquote>
-  <p>lighting_technique.h:81</p>
+  <p>lighting_technique.h:56</p>
 </blockquote>
-
 <pre><code>	void SetPointLights(unsigned int NumLights, const PointLight* pLights);
-	GLuint m_numPointLightsLocation;
 </code></pre>
+
+<blockquote>
+  <p>lighting_technique.h:66</p>
+</blockquote>
+<pre><code>	GLuint m_numPointLightsLocation;
+</code></pre>
+
 
 <p>В дополнении к реализации точечного источника, этот урок еще покажет и как использовать сразу несколько источников света. Мы допускаем, что может использоваться один источник направленного света (выступающий в роли солнца) и / или несколько точечных источников (лампочки в комнате, факелы в пещере и т.д.). Функция принимает массив структур PointLight и размер массива и обновляет соответствующие значения в шейдере.</p>
 
@@ -103,7 +98,7 @@ struct {
 } m_pointLightsLocation[MAX_POINT_LIGHTS];
 </code></pre>
 
-<p>Для поддержки нескольких источников света шейдер хранит массив структур аналогичных PointLight (только в GLSL). Есть основных способа обновить массив структур в шейдере:</p>
+<p>Для поддержки нескольких источников света шейдер хранит массив структур аналогичных PointLight (только в GLSL). Есть два основных способа обновить массив структур в шейдере:</p>
 
 <ol>
   <li>Вы можете получить адрес каждого поля структуры в массиве элементов (например, если массив из 5 элементов с 4 полями, то получим 20 uniform-адресов), и придется в каждый передавать значения по отдельности.</li>
