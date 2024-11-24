@@ -96,7 +96,7 @@ namespace t23
   {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    m_pShadowMapTech->SetTextureUnit(0);
+    m_pShadowMapTech->SetTextureUnit(GL_TEXTURE0);
     m_shadowMapFBO.BindForReading(GL_TEXTURE0);
 
     Pipeline pipeline;

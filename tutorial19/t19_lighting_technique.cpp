@@ -139,7 +139,7 @@ namespace t19
 
   void LightingTechnique::SetTextureUnit(unsigned int TextureUnit)
   {
-    glUniform1i(m_samplerLocation, TextureUnit);
+    glUniform1i(m_samplerLocation, TextureUnit - GL_TEXTURE0);
   }
 
   void LightingTechnique::SetMatSpecularIntensity(float intensity)

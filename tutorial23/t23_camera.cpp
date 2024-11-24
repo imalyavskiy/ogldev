@@ -109,9 +109,9 @@ namespace t23
 
   void Camera::OnRender()
   {
-    bool ShouldUpdate = false;
+    bool shouldUpdate = false;
 
-    if (ShouldUpdate) {
+    if (shouldUpdate) {
       Update();
     }
   }

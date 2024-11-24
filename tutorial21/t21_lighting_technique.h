@@ -9,42 +9,34 @@ namespace t21
 {
   struct BaseLight
   {
-    Vector3f Color;
-    float AmbientIntensity;
-    float DiffuseIntensity;
-
-    BaseLight();
+    Vector3f Color{ 0.0f, 0.0f, 0.0f };
+    float AmbientIntensity = 0.0f;
+    float DiffuseIntensity = 0.0f;
   };
 
   struct DirectionalLight : public BaseLight
   {
-    Vector3f Direction;
+    Vector3f Direction{ 0.0f, 0.0f, 0.0f };
+  };
 
-    DirectionalLight();
+  struct AttenuationT
+  {
+    float Constant = 1.0f;
+    float Linear = 0.0;
+    float Exp = 0.0f;
   };
 
   struct PointLight : public BaseLight
   {
-    Vector3f Position;
+    Vector3f Position{ 0.0f, 0.0f, 0.0f };
 
-    struct AttenuationT
-    {
-      float Constant;
-      float Linear;
-      float Exp;
-    };
-
-    AttenuationT Attenuation;
-
-    PointLight();
+    AttenuationT Attenuation{1.0, 0.0, 0.0};
   };
 
   struct SpotLight : public PointLight
   {
-    Vector3f Direction;
-    float Cutoff;
-
-    SpotLight();
+    Vector3f Direction{ 0.0f, 0.0f, 0.0f };
+    float Cutoff = 0.0f;
   };
 
   class LightingTechnique

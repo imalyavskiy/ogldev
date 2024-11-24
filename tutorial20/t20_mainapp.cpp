@@ -56,7 +56,7 @@ namespace t20
 
     m_pEffect->Enable();
 
-    m_pEffect->SetTextureUnit(0);
+    m_pEffect->SetTextureUnit(GL_TEXTURE0);
 
     m_pTexture = std::make_shared<Texture>(GL_TEXTURE_2D, "../Content/test.png");
 

@@ -130,10 +130,6 @@ static const char* pFS =
 
 namespace t20
 {
-  LightingTechnique::LightingTechnique()
-  {
-  }
-
   bool LightingTechnique::Init()
   {
     if (!Technique::Init())
@@ -193,40 +189,40 @@ namespace t20
       return false;
 
     for (unsigned int i = 0 ; i < m_pointLightsLocation.size() ; i++) {
-      char Name[128] = {};
+      char name[128] = {};
 
-      snprintf(Name, sizeof(Name), "gPointLights[%d].Base.Color", i);
-      m_pointLightsLocation[i].Color = GetUniformLocation(Name);
+      snprintf(name, sizeof(name), "gPointLights[%d].Base.Color", i);
+      m_pointLightsLocation[i].Color = GetUniformLocation(name);
       if (m_pointLightsLocation[i].Color == INVALID_UNIFORM_LOCATION)
         return false;
 
-      snprintf(Name, sizeof(Name), "gPointLights[%d].Base.AmbientIntensity", i);
-      m_pointLightsLocation[i].AmbientIntensity = GetUniformLocation(Name);
+      snprintf(name, sizeof(name), "gPointLights[%d].Base.AmbientIntensity", i);
+      m_pointLightsLocation[i].AmbientIntensity = GetUniformLocation(name);
       if (m_pointLightsLocation[i].AmbientIntensity == INVALID_UNIFORM_LOCATION)
         return false;
 
-      snprintf(Name, sizeof(Name), "gPointLights[%d].Position", i);
-      m_pointLightsLocation[i].Position = GetUniformLocation(Name);
+      snprintf(name, sizeof(name), "gPointLights[%d].Position", i);
+      m_pointLightsLocation[i].Position = GetUniformLocation(name);
       if (m_pointLightsLocation[i].Position == INVALID_UNIFORM_LOCATION)
         return false;
 
-      snprintf(Name, sizeof(Name), "gPointLights[%d].Base.DiffuseIntensity", i);
-      m_pointLightsLocation[i].DiffuseIntensity = GetUniformLocation(Name);
+      snprintf(name, sizeof(name), "gPointLights[%d].Base.DiffuseIntensity", i);
+      m_pointLightsLocation[i].DiffuseIntensity = GetUniformLocation(name);
       if (m_pointLightsLocation[i].DiffuseIntensity == INVALID_UNIFORM_LOCATION)
         return false;
 
-      snprintf(Name, sizeof(Name), "gPointLights[%d].Atten.Constant", i);
-      m_pointLightsLocation[i].attenuation.Constant = GetUniformLocation(Name);
+      snprintf(name, sizeof(name), "gPointLights[%d].Atten.Constant", i);
+      m_pointLightsLocation[i].attenuation.Constant = GetUniformLocation(name);
       if (m_pointLightsLocation[i].attenuation.Constant == INVALID_UNIFORM_LOCATION)
         return false;
 
-      snprintf(Name, sizeof(Name), "gPointLights[%d].Atten.Linear", i);
-      m_pointLightsLocation[i].attenuation.Linear = GetUniformLocation(Name);
+      snprintf(name, sizeof(name), "gPointLights[%d].Atten.Linear", i);
+      m_pointLightsLocation[i].attenuation.Linear = GetUniformLocation(name);
       if (m_pointLightsLocation[i].attenuation.Linear == INVALID_UNIFORM_LOCATION)
         return false;
 
-      snprintf(Name, sizeof(Name), "gPointLights[%d].Atten.Exp", i);
-      m_pointLightsLocation[i].attenuation.Exp = GetUniformLocation(Name);
+      snprintf(name, sizeof(name), "gPointLights[%d].Atten.Exp", i);
+      m_pointLightsLocation[i].attenuation.Exp = GetUniformLocation(name);
       if (m_pointLightsLocation[i].attenuation.Exp == INVALID_UNIFORM_LOCATION)
         return false;
     }
@@ -236,52 +232,52 @@ namespace t20
 
   void LightingTechnique::SetWVP(const Matrix4f& WVP)
   {
-    glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP.m);
+    glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, reinterpret_cast<const GLfloat*>(WVP.m));
   }
 
 
-  void LightingTechnique::SetWorldMatrix(const Matrix4f& WorldInverse)
+  void LightingTechnique::SetWorldMatrix(const Matrix4f& world)
   {
-    glUniformMatrix4fv(m_WorldMatrixLocation, 1, GL_TRUE, (const GLfloat*)WorldInverse.m);
+    glUniformMatrix4fv(m_WorldMatrixLocation, 1, GL_TRUE, reinterpret_cast<const GLfloat*>(world.m));
   }
 
 
-  void LightingTechnique::SetTextureUnit(unsigned int TextureUnit)
+  void LightingTechnique::SetTextureUnit(unsigned int textureUnit)
   {
-    glUniform1i(m_samplerLocation, TextureUnit);
+    glUniform1i(m_samplerLocation, textureUnit - GL_TEXTURE0);
   }
 
 
-  void LightingTechnique::SetDirectionalLight(const DirectionalLight& Light)
+  void LightingTechnique::SetDirectionalLight(const DirectionalLight& light)
   {
-    glUniform3f(m_dirLightLocation.Color, Light.color.x, Light.color.y, Light.color.z);
-    glUniform1f(m_dirLightLocation.AmbientIntensity, Light.ambientIntensity);
-    Vector3f Direction = Light.direction;
+    glUniform3f(m_dirLightLocation.Color, light.color.x, light.color.y, light.color.z);
+    glUniform1f(m_dirLightLocation.AmbientIntensity, light.ambientIntensity);
+    Vector3f Direction = light.direction;
     Direction.Normalize();
     glUniform3f(m_dirLightLocation.Direction, Direction.x, Direction.y, Direction.z);
-    glUniform1f(m_dirLightLocation.DiffuseIntensity, Light.diffuseIntensity);
+    glUniform1f(m_dirLightLocation.DiffuseIntensity, light.diffuseIntensity);
   }
 
-  void LightingTechnique::SetEyeWorldPos(const Vector3f& EyeWorldPos)
+  void LightingTechnique::SetEyeWorldPos(const Vector3f& eyeWorldPos)
   {
-    glUniform3f(m_eyeWorldPosLocation, EyeWorldPos.x, EyeWorldPos.y, EyeWorldPos.z);
+    glUniform3f(m_eyeWorldPosLocation, eyeWorldPos.x, eyeWorldPos.y, eyeWorldPos.z);
   }
 
-  void LightingTechnique::SetMatSpecularIntensity(float Intensity)
+  void LightingTechnique::SetMatSpecularIntensity(float intensity)
   {
-    glUniform1f(m_matSpecularIntensityLocation, Intensity);
+    glUniform1f(m_matSpecularIntensityLocation, intensity);
   }
 
-  void LightingTechnique::SetMatSpecularPower(float Power)
+  void LightingTechnique::SetMatSpecularPower(float power)
   {
-    glUniform1f(m_matSpecularPowerLocation, Power);
+    glUniform1f(m_matSpecularPowerLocation, power);
   }
 
-  void LightingTechnique::SetPointLights(unsigned int NumLights, const PointLight* pLights)
+  void LightingTechnique::SetPointLights(unsigned int numLights, const PointLight* pLights)
   {
-    glUniform1i(m_numPointLightsLocation, NumLights);
+    glUniform1i(m_numPointLightsLocation, numLights);
 
-    for (unsigned int i = 0 ; i < NumLights ; i++) {
+    for (unsigned int i = 0 ; i < numLights ; i++) {
       glUniform3f(m_pointLightsLocation[i].Color, pLights[i].color.x, pLights[i].color.y, pLights[i].color.z);
       glUniform1f(m_pointLightsLocation[i].AmbientIntensity, pLights[i].ambientIntensity);
       glUniform1f(m_pointLightsLocation[i].DiffuseIntensity, pLights[i].diffuseIntensity);

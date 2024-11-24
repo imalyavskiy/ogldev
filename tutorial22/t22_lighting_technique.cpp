@@ -302,9 +302,9 @@ namespace t22
   }
 
 
-  void LightingTechnique::SetTextureUnit(unsigned int TextureUnit)
+  void LightingTechnique::SetTextureUnit(unsigned int textureUnit)
   {
-    glUniform1i(m_samplerLocation, TextureUnit);
+    glUniform1i(m_samplerLocation, textureUnit - GL_TEXTURE0);
   }
 
 

@@ -2,7 +2,7 @@
 
 namespace t23
 {
-  static const char* pVS =
+  static const char* pVertexShaderText =
   "  #version 330                                                                        \n"\
   "                                                                                      \n"\
   "  layout (location = 0) in vec3 Position;                                             \n"\
@@ -19,7 +19,7 @@ namespace t23
   "      TexCoordOut = TexCoord;                                                         \n"\
   "  }                                                                                     ";
 
-  static const char* pFS =
+  static const char* pFragmentShaderText =
   "  #version 330                                                                        \n"\
   "                                                                                      \n"\
   "  in vec2 TexCoordOut;                                                                \n"\
@@ -38,10 +38,10 @@ namespace t23
     if (!Technique::Init())
       return false;
 
-    if (!AddShader(GL_VERTEX_SHADER, pVS))
+    if (!AddShader(GL_VERTEX_SHADER, pVertexShaderText))
       return false;
 
-    if (!AddShader(GL_FRAGMENT_SHADER, pFS))
+    if (!AddShader(GL_FRAGMENT_SHADER, pFragmentShaderText))
       return false;
 
     if (!Finalize())
@@ -59,10 +59,10 @@ namespace t23
   }
 
   void ShadowMapTechnique::SetWVP(const Matrix4f& WVP) {
-    glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP.m);
+    glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, reinterpret_cast<const GLfloat*>(WVP.m));
   }
 
-  void ShadowMapTechnique::SetTextureUnit(unsigned int TextureUnit) {
-    glUniform1i(m_textureLocation, TextureUnit);
+  void ShadowMapTechnique::SetTextureUnit(unsigned int textureUnit) {
+    glUniform1i(m_textureLocation, textureUnit - GL_TEXTURE0);
   }
 }

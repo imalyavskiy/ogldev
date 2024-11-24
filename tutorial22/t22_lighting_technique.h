@@ -74,7 +74,7 @@ namespace t22
 
     void SetWVP(const Matrix4f& WVP);
     void SetWorldMatrix(const Matrix4f& WVP);
-    void SetTextureUnit(unsigned int TextureUnit);
+    void SetTextureUnit(unsigned int textureUnit);
     void SetDirectionalLight(const DirectionalLight& Light);
     void SetPointLights(unsigned int NumLights, const PointLight* pLights);
     void SetSpotLights(unsigned int NumLights, const SpotLight* pLights);

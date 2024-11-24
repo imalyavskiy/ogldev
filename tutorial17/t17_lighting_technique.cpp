@@ -84,7 +84,7 @@ static const char* pFragmentShader =
 
   void LightingTechnique::SetTextureUnit(unsigned int textureUnit)
   {
-    glUniform1i(m_samplerLocation, textureUnit);
+    glUniform1i(m_samplerLocation, textureUnit - GL_TEXTURE0);
   }
 
 

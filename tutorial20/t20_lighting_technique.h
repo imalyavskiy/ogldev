@@ -41,19 +41,20 @@ namespace t20
   class LightingTechnique : public Technique
   {
   public:
-    LightingTechnique();
+    LightingTechnique() = default;
+
     bool Init() override;
 
     void SetWVP(const Matrix4f& WVP);
-    void SetWorldMatrix(const Matrix4f& WorldInverse);
-    void SetTextureUnit(unsigned int TextureUnit);
-    void SetDirectionalLight(const DirectionalLight& Light);
+    void SetWorldMatrix(const Matrix4f& world);
+    void SetTextureUnit(unsigned int textureUnit);
+    void SetDirectionalLight(const DirectionalLight& light);
 
-    void SetEyeWorldPos(const Vector3f& EyeWorldPos);
-    void SetMatSpecularIntensity(float Intensity);
-    void SetMatSpecularPower(float Power);
+    void SetEyeWorldPos(const Vector3f& eyeWorldPos);
+    void SetMatSpecularIntensity(float intensity);
+    void SetMatSpecularPower(float power);
 
-    void SetPointLights(unsigned int NumLights, const PointLight* pLights);
+    void SetPointLights(unsigned int numLights, const PointLight* pLights);
 
   private:
     GLuint m_WVPLocation;

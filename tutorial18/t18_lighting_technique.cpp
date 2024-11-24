@@ -119,7 +119,7 @@ namespace t18
   
   void LightingTechnique::SetTextureUnit(uint32_t textureUnit)
   {
-    glUniform1i(m_samplerLocation, textureUnit);
+    glUniform1i(m_samplerLocation, textureUnit - GL_TEXTURE0);
   }
   
   void LightingTechnique::SetDirectionalLight(const DirectionLight& light)

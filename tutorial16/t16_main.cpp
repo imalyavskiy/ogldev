@@ -267,7 +267,9 @@ int main(int argc, char** argv)
 
   CompileShaders();
 
-  glUniform1i(gSampler, 0); // index of the texture unit to use
+  glUniform1i(gSampler, GL_TEXTURE0 - GL_TEXTURE0); // index of the texture unit to use
+  // GL_TEXTURE0 - GL_TEXTURE0 used as illustration - subtraction gives 0, the same value as
+  // at the end of GL_TEXTUREn macro, to underline the interdependence
 
   const std::string textureFileName("../Content/test.png");
   pTexture = new t16::Texture(GL_TEXTURE_2D, textureFileName);

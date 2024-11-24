@@ -44,9 +44,9 @@ namespace t23
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_FrameBufferObject);
   }
 
-  void ShadowMapFBO::BindForReading(GLenum TextureUnit)
+  void ShadowMapFBO::BindForReading(GLenum textureUnit)
   {
-    glActiveTexture(TextureUnit);
+    glActiveTexture(textureUnit);
     glBindTexture(GL_TEXTURE_2D, m_ShadowMapTexture);
   }
 }

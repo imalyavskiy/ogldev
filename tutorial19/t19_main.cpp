@@ -105,7 +105,7 @@ namespace t19
 
     m_pEffect->Enable();
 
-    m_pEffect->SetTextureUnit(0);
+    m_pEffect->SetTextureUnit(GL_TEXTURE0);
 
     const std::string texture("../Content/test.png");
     m_pTexture = std::make_shared<Texture>(GL_TEXTURE_2D, texture);

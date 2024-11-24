@@ -16,7 +16,7 @@ namespace t23
 
     void SetWVP(const Matrix4f& WVP);
 
-    void SetTextureUnit(unsigned int TextureUnit);
+    void SetTextureUnit(unsigned int textureUnit);
 
   private:
 

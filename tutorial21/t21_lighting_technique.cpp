@@ -85,7 +85,7 @@ namespace t21
   "  uniform float gMatSpecularIntensity;                                        \n"\
   "  uniform float gSpecularPower;                                               \n"\
   "                                                                              \n"\
-  "  vec4 CalcLightInternal( BaseLight Light, vec3 LightDirection, vec3 Normal)  \n"\
+  "  vec4 CalcLightInternal(BaseLight Light, vec3 LightDirection, vec3 Normal)   \n"\
   "  {                                                                           \n"\
   "    vec4 AmbientColor = vec4(Light.Color, 1.0f) * Light.AmbientIntensity;     \n"\
   "    float DiffuseFactor = dot(Normal, -LightDirection);                       \n"\
@@ -118,7 +118,7 @@ namespace t21
   "                             Normal);                                         \n"\
   "  }                                                                           \n"\
   "                                                                              \n"\
-  "  vec4 CalcPointLight( PointLight l, vec3 Normal)                             \n"\
+  "  vec4 CalcPointLight(PointLight l, vec3 Normal)                              \n"\
   "  {                                                                           \n"\
   "    vec3 LightDirection = WorldPos0 - l.Position;                             \n"\
   "    float Distance = length(LightDirection);                                  \n"\
@@ -162,32 +162,6 @@ namespace t21
   "                                                                              \n"\
   "    FragColor = texture2D(gSampler, TexCoord0.xy) * TotalLight;               \n"\
   "  }                                                                           ";
-
-  BaseLight::BaseLight()
-  {
-    Color = Vector3f(0.0f, 0.0f, 0.0f);
-    AmbientIntensity = 0.0f;
-    DiffuseIntensity = 0.0f;
-  }
-
-  DirectionalLight::DirectionalLight()
-  {
-    Direction = Vector3f(0.0f, 0.0f, 0.0f);
-  }
-
-  PointLight::PointLight()
-  {
-    Position = Vector3f(0.0f, 0.0f, 0.0f);
-    Attenuation.Constant = 1.0f;
-    Attenuation.Linear = 0.0f;
-    Attenuation.Exp = 0.0f;
-  }
-
-  SpotLight::SpotLight()
-  {
-    Direction = Vector3f(0.0f, 0.0f, 0.0f);
-    Cutoff = 0.0f;
-  }
 
   bool LightingTechnique::Init()
   {
@@ -358,7 +332,7 @@ namespace t21
 
   void LightingTechnique::SetTextureUnit(uint32_t textureUnit)
   {
-    glUniform1i(m_samplerLocation, textureUnit);
+    glUniform1i(m_samplerLocation, textureUnit - GL_TEXTURE0);
   }
   
   void LightingTechnique::SetDirectionalLight(const DirectionalLight& light)

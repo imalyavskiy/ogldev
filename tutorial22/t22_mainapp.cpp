@@ -39,7 +39,7 @@ namespace t22
 
     m_pEffect->Enable();
 
-    m_pEffect->SetTextureUnit(0);
+    m_pEffect->SetTextureUnit(GL_TEXTURE0);
 
     m_pMesh = std::make_shared<Mesh>();
 

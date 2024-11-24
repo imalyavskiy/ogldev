@@ -15,7 +15,7 @@ namespace t23
 
     void BindForWriting();
 
-    void BindForReading(GLenum TextureUnit);
+    void BindForReading(GLenum textureUnit);
 
   private:
     GLuint m_FrameBufferObject = 0;
