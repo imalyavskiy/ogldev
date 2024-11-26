@@ -89,7 +89,7 @@ namespace t23
 
     m_pMesh->Render();
 
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    m_shadowMapFBO.UnbindForWriting();
   }
 
   void MainApp::RenderPass()

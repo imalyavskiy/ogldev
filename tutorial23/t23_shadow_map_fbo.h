@@ -14,6 +14,7 @@ namespace t23
     bool Init(GLuint winWidth, GLuint winHeight);
 
     void BindForWriting();
+    void UnbindForWriting();
 
     void BindForReading(GLenum textureUnit);
 
