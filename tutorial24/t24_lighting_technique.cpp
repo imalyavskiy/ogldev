@@ -6,7 +6,7 @@
 
 namespace t24
 {
-  static const char* pVS =
+  static const char* pVertexShaderText =
     "  #version 330                                                                                     \n"\
     "                                                                                                   \n"\
     "  layout (location = 0) in vec3 Position;                                                          \n"\
@@ -15,11 +15,11 @@ namespace t24
     "                                                                                                   \n"\
     "  uniform mat4 gWVP;                                                                               \n"\
     "                                                                                                   \n"\
-    "    uniform mat4 gLightWVP;  //!                                                                   \n"\
+    "  uniform mat4 gLightWVP;  //!                                                                     \n"\
     "                                                                                                   \n"\
     "  uniform mat4 gWorld;                                                                             \n"\
     "                                                                                                   \n"\
-    "    out vec4 LightSpacePos;  //!                                                                   \n"\
+    "  out vec4 LightSpacePos;  //!                                                                     \n"\
     "                                                                                                   \n"\
     "  out vec2 TexCoord0;                                                                              \n"\
     "  out vec3 Normal0;                                                                                \n"\
@@ -29,14 +29,14 @@ namespace t24
     "  {                                                                                                \n"\
     "      gl_Position      = gWVP * vec4(Position, 1.0);                                               \n"\
     "                                                                                                   \n"\
-    "        LightSpacePos    = gLightWVP * vec4(Position, 1.0);  //!                                   \n"\
+    "      LightSpacePos    = gLightWVP * vec4(Position, 1.0);  //!                                     \n"\
     "                                                                                                   \n"\
     "      TexCoord0        = TexCoord;                                                                 \n"\
     "      Normal0          = (gWorld * vec4(Normal, 0.0)).xyz;                                         \n"\
     "      WorldPos0        = (gWorld * vec4(Position, 1.0)).xyz;                                       \n"\
     " }                                                                                                  ";
 
-  static const char* pFS =
+  static const char* pFragmentShaderText =
     "  #version 330                                                                                     \n"\
     "                                                                                                   \n"\
     "  const int MAX_POINT_LIGHTS = 2;                                                                  \n"\
@@ -144,7 +144,7 @@ namespace t24
     "      float Distance = length(LightDirection);                                                     \n"\
     "      LightDirection = normalize(LightDirection);                                                  \n"\
     "                                                                                                   \n"\
-    "        float ShadowFactor = CalcShadowFactor(LightSpacePos);                                      \n"\
+    "      float ShadowFactor = CalcShadowFactor(LightSpacePos);                                        \n"\
     "                                                                                                   \n"\
     "      vec4 Color = CalcLightInternal(l.Base, LightDirection, Normal, ShadowFactor);                \n"\
     "      float Attenuation =  l.Atten.Constant +                                                      \n"\
@@ -194,10 +194,10 @@ namespace t24
     if (!Technique::Init())
       return false;
 
-    if (!AddShader(GL_VERTEX_SHADER, pVS))
+    if (!AddShader(GL_VERTEX_SHADER, pVertexShaderText))
       return false;
 
-    if (!AddShader(GL_FRAGMENT_SHADER, pFS))
+    if (!AddShader(GL_FRAGMENT_SHADER, pFragmentShaderText))
       return false;
 
     if (!Finalize())
@@ -355,9 +355,9 @@ namespace t24
     glUniformMatrix4fv(m_LightWVPLocation, 1, GL_TRUE, reinterpret_cast<const GLfloat*>(LightWVP.m));
   }
 
-  void LightingTechnique::SetShadowMapTextureUnit(unsigned int TextureUnit)
+  void LightingTechnique::SetShadowMapTextureUnit(unsigned int textureUnit)
   {
-    glUniform1i(m_shadowMapLocation, TextureUnit);
+    glUniform1i(m_shadowMapLocation, textureUnit - GL_TEXTURE0);
   }
 
   void LightingTechnique::SetWVP(const Matrix4f& WVP)
@@ -372,9 +372,9 @@ namespace t24
   }
 
 
-  void LightingTechnique::SetTextureUnit(unsigned int TextureUnit)
+  void LightingTechnique::SetTextureUnit(unsigned int textureUnit)
   {
-    glUniform1i(m_samplerLocation, TextureUnit);
+    glUniform1i(m_samplerLocation, textureUnit - GL_TEXTURE0);
   }
 
 

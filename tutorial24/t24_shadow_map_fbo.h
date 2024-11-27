@@ -15,6 +15,7 @@ namespace t24
     bool Init(unsigned int winWidth, unsigned int winHeight);
 
     void BindForWriting();
+    void UnbindForWriting();
 
     void BindForReading(GLenum TextureUnit);
 

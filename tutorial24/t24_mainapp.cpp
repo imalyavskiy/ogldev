@@ -40,8 +40,8 @@ namespace t24
     }
     m_pLightingEffect->Enable();
     m_pLightingEffect->SetSpotLights(1, &m_spotLight);
-    m_pLightingEffect->SetTextureUnit(0);
-    m_pLightingEffect->SetShadowMapTextureUnit(1);
+    m_pLightingEffect->SetTextureUnit(GL_TEXTURE0);
+    m_pLightingEffect->SetShadowMapTextureUnit(GL_TEXTURE1);
 
     m_pShadowMapEffect = std::make_shared<ShadowMapTechnique>();
 
@@ -101,7 +101,7 @@ namespace t24
     m_pShadowMapEffect->SetWVP(pipeline.GetWVPTrans());
     m_pMesh->Render();
 
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    m_shadowMapFBO.UnbindForWriting();
   }
 
   void MainApp::RenderPass()
