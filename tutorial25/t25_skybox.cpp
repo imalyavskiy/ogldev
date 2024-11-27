@@ -44,7 +44,7 @@ namespace t25
     }
 
     m_pSkyboxTechnique->Enable();
-    m_pSkyboxTechnique->SetTextureUnit(0);
+    m_pSkyboxTechnique->SetTextureUnit(m_textureUnit);
 
     m_pCubemapTex = std::make_shared<CubemapTexture>(Directory,
       PosXFilename, NegXFilename,
@@ -80,7 +80,7 @@ namespace t25
     pipeline.SetPerspectiveProj(m_persProjInfo);
 
     m_pSkyboxTechnique->SetWVP(pipeline.GetWVPTrans());
-    m_pCubemapTex->Bind(GL_TEXTURE0);
+    m_pCubemapTex->Bind(m_textureUnit);
     m_pMesh->Render();
 
     glCullFace(OldCullFaceMode);

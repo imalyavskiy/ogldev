@@ -20,7 +20,7 @@
 
 namespace t25
 {
-  static const char* pVS =
+  static const char* pVertexShaderText =
   "  #version 330                                                                        \n"\
   "                                                                                      \n"\
   "  layout (location = 0) in vec3 Position;                                             \n"\
@@ -36,7 +36,7 @@ namespace t25
   "      TexCoord0   = Position;                                                         \n"\
   "  }                                                                                     ";
 
-  static const char* pFS =
+  static const char* pFragmentShaderText =
   "  #version 330                                                                        \n"\
   "                                                                                      \n"\
   "  in vec3 TexCoord0;                                                                  \n"\
@@ -56,10 +56,10 @@ namespace t25
     if (!Technique::Init())
       return false;
 
-    if (!AddShader(GL_VERTEX_SHADER, pVS))
+    if (!AddShader(GL_VERTEX_SHADER, pVertexShaderText))
       return false;
 
-    if (!AddShader(GL_FRAGMENT_SHADER, pFS))
+    if (!AddShader(GL_FRAGMENT_SHADER, pFragmentShaderText))
       return false;
 
     if (!Finalize())
@@ -83,8 +83,8 @@ namespace t25
   }
 
 
-  void SkyBoxTechnique::SetTextureUnit(unsigned int TextureUnit)
+  void SkyBoxTechnique::SetTextureUnit(unsigned int textureUnit)
   {
-    glUniform1i(m_textureLocation, TextureUnit);
+    glUniform1i(m_textureLocation, textureUnit - GL_TEXTURE0);
   }
 }

@@ -41,7 +41,7 @@ namespace t25
 
     m_pLightingTechnique->Enable();
     m_pLightingTechnique->SetDirectionalLight(m_dirLight);
-    m_pLightingTechnique->SetTextureUnit(0);
+    m_pLightingTechnique->SetTextureUnit(GL_TEXTURE0);
 
     m_pTankMesh = std::make_shared<Mesh>();
 

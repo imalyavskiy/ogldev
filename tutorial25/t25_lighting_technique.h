@@ -64,16 +64,16 @@ namespace t25
     bool Init() override;
 
     void SetWVP(const Matrix4f& WVP);
-    void SetLightWVP(const Matrix4f& LightWVP);
+    void SetLightWVP(const Matrix4f& lightWvp);
     void SetWorldMatrix(const Matrix4f& WVP);
-    void SetTextureUnit(unsigned int TextureUnit);
-    void SetShadowMapTextureUnit(unsigned int TextureUnit);
-    void SetDirectionalLight(const DirectionalLight& Light);
-    void SetPointLights(unsigned int NumLights, const PointLight* pLights);
-    void SetSpotLights(unsigned int NumLights, const SpotLight* pLights);
-    void SetEyeWorldPos(const Vector3f& EyeWorldPos);
-    void SetMatSpecularIntensity(float Intensity);
-    void SetMatSpecularPower(float Power);
+    void SetTextureUnit(unsigned int textureUnit);
+    void SetShadowMapTextureUnit(unsigned int textureUnit);
+    void SetDirectionalLight(const DirectionalLight& light);
+    void SetPointLights(unsigned int numLights, const PointLight* pLights);
+    void SetSpotLights(unsigned int numLights, const SpotLight* pLights);
+    void SetEyeWorldPos(const Vector3f& eyeWorldPos);
+    void SetMatSpecularIntensity(float intensity);
+    void SetMatSpecularPower(float power);
 
   private:
 

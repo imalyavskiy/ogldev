@@ -89,9 +89,9 @@ namespace t24
     return true;
   }
 
-  void Texture::Bind(const GLenum TextureUnit) const
+  void Texture::Bind(const GLenum textureUnit) const
   {
-    glActiveTexture(TextureUnit);
+    glActiveTexture(textureUnit);
     glBindTexture(m_textureTarget, m_textureObj);
   }
 }

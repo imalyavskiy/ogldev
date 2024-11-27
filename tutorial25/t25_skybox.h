@@ -47,6 +47,7 @@ namespace t25
     std::shared_ptr<CubemapTexture> m_pCubemapTex;
     std::shared_ptr<Mesh> m_pMesh;
     PersProjInfo m_persProjInfo;
+    const GLuint m_textureUnit = GL_TEXTURE0; // GL_TEXTURE0
   };
 }
 

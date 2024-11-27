@@ -31,7 +31,7 @@ namespace t25
     bool Init() override;
 
     void SetWVP(const Matrix4f& WVP);
-    void SetTextureUnit(unsigned int TextureUnit);
+    void SetTextureUnit(unsigned int textureUnit);
 
     ~SkyBoxTechnique() override = default;
 

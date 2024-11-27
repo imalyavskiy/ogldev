@@ -32,7 +32,7 @@ namespace t24
 
     bool Load() const;
 
-    void Bind(const GLenum TextureUnit) const;
+    void Bind(const GLenum textureUnit) const;
 
   private:
     std::string m_fileName;
