@@ -48,6 +48,9 @@
     <ClInclude Include="t26_util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="t26_mainapp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="t26_camera.cpp">
@@ -75,6 +78,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="t26_texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="t26_mainapp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

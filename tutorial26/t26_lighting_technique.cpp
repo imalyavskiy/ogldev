@@ -367,18 +367,18 @@ namespace t26
 
   void LightingTechnique::SetColorTextureUnit(unsigned int textureUnit)
   {
-    glUniform1i(m_colorMapLocation, textureUnit);
+    glUniform1i(m_colorMapLocation, textureUnit - GL_TEXTURE0);
   }
 
 
   void LightingTechnique::SetShadowMapTextureUnit(unsigned int textureUnit)
   {
-    glUniform1i(m_shadowMapLocation, textureUnit);
+    glUniform1i(m_shadowMapLocation, textureUnit - GL_TEXTURE0);
   }
 
   void LightingTechnique::SetNormalMapTextureUnit(unsigned int textureUnit)
   {
-    glUniform1i(m_normalMapLocation, textureUnit);
+    glUniform1i(m_normalMapLocation, textureUnit - GL_TEXTURE0);
   }
 
   void LightingTechnique::SetDirectionalLight(const DirectionalLight& light)
