@@ -44,7 +44,7 @@ namespace t26
     if (dib) {
       fif = FreeImage_GetFIFFromFilename(lpszPathName.c_str());
       if (fif != FIF_UNKNOWN) {
-        WORD bpp = FreeImage_GetBPP(dib);
+        const WORD bpp = FreeImage_GetBPP(dib);
         if (FreeImage_FIFSupportsWriting(fif) && FreeImage_FIFSupportsExportBPP(fif, bpp)) {
           bSuccess = FreeImage_Save(fif, dib, lpszPathName.c_str(), flag);
         }
@@ -53,21 +53,20 @@ namespace t26
     return (bSuccess == TRUE) ? true : false;
   }
 
-  Texture::Texture(GLenum TextureTarget, std::string FileName)
-      : m_fileName(std::move(FileName))
-      , m_textureTarget(TextureTarget)
+  Texture::Texture(GLenum textureTarget, std::string fileName)
+    : m_fileName(std::move(fileName))
+    , m_textureTarget(textureTarget)
   {
     glGenTextures(1, &m_textureObj);
   }
 
   bool Texture::Load() const
   {
-    auto src = GenericLoader(m_fileName.c_str(), 0);
+    const auto src = GenericLoader(m_fileName.c_str(), 0);
     if (!src)
       return false;
 
-    const auto type = FreeImage_GetColorType(src);
-    if (type != FIC_RGB)
+    if (const auto type = FreeImage_GetColorType(src); type != FIC_RGB)
       return false;
 
     if (!FreeImage_HasPixels(src))
@@ -79,9 +78,8 @@ namespace t26
     const GLsizei height = FreeImage_GetHeight(src);
     const auto data = FreeImage_GetBits(src);
 
-
     glBindTexture(m_textureTarget, m_textureObj);
-    glTexImage2D( m_textureTarget, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data); 
+    glTexImage2D(m_textureTarget, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
     glTexParameterf(m_textureTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(m_textureTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 

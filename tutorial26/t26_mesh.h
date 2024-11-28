@@ -55,11 +55,11 @@ namespace t26
   class Mesh
   {
   public:
-    Mesh();
+    Mesh() = default;
 
     ~Mesh();
 
-    bool LoadMesh(const std::string& Filename);
+    bool LoadMesh(const std::string& filename);
 
     void Render();
 

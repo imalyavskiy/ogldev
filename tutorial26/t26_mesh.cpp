@@ -59,10 +59,6 @@ namespace t26
     return true;
   }
 
-  Mesh::Mesh()
-  {
-  }
-
 
   Mesh::~Mesh()
   {
@@ -72,13 +68,12 @@ namespace t26
 
   void Mesh::Clear()
   {
-    for (unsigned int i = 0 ; i < m_Textures.size() ; i++) {
-      SAFE_DELETE(m_Textures[i]);
-    }
+    for (auto& m_Texture : m_Textures)
+      SAFE_DELETE(m_Texture);
   }
 
 
-  bool Mesh::LoadMesh(const std::string& Filename)
+  bool Mesh::LoadMesh(const std::string& filename)
   {
     // Release the previously loaded mesh (if it exists)
     Clear();
@@ -86,15 +81,15 @@ namespace t26
     bool Ret = false;
     Assimp::Importer Importer;
 
-    const aiScene* pScene = Importer.ReadFile(Filename.c_str(), aiProcess_Triangulate |
+    const aiScene* pScene = Importer.ReadFile(filename.c_str(), aiProcess_Triangulate |
                                                                 aiProcess_GenSmoothNormals |
                                                                 aiProcess_FlipUVs |
                                                                 aiProcess_CalcTangentSpace);    
     if (pScene) {
-      Ret = InitFromScene(pScene, Filename);
+      Ret = InitFromScene(pScene, filename);
     }
     else {
-      printf("Error parsing '%s': '%s'\n", Filename.c_str(), Importer.GetErrorString());
+      printf("Error parsing '%s': '%s'\n", filename.c_str(), Importer.GetErrorString());
     }
 
     return Ret;
@@ -151,39 +146,36 @@ namespace t26
   bool Mesh::InitMaterials(const aiScene* pScene, const std::string& Filename)
   {
     // Extract the directory part from the file name
-    std::string::size_type SlashIndex = Filename.find_last_of("/");
-    std::string Dir;
+    const std::string::size_type slashIndex = Filename.find_last_of("/");
+    std::string dir;
 
-    if (SlashIndex == std::string::npos) {
-      Dir = ".";
-    }
-    else if (SlashIndex == 0) {
-      Dir = "/";
-    }
-    else {
-      Dir = Filename.substr(0, SlashIndex);
-    }
+    if (slashIndex == std::string::npos)
+      dir = ".";
+    else if (slashIndex == 0)
+      dir = "/";
+    else
+      dir = Filename.substr(0, slashIndex);
 
-    bool Ret = true;
+    bool ret = true;
 
     // Initialize the materials
     for (unsigned int i = 0 ; i < pScene->mNumMaterials ; i++) {
       const aiMaterial* pMaterial = pScene->mMaterials[i];
 
-      m_Textures[i] = NULL;
+      m_Textures[i] = nullptr;
 
       if (pMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
         aiString Path;
 
         if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &Path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
-          std::string FullPath = Dir + "/" + Path.data;
-          m_Textures[i] = new Texture(GL_TEXTURE_2D, FullPath.c_str());
+          std::string FullPath = dir + "/" + Path.data;
+          m_Textures[i] = new Texture(GL_TEXTURE_2D, FullPath);
 
           if (!m_Textures[i]->Load()) {
             printf("Error loading texture '%s'\n", FullPath.c_str());
             delete m_Textures[i];
-            m_Textures[i] = NULL;
-            Ret = false;
+            m_Textures[i] = nullptr;
+            ret = false;
           }
           else {
             printf("Loaded texture '%s'\n", FullPath.c_str());
@@ -192,7 +184,7 @@ namespace t26
       }
     }
 
-    return Ret;
+    return ret;
   }
 
   void Mesh::Render()
@@ -202,22 +194,22 @@ namespace t26
     glEnableVertexAttribArray(2);
     glEnableVertexAttribArray(3);
 
-    for (unsigned int i = 0 ; i < m_Entries.size() ; i++) {
-      glBindBuffer(GL_ARRAY_BUFFER, m_Entries[i].VB);
-      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);                 // position
-      glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)12); // texture coordinate
-      glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)20); // normal
-      glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)32); // tangent
+    for (auto& m_Entrie : m_Entries)
+    {
+      glBindBuffer(GL_ARRAY_BUFFER, m_Entrie.VB);
+      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>( 0)); // position
+      glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>(12)); // texture coordinate
+      glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>(20)); // normal
+      glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>(32)); // tangent
 
-      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Entries[i].IB);
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Entrie.IB);
 
-      const unsigned int MaterialIndex = m_Entries[i].MaterialIndex;
+      const unsigned int MaterialIndex = m_Entrie.MaterialIndex;
 
-      if (MaterialIndex < m_Textures.size() && m_Textures[MaterialIndex]) {
+      if (MaterialIndex < m_Textures.size() && m_Textures[MaterialIndex])
         m_Textures[MaterialIndex]->Bind(COLOR_TEXTURE_UNIT);
-      }
 
-      glDrawElements(GL_TRIANGLES, m_Entries[i].NumIndices, GL_UNSIGNED_INT, 0);
+      glDrawElements(GL_TRIANGLES, m_Entrie.NumIndices, GL_UNSIGNED_INT, 0);
     }
 
     glDisableVertexAttribArray(0);
