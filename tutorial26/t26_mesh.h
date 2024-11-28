@@ -30,9 +30,10 @@
 #include "t26_util.h"
 #include "t26_math_3d.h"
 #include "t26_texture.h"
-
-struct Vertex
+namespace t26
 {
+  struct Vertex
+  {
     Vector3f m_pos;
     Vector2f m_tex;
     Vector3f m_normal;
@@ -42,18 +43,18 @@ struct Vertex
 
     Vertex(const Vector3f& pos, const Vector2f& tex, const Vector3f& normal, const Vector3f& Tangent)
     {
-        m_pos    = pos;
-        m_tex    = tex;
-        m_normal = normal;
-        m_tangent = Tangent;
+      m_pos    = pos;
+      m_tex    = tex;
+      m_normal = normal;
+      m_tangent = Tangent;
                 
     }
-};
+  };
 
 
-class Mesh
-{
-public:
+  class Mesh
+  {
+  public:
     Mesh();
 
     ~Mesh();
@@ -62,7 +63,7 @@ public:
 
     void Render();
 
-private:
+  private:
     bool InitFromScene(const aiScene* pScene, const std::string& Filename);
     void InitMesh(unsigned int Index, const aiMesh* paiMesh);
     bool InitMaterials(const aiScene* pScene, const std::string& Filename);
@@ -71,23 +72,23 @@ private:
 #define INVALID_MATERIAL 0xFFFFFFFF
 
     struct MeshEntry {
-        MeshEntry();
+      MeshEntry();
 
-        ~MeshEntry();
+      ~MeshEntry();
 
-        bool Init(const std::vector<Vertex>& Vertices,
-                  const std::vector<unsigned int>& Indices);
+      bool Init(const std::vector<Vertex>& Vertices,
+                const std::vector<unsigned int>& Indices);
 
-        GLuint VB;
-        GLuint IB;
-        unsigned int NumIndices;
-        unsigned int MaterialIndex;
+      GLuint VB;
+      GLuint IB;
+      unsigned int NumIndices;
+      unsigned int MaterialIndex;
     };
 
     std::vector<MeshEntry> m_Entries;
     std::vector<Texture*> m_Textures;
-};
-
+  };
+}
 
 #endif	/* MESH_H */
 

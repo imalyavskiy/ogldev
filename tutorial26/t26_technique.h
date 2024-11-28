@@ -21,10 +21,11 @@
 
 #include <list>
 #include <GL/glew.h>
-
-class Technique
+namespace t26
 {
-public:
+  class Technique
+  {
+  public:
 
     Technique();
 
@@ -34,7 +35,7 @@ public:
 
     void Enable();
 
-protected:
+  protected:
 
     bool AddShader(GLenum ShaderType, const char* pShaderText);
 
@@ -42,16 +43,16 @@ protected:
 
     GLint GetUniformLocation(const char* pUniformName);
 
-private:
+  private:
 
     GLuint m_shaderProg;
 
     typedef std::list<GLuint> ShaderObjList;
     ShaderObjList m_shaderObjList;
-};
+  };
+}
 
 #define INVALID_UNIFORM_LOCATION 0xFFFFFFFF
-
 
 #endif	/* TECHNIQUE_H */
 

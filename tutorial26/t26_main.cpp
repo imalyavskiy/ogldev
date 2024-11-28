@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2011 Etay Meiri
+  Copyright 2011 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -34,200 +34,201 @@
 #define WINDOW_WIDTH  1920
 #define WINDOW_HEIGHT 1200
 
-
-class Tutorial26 : public ICallbacks
+namespace t26
 {
-public:
+  class MainApp : public ICallbacks
+  {
+  public:
 
-    Tutorial26()
+    MainApp()
     {
-        m_pLightingTechnique = NULL;        
-        m_pGameCamera = NULL;        
-        m_pSphereMesh = NULL;
-        m_scale = 0.0f;
-        m_pTexture = NULL;
-        m_pNormalMap = NULL;
-        m_pTrivialNormalMap = NULL;
+      m_pLightingTechnique = NULL;
+      m_pGameCamera = NULL;
+      m_pSphereMesh = NULL;
+      m_scale = 0.0f;
+      m_pTexture = NULL;
+      m_pNormalMap = NULL;
+      m_pTrivialNormalMap = NULL;
 
-        m_dirLight.AmbientIntensity = 0.2f;
-        m_dirLight.DiffuseIntensity = 0.8f;
-        m_dirLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
-        m_dirLight.Direction = Vector3f(1.0f, 0.0f, 0.0f);
-        
-        m_persProjInfo.FOV = 60.0f;
-        m_persProjInfo.Height = WINDOW_HEIGHT;
-        m_persProjInfo.Width = WINDOW_WIDTH;
-        m_persProjInfo.zNear = 1.0f;
-        m_persProjInfo.zFar = 100.0f;        
-        
-        m_bumpMapEnabled = true;
-    }
-    
+      m_dirLight.AmbientIntensity = 0.2f;
+      m_dirLight.DiffuseIntensity = 0.8f;
+      m_dirLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
+      m_dirLight.Direction = Vector3f(1.0f, 0.0f, 0.0f);
 
-    ~Tutorial26()
-    {
-        SAFE_DELETE(m_pLightingTechnique);
-        SAFE_DELETE(m_pGameCamera);        
-        SAFE_DELETE(m_pSphereMesh);        
-        SAFE_DELETE(m_pTexture);
-        SAFE_DELETE(m_pNormalMap);
-        SAFE_DELETE(m_pTrivialNormalMap);
+      m_persProjInfo.FOV = 60.0f;
+      m_persProjInfo.Height = WINDOW_HEIGHT;
+      m_persProjInfo.Width = WINDOW_WIDTH;
+      m_persProjInfo.zNear = 1.0f;
+      m_persProjInfo.zFar = 100.0f;
+
+      m_bumpMapEnabled = true;
     }
 
-    
+
+    ~MainApp()
+    {
+      SAFE_DELETE(m_pLightingTechnique);
+      SAFE_DELETE(m_pGameCamera);
+      SAFE_DELETE(m_pSphereMesh);
+      SAFE_DELETE(m_pTexture);
+      SAFE_DELETE(m_pNormalMap);
+      SAFE_DELETE(m_pTrivialNormalMap);
+    }
+
+
     bool Init()
     {
-        Vector3f Pos(0.5f, 1.025f, 0.25f);
-        Vector3f Target(0.0f, -0.5f, 1.0f);
-        Vector3f Up(0.0, 1.0f, 0.0f);
+      Vector3f Pos(0.5f, 1.025f, 0.25f);
+      Vector3f Target(0.0f, -0.5f, 1.0f);
+      Vector3f Up(0.0, 1.0f, 0.0f);
 
-        m_pGameCamera = new Camera(WINDOW_WIDTH, WINDOW_HEIGHT, Pos, Target, Up);
-     
-        m_pLightingTechnique = new LightingTechnique();
+      m_pGameCamera = new Camera(WINDOW_WIDTH, WINDOW_HEIGHT, Pos, Target, Up);
 
-        if (!m_pLightingTechnique->Init()) {
-            printf("Error initializing the lighting technique\n");
-            return false;
-        }
+      m_pLightingTechnique = new LightingTechnique();
 
-        m_pLightingTechnique->Enable();
-        m_pLightingTechnique->SetDirectionalLight(m_dirLight);
-        m_pLightingTechnique->SetColorTextureUnit(0);
-        m_pLightingTechnique->SetNormalMapTextureUnit(2);
-              
-        m_pSphereMesh = new Mesh();
-        
-        if (!m_pSphereMesh->LoadMesh("../Content/box.obj")) {
-            return false;
-        }
-               
-        m_pTexture = new Texture(GL_TEXTURE_2D, "../Content/bricks.jpg");
-        
-        if (!m_pTexture->Load()) {
-            return false;
-        }
-        
-        m_pTexture->Bind(COLOR_TEXTURE_UNIT);
+      if (!m_pLightingTechnique->Init()) {
+        printf("Error initializing the lighting technique\n");
+        return false;
+      }
 
-        m_pNormalMap = new Texture(GL_TEXTURE_2D, "../Content/normal_map.jpg");
-        
-        if (!m_pNormalMap->Load()) {
-            return false;
-        }
+      m_pLightingTechnique->Enable();
+      m_pLightingTechnique->SetDirectionalLight(m_dirLight);
+      m_pLightingTechnique->SetColorTextureUnit(0);
+      m_pLightingTechnique->SetNormalMapTextureUnit(2);
 
-        m_pTrivialNormalMap = new Texture(GL_TEXTURE_2D, "../Content/normal_up.jpg");
-        
-        if (!m_pTrivialNormalMap->Load()) {
-            return false;
-        }
+      m_pSphereMesh = new Mesh();
 
-        return true;
+      if (!m_pSphereMesh->LoadMesh("../Content/box.obj")) {
+        return false;
+      }
+
+      m_pTexture = new Texture(GL_TEXTURE_2D, "../Content/bricks.jpg");
+
+      if (!m_pTexture->Load()) {
+        return false;
+      }
+
+      m_pTexture->Bind(COLOR_TEXTURE_UNIT);
+
+      m_pNormalMap = new Texture(GL_TEXTURE_2D, "../Content/normal_map.jpg");
+
+      if (!m_pNormalMap->Load()) {
+        return false;
+      }
+
+      m_pTrivialNormalMap = new Texture(GL_TEXTURE_2D, "../Content/normal_up.jpg");
+
+      if (!m_pTrivialNormalMap->Load()) {
+        return false;
+      }
+
+      return true;
     }
 
-    
+
     void Run()
     {
-        GLUTBackendRun(this);
+      GLUTBackendRun(this);
     }
 
-    
+
     virtual void RenderSceneCB()
     {
-        m_pGameCamera->OnRender();
-        m_scale += 0.01f;
+      m_pGameCamera->OnRender();
+      m_scale += 0.01f;
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        m_pLightingTechnique->Enable();
-       
-        Pipeline p;        
-        p.Rotate(0.0f, m_scale, 0.0f);
-        p.WorldPos(0.0f, 0.0f, 3.0f);
-        p.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
-        p.SetPerspectiveProj(m_persProjInfo);
+      m_pLightingTechnique->Enable();
 
-        m_pTexture->Bind(COLOR_TEXTURE_UNIT);
-        
-        if (m_bumpMapEnabled)
-        {
-            m_pNormalMap->Bind(NORMAL_TEXTURE_UNIT);
-        }
-        else
-        {
-            m_pTrivialNormalMap->Bind(NORMAL_TEXTURE_UNIT);
-        }
-        
-        m_pLightingTechnique->SetWVP(p.GetWVPTrans());
-        m_pLightingTechnique->SetWorldMatrix(p.GetWorldTrans());
-        m_pSphereMesh->Render();
-             
-        glutSwapBuffers();
+      Pipeline p;
+      p.Rotate(0.0f, m_scale, 0.0f);
+      p.WorldPos(0.0f, 0.0f, 3.0f);
+      p.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
+      p.SetPerspectiveProj(m_persProjInfo);
+
+      m_pTexture->Bind(COLOR_TEXTURE_UNIT);
+
+      if (m_bumpMapEnabled)
+      {
+        m_pNormalMap->Bind(NORMAL_TEXTURE_UNIT);
+      }
+      else
+      {
+        m_pTrivialNormalMap->Bind(NORMAL_TEXTURE_UNIT);
+      }
+
+      m_pLightingTechnique->SetWVP(p.GetWVPTrans());
+      m_pLightingTechnique->SetWorldMatrix(p.GetWorldTrans());
+      m_pSphereMesh->Render();
+
+      glutSwapBuffers();
     }
 
 
     virtual void IdleCB()
     {
-        RenderSceneCB();
+      RenderSceneCB();
     }
-    
+
 
     virtual void SpecialKeyboardCB(int Key, int x, int y)
     {
-        m_pGameCamera->OnKeyboard(Key);
+      m_pGameCamera->OnKeyboard(Key);
     }
 
 
     virtual void KeyboardCB(unsigned char Key, int x, int y)
     {
-        switch (Key) {
-            case 0x1b: // Esc
-                glutLeaveMainLoop();
-                break;
-            
-            case 'b':
-                m_bumpMapEnabled = !m_bumpMapEnabled;
-                break;
-        }
+      switch (Key) {
+      case 0x1b: // Esc
+        glutLeaveMainLoop();
+        break;
+
+      case 'b':
+        m_bumpMapEnabled = !m_bumpMapEnabled;
+        break;
+      }
     }
 
 
     virtual void PassiveMouseCB(int x, int y)
     {
-        m_pGameCamera->OnMouse(x, y);
+      m_pGameCamera->OnMouse(x, y);
     }
 
- private:
+  private:
 
     LightingTechnique* m_pLightingTechnique;
     Camera* m_pGameCamera;
     float m_scale;
-    DirectionalLight m_dirLight;    
-    Mesh* m_pSphereMesh;    
+    DirectionalLight m_dirLight;
+    Mesh* m_pSphereMesh;
     Texture* m_pTexture;
     Texture* m_pNormalMap;
     Texture* m_pTrivialNormalMap;
     PersProjInfo m_persProjInfo;
     bool m_bumpMapEnabled;
-};
-
+  };
+}
 
 int main(int argc, char** argv)
 {
-    GLUTBackendInit(argc, argv);
+  t26::GLUTBackendInit(argc, argv);
 
-    if (!GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 32, false, "Tutorial 26")) {
-        return 1;
-    }
+  if (!t26::GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 32, false, "Tutorial 26")) {
+    return 1;
+  }
 
-    Tutorial26* pApp = new Tutorial26();
+  auto pApp = new t26::MainApp();
 
-    if (!pApp->Init()) {
-        return 1;
-    }
+  if (!pApp->Init()) {
+    return 1;
+  }
 
-    pApp->Run();
+  pApp->Run();
 
-    delete pApp;
- 
-    return 0;
+  delete pApp;
+
+  return 0;
 }
