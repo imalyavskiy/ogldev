@@ -70,37 +70,38 @@ namespace t25
   }
 
   // Use this method to add shaders to the program. When finished - call finalize()
-  bool Technique::AddShader(GLenum ShaderType, const char* pShaderText)
+  bool Technique::AddShader(GLenum shaderType, const char* pShaderText)
   {
-    GLuint ShaderObj = glCreateShader(ShaderType);
+    const GLuint shaderObj = glCreateShader(shaderType);
 
-    if (ShaderObj == 0) {
-      fprintf(stderr, "Error creating shader type %d\n", ShaderType);
+    if (shaderObj == 0) {
+      fprintf(stderr, "Error creating shader type %d\n", shaderType);
       return false;
     }
 
     // Save the shader object - will be deleted in the destructor
-    m_shaderObjList.push_back(ShaderObj);
+    m_shaderObjList.push_back(shaderObj);
 
     const GLchar* p[1];
     p[0] = pShaderText;
-    GLint Lengths[1];
-    Lengths[0]= strlen(pShaderText);
-    glShaderSource(ShaderObj, 1, p, Lengths);
+    GLint lengths[1];
+    lengths[0]= strlen(pShaderText);
+    glShaderSource(shaderObj, 1, p, lengths);
 
-    glCompileShader(ShaderObj);
+    glCompileShader(shaderObj);
 
     GLint success;
-    glGetShaderiv(ShaderObj, GL_COMPILE_STATUS, &success);
+    glGetShaderiv(shaderObj, GL_COMPILE_STATUS, &success);
 
     if (!success) {
-      GLchar InfoLog[1024];
-      glGetShaderInfoLog(ShaderObj, 1024, NULL, InfoLog);
-      fprintf(stderr, "Error compiling %s: '%s'\n", ShaderType2ShaderName(ShaderType), InfoLog);
+      GLchar infoLog[1024];
+      glGetShaderInfoLog(shaderObj, 1024, nullptr, infoLog);
+      fprintf(stderr, "Error compiling %s: '%s'\n", ShaderType2ShaderName(shaderType), infoLog);
+
       return false;
     }
 
-    glAttachShader(m_shaderProg, ShaderObj);
+    glAttachShader(m_shaderProg, shaderObj);
 
     return true;
   }

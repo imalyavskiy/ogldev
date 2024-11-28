@@ -38,7 +38,7 @@ namespace t25
 
   protected:
 
-    bool AddShader(GLenum ShaderType, const char* pShaderText);
+    bool AddShader(GLenum shaderType, const char* pShaderText);
 
     bool Finalize();
 

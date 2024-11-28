@@ -28,13 +28,13 @@ namespace t25
   {
   public:
     
-    CubemapTexture(const std::string& Directory,
-                   const std::string& PosXFilename,
-                   const std::string& NegXFilename,
-                   const std::string& PosYFilename,
-                   const std::string& NegYFilename,
-                   const std::string& PosZFilename,
-                   const std::string& NegZFilename);
+    CubemapTexture(const std::string& directory,
+                   const std::string& posXFilename,
+                   const std::string& negXFilename,
+                   const std::string& posYFilename,
+                   const std::string& negYFilename,
+                   const std::string& posZFilename,
+                   const std::string& negZFilename);
 
     ~CubemapTexture();
     
