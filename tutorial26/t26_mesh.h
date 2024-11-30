@@ -30,6 +30,7 @@
 #include "t26_util.h"
 #include "t26_math_3d.h"
 #include "t26_texture.h"
+
 namespace t26
 {
   struct Vertex
@@ -39,15 +40,14 @@ namespace t26
     Vector3f m_normal;
     Vector3f m_tangent;
 
-    Vertex() {}
+    Vertex() = default;
 
-    Vertex(const Vector3f& pos, const Vector2f& tex, const Vector3f& normal, const Vector3f& Tangent)
+    Vertex(const Vector3f& pos, const Vector2f& tex, const Vector3f& normal, const Vector3f& tangent)
+    : m_pos(pos)
+    , m_tex(tex)
+    , m_normal(normal)
+    , m_tangent(tangent)
     {
-      m_pos    = pos;
-      m_tex    = tex;
-      m_normal = normal;
-      m_tangent = Tangent;
-                
     }
   };
 
@@ -65,7 +65,7 @@ namespace t26
 
   private:
     bool InitFromScene(const aiScene* pScene, const std::string& Filename);
-    void InitMesh(unsigned int Index, const aiMesh* paiMesh);
+    void InitMesh(unsigned int index, const aiMesh* paiMesh);
     bool InitMaterials(const aiScene* pScene, const std::string& Filename);
     void Clear();
 

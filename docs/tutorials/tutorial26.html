@@ -118,38 +118,41 @@ Terathon Software 3D Graphics Library, 2001. <a href="tutorial26/Computing Tange
 
 <p>Это наша новая структура для вершины с дополнительным вектором тангентом. Мы будем вычислять битангент в фрагментном шейдере. Заметим, что нормаль тангентного пространства идентична нормали обычного треугольника (так как текстура и треугольник параллельны). Поэтому вершинная нормаль в обоих координатных системах одинакова.</p>
 
-<pre><code>for (unsigned int i = 0 ; i &lt; Indices.size() ; i += 3) {
-    Vertex&amp; v0 = Vertices[Indices[i]];
-    Vertex&amp; v1 = Vertices[Indices[i+1]];
-    Vertex&amp; v2 = Vertices[Indices[i+2]];
+<pre><code>void CalcTangents(std::vector&lt;Vertex&gt;&amp; vertices, const std::vector&lt;uint32_t&gt;&amp; indices) {
+    for (unsigned int i = 0; i &lt indices.size(); i += 3) {
+      Vertex& v0 = vertices[indices[i + 0]];
+      Vertex& v1 = vertices[indices[i + 1]];
+      Vertex& v2 = vertices[indices[i + 2]];
 
-    Vector3f Edge1 = v1.m_pos - v0.m_pos;
-    Vector3f Edge2 = v2.m_pos - v0.m_pos;
+      const Vector3f edge1 = v1.m_pos - v0.m_pos;
+      const Vector3f edge2 = v2.m_pos - v0.m_pos;
 
-    float DeltaU1 = v1.m_tex.x - v0.m_tex.x;
-    float DeltaV1 = v1.m_tex.y - v0.m_tex.y;
-    float DeltaU2 = v2.m_tex.x - v0.m_tex.x;
-    float DeltaV2 = v2.m_tex.y - v0.m_tex.y;
+      const float dU1 = v1.m_tex.x - v0.m_tex.x;
+      const float dV1 = v1.m_tex.y - v0.m_tex.y;
+      const float dU2 = v2.m_tex.x - v0.m_tex.x;
+      const float dV2 = v2.m_tex.y - v0.m_tex.y;
 
-    float f = 1.0f / (DeltaU1 * DeltaV2 - DeltaU2 * DeltaV1);
+      float f = 1.0f / (dU1 * dV2 - dU2 * dV1);
 
-    Vector3f Tangent, Bitangent;
+      Vector3f tangent, bitangent;
 
-    Tangent.x = f * (DeltaV2 * Edge1.x - DeltaV1 * Edge2.x);
-    Tangent.y = f * (DeltaV2 * Edge1.y - DeltaV1 * Edge2.y);
-    Tangent.z = f * (DeltaV2 * Edge1.z - DeltaV1 * Edge2.z);
+      tangent.x = f * (dV2 * edge1.x - dV1 * edge2.x);
+      tangent.y = f * (dV2 * edge1.y - dV1 * edge2.y);
+      tangent.z = f * (dV2 * edge1.z - dV1 * edge2.z);
 
-    Bitangent.x = f * (-DeltaU2 * Edge1.x - DeltaU1 * Edge2.x);
-    Bitangent.y = f * (-DeltaU2 * Edge1.y - DeltaU1 * Edge2.y);
-    Bitangent.z = f * (-DeltaU2 * Edge1.z - DeltaU1 * Edge2.z);
+      bitangent.x = f * (-dU2 * edge1.x - dU1 * edge2.x);
+      bitangent.y = f * (-dU2 * edge1.y - dU1 * edge2.y);
+      bitangent.z = f * (-dU2 * edge1.z - dU1 * edge2.z);
 
-    v0.m_tangent += Tangent;
-    v1.m_tangent += Tangent;
-    v2.m_tangent += Tangent;
-}
+      v0.m_tangent += tangent;
+      v1.m_tangent += tangent;
+      v2.m_tangent += tangent;
+    }
 
-for (unsigned int i = 0 ; i &lt; Vertices.size() ; i++) {
-    Vertices[i].m_tangent.Normalize();
+    for (auto&amp; vertex : vertices) {
+      vertex.m_tangent.Normalize();
+    }
+  }
 }
 </code></pre>
 
