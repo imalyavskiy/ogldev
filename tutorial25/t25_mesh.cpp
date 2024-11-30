@@ -116,40 +116,37 @@ namespace t25
 
   bool Mesh::InitMaterials(const aiScene* pScene, const std::string& Filename)
   {
-    std::string::size_type SlashIndex = Filename.find_last_of("/");
-    std::string Dir;
+    std::string::size_type slashIndex = Filename.find_last_of("/");
+    std::string dir;
 
-    if (SlashIndex == std::string::npos){
-      Dir = ".";
-    }
-    else if (SlashIndex == 0){
-      Dir = "/";
-    }
-    else {
-      Dir = Filename.substr(0, SlashIndex);
-    }
+    if (slashIndex == std::string::npos)
+      dir = ".";
+    else if (slashIndex == 0)
+      dir = "/";
+    else
+      dir = Filename.substr(0, slashIndex);
 
-    bool Ret = true;
+    bool ret = true;
 
     for (unsigned int i = 0; i< pScene->mNumMaterials; i++){
       const aiMaterial* pMaterial = pScene->mMaterials[i];
 
-      m_Textures[i] = NULL;
+      m_Textures[i] = nullptr;
       if (pMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0){
         aiString Path;
 
-        if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &Path,
-                            NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS){
-          std::string FullPath = Dir + "/" + Path.data;
-          m_Textures[i] = new Texture(GL_TEXTURE_2D, FullPath.c_str());
+        if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &Path, nullptr, nullptr, nullptr, nullptr, nullptr) == AI_SUCCESS)
+        {
+          std::string fullPath = dir + "/" + Path.data;
+          m_Textures[i] = new Texture(GL_TEXTURE_2D, fullPath.c_str());
 
           if (!m_Textures[i]->Load()){
-            printf("Error loading texture '%s'\n", FullPath.c_str());
+            printf("Error loading texture '%s'\n", fullPath.c_str());
             delete m_Textures[i];
-            m_Textures[i] = NULL;
-            Ret = false;
+            m_Textures[i] = nullptr;
+            ret = false;
           }
-                            }
+        }
       }
 
       /*if (!m_Textures[i]){
@@ -158,7 +155,7 @@ namespace t25
       }*/
     }
 
-    return Ret;
+    return ret;
   }
 
   void Mesh::Render()
@@ -169,9 +166,9 @@ namespace t25
 
     for (unsigned int i = 0; i < m_Entries.size(); i++){
       glBindBuffer(GL_ARRAY_BUFFER, m_Entries[i].VB);
-      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-      glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)12);
-      glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)20);
+      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>( 0));
+      glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>(12));
+      glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>(20));
 
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Entries[i].IB);
 
@@ -181,7 +178,7 @@ namespace t25
         m_Textures[MaterialIndex]->Bind(GL_TEXTURE0);
       }
 
-      glDrawElements(GL_TRIANGLES, m_Entries[i].NumIndices, GL_UNSIGNED_INT, 0);
+      glDrawElements(GL_TRIANGLES, m_Entries[i].NumIndices, GL_UNSIGNED_INT, nullptr);
     }
 
     glDisableVertexAttribArray(2);

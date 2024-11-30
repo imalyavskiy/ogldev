@@ -3,16 +3,17 @@
 
 #include "t26_math_3d.h"
 
-
-class Camera
+namespace t26
 {
-public:
+  class Camera
+  {
+  public:
 
-    Camera(int WindowWidth, int WindowHeight);
+    Camera(int winWidth, int winHeight);
 
-    Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
+    Camera(int winWidth, int winHeight, const Vector3f& pos, const Vector3f& target, const Vector3f& up);
 
-    bool OnKeyboard(int Key);
+    bool OnKeyboard(int key);
 
     void OnMouse(int x, int y);
 
@@ -20,36 +21,37 @@ public:
 
     const Vector3f& GetPos() const
     {
-        return m_pos;
+      return m_pos;
     }
 
     const Vector3f& GetTarget() const
     {
-        return m_target;
+      return m_target;
     }
 
     const Vector3f& GetUp() const
     {
-        return m_up;
+      return m_up;
     }
 
-private:
+  private:
 
     void Init();
     void Update();
 
-    Vector3f m_pos;
-    Vector3f m_target;
-    Vector3f m_up;
+    Vector3f m_pos{0.0f, 0.0f, 0.0f};
+    Vector3f m_target{0.0f, 0.0f, 1.0f};
+    Vector3f m_up{0.0f, 1.0f, 0.0f};
 
-    int m_windowWidth;
-    int m_windowHeight;
+    int m_winWidth;
+    int m_winHeight;
 
-    float m_AngleH;
-    float m_AngleV;
+    float m_hAngle;
+    float m_vAngle;
 
     Vector2i m_mousePos;
-};
+  };
+}
 
 #endif	/* CAMERA_H */
 

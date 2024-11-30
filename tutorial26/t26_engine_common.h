@@ -12,6 +12,10 @@
 #define SHADOW_TEXTURE_UNIT GL_TEXTURE1
 #define NORMAL_TEXTURE_UNIT GL_TEXTURE2
 
+namespace t26
+{
+  
+}
 
 
 #endif	/* ENGINE_COMMON_H */

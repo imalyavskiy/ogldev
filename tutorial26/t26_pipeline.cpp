@@ -18,31 +18,31 @@
 
 #include "t26_pipeline.h"
 
-
-const Matrix4f& Pipeline::GetWorldTrans()
+namespace t26
 {
-    Matrix4f ScaleTrans, RotateTrans, TranslationTrans;
+  const Matrix4f& Pipeline::GetWorldTrans()
+  {
+    Matrix4f scaleTrans, rotateTrans, translationTrans;
 
-    ScaleTrans.InitScaleTransform(m_scale.x, m_scale.y, m_scale.z);
-    RotateTrans.InitRotateTransform(m_rotateInfo.x, m_rotateInfo.y, m_rotateInfo.z);
-    TranslationTrans.InitTranslationTransform(m_worldPos.x, m_worldPos.y, m_worldPos.z);
+    scaleTrans.InitScaleTransform(m_scale.x, m_scale.y, m_scale.z);
+    rotateTrans.InitRotateTransform(m_rotateInfo.x, m_rotateInfo.y, m_rotateInfo.z);
+    translationTrans.InitTranslationTransform(m_worldPos.x, m_worldPos.y, m_worldPos.z);
 
-    m_WorldTransformation = TranslationTrans * RotateTrans * ScaleTrans;
+    m_WorldTransformation = translationTrans * rotateTrans * scaleTrans;
     return m_WorldTransformation;
-}
+  }
 
-const Matrix4f& Pipeline::GetWVPTrans()
-{
+  const Matrix4f& Pipeline::GetWVPTrans()
+  {
     GetWorldTrans();
 
-    Matrix4f CameraTranslationTrans, CameraRotateTrans, PersProjTrans;
+    Matrix4f cameraTranslationTrans, cameraRotateTrans, persProjTrans;
 
-    CameraTranslationTrans.InitTranslationTransform(-m_camera.Pos.x, -m_camera.Pos.y, -m_camera.Pos.z);
-    CameraRotateTrans.InitCameraTransform(m_camera.Target, m_camera.Up);
-    PersProjTrans.InitPersProjTransform(m_persProjInfo);
+    cameraTranslationTrans.InitTranslationTransform(-m_camera.Pos.x, -m_camera.Pos.y, -m_camera.Pos.z);
+    cameraRotateTrans.InitCameraTransform(m_camera.Target, m_camera.Up);
+    persProjTrans.InitPersProjTransform(m_persProjInfo);
 
-    m_WVPtransformation = PersProjTrans * CameraRotateTrans * CameraTranslationTrans * m_WorldTransformation;
+    m_WVPtransformation = persProjTrans * cameraRotateTrans * cameraTranslationTrans * m_WorldTransformation;
     return m_WVPtransformation;
+  }
 }
-
-

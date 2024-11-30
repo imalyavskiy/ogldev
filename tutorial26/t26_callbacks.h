@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2011 Etay Meiri
+  Copyright 2011 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,9 +19,11 @@
 #ifndef CALLBACKS_H
 #define	CALLBACKS_H
 
-class ICallbacks
+namespace t26
 {
-public:
+  class ICallbacks
+  {
+  public:
 
     virtual void SpecialKeyboardCB(int Key, int x, int y) = 0;
 
@@ -32,7 +34,7 @@ public:
     virtual void RenderSceneCB() = 0;
 
     virtual void IdleCB() = 0;
-};
-
+  };
+}
 #endif	/* I3DAPPLICATION_H */
 

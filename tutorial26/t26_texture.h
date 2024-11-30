@@ -22,22 +22,24 @@
 #include <string>
 #include <GL/glew.h>
 #include <FreeImage.h>
-
-class Texture
+namespace t26
 {
-public:
-    Texture(GLenum TextureTarget, std::string FileName);
+  class Texture
+  {
+  public:
+    Texture(GLenum textureTarget, std::string fileName);
 
     bool Load() const;
 
     void Bind(const GLenum TextureUnit) const;
 
-private:
+  private:
     std::string m_fileName;
     GLenum m_textureTarget;
     GLuint m_textureObj;
-};
+  };
 
-FIBITMAP* GenericLoader(const char* lpszPathName, int flag);
+  FIBITMAP* GenericLoader(const char* lpszPathName, int flag);
+}
 
 #endif	/* TEXTURE_H */
