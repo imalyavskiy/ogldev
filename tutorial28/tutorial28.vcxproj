@@ -11,36 +11,36 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="billboard_technique.cpp" />
-    <ClCompile Include="camera.cpp" />
-    <ClCompile Include="glut_backend.cpp" />
-    <ClCompile Include="lighting_technique.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="math_3d.cpp" />
-    <ClCompile Include="mesh.cpp" />
-    <ClCompile Include="particle_system.cpp" />
-    <ClCompile Include="pipeline.cpp" />
-    <ClCompile Include="ps_update_technique.cpp" />
-    <ClCompile Include="random_texture.cpp" />
-    <ClCompile Include="technique.cpp" />
-    <ClCompile Include="texture.cpp" />
+    <ClCompile Include="t28_billboard_technique.cpp" />
+    <ClCompile Include="t28_camera.cpp" />
+    <ClCompile Include="t28_glut_backend.cpp" />
+    <ClCompile Include="t28_lighting_technique.cpp" />
+    <ClCompile Include="t28_main.cpp" />
+    <ClCompile Include="t28_math_3d.cpp" />
+    <ClCompile Include="t28_mesh.cpp" />
+    <ClCompile Include="t28_particle_system.cpp" />
+    <ClCompile Include="t28_pipeline.cpp" />
+    <ClCompile Include="t28_ps_update_technique.cpp" />
+    <ClCompile Include="t28_random_texture.cpp" />
+    <ClCompile Include="t28_technique.cpp" />
+    <ClCompile Include="t28_texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="billboard_technique.h" />
-    <ClInclude Include="callbacks.h" />
-    <ClInclude Include="camera.h" />
-    <ClInclude Include="engine_common.h" />
-    <ClInclude Include="glut_backend.h" />
-    <ClInclude Include="lighting_technique.h" />
-    <ClInclude Include="math_3d.h" />
-    <ClInclude Include="mesh.h" />
-    <ClInclude Include="particle_system.h" />
-    <ClInclude Include="pipeline.h" />
-    <ClInclude Include="ps_update_technique.h" />
-    <ClInclude Include="random_texture.h" />
-    <ClInclude Include="technique.h" />
-    <ClInclude Include="texture.h" />
-    <ClInclude Include="util.h" />
+    <ClInclude Include="t28_billboard_technique.h" />
+    <ClInclude Include="t28_callbacks.h" />
+    <ClInclude Include="t28_camera.h" />
+    <ClInclude Include="t28_engine_common.h" />
+    <ClInclude Include="t28_glut_backend.h" />
+    <ClInclude Include="t28_lighting_technique.h" />
+    <ClInclude Include="t28_math_3d.h" />
+    <ClInclude Include="t28_mesh.h" />
+    <ClInclude Include="t28_particle_system.h" />
+    <ClInclude Include="t28_pipeline.h" />
+    <ClInclude Include="t28_ps_update_technique.h" />
+    <ClInclude Include="t28_random_texture.h" />
+    <ClInclude Include="t28_technique.h" />
+    <ClInclude Include="t28_texture.h" />
+    <ClInclude Include="t28_util.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="fireworks_red.jpg" />
@@ -81,11 +81,15 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)_bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)_int\$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>$(SolutionDir)deps\exports\freeglut.3.0.0\inc;$(SolutionDir)deps\exports\glew.2.0.0\inc;$(SolutionDir)deps\exports\FreeImage3180\inc;$(SolutionDir)deps\exports\assimp\inc;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(SolutionDir)deps\exports\freeglut.3.0.0\lib\$(PlatformShortName);$(SolutionDir)deps\exports\glew.2.0.0\lib\$(PlatformShortName);$(SolutionDir)deps\exports\FreeImage3180\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\assimp\lib\$(PlatformShortName)\$(Configuration);$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)_bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)_int\$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>$(SolutionDir)deps\exports\freeglut.3.0.0\inc;$(SolutionDir)deps\exports\glew.2.0.0\inc;$(SolutionDir)deps\exports\FreeImage3180\inc;$(SolutionDir)deps\exports\assimp\inc;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(SolutionDir)deps\exports\freeglut.3.0.0\lib\$(PlatformShortName);$(SolutionDir)deps\exports\glew.2.0.0\lib\$(PlatformShortName);$(SolutionDir)deps\exports\FreeImage3180\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\assimp\lib\$(PlatformShortName)\$(Configuration);$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -93,7 +97,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;FREEGLUT_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
@@ -103,6 +107,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>assimp-vc143-mtd.lib;FreeImaged.lib;glew32sd.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
   </ItemDefinitionGroup>
@@ -114,7 +119,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;FREEGLUT_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
@@ -124,6 +129,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>assimp-vc143-mt.lib;FreeImage.lib;glew32s.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
   </ItemDefinitionGroup>
