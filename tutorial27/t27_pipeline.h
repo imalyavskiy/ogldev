@@ -65,8 +65,13 @@ namespace t27
       m_camera.Up = Up;
     }
 
+    // View Transforms + Projection Transform
     const Matrix4f& GetVPTrans();
+
+    // World Transforms + View Transforms + Projection Transform
     const Matrix4f& GetWVPTrans();
+
+    // World Transforms
     const Matrix4f& GetWorldTrans();
 
   private:

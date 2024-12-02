@@ -22,13 +22,15 @@ namespace t27
 {
   const Matrix4f& Pipeline::GetVPTrans()
   {
-    Matrix4f CameraTranslationTrans, CameraRotateTrans, PersProjTrans;
+    Matrix4f cameraTranslationTrans;
+    Matrix4f cameraRotateTrans;
+    Matrix4f perspProjTrans;
 
-    CameraTranslationTrans.InitTranslationTransform(-m_camera.Pos.x, -m_camera.Pos.y, -m_camera.Pos.z);
-    CameraRotateTrans.InitCameraTransform(m_camera.Target, m_camera.Up);
-    PersProjTrans.InitPersProjTransform(m_persProjInfo);
+    cameraTranslationTrans.InitTranslationTransform(-m_camera.Pos.x, -m_camera.Pos.y, -m_camera.Pos.z);
+    cameraRotateTrans.InitCameraTransform(m_camera.Target, m_camera.Up);
+    perspProjTrans.InitPersProjTransform(m_persProjInfo);
     
-    m_VPTtransformation = PersProjTrans * CameraRotateTrans * CameraTranslationTrans;
+    m_VPTtransformation = perspProjTrans * cameraRotateTrans * cameraTranslationTrans;
     return m_VPTtransformation;
   }
 

@@ -31,8 +31,8 @@ namespace t27
     virtual bool Init();
     
     void SetVP(const Matrix4f& VP);
-    void SetCameraPosition(const Vector3f& Pos);
-    void SetColorTextureUnit(unsigned int TextureUnit);
+    void SetCameraPosition(const Vector3f& pos);
+    void SetColorTextureUnit(unsigned int textureUnit);
     
   private:
 
