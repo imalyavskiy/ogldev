@@ -29,7 +29,8 @@ namespace t27
   class BillboardList
   {
   public:
-    BillboardList();    
+    BillboardList() = default;
+
     ~BillboardList();
     
     bool Init(const std::string& texFilename);
@@ -39,8 +40,10 @@ namespace t27
   private:
     void CreatePositionBuffer();
     
-    GLuint m_VB;
+    GLuint m_VBO = INVALID_OGL_VALUE;
+
     std::shared_ptr<Texture> m_pTexture;
+
     BillboardTechnique m_technique;
   };
 }
