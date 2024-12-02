@@ -57,7 +57,7 @@ namespace t28
     // Delete the intermediate shader objects that have been added to the program
     // The list will only contain something if shaders were compiled but the object itself
     // was destroyed prior to linking.
-    for (ShaderObjList::iterator it = m_shaderObjList.begin() ; it != m_shaderObjList.end() ; it++)
+    for (auto it = m_shaderObjList.begin() ; it != m_shaderObjList.end() ; ++it)
     {
       glDeleteShader(*it);
     }
@@ -85,35 +85,35 @@ namespace t28
   // Use this method to add shaders to the program. When finished - call finalize()
   bool Technique::AddShader(GLenum ShaderType, const char* pShaderText)
   {  
-    GLuint ShaderObj = glCreateShader(ShaderType);
+    const GLuint shaderObj = glCreateShader(ShaderType);
 
-    if (ShaderObj == 0) {
+    if (shaderObj == 0) {
       fprintf(stderr, "Error creating shader type %d\n", ShaderType);
       return false;
     }
 
     // Save the shader object - will be deleted in the destructor
-    m_shaderObjList.push_back(ShaderObj);
+    m_shaderObjList.push_back(shaderObj);
 
     const GLchar* p[1];
     p[0] = pShaderText;
     GLint Lengths[1];
     Lengths[0]= strlen(pShaderText);
-    glShaderSource(ShaderObj, 1, p, Lengths);
+    glShaderSource(shaderObj, 1, p, Lengths);
 
-    glCompileShader(ShaderObj);
+    glCompileShader(shaderObj);
 
     GLint success;
-    glGetShaderiv(ShaderObj, GL_COMPILE_STATUS, &success);
+    glGetShaderiv(shaderObj, GL_COMPILE_STATUS, &success);
 
     if (!success) {
       GLchar InfoLog[1024];
-      glGetShaderInfoLog(ShaderObj, 1024, NULL, InfoLog);
+      glGetShaderInfoLog(shaderObj, 1024, nullptr, InfoLog);
       fprintf(stderr, "Error compiling %s: '%s'\n", ShaderType2ShaderName(ShaderType), InfoLog);
       return false;
     }
 
-    glAttachShader(m_shaderProg, ShaderObj);
+    glAttachShader(m_shaderProg, shaderObj);
 
     return GLCheckError();
   }
@@ -130,7 +130,7 @@ namespace t28
 
     glGetProgramiv(m_shaderProg, GL_LINK_STATUS, &Success);
     if (Success == 0) {
-      glGetProgramInfoLog(m_shaderProg, sizeof(ErrorLog), NULL, ErrorLog);
+      glGetProgramInfoLog(m_shaderProg, sizeof(ErrorLog), nullptr, ErrorLog);
       fprintf(stderr, "Error linking shader program: '%s'\n", ErrorLog);
       return false;
     }
@@ -138,13 +138,13 @@ namespace t28
     glValidateProgram(m_shaderProg);
     glGetProgramiv(m_shaderProg, GL_VALIDATE_STATUS, &Success);
     if (!Success) {
-      glGetProgramInfoLog(m_shaderProg, sizeof(ErrorLog), NULL, ErrorLog);
+      glGetProgramInfoLog(m_shaderProg, sizeof(ErrorLog), nullptr, ErrorLog);
       fprintf(stderr, "Invalid shader program: '%s'\n", ErrorLog);
       return false;
     }
 
     // Delete the intermediate shader objects that have been added to the program
-    for (ShaderObjList::iterator it = m_shaderObjList.begin() ; it != m_shaderObjList.end() ; it++)
+    for (auto it = m_shaderObjList.begin() ; it != m_shaderObjList.end() ; ++it)
     {
       glDeleteShader(*it);
     }
