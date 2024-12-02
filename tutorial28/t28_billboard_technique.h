@@ -27,14 +27,14 @@ namespace t28
   {
   public:
     
-    BillboardTechnique();
- 
-    virtual bool Init();
+    BillboardTechnique() = default;
+
+    bool Init() override;
     
     void SetVP(const Matrix4f& VP);
-    void SetCameraPosition(const Vector3f& Pos);
-    void SetColorTextureUnit(unsigned int TextureUnit);
-    void SetBillboardSize(float BillboardSize);
+    void SetCameraPosition(const Vector3f& pos);
+    void SetColorTextureUnit(unsigned int textureUnit);
+    void SetBillboardSize(float billboardSize);
     
   private:
 

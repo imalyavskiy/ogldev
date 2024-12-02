@@ -22,12 +22,6 @@
 
 namespace t28
 {
-  RandomTexture::RandomTexture()
-  {
-    m_textureObj = 0;    
-  }
-
-
   RandomTexture::~RandomTexture()
   {
     if (m_textureObj != 0) {
@@ -35,10 +29,10 @@ namespace t28
     }
   }
 
-  bool RandomTexture::InitRandomTexture(unsigned int Size)
+  bool RandomTexture::InitRandomTexture(unsigned int size)
   {
-    Vector3f* pRandomData = new Vector3f[Size];
-    for (unsigned int i = 0 ; i < Size ; i++) {
+    const auto pRandomData = new Vector3f[size];
+    for (unsigned int i = 0 ; i < size ; i++) {
       pRandomData[i].x = RandomFloat();
       pRandomData[i].y = RandomFloat();
       pRandomData[i].z = RandomFloat();
@@ -46,20 +40,20 @@ namespace t28
         
     glGenTextures(1, &m_textureObj);
     glBindTexture(GL_TEXTURE_1D, m_textureObj);
-    glTexImage1D(GL_TEXTURE_1D, 0, GL_RGB, Size, 0.0f, GL_RGB, GL_FLOAT, pRandomData);
+    glTexImage1D(GL_TEXTURE_1D, 0, GL_RGB, size, 0.0f, GL_RGB, GL_FLOAT, pRandomData);
     glTexParameterf(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_REPEAT);    
     
-    delete [] pRandomData;
+    delete[] pRandomData;
     
     return GLCheckError();
   }
 
     
-  void RandomTexture::Bind(GLenum TextureUnit)
+  void RandomTexture::Bind(GLenum textureUnit)
   {
-    glActiveTexture(TextureUnit);
+    glActiveTexture(textureUnit);
     glBindTexture(GL_TEXTURE_1D, m_textureObj);
   }
 }

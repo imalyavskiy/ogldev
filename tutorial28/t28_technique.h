@@ -30,7 +30,7 @@ namespace t28
 
     Technique();
 
-    ~Technique();
+    virtual ~Technique();
 
     virtual bool Init();
 
@@ -38,7 +38,7 @@ namespace t28
     
   protected:
 
-    bool AddShader(GLenum ShaderType, const char* pShaderText);
+    bool AddShader(GLenum shaderType, const char* pShaderText);
 
     bool Finalize();
 

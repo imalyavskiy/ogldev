@@ -83,12 +83,12 @@ namespace t28
   }
 
   // Use this method to add shaders to the program. When finished - call finalize()
-  bool Technique::AddShader(GLenum ShaderType, const char* pShaderText)
+  bool Technique::AddShader(GLenum shaderType, const char* pShaderText)
   {  
-    const GLuint shaderObj = glCreateShader(ShaderType);
+    const GLuint shaderObj = glCreateShader(shaderType);
 
     if (shaderObj == 0) {
-      fprintf(stderr, "Error creating shader type %d\n", ShaderType);
+      fprintf(stderr, "Error creating shader type %d\n", shaderType);
       return false;
     }
 
@@ -97,9 +97,9 @@ namespace t28
 
     const GLchar* p[1];
     p[0] = pShaderText;
-    GLint Lengths[1];
-    Lengths[0]= strlen(pShaderText);
-    glShaderSource(shaderObj, 1, p, Lengths);
+    GLint lengths[1];
+    lengths[0]= strlen(pShaderText);
+    glShaderSource(shaderObj, 1, p, lengths);
 
     glCompileShader(shaderObj);
 
@@ -107,9 +107,9 @@ namespace t28
     glGetShaderiv(shaderObj, GL_COMPILE_STATUS, &success);
 
     if (!success) {
-      GLchar InfoLog[1024];
-      glGetShaderInfoLog(shaderObj, 1024, nullptr, InfoLog);
-      fprintf(stderr, "Error compiling %s: '%s'\n", ShaderType2ShaderName(ShaderType), InfoLog);
+      GLchar infoLog[1024];
+      glGetShaderInfoLog(shaderObj, 1024, nullptr, infoLog);
+      fprintf(stderr, "Error compiling %s: '%s'\n", ShaderType2ShaderName(shaderType), infoLog);
       return false;
     }
 
@@ -123,23 +123,23 @@ namespace t28
   // to link and validate the program.
   bool Technique::Finalize()
   {
-    GLint Success = 0;
-    GLchar ErrorLog[1024] = { 0 };
+    GLint success = 0;
+    GLchar errorLog[1024] = { 0 };
 
     glLinkProgram(m_shaderProg);
 
-    glGetProgramiv(m_shaderProg, GL_LINK_STATUS, &Success);
-    if (Success == 0) {
-      glGetProgramInfoLog(m_shaderProg, sizeof(ErrorLog), nullptr, ErrorLog);
-      fprintf(stderr, "Error linking shader program: '%s'\n", ErrorLog);
+    glGetProgramiv(m_shaderProg, GL_LINK_STATUS, &success);
+    if (success == 0) {
+      glGetProgramInfoLog(m_shaderProg, sizeof(errorLog), nullptr, errorLog);
+      fprintf(stderr, "Error linking shader program: '%s'\n", errorLog);
       return false;
     }
 
     glValidateProgram(m_shaderProg);
-    glGetProgramiv(m_shaderProg, GL_VALIDATE_STATUS, &Success);
-    if (!Success) {
-      glGetProgramInfoLog(m_shaderProg, sizeof(ErrorLog), nullptr, ErrorLog);
-      fprintf(stderr, "Invalid shader program: '%s'\n", ErrorLog);
+    glGetProgramiv(m_shaderProg, GL_VALIDATE_STATUS, &success);
+    if (!success) {
+      glGetProgramInfoLog(m_shaderProg, sizeof(errorLog), nullptr, errorLog);
+      fprintf(stderr, "Invalid shader program: '%s'\n", errorLog);
       return false;
     }
 
@@ -163,13 +163,13 @@ namespace t28
 
   GLint Technique::GetUniformLocation(const char* pUniformName)
   {
-    GLuint Location = glGetUniformLocation(m_shaderProg, pUniformName);
+    const GLuint location = glGetUniformLocation(m_shaderProg, pUniformName);
 
-    if (Location == INVALID_OGL_VALUE) {
+    if (location == INVALID_OGL_VALUE) {
       fprintf(stderr, "Warning! Unable to get the location of uniform '%s'\n", pUniformName);
     }
 
-    return Location;
+    return location;
   }
 
   GLint Technique::GetProgramParam(GLint param)

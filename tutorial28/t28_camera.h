@@ -27,9 +27,9 @@ namespace t28
   {
   public:
 
-    Camera(int WindowWidth, int WindowHeight);
+    Camera(int winWidth, int winHeight);
 
-    Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
+    Camera(int winWidth, int winHeight, const Vector3f& pos, const Vector3f& target, const Vector3f& up);
 
     bool OnKeyboard(int Key);
 
@@ -57,15 +57,15 @@ namespace t28
     void Init();
     void Update();
 
-    Vector3f m_pos;
-    Vector3f m_target;
-    Vector3f m_up;
+    int m_winWidth;
+    int m_winHeight;
 
-    int m_windowWidth;
-    int m_windowHeight;
+    Vector3f m_pos = Vector3f(0.0f, 0.0f, 0.0f);
+    Vector3f m_target = Vector3f(0.0f, 0.0f, 1.0f);
+    Vector3f m_up = Vector3f(0.0f, 1.0f, 0.0f);
 
-    float m_AngleH;
-    float m_AngleV;
+    float m_hAngle;
+    float m_vAngle;
 
     bool m_OnUpperEdge;
     bool m_OnLowerEdge;

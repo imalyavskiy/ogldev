@@ -54,6 +54,9 @@
     <ClCompile Include="t28_texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="t28_mainapp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="t28_billboard_technique.h">
@@ -99,6 +102,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="t28_util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="t28_mainapp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

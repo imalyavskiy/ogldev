@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2010 Etay Meiri
+  Copyright 2010 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,29 +23,25 @@ namespace t28
   const static float STEP_SCALE = 0.1f;
   const static int MARGIN = 10;
 
-  Camera::Camera(int WindowWidth, int WindowHeight)
+  Camera::Camera(int winWidth, int winHeight)
+    : m_winWidth(winWidth)
+    , m_winHeight(winHeight)
   {
-    m_windowWidth  = WindowWidth;
-    m_windowHeight = WindowHeight;
-    m_pos          = Vector3f(0.0f, 0.0f, 0.0f);
-    m_target       = Vector3f(0.0f, 0.0f, 1.0f);
+
     m_target.Normalize();
-    m_up           = Vector3f(0.0f, 1.0f, 0.0f);
 
     Init();
   }
 
 
-  Camera::Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up)
+  Camera::Camera(int winWidth, int winHeight, const Vector3f& pos, const Vector3f& target, const Vector3f& up)
+    : m_winWidth(winWidth)
+    , m_winHeight(winHeight)
+    , m_pos(pos)
+    , m_target(target)
+    , m_up(up)
   {
-    m_windowWidth  = WindowWidth;
-    m_windowHeight = WindowHeight;
-    m_pos = Pos;
-
-    m_target = Target;
     m_target.Normalize();
-
-    m_up = Up;
     m_up.Normalize();
 
     Init();
@@ -56,38 +52,30 @@ namespace t28
   {
     Vector3f HTarget(m_target.x, 0.0, m_target.z);
     HTarget.Normalize();
-    
+
     if (HTarget.z >= 0.0f)
     {
       if (HTarget.x >= 0.0f)
-      {
-        m_AngleH = 360.0f - ToDegree(asinf(HTarget.z));
-      }
+        m_hAngle = 360.0f - ToDegree(asinf(HTarget.z));
       else
-      {
-        m_AngleH = 180.0f + ToDegree(asinf(HTarget.z));
-      }
+        m_hAngle = 180.0f + ToDegree(asinf(HTarget.z));
     }
     else
     {
       if (HTarget.x >= 0.0f)
-      {
-        m_AngleH = ToDegree(asinf(-HTarget.z));
-      }
+        m_hAngle = ToDegree(asinf(-HTarget.z));
       else
-      {
-        m_AngleH = 90.0f + ToDegree(asinf(-HTarget.z));
-      }
+        m_hAngle = 90.0f + ToDegree(asinf(-HTarget.z));
     }
-    
-    m_AngleV = -ToDegree(asinf(m_target.y));
+
+    m_vAngle = -ToDegree(asinf(m_target.y));
 
     m_OnUpperEdge = false;
     m_OnLowerEdge = false;
-    m_OnLeftEdge  = false;
+    m_OnLeftEdge = false;
     m_OnRightEdge = false;
-    m_mousePos.x  = m_windowWidth / 2;
-    m_mousePos.y  = m_windowHeight / 2;
+    m_mousePos.x = m_winWidth / 2;
+    m_mousePos.y = m_winHeight / 2;
 
     glutWarpPointer(m_mousePos.x, m_mousePos.y);
   }
@@ -98,23 +86,19 @@ namespace t28
     bool Ret = false;
 
     switch (Key) {
-
-    case GLUT_KEY_UP:
-      {
+      case GLUT_KEY_UP: {
         m_pos += (m_target * STEP_SCALE);
         Ret = true;
       }
       break;
 
-    case GLUT_KEY_DOWN:
-      {
+      case GLUT_KEY_DOWN: {
         m_pos -= (m_target * STEP_SCALE);
         Ret = true;
       }
       break;
 
-    case GLUT_KEY_LEFT:
-      {
+      case GLUT_KEY_LEFT: {
         Vector3f Left = m_target.Cross(m_up);
         Left.Normalize();
         Left *= STEP_SCALE;
@@ -123,8 +107,7 @@ namespace t28
       }
       break;
 
-    case GLUT_KEY_RIGHT:
-      {
+      case GLUT_KEY_RIGHT: {
         Vector3f Right = m_up.Cross(m_target);
         Right.Normalize();
         Right *= STEP_SCALE;
@@ -140,22 +123,22 @@ namespace t28
 
   void Camera::OnMouse(int x, int y)
   {
-    const int DeltaX = x - m_mousePos.x;
-    const int DeltaY = y - m_mousePos.y;
+    const int dx = x - m_mousePos.x;
+    const int dy = y - m_mousePos.y;
 
     m_mousePos.x = x;
     m_mousePos.y = y;
 
-    m_AngleH += (float)DeltaX / 20.0f;
-    m_AngleV += (float)DeltaY / 20.0f;
+    m_hAngle += dx / 20.0f;
+    m_vAngle += dy / 20.0f;
 
-    if (DeltaX == 0) {
+    if (dx == 0) {
       if (x <= MARGIN) {
-        //    m_AngleH -= 1.0f;
+        //    m_hAngle -= 1.0f;
         m_OnLeftEdge = true;
       }
-      else if (x >= (m_windowWidth - MARGIN)) {
-        //    m_AngleH += 1.0f;
+      else if (x >= (m_winWidth - MARGIN)) {
+        //    m_hAngle += 1.0f;
         m_OnRightEdge = true;
       }
     }
@@ -164,11 +147,11 @@ namespace t28
       m_OnRightEdge = false;
     }
 
-    if (DeltaY == 0) {
+    if (dy == 0) {
       if (y <= MARGIN) {
         m_OnUpperEdge = true;
       }
-      else if (y >= (m_windowHeight - MARGIN)) {
+      else if (y >= (m_winHeight - MARGIN)) {
         m_OnLowerEdge = true;
       }
     }
@@ -183,53 +166,53 @@ namespace t28
 
   void Camera::OnRender()
   {
-    bool ShouldUpdate = false;
+    bool shouldUpdate = false;
 
     if (m_OnLeftEdge) {
-      m_AngleH -= 0.1f;
-      ShouldUpdate = true;
+      m_hAngle -= 0.1f;
+      shouldUpdate = true;
     }
     else if (m_OnRightEdge) {
-      m_AngleH += 0.1f;
-      ShouldUpdate = true;
+      m_hAngle += 0.1f;
+      shouldUpdate = true;
     }
 
     if (m_OnUpperEdge) {
-      if (m_AngleV > -90.0f) {
-        m_AngleV -= 0.1f;
-        ShouldUpdate = true;
+      if (m_vAngle > -90.0f) {
+        m_vAngle -= 0.1f;
+        shouldUpdate = true;
       }
     }
     else if (m_OnLowerEdge) {
-      if (m_AngleV < 90.0f) {
-        m_AngleV += 0.1f;
-        ShouldUpdate = true;
+      if (m_vAngle < 90.0f) {
+        m_vAngle += 0.1f;
+        shouldUpdate = true;
       }
     }
 
-    if (ShouldUpdate) {
+    if (shouldUpdate) {
       Update();
     }
   }
 
   void Camera::Update()
   {
-    const Vector3f Vaxis(0.0f, 1.0f, 0.0f);
+    const Vector3f vAxis(0.0f, 1.0f, 0.0f);
 
     // Rotate the view vector by the horizontal angle around the vertical axis
-    Vector3f View(1.0f, 0.0f, 0.0f);
-    View.Rotate(m_AngleH, Vaxis);
-    View.Normalize();
+    Vector3f view(1.0f, 0.0f, 0.0f);
+    view.Rotate(m_hAngle, vAxis);
+    view.Normalize();
 
     // Rotate the view vector by the vertical angle around the horizontal axis
-    Vector3f Haxis = Vaxis.Cross(View);
-    Haxis.Normalize();
-    View.Rotate(m_AngleV, Haxis);
-       
-    m_target = View;
+    Vector3f hAxis = vAxis.Cross(view);
+    hAxis.Normalize();
+    view.Rotate(m_vAngle, hAxis);
+
+    m_target = view;
     m_target.Normalize();
 
-    m_up = m_target.Cross(Haxis);
+    m_up = m_target.Cross(hAxis);
     m_up.Normalize();
   }
 }

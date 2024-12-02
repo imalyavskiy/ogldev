@@ -26,16 +26,16 @@ namespace t28
   class RandomTexture
   {
   public:
-    RandomTexture();
+    RandomTexture() = default;
 
     ~RandomTexture();
     
-    bool InitRandomTexture(unsigned int Size);
+    bool InitRandomTexture(unsigned int size);
 
-    void Bind(GLenum TextureUnit);
+    void Bind(GLenum textureUnit);
 
   private:
-    GLuint m_textureObj;
+    GLuint m_textureObj = 0;
   };
 }
 #endif	/* RANDOM_TEXTURE_H */

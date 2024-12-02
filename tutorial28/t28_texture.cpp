@@ -53,16 +53,16 @@ namespace t28
     return (bSuccess == TRUE) ? true : false;
   }
 
-  Texture::Texture(GLenum TextureTarget, std::string FileName)
-      : m_fileName(std::move(FileName))
-      , m_textureTarget(TextureTarget)
+  Texture::Texture(GLenum textureTarget, std::string fileName)
+    : m_fileName(std::move(fileName))
+    , m_textureTarget(textureTarget)
   {
     glGenTextures(1, &m_textureObj);
   }
 
   bool Texture::Load() const
   {
-    auto src = GenericLoader(m_fileName.c_str(), 0);
+    const auto src = GenericLoader(m_fileName.c_str(), 0);
     if (!src)
       return false;
 
@@ -99,9 +99,9 @@ namespace t28
     return true;
   }
 
-  void Texture::Bind(const GLenum TextureUnit) const
+  void Texture::Bind(const GLenum textureUnit) const
   {
-    glActiveTexture(TextureUnit);
+    glActiveTexture(textureUnit);
     glBindTexture(m_textureTarget, m_textureObj);
   }
 }
