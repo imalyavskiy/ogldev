@@ -19,6 +19,7 @@
 #ifndef BILLBOARD_LIST_H
 #define	BILLBOARD_LIST_H
 
+#include <memory>
 #include <string>
 
 #include "t27_texture.h"
@@ -31,15 +32,15 @@ namespace t27
     BillboardList();    
     ~BillboardList();
     
-    bool Init(const std::string& TexFilename);
+    bool Init(const std::string& texFilename);
     
-    void Render(const Matrix4f& VP, const Vector3f& CameraPos);
+    void Render(const Matrix4f& VP, const Vector3f& cameraPos);
 
   private:
     void CreatePositionBuffer();
     
     GLuint m_VB;
-    Texture* m_pTexture;
+    std::shared_ptr<Texture> m_pTexture;
     BillboardTechnique m_technique;
   };
 }

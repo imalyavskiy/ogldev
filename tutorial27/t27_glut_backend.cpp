@@ -27,17 +27,17 @@ namespace t27
 {
   // Points to the object implementing the ICallbacks interface which was delivered to
   // GLUTBackendRun(). All events are forwarded to this object.
-  static ICallbacks* s_pCallbacks = NULL;
+  static ICallbacks* s_pCallbacks = nullptr;
 
-  static void SpecialKeyboardCB(int Key, int x, int y)
+  static void SpecialKeyboardCB(int key, int x, int y)
   {
-    s_pCallbacks->SpecialKeyboardCB(Key, x, y);
+    s_pCallbacks->SpecialKeyboardCB(key, x, y);
   }
 
 
-  static void KeyboardCB(unsigned char Key, int x, int y)
+  static void KeyboardCB(unsigned char key, int x, int y)
   {
-    s_pCallbacks->KeyboardCB(Key, x, y);
+    s_pCallbacks->KeyboardCB(key, x, y);
   }
 
 
@@ -77,16 +77,16 @@ namespace t27
   }
 
 
-  bool GLUTBackendCreateWindow(unsigned int Width, unsigned int Height, unsigned int bpp, bool isFullScreen, const char* pTitle)
+  bool GLUTBackendCreateWindow(unsigned int width, unsigned int height, unsigned int bpp, bool isFullScreen, const char* pTitle)
   {
     if (isFullScreen) {
       char ModeString[64] = { 0 };
-      snprintf(ModeString, sizeof(ModeString), "%dx%d@%d", Width, Height, bpp);
+      snprintf(ModeString, sizeof(ModeString), "%dx%d@%d", width, height, bpp);
       glutGameModeString(ModeString);
       glutEnterGameMode();
     }
     else {
-      glutInitWindowSize(Width, Height);
+      glutInitWindowSize(width, height);
       glutCreateWindow(pTitle);
     }
 

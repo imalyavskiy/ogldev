@@ -18,198 +18,27 @@
     Tutorial 27 - Billboarding and the geometry shader
 */
 
-#include <cmath>
-#include <GL/glew.h>
-#include <GL/freeglut.h>
+#include "t27_mainapp.h"
 
-#include "t27_engine_common.h"
-#include "t27_util.h"
-#include "t27_pipeline.h"
-#include "t27_camera.h"
-#include "t27_texture.h"
-#include "t27_lighting_technique.h"
-#include "t27_glut_backend.h"
-#include "t27_mesh.h"
-#include "t27_billboard_list.h"
-#include "t27_callbacks.h"
-
-#define WINDOW_WIDTH  1280
-#define WINDOW_HEIGHT 1024
-
-namespace t27
-{
-  class MainApp : public ICallbacks
-  {
-  public:
-
-    MainApp()
-    {
-      m_pLightingTechnique = NULL;
-      m_pGameCamera = NULL;
-      m_pGround = NULL;
-      m_pTexture = NULL;
-      m_pNormalMap = NULL;
-
-      m_dirLight.AmbientIntensity = 0.2f;
-      m_dirLight.DiffuseIntensity = 0.8f;
-      m_dirLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
-      m_dirLight.Direction = Vector3f(1.0f, 0.0f, 0.0f);
-
-      m_persProjInfo.FOV = 60.0f;
-      m_persProjInfo.Height = WINDOW_HEIGHT;
-      m_persProjInfo.Width = WINDOW_WIDTH;
-      m_persProjInfo.zNear = 1.0f;
-      m_persProjInfo.zFar = 100.0f;
-    }
-
-
-    ~MainApp()
-    {
-      SAFE_DELETE(m_pLightingTechnique);
-      SAFE_DELETE(m_pGameCamera);
-      SAFE_DELETE(m_pGround);
-      SAFE_DELETE(m_pTexture);
-      SAFE_DELETE(m_pNormalMap);
-    }
-
-
-    bool Init()
-    {
-      Vector3f Pos(0.0f, 1.0f, -1.0f);
-      Vector3f Target(0.0f, -0.5f, 1.0f);
-      Vector3f Up(0.0, 1.0f, 0.0f);
-
-      m_pGameCamera = new Camera(WINDOW_WIDTH, WINDOW_HEIGHT, Pos, Target, Up);
-
-      m_pLightingTechnique = new LightingTechnique();
-
-      if (!m_pLightingTechnique->Init()) {
-        printf("Error initializing the lighting technique\n");
-        return false;
-      }
-
-      m_pLightingTechnique->Enable();
-      m_pLightingTechnique->SetDirectionalLight(m_dirLight);
-      m_pLightingTechnique->SetColorTextureUnit(0);
-      m_pLightingTechnique->SetNormalMapTextureUnit(2);
-
-      m_pGround = new Mesh();
-
-      if (!m_pGround->LoadMesh("../Content/quad.obj")) {
-        return false;
-      }
-
-      if (!m_billboardList.Init("../Content/monster_hellknight.png")) {
-        return false;
-      }
-
-      m_pTexture = new Texture(GL_TEXTURE_2D, "../Content/bricks.jpg");
-
-      if (!m_pTexture->Load()) {
-        return false;
-      }
-
-      m_pTexture->Bind(COLOR_TEXTURE_UNIT);
-
-      m_pNormalMap = new Texture(GL_TEXTURE_2D, "../Content/normal_map.jpg");
-
-      if (!m_pNormalMap->Load()) {
-        return false;
-      }
-
-      return true;
-    }
-
-
-    void Run()
-    {
-      GLUTBackendRun(this);
-    }
-
-
-    virtual void RenderSceneCB()
-    {
-      m_pGameCamera->OnRender();
-
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-      m_pLightingTechnique->Enable();
-
-      m_pTexture->Bind(COLOR_TEXTURE_UNIT);
-      m_pNormalMap->Bind(NORMAL_TEXTURE_UNIT);
-
-      Pipeline p;
-      p.Scale(20.0f, 20.0f, 1.0f);
-      p.Rotate(90.0f, 0.0, 0.0f);
-      p.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
-      p.SetPerspectiveProj(m_persProjInfo);
-
-      m_pLightingTechnique->SetWVP(p.GetWVPTrans());
-      m_pLightingTechnique->SetWorldMatrix(p.GetWorldTrans());
-      m_pGround->Render();
-
-      m_billboardList.Render(p.GetVPTrans(), m_pGameCamera->GetPos());
-      glutSwapBuffers();
-    }
-
-
-    virtual void IdleCB()
-    {
-      RenderSceneCB();
-    }
-
-
-    virtual void SpecialKeyboardCB(int Key, int x, int y)
-    {
-      m_pGameCamera->OnKeyboard(Key);
-    }
-
-
-    virtual void KeyboardCB(unsigned char Key, int x, int y)
-    {
-      switch (Key) {
-      case 0x1b: // Esc
-        glutLeaveMainLoop();
-        break;
-      }
-    }
-
-
-    virtual void PassiveMouseCB(int x, int y)
-    {
-      m_pGameCamera->OnMouse(x, y);
-    }
-
-  private:
-
-    LightingTechnique* m_pLightingTechnique;
-    Camera* m_pGameCamera;
-    DirectionalLight m_dirLight;
-    Mesh* m_pGround;
-    Texture* m_pTexture;
-    Texture* m_pNormalMap;
-    PersProjInfo m_persProjInfo;
-    BillboardList m_billboardList;
-  };
-}
+#define WINDOW_WIDTH      1280
+#define WINDOW_HEIGHT     1024
+#define WINDOW_BPP        32
+#define WINDOW_FULLSCREEN false
+#define WINDOW_TITLE      "Tutorial 27"
 
 int main(int argc, char** argv)
 {
   t27::GLUTBackendInit(argc, argv);
 
-  if (!t27::GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 32, false, "Tutorial 27")) {
+  if (!t27::GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_BPP, WINDOW_FULLSCREEN, WINDOW_TITLE))
     return 1;
-  }
 
-  t27::MainApp* pApp = new t27::MainApp();
+  const auto pApp = std::make_shared<t27::MainApp>(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-  if (!pApp->Init()) {
+  if (!pApp->Init())
     return 1;
-  }
 
   pApp->Run();
-
-  delete pApp;
 
   return 0;
 }

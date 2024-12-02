@@ -48,6 +48,9 @@
     <ClCompile Include="t27_texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="t27_mainapp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="t27_billboard_list.h">
@@ -87,6 +90,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="t27_util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="t27_mainapp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
