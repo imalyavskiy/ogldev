@@ -32,10 +32,10 @@ namespace t28
 {
   struct Particle
   {
-    float Type;
+    float    Type;
     Vector3f Pos;
     Vector3f Vel;
-    float LifetimeMillis;
+    float    LifetimeMillis;
   };
 
 
@@ -48,25 +48,21 @@ namespace t28
 
   ParticleSystem::~ParticleSystem()
   {
-    if (m_transformFeedback[0] != 0) {
+    if (m_transformFeedback[0] != 0)
       glDeleteTransformFeedbacks(2, m_transformFeedback);
-    }
 
-    if (m_particleBuffer[0] != 0) {
+    if (m_particleBuffer[0] != 0)
       glDeleteBuffers(2, m_particleBuffer);
-    }
   }
 
 
   bool ParticleSystem::InitParticleSystem(const Vector3f& pos)
   {
-    Particle Particles[MAX_PARTICLES];
-    ZERO_MEM(Particles);
-
-    Particles[0].Type = PARTICLE_TYPE_LAUNCHER;
-    Particles[0].Pos = pos;
-    Particles[0].Vel = Vector3f(0.0f, 0.0001f, 0.0f);
-    Particles[0].LifetimeMillis = 0.0f;
+    Particle particles[MAX_PARTICLES] = {0};
+    particles[0].Type = PARTICLE_TYPE_LAUNCHER;
+    particles[0].Pos = pos;
+    particles[0].Vel = Vector3f(0.0f, 0.0001f, 0.0f);
+    particles[0].LifetimeMillis = 0.0f;
 
     glGenTransformFeedbacks(2, m_transformFeedback);
     glGenBuffers(2, m_particleBuffer);
@@ -75,7 +71,7 @@ namespace t28
       glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, m_transformFeedback[i]);
       glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, m_particleBuffer[i]);
       glBindBuffer(GL_ARRAY_BUFFER, m_particleBuffer[i]);
-      glBufferData(GL_ARRAY_BUFFER, sizeof(Particles), Particles, GL_DYNAMIC_DRAW);
+      glBufferData(GL_ARRAY_BUFFER, sizeof(particles), particles, GL_DYNAMIC_DRAW);
     }
 
     if (!m_updateTechnique.Init())
@@ -111,13 +107,13 @@ namespace t28
   }
 
 
-  void ParticleSystem::Render(int DeltaTimeMillis, const Matrix4f& VP, const Vector3f& CameraPos)
+  void ParticleSystem::Render(int deltaTimeMillis, const Matrix4f& VP, const Vector3f& cameraPos)
   {
-    m_time += DeltaTimeMillis;
+    m_time += deltaTimeMillis;
 
-    UpdateParticles(DeltaTimeMillis);
+    UpdateParticles(deltaTimeMillis);
 
-    RenderParticles(VP, CameraPos);
+    RenderParticles(VP, cameraPos);
 
     m_currVB = m_currTFB;
     m_currTFB = (m_currTFB + 1) & 0x1;

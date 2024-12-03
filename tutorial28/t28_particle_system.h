@@ -38,7 +38,7 @@ namespace t28
     
     bool InitParticleSystem(const Vector3f& pos);
     
-    void Render(int DeltaTimeMillis, const Matrix4f& VP, const Vector3f& CameraPos);
+    void Render(int deltaTimeMillis, const Matrix4f& VP, const Vector3f& cameraPos);
     
   private:
     
@@ -46,14 +46,14 @@ namespace t28
     void RenderParticles(const Matrix4f& VP, const Vector3f& cameraPos);
     
     bool m_isFirst = true;
-    unsigned int m_currVB = 0;
-    unsigned int m_currTFB = 1;
-    GLuint m_particleBuffer[2];
-    GLuint m_transformFeedback[2];
+    uint32_t m_currVB = 0; // Vertex Buffer
+    uint32_t m_currTFB = 1; // Transform Feedback Buffer
+    GLuint m_particleBuffer[2] = {0};
+    GLuint m_transformFeedback[2] = {0};
     PSUpdateTechnique m_updateTechnique;
     BillboardTechnique m_billboardTechnique;
     RandomTexture m_randomTexture;
-    std::shared_ptr<Texture> m_pTexture = nullptr;
+    std::shared_ptr<Texture> m_pTexture;
     int m_time = 0;
   };
 }
