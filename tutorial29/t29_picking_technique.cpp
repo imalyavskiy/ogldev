@@ -20,7 +20,7 @@
 
 namespace t29
 {
-  static const char* pVS = "                                                          \n\
+  static const char* pVertexShaderText = "                                                          \n\
 #version 410                                                                        \n\
                                                                                     \n\
 layout (location = 0) in vec3 Position;                                             \n\
@@ -51,6 +51,7 @@ void main()                                                                     
 
 
   PickingTechnique::PickingTechnique()
+    : Technique("PickingTechnique")
   {   
   }
 
@@ -60,7 +61,7 @@ void main()                                                                     
       return false;
     }
 
-    if (!AddShader(GL_VERTEX_SHADER, pVS)) {
+    if (!AddShader(GL_VERTEX_SHADER, pVertexShaderText)) {
       return false;
     }
 

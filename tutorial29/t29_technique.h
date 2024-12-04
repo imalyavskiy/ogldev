@@ -20,6 +20,7 @@
 #define	TECHNIQUE_H
 
 #include <list>
+#include <string>
 #include <GL/glew.h>
 
 namespace t29
@@ -28,7 +29,7 @@ namespace t29
   {
   public:
 
-    Technique();
+    Technique(std::string name);
 
     ~Technique();
 
@@ -46,12 +47,14 @@ namespace t29
     
     GLint GetProgramParam(GLint param);
     
-    GLuint m_shaderProg;    
+    GLuint m_shaderProg = 0;
     
   private:
 
     typedef std::list<GLuint> ShaderObjList;
     ShaderObjList m_shaderObjList;
+
+    std::string m_name;
   };
 }
 

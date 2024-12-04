@@ -16,6 +16,7 @@
     <ClInclude Include="t29_engine_common.h" />
     <ClInclude Include="t29_glut_backend.h" />
     <ClInclude Include="t29_lighting_technique.h" />
+    <ClInclude Include="t29_mainapp.h" />
     <ClInclude Include="t29_math_3d.h" />
     <ClInclude Include="t29_mesh.h" />
     <ClInclude Include="t29_picking_technique.h" />
@@ -32,6 +33,7 @@
     <ClCompile Include="t29_glut_backend.cpp" />
     <ClCompile Include="t29_lighting_technique.cpp" />
     <ClCompile Include="t29_main.cpp" />
+    <ClCompile Include="t29_mainapp.cpp" />
     <ClCompile Include="t29_math_3d.cpp" />
     <ClCompile Include="t29_mesh.cpp" />
     <ClCompile Include="t29_picking_technique.cpp" />
