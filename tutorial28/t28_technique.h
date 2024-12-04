@@ -20,6 +20,7 @@
 #define	TECHNIQUE_H
 
 #include <list>
+#include <string>
 #include <GL/glew.h>
 
 namespace t28
@@ -28,7 +29,7 @@ namespace t28
   {
   public:
 
-    Technique();
+    Technique(std::string name);
 
     virtual ~Technique();
 
@@ -46,12 +47,14 @@ namespace t28
     
     GLint GetProgramParam(GLint param);
     
-    GLuint m_shaderProg;    
+    GLuint m_shaderProg = 0;    
     
   private:
 
     typedef std::list<GLuint> ShaderObjList;
     ShaderObjList m_shaderObjList;
+
+    std::string m_name;
   };
 }
 #define INVALID_UNIFORM_LOCATION 0xFFFFFFFF

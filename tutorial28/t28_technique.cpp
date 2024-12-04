@@ -19,6 +19,8 @@
 #include <cstdio>
 #include <cstring>
 #include <cassert>
+#include <format>
+#include <iostream>
 
 #include "t28_technique.h"
 #include "t28_util.h"
@@ -39,18 +41,16 @@ namespace t28
     case GL_FRAGMENT_SHADER:
       return pFSName;
     default:
-      assert(0);
+      assert(false);
     }
 
-    return NULL;
+    return nullptr;
   }
 
-
-  Technique::Technique()
+  Technique::Technique(std::string name)
+    : m_name(std::move(name))
   {
-    m_shaderProg = 0;
   }
-
 
   Technique::~Technique()
   {
@@ -58,9 +58,7 @@ namespace t28
     // The list will only contain something if shaders were compiled but the object itself
     // was destroyed prior to linking.
     for (auto it = m_shaderObjList.begin() ; it != m_shaderObjList.end() ; ++it)
-    {
       glDeleteShader(*it);
-    }
 
     if (m_shaderProg != 0)
     {
@@ -69,13 +67,12 @@ namespace t28
     }
   }
 
-
   bool Technique::Init()
   {
     m_shaderProg = glCreateProgram();
 
     if (m_shaderProg == 0) {
-      fprintf(stderr, "Error creating shader program\n");
+      std::cerr << std::format("[{}] Error creating shader program", m_name) << "\n";
       return false;
     }
 
@@ -88,7 +85,7 @@ namespace t28
     const GLuint shaderObj = glCreateShader(shaderType);
 
     if (shaderObj == 0) {
-      fprintf(stderr, "Error creating shader type %d\n", shaderType);
+      std::cerr << std::format("[{}] Error creating shader type {}", m_name, shaderType) << "\n";
       return false;
     }
 
@@ -109,7 +106,7 @@ namespace t28
     if (!success) {
       GLchar infoLog[1024];
       glGetShaderInfoLog(shaderObj, 1024, nullptr, infoLog);
-      fprintf(stderr, "Error compiling %s: '%s'\n", ShaderType2ShaderName(shaderType), infoLog);
+      std::cerr << std::format("[{}] Error compiling {}: '{}'", m_name, ShaderType2ShaderName(shaderType), infoLog) << "\n";
       return false;
     }
 
@@ -131,7 +128,7 @@ namespace t28
     glGetProgramiv(m_shaderProg, GL_LINK_STATUS, &success);
     if (success == 0) {
       glGetProgramInfoLog(m_shaderProg, sizeof(errorLog), nullptr, errorLog);
-      fprintf(stderr, "Error linking shader program: '%s'\n", errorLog);
+      std::cerr << std::format("[{}] Error linking shader program: '{}'", m_name, errorLog) << "\n";
       return false;
     }
 
@@ -139,7 +136,7 @@ namespace t28
     glGetProgramiv(m_shaderProg, GL_VALIDATE_STATUS, &success);
     if (!success) {
       glGetProgramInfoLog(m_shaderProg, sizeof(errorLog), nullptr, errorLog);
-      fprintf(stderr, "Invalid shader program: '%s'\n", errorLog);
+      std::cerr << std::format("[{}] Invalid shader program: '{}'\n", m_name, errorLog) << "\n";
       return false;
     }
 
@@ -166,7 +163,7 @@ namespace t28
     const GLuint location = glGetUniformLocation(m_shaderProg, pUniformName);
 
     if (location == INVALID_OGL_VALUE) {
-      fprintf(stderr, "Warning! Unable to get the location of uniform '%s'\n", pUniformName);
+      std::cerr << std::format("[{}] Warning! Unable to get the location of uniform '{}'\n", m_name, pUniformName) << "\n";
     }
 
     return location;

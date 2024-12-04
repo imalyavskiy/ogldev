@@ -27,7 +27,7 @@ namespace t28
   {
   public:
     
-    BillboardTechnique() = default;
+    BillboardTechnique();;
 
     bool Init() override;
     

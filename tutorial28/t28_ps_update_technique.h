@@ -26,7 +26,7 @@ namespace t28
   class PSUpdateTechnique : public Technique
   {
   public:
-    PSUpdateTechnique() = default;
+    PSUpdateTechnique();;
 
     bool Init() override;
     

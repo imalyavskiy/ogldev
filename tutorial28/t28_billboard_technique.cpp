@@ -93,6 +93,11 @@ namespace t28
   "      }                                                                               \n"\
   "  }                                                                                   \n";
 
+  BillboardTechnique::BillboardTechnique()
+    : Technique("BillboardTechnique")
+  {
+  }
+
   bool BillboardTechnique::Init()
   {
     if (!Technique::Init())

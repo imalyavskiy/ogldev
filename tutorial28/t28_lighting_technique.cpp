@@ -217,6 +217,7 @@ namespace t28
   "  }                                                                                                \n";
 
   LightingTechnique::LightingTechnique()
+    : Technique("LightingTechnique")
   {
   }
 

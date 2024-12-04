@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2011 Etay Meiri
+  Copyright 2011 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ namespace t28
   "      Velocity0 = Velocity;                                                           \n"\
   "      Age0 = Age;                                                                     \n"\
   "  }                                                                                   \n";
-  
+
   static const char* pGeometryShaderText =
   "  #version 330                                                                        \n"\
   "                                                                                      \n"\
@@ -141,6 +141,11 @@ namespace t28
   "      }                                                                               \n"\
   "  }                                                                                   \n";
 
+  PSUpdateTechnique::PSUpdateTechnique()
+    : Technique("PSUpdateTechnique")
+  {
+  }
+
   bool PSUpdateTechnique::Init()
   {
     if (!Technique::Init())
@@ -153,12 +158,12 @@ namespace t28
       return false;
 
     const GLchar* varyings[4] = { "Type1", "Position1", "Velocity1", "Age1" };
-    
+
     glTransformFeedbackVaryings(m_shaderProg, 4, varyings, GL_INTERLEAVED_ATTRIBS);
 
     if (!Finalize())
       return false;
-    
+
     m_deltaTimeMillisLocation = GetUniformLocation("gDeltaTimeMillis");
     if (m_deltaTimeMillisLocation == INVALID_UNIFORM_LOCATION)
       return false;
@@ -182,7 +187,7 @@ namespace t28
     m_secondaryShellLifetimeLocation = GetUniformLocation("gSecondaryShellLifetime");
     if (m_secondaryShellLifetimeLocation == INVALID_UNIFORM_LOCATION)
       return false;
-    
+
     return true;
   }
 
@@ -210,7 +215,7 @@ namespace t28
   {
     glUniform1f(m_shellLifetimeLocation, lifetime);
   }
-  
+
   void PSUpdateTechnique::SetSecondaryShellLifetime(float lifetime)
   {
     glUniform1f(m_secondaryShellLifetimeLocation, lifetime);
