@@ -29,7 +29,7 @@ namespace t29
 
     ~PickingTexture();
 
-    bool Init(unsigned int WindowWidth, unsigned int WindowHeight);
+    bool Init(unsigned int winWidth, unsigned int winHeight);
 
     void EnableWriting();
     

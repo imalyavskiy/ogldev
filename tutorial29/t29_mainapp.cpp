@@ -1,5 +1,7 @@
 #include "t29_mainapp.h"
 
+#include "t29_engine_common.h"
+
 namespace t29
 {
   MainApp::MainApp(int winWidth, int winHeight)
@@ -35,7 +37,7 @@ namespace t29
     }
 
     m_lightingEffect.Enable();
-    m_lightingEffect.SetTextureUnit(0);
+    m_lightingEffect.SetTextureUnit(INDEX_OF(COLOR_TEXTURE_UNIT));
     m_lightingEffect.SetDirectionalLight(m_directionalLight);
 
     if (!m_pickingTexture.Init(m_winWidth, m_winHeight))

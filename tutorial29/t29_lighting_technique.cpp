@@ -25,26 +25,26 @@
 namespace t29
 {
   static const char* pVertexShaderText =
-  "  #version 330                                                                        \n"\
-  "                                                                                      \n"\
-  "  layout (location = 0) in vec3 Position;                                             \n"\
-  "  layout (location = 1) in vec2 TexCoord;                                             \n"\
-  "  layout (location = 2) in vec3 Normal;                                               \n"\
-  "                                                                                      \n"\
-  "  uniform mat4 gWVP;                                                                  \n"\
-  "  uniform mat4 gWorld;                                                                \n"\
-  "                                                                                      \n"\
-  "  out vec2 TexCoord0;                                                                 \n"\
-  "  out vec3 Normal0;                                                                   \n"\
-  "  out vec3 WorldPos0;                                                                 \n"\
-  "                                                                                      \n"\
-  "  void main()                                                                         \n"\
-  "  {                                                                                   \n"\
-  "      gl_Position = gWVP * vec4(Position, 1.0);                                       \n"\
-  "      TexCoord0   = TexCoord;                                                         \n"\
-  "      Normal0     = (gWorld * vec4(Normal, 0.0)).xyz;                                 \n"\
-  "      WorldPos0   = (gWorld * vec4(Position, 1.0)).xyz;                               \n"\
-  "  }                                                                                   \n";
+  "  #version 330                                                                                \n"\
+  "                                                                                              \n"\
+  "  layout (location = 0) in vec3 Position;                                                     \n"\
+  "  layout (location = 1) in vec2 TexCoord;                                                     \n"\
+  "  layout (location = 2) in vec3 Normal;                                                       \n"\
+  "                                                                                              \n"\
+  "  uniform mat4 gWVP;                                                                          \n"\
+  "  uniform mat4 gWorld;                                                                        \n"\
+  "                                                                                              \n"\
+  "  out vec2 TexCoord0;                                                                         \n"\
+  "  out vec3 Normal0;                                                                           \n"\
+  "  out vec3 WorldPos0;                                                                         \n"\
+  "                                                                                              \n"\
+  "  void main()                                                                                 \n"\
+  "  {                                                                                           \n"\
+  "      gl_Position = gWVP * vec4(Position, 1.0);                                               \n"\
+  "      TexCoord0   = TexCoord;                                                                 \n"\
+  "      Normal0     = (gWorld * vec4(Normal, 0.0)).xyz;                                         \n"\
+  "      WorldPos0   = (gWorld * vec4(Position, 1.0)).xyz;                                       \n"\
+  "  }                                                                                           \n";
 
   static const char* pFS =
   "  #version 330                                                                                \n"\
@@ -190,7 +190,7 @@ namespace t29
     if (!AddShader(GL_VERTEX_SHADER, pVertexShaderText))
       return false;
 
-    if (!AddShader(GL_FRAGMENT_SHADER, pFS))
+    if (!AddShader(GL_FRAGMENT_SHADER, pFragmentShaderText))
       return false;
 
     if (!Finalize())

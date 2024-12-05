@@ -34,9 +34,9 @@ namespace t29
 
     void SetWVP(const Matrix4f& WVP);
 
-    void SetObjectIndex(unsigned int ObjectIndex);
+    void SetObjectIndex(unsigned int objectIndex);
     
-    void DrawStartCB(unsigned int DrawIndex);
+    void DrawStartCB(unsigned int drawIndex);
     
   private:
     
