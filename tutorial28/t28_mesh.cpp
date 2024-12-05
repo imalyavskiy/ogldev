@@ -34,14 +34,10 @@ namespace t28
   Mesh::MeshEntry::~MeshEntry()
   {
     if (VB != INVALID_OGL_VALUE)
-    {
       glDeleteBuffers(1, &VB);
-    }
 
     if (IB != INVALID_OGL_VALUE)
-    {
       glDeleteBuffers(1, &IB);
-    }
   }
 
   bool Mesh::MeshEntry::Init(const std::vector<Vertex>& Vertices,
@@ -60,22 +56,15 @@ namespace t28
     return GLCheckError();
   }
 
-  Mesh::Mesh()
-  {
-  }
-
-
   Mesh::~Mesh()
   {
     Clear();
   }
 
-
   void Mesh::Clear()
   {
-    for (unsigned int i = 0 ; i < m_Textures.size() ; i++) {
+    for (unsigned int i = 0 ; i < m_Textures.size() ; i++)
       SAFE_DELETE(m_Textures[i]);
-    }
   }
 
 
@@ -84,24 +73,21 @@ namespace t28
     // Release the previously loaded mesh (if it exists)
     Clear();
     
-    bool Ret = false;
-    Assimp::Importer Importer;
+    bool ret = false;
+    Assimp::Importer importer;
 
-    const aiScene* pScene = Importer.ReadFile(Filename.c_str(), aiProcess_Triangulate |
-                                                                aiProcess_GenSmoothNormals |
-                                                                aiProcess_FlipUVs |
-                                                                aiProcess_CalcTangentSpace);    
-    if (pScene) {
-      Ret = InitFromScene(pScene, Filename);
-    }
-    else {
-      printf("Error parsing '%s': '%s'\n", Filename.c_str(), Importer.GetErrorString());
-    }
+    const uint32_t flags = aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace;
+    const aiScene* pScene = importer.ReadFile(Filename.c_str(), flags);
 
-    return Ret;
+    if (pScene)
+      ret = InitFromScene(pScene, Filename);
+    else
+      printf("Error parsing '%s': '%s'\n", Filename.c_str(), importer.GetErrorString());
+
+    return ret;
   }
 
-  bool Mesh::InitFromScene(const aiScene* pScene, const std::string& Filename)
+  bool Mesh::InitFromScene(const aiScene* pScene, const std::string& fileName)
   {  
     m_Entries.resize(pScene->mNumMeshes);
     m_Textures.resize(pScene->mNumMaterials);
@@ -112,88 +98,85 @@ namespace t28
       InitMesh(i, paiMesh);
     }
 
-    return InitMaterials(pScene, Filename);
+    return InitMaterials(pScene, fileName);
   }
 
-  void Mesh::InitMesh(unsigned int Index, const aiMesh* paiMesh)
+  void Mesh::InitMesh(unsigned int index, const aiMesh* pAIMesh)
   {
-    m_Entries[Index].MaterialIndex = paiMesh->mMaterialIndex;
+    m_Entries[index].MaterialIndex = pAIMesh->mMaterialIndex;
     
-    std::vector<Vertex> Vertices;
-    std::vector<unsigned int> Indices;
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
 
     const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
 
-    for (unsigned int i = 0 ; i < paiMesh->mNumVertices ; i++) {
-      const aiVector3D* pPos      = &(paiMesh->mVertices[i]);
-      const aiVector3D* pNormal   = &(paiMesh->mNormals[i]);
-      const aiVector3D* pTexCoord = paiMesh->HasTextureCoords(0) ? &(paiMesh->mTextureCoords[0][i]) : &Zero3D;
-      const aiVector3D* pTangent  = &(paiMesh->mTangents[i]);
+    for (unsigned int i = 0 ; i < pAIMesh->mNumVertices ; i++) {
+      const aiVector3D* pPos      = &(pAIMesh->mVertices[i]);
+      const aiVector3D* pNormal   = &(pAIMesh->mNormals[i]);
+      const aiVector3D* pTexCoord = pAIMesh->HasTextureCoords(0) ? &(pAIMesh->mTextureCoords[0][i]) : &Zero3D;
+      const aiVector3D* pTangent  = &(pAIMesh->mTangents[i]);
 
       Vertex v(Vector3f(pPos->x, pPos->y, pPos->z),
                Vector2f(pTexCoord->x, pTexCoord->y),
                Vector3f(pNormal->x, pNormal->y, pNormal->z),
                Vector3f(pTangent->x, pTangent->y, pTangent->z));
         
-      Vertices.push_back(v);
+      vertices.push_back(v);
     }
 
-    for (unsigned int i = 0 ; i < paiMesh->mNumFaces ; i++) {
-      const aiFace& Face = paiMesh->mFaces[i];
-      assert(Face.mNumIndices == 3);
-      Indices.push_back(Face.mIndices[0]);
-      Indices.push_back(Face.mIndices[1]);
-      Indices.push_back(Face.mIndices[2]);
+    for (unsigned int i = 0 ; i < pAIMesh->mNumFaces ; i++) {
+      const aiFace& face = pAIMesh->mFaces[i];
+      assert(face.mNumIndices == 3);
+      indices.push_back(face.mIndices[0]);
+      indices.push_back(face.mIndices[1]);
+      indices.push_back(face.mIndices[2]);
     }
     
-    m_Entries[Index].Init(Vertices, Indices);
+    m_Entries[index].Init(vertices, indices);
   }
 
-  bool Mesh::InitMaterials(const aiScene* pScene, const std::string& Filename)
+  bool Mesh::InitMaterials(const aiScene* pScene, const std::string& fileName)
   {
     // Extract the directory part from the file name
-    std::string::size_type SlashIndex = Filename.find_last_of("/");
-    std::string Dir;
+    const auto slashIndex = fileName.find_last_of("/");
+    std::string dir;
 
-    if (SlashIndex == std::string::npos) {
-      Dir = ".";
-    }
-    else if (SlashIndex == 0) {
-      Dir = "/";
-    }
-    else {
-      Dir = Filename.substr(0, SlashIndex);
-    }
+    if (slashIndex == std::string::npos)
+      dir = ".";
+    else if (slashIndex == 0)
+      dir = "/";
+    else
+      dir = fileName.substr(0, slashIndex);
 
-    bool Ret = true;
+    bool ret = true;
 
     // Initialize the materials
     for (unsigned int i = 0 ; i < pScene->mNumMaterials ; i++) {
       const aiMaterial* pMaterial = pScene->mMaterials[i];
 
-      m_Textures[i] = NULL;
+      m_Textures[i] = nullptr;
 
       if (pMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
-        aiString Path;
+        aiString path;
 
-        if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &Path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
-          std::string FullPath = Dir + "/" + Path.data;
-          m_Textures[i] = new Texture(GL_TEXTURE_2D, FullPath.c_str());
+        if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path, nullptr, nullptr, nullptr, nullptr, nullptr) == AI_SUCCESS) {
+          std::string fullPath = dir + "/" + path.data;
+          m_Textures[i] = new Texture(GL_TEXTURE_2D, fullPath);
 
           if (!m_Textures[i]->Load()) {
-            printf("Error loading texture '%s'\n", FullPath.c_str());
+            printf("Error loading texture '%s'\n", fullPath.c_str());
             delete m_Textures[i];
-            m_Textures[i] = NULL;
-            Ret = false;
+            m_Textures[i] = nullptr;
+            ret = false;
           }
           else {
-            printf("Loaded texture '%s'\n", FullPath.c_str());
+            printf("Loaded texture '%s'\n", fullPath.c_str());
           }
         }
       }
     }
 
-    return Ret;
+    return ret;
   }
 
   void Mesh::Render()
@@ -205,10 +188,10 @@ namespace t28
 
     for (unsigned int i = 0 ; i < m_Entries.size() ; i++) {
       glBindBuffer(GL_ARRAY_BUFFER, m_Entries[i].VB);
-      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);                 // position
-      glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)12); // texture coordinate
-      glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)20); // normal
-      glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)32); // tangent
+      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>( 0)); // position
+      glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>(12)); // texture coordinate
+      glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>(20)); // normal
+      glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>(32)); // tangent
 
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Entries[i].IB);
 
@@ -218,12 +201,12 @@ namespace t28
         m_Textures[MaterialIndex]->Bind(COLOR_TEXTURE_UNIT);
       }
 
-      glDrawElements(GL_TRIANGLES, m_Entries[i].NumIndices, GL_UNSIGNED_INT, 0);
+      glDrawElements(GL_TRIANGLES, m_Entries[i].NumIndices, GL_UNSIGNED_INT, nullptr);
     }
 
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(2);
     glDisableVertexAttribArray(3);
+    glDisableVertexAttribArray(2);
+    glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(0);
   }
 }

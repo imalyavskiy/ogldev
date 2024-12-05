@@ -55,7 +55,7 @@ namespace t28
   class Mesh
   {
   public:
-    Mesh();
+    Mesh() = default;
 
     ~Mesh();
 
@@ -64,9 +64,9 @@ namespace t28
     void Render();
 
   private:
-    bool InitFromScene(const aiScene* pScene, const std::string& Filename);
-    void InitMesh(unsigned int Index, const aiMesh* paiMesh);
-    bool InitMaterials(const aiScene* pScene, const std::string& Filename);
+    bool InitFromScene(const aiScene* pScene, const std::string& fileName);
+    void InitMesh(unsigned int index, const aiMesh* pAIMesh);
+    bool InitMaterials(const aiScene* pScene, const std::string& fileName);
     void Clear();
 
 #define INVALID_MATERIAL 0xFFFFFFFF

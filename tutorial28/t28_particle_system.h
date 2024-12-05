@@ -19,6 +19,7 @@
 #ifndef PARTICLE_SYSTEM_H
 #define	PARTICLE_SYSTEM_H
 
+#include <memory>
 #include <GL/glew.h>
 
 #include "t28_ps_update_technique.h"
@@ -35,25 +36,25 @@ namespace t28
     
     ~ParticleSystem();
     
-    bool InitParticleSystem(const Vector3f& Pos);
+    bool Init(const Vector3f& pos);
     
-    void Render(int DeltaTimeMillis, const Matrix4f& VP, const Vector3f& CameraPos);
+    void Render(int deltaTimeMillis, const Matrix4f& VP, const Vector3f& cameraPos);
     
   private:
     
-    void UpdateParticles(int DeltaTimeMillis);
-    void RenderParticles(const Matrix4f& VP, const Vector3f& CameraPos);
+    void UpdateParticles(int dtMillis);
+    void RenderParticles(const Matrix4f& VP, const Vector3f& cameraPos);
     
-    bool m_isFirst;
-    unsigned int m_currVB;
-    unsigned int m_currTFB;
-    GLuint m_particleBuffer[2];
-    GLuint m_transformFeedback[2];
+    bool m_isFirst = true;
+    uint32_t m_currVB = 0; // Vertex Buffer
+    uint32_t m_currTFB = 1; // Transform Feedback Buffer
+    GLuint m_particleBuffer[2] = {0};
+    GLuint m_transformFeedback[2] = {0};
     PSUpdateTechnique m_updateTechnique;
     BillboardTechnique m_billboardTechnique;
     RandomTexture m_randomTexture;
-    Texture* m_pTexture;
-    int m_time;
+    std::shared_ptr<Texture> m_pTexture;
+    int m_time = 0;
   };
 }
 

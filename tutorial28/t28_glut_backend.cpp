@@ -27,17 +27,17 @@ namespace t28
 {
   // Points to the object implementing the ICallbacks interface which was delivered to
   // GLUTBackendRun(). All events are forwarded to this object.
-  static ICallbacks* s_pCallbacks = NULL;
+  static ICallbacks* s_pCallbacks = nullptr;
 
-  static void SpecialKeyboardCB(int Key, int x, int y)
+  static void SpecialKeyboardCB(int key, int x, int y)
   {
-    s_pCallbacks->SpecialKeyboardCB(Key, x, y);
+    s_pCallbacks->SpecialKeyboardCB(key, x, y);
   }
 
 
-  static void KeyboardCB(unsigned char Key, int x, int y)
+  static void KeyboardCB(unsigned char key, int x, int y)
   {
-    s_pCallbacks->KeyboardCB(Key, x, y);
+    s_pCallbacks->KeyboardCB(key, x, y);
   }
 
 
@@ -77,29 +77,29 @@ namespace t28
   }
 
 
-  bool GLUTBackendCreateWindow(unsigned int Width, unsigned int Height, unsigned int bpp, bool isFullScreen, const char* pTitle)
+  bool GLUTBackendCreateWindow(unsigned int width, unsigned int height, unsigned int bpp, bool isFullScreen, const char* pTitle)
   {
     if (isFullScreen) {
-      char ModeString[64] = { 0 };
-      snprintf(ModeString, sizeof(ModeString), "%dx%d@%d", Width, Height, bpp);
-      glutGameModeString(ModeString);
+      char modeString[64] = { 0 };
+      snprintf(modeString, sizeof(modeString), "%dx%d@%d", width, height, bpp);
+      glutGameModeString(modeString);
       glutEnterGameMode();
     }
     else {
-      glutInitWindowSize(Width, Height);
+      glutInitWindowSize(width, height);
       glutCreateWindow(pTitle);
     }
 
     glewExperimental=GL_TRUE;
     // Must be done after glut is initialized!
-    GLenum res = glewInit();
+    const GLenum res = glewInit();
     if (res != GLEW_OK) {
       fprintf(stderr, "Error: '%s'\n", glewGetErrorString(res));
       return false;
     }
 
     glutSetCursor(GLUT_CURSOR_NONE);
-     
+
     return true;
   }
 
@@ -114,7 +114,7 @@ namespace t28
     glFrontFace(GL_CW);
     glCullFace(GL_BACK);
     glEnable(GL_CULL_FACE);
-    glEnable(GL_DEPTH_TEST);    
+    glEnable(GL_DEPTH_TEST);
         
     s_pCallbacks = pCallbacks;
     InitCallbacks();

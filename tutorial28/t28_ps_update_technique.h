@@ -26,23 +26,23 @@ namespace t28
   class PSUpdateTechnique : public Technique
   {
   public:
-    PSUpdateTechnique();
-    
-    virtual bool Init();    
+    PSUpdateTechnique();;
+
+    bool Init() override;
     
     void SetParticleLifetime(float Lifetime);
     
-    void SetDeltaTimeMillis(float DeltaTimeMillis);
+    void SetDeltaTimeMillis(float deltaTimeMillis);
     
-    void SetTime(int Time);
+    void SetTime(int time);
 
-    void SetRandomTextureUnit(unsigned int TextureUnit);
+    void SetRandomTextureUnit(unsigned int textureUnit);
     
-    void SetLauncherLifetime(float Lifetime);
+    void SetLauncherLifetime(float lifetime);
     
-    void SetShellLifetime(float Lifetime);
+    void SetShellLifetime(float lifetime);
     
-    void SetSecondaryShellLifetime(float Lifetime);
+    void SetSecondaryShellLifetime(float lifetime);
     
   private:
     GLuint m_deltaTimeMillisLocation;

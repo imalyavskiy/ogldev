@@ -16,6 +16,7 @@
     <ClCompile Include="t28_glut_backend.cpp" />
     <ClCompile Include="t28_lighting_technique.cpp" />
     <ClCompile Include="t28_main.cpp" />
+    <ClCompile Include="t28_mainapp.cpp" />
     <ClCompile Include="t28_math_3d.cpp" />
     <ClCompile Include="t28_mesh.cpp" />
     <ClCompile Include="t28_particle_system.cpp" />
@@ -32,6 +33,7 @@
     <ClInclude Include="t28_engine_common.h" />
     <ClInclude Include="t28_glut_backend.h" />
     <ClInclude Include="t28_lighting_technique.h" />
+    <ClInclude Include="t28_mainapp.h" />
     <ClInclude Include="t28_math_3d.h" />
     <ClInclude Include="t28_mesh.h" />
     <ClInclude Include="t28_particle_system.h" />
