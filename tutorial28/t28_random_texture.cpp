@@ -24,20 +24,19 @@ namespace t28
 {
   RandomTexture::~RandomTexture()
   {
-    if (m_textureObj != 0) {
+    if (m_textureObj != 0)
       glDeleteTextures(1, &m_textureObj);
-    }
   }
 
-  bool RandomTexture::InitRandomTexture(unsigned int size)
+  bool RandomTexture::InitRandomTexture(uint32_t size)
   {
     const auto pRandomData = new Vector3f[size];
-    for (unsigned int i = 0 ; i < size ; i++) {
+    for (uint32_t i = 0 ; i < size ; i++) {
       pRandomData[i].x = RandomFloat();
       pRandomData[i].y = RandomFloat();
       pRandomData[i].z = RandomFloat();
     }
-        
+
     glGenTextures(1, &m_textureObj);
     glBindTexture(GL_TEXTURE_1D, m_textureObj);
     glTexImage1D(GL_TEXTURE_1D, 0, GL_RGB, size, 0.0f, GL_RGB, GL_FLOAT, pRandomData);
@@ -50,7 +49,6 @@ namespace t28
     return GLCheckError();
   }
 
-    
   void RandomTexture::Bind(GLenum textureUnit)
   {
     glActiveTexture(textureUnit);

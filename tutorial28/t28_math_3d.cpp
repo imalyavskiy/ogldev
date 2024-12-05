@@ -181,7 +181,7 @@ namespace t28
 
   float RandomFloat()
   {
-    float Max = RAND_MAX;
-    return ((float)std::rand() / Max);
+    const float max = RAND_MAX;
+    return (static_cast<float>(std::rand()) / max);
   }
 }

@@ -19,6 +19,7 @@
 #ifndef RANDOM_TEXTURE_H
 #define	RANDOM_TEXTURE_H
 
+#include <cstdint>
 #include <GL/glew.h>
 
 namespace t28
@@ -30,7 +31,7 @@ namespace t28
 
     ~RandomTexture();
     
-    bool InitRandomTexture(unsigned int size);
+    bool InitRandomTexture(uint32_t size);
 
     void Bind(GLenum textureUnit);
 

@@ -37,8 +37,8 @@ namespace t28
 
     m_pLightingTechnique->Enable();
     m_pLightingTechnique->SetDirectionalLight(m_dirLight);
-    m_pLightingTechnique->SetColorTextureUnit(COLOR_TEXTURE_UNIT_INDEX);
-    m_pLightingTechnique->SetNormalMapTextureUnit(NORMAL_TEXTURE_UNIT_INDEX);
+    m_pLightingTechnique->SetColorTextureUnit(INDEX_OF(COLOR_TEXTURE_UNIT));
+    m_pLightingTechnique->SetNormalMapTextureUnit(INDEX_OF(NORMAL_TEXTURE_UNIT));
 
     m_pGround = std::make_shared<Mesh>();
 
@@ -62,7 +62,7 @@ namespace t28
 
     const Vector3f ParticleSystemPos = Vector3f(0.0f, 0.0f, 1.0f);
 
-    return m_particleSystem.InitParticleSystem(ParticleSystemPos);
+    return m_particleSystem.Init(ParticleSystemPos);
   }
 
   void MainApp::Run()

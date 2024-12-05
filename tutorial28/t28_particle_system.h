@@ -36,13 +36,13 @@ namespace t28
     
     ~ParticleSystem();
     
-    bool InitParticleSystem(const Vector3f& pos);
+    bool Init(const Vector3f& pos);
     
     void Render(int deltaTimeMillis, const Matrix4f& VP, const Vector3f& cameraPos);
     
   private:
     
-    void UpdateParticles(int deltaTimeMillis);
+    void UpdateParticles(int dtMillis);
     void RenderParticles(const Matrix4f& VP, const Vector3f& cameraPos);
     
     bool m_isFirst = true;

@@ -56,9 +56,11 @@ namespace t28
   }
 
 
-  bool ParticleSystem::InitParticleSystem(const Vector3f& pos)
+  bool ParticleSystem::Init(const Vector3f& pos)
   {
-    Particle particles[MAX_PARTICLES] = {0};
+    Particle particles[MAX_PARTICLES];
+    memset(particles, 0, sizeof particles);
+
     particles[0].Type = PARTICLE_TYPE_LAUNCHER;
     particles[0].Pos = pos;
     particles[0].Vel = Vector3f(0.0f, 0.0001f, 0.0f);
@@ -68,18 +70,22 @@ namespace t28
     glGenBuffers(2, m_particleBuffer);
 
     for (unsigned int i = 0; i < 2; i++) {
+      constexpr GLuint transformFeedbackBufferIndex = 0;
+
       glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, m_transformFeedback[i]);
-      glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, m_particleBuffer[i]);
+
+      glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, transformFeedbackBufferIndex, m_particleBuffer[i]);
+
+      glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, transformFeedbackBufferIndex); // IM: this call was absent from code but present in the docs, the fact of presence does not change anything
+
       glBindBuffer(GL_ARRAY_BUFFER, m_particleBuffer[i]);
       glBufferData(GL_ARRAY_BUFFER, sizeof(particles), particles, GL_DYNAMIC_DRAW);
     }
 
     if (!m_updateTechnique.Init())
       return false;
-
     m_updateTechnique.Enable();
-
-    m_updateTechnique.SetRandomTextureUnit(RANDOM_TEXTURE_UNIT_INDEX);
+    m_updateTechnique.SetRandomTextureUnit(INDEX_OF(RANDOM_TEXTURE_UNIT));
     m_updateTechnique.SetLauncherLifetime(100.0f);
     m_updateTechnique.SetShellLifetime(10000.0f);
     m_updateTechnique.SetSecondaryShellLifetime(2500.0f);
@@ -91,15 +97,11 @@ namespace t28
 
     if (!m_billboardTechnique.Init())
       return false;
-
     m_billboardTechnique.Enable();
-
-    m_billboardTechnique.SetColorTextureUnit(COLOR_TEXTURE_UNIT_INDEX);
-
+    m_billboardTechnique.SetColorTextureUnit(INDEX_OF(COLOR_TEXTURE_UNIT));
     m_billboardTechnique.SetBillboardSize(0.01f);
 
     m_pTexture = std::make_shared<Texture>(GL_TEXTURE_2D, "../Content/fireworks_red.jpg");
-
     if (!m_pTexture->Load())
       return false;
 
@@ -120,11 +122,11 @@ namespace t28
   }
 
 
-  void ParticleSystem::UpdateParticles(int deltaTimeMillis)
+  void ParticleSystem::UpdateParticles(int dtMillis)
   {
     m_updateTechnique.Enable();
     m_updateTechnique.SetTime(m_time);
-    m_updateTechnique.SetDeltaTimeMillis(deltaTimeMillis);
+    m_updateTechnique.SetDeltaTimeMillis(dtMillis);
 
     m_randomTexture.Bind(RANDOM_TEXTURE_UNIT);
 
