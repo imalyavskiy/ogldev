@@ -23,29 +23,16 @@
 
 namespace t30
 {
-  Mesh::MeshEntry::MeshEntry()
-  {
-    VB = INVALID_OGL_VALUE;
-    IB = INVALID_OGL_VALUE;
-    NumIndices  = 0;
-    MaterialIndex = INVALID_MATERIAL;
-  };
-
   Mesh::MeshEntry::~MeshEntry()
   {
     if (VB != INVALID_OGL_VALUE)
-    {
       glDeleteBuffers(1, &VB);
-    }
 
     if (IB != INVALID_OGL_VALUE)
-    {
       glDeleteBuffers(1, &IB);
-    }
   }
 
-  bool Mesh::MeshEntry::Init(const std::vector<Vertex>& Vertices,
-                            const std::vector<unsigned int>& Indices)
+  bool Mesh::MeshEntry::Init(const std::vector<Vertex>& Vertices, const std::vector<unsigned int>& Indices)
   {
     NumIndices = Indices.size();
 
@@ -60,35 +47,27 @@ namespace t30
     return GLCheckError();
   }
 
-  Mesh::Mesh()
-  {
-  }
-
-
   Mesh::~Mesh()
   {
     Clear();
   }
 
-
   void Mesh::Clear()
   {
-    for (unsigned int i = 0 ; i < m_Textures.size() ; i++) {
-      SAFE_DELETE(m_Textures[i]);
-    }
+    for (auto& texture : m_Textures)
+      SAFE_DELETE(texture);
   }
-
 
   bool Mesh::LoadMesh(const std::string& Filename)
   {
     // Release the previously loaded mesh (if it exists)
     Clear();
-    
+
     bool Ret = false;
     Assimp::Importer Importer;
 
     const aiScene* pScene = Importer.ReadFile(Filename.c_str(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
-    
+
     if (pScene) {
       Ret = InitFromScene(pScene, Filename);
     }
@@ -116,7 +95,7 @@ namespace t30
   void Mesh::InitMesh(unsigned int Index, const aiMesh* paiMesh)
   {
     m_Entries[Index].MaterialIndex = paiMesh->mMaterialIndex;
-    
+
     std::vector<Vertex> Vertices;
     std::vector<unsigned int> Indices;
 
@@ -148,55 +127,52 @@ namespace t30
   bool Mesh::InitMaterials(const aiScene* pScene, const std::string& Filename)
   {
     // Extract the directory part from the file name
-    std::string::size_type SlashIndex = Filename.find_last_of("/");
-    std::string Dir;
+    const auto slashIndex = Filename.find_last_of("/");
+    std::string dir;
 
-    if (SlashIndex == std::string::npos) {
-      Dir = ".";
-    }
-    else if (SlashIndex == 0) {
-      Dir = "/";
-    }
-    else {
-      Dir = Filename.substr(0, SlashIndex);
-    }
+    if (slashIndex == std::string::npos)
+      dir = ".";
+    else if (slashIndex == 0)
+      dir = "/";
+    else
+      dir = Filename.substr(0, slashIndex);
 
-    bool Ret = true;    
+    bool ret = true;
 
     // Initialize the materials
     for (unsigned int i = 0 ; i < pScene->mNumMaterials ; i++) {
       const aiMaterial* pMaterial = pScene->mMaterials[i];
 
-      m_Textures[i] = NULL;
+      m_Textures[i] = nullptr;
 
       if (pMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
         aiString Path;
 
-        if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &Path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
+        if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &Path, nullptr, nullptr, nullptr, nullptr, nullptr) == AI_SUCCESS) {
           std::string p(Path.data);
-                
-          if (p.substr(0, 2) == ".\\") {                    
+
+          if (p.substr(0, 2) == ".\\") {
             p = p.substr(2, p.size() - 2);
           }
-                               
-          std::string FullPath = Dir + "/" + p;
-                    
-          m_Textures[i] = new Texture(GL_TEXTURE_2D, FullPath.c_str());
+
+          std::string fullPath = dir + "/" + p;
+
+          m_Textures[i] = new Texture(GL_TEXTURE_2D, fullPath);
 
           if (!m_Textures[i]->Load()) {
-            printf("Error loading texture '%s'\n", FullPath.c_str());
+            printf("Error loading texture '%s'\n", fullPath.c_str());
             delete m_Textures[i];
-            m_Textures[i] = NULL;
-            Ret = false;
+            m_Textures[i] = nullptr;
+            ret = false;
           }
           else {
-            printf("Loaded texture '%s'\n", FullPath.c_str());
+            printf("Loaded texture '%s'\n", fullPath.c_str());
           }
         }
       }
     }
 
-    return Ret;
+    return ret;
   }
 
 
@@ -206,7 +182,8 @@ namespace t30
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
     
-    for (unsigned int i = 0 ; i < m_Entries.size() ; i++) {
+    for (unsigned int i = 0 ; i < m_Entries.size() ; i++) 
+    {
       glBindBuffer(GL_ARRAY_BUFFER, m_Entries[i].VB);
       glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
       glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)12);
@@ -216,43 +193,41 @@ namespace t30
 
       const unsigned int MaterialIndex = m_Entries[i].MaterialIndex;
 
-      if (MaterialIndex < m_Textures.size() && m_Textures[MaterialIndex]) {
+      if (MaterialIndex < m_Textures.size() && m_Textures[MaterialIndex])
         m_Textures[MaterialIndex]->Bind(COLOR_TEXTURE_UNIT);
-      }
 
-      if (pRenderCallbacks) {
+      if (pRenderCallbacks)
         pRenderCallbacks->DrawStartCB(i);
-      }
         
       glDrawElements(GL_PATCHES, m_Entries[i].NumIndices, GL_UNSIGNED_INT, 0);
     }
 
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(2);
+    glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(0);
   }
 
 
-  void Mesh::Render(unsigned int DrawIndex, unsigned int PrimID)
+  void Mesh::Render(unsigned int drawIndex, unsigned int primId)
   {
-    assert(DrawIndex < m_Entries.size());
-    
+    assert(drawIndex < m_Entries.size());
+
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
 
-    glBindBuffer(GL_ARRAY_BUFFER, m_Entries[DrawIndex].VB);
+    glBindBuffer(GL_ARRAY_BUFFER, m_Entries[drawIndex].VB);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)12);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)20);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>( 0));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>(12));
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>(20));
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Entries[DrawIndex].IB);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Entries[drawIndex].IB);
 
-    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (const GLvoid*)(PrimID * 3 * sizeof(GLuint)));
+    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, reinterpret_cast<const GLvoid*>(primId * 3 * sizeof(GLuint)));
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(2);    
+    glDisableVertexAttribArray(2);
   }
 }

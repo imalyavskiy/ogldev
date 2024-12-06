@@ -28,7 +28,7 @@ namespace t30
   {
   public:
 
-    Technique();
+    Technique() = default;
 
     ~Technique();
 
@@ -46,7 +46,7 @@ namespace t30
     
     GLint GetProgramParam(GLint param);
     
-    GLuint m_shaderProg;    
+    GLuint m_shaderProg = 0;    
     
   private:
 
