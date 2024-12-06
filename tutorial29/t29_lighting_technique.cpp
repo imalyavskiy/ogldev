@@ -46,7 +46,7 @@ namespace t29
   "      WorldPos0   = (gWorld * vec4(Position, 1.0)).xyz;                                       \n"\
   "  }                                                                                           \n";
 
-  static const char* pFS =
+  static const char* pFragmentShaderText =
   "  #version 330                                                                                \n"\
   "                                                                                              \n"\
   "  const int MAX_POINT_LIGHTS = 2;                                                             \n"\
