@@ -19,7 +19,7 @@
 #ifndef MESH_H
 #define	MESH_H
 
-#include <map>
+#include <memory>
 #include <vector>
 #include <GL/glew.h>
 #include <assimp/Importer.hpp>
@@ -39,34 +39,29 @@ namespace t29
     Vector2f m_tex;
     Vector3f m_normal;
 
-    Vertex() {}
+    Vertex() = default;
 
-    Vertex(const Vector3f& pos, const Vector2f& tex, const Vector3f& normal)
-    {
-      m_pos    = pos;
-      m_tex    = tex;
-      m_normal = normal;
-    }
+    Vertex(const Vector3f& pos, const Vector2f& tex, const Vector3f& normal);
   };
 
 
   class Mesh
   {
   public:
-    Mesh();
+    Mesh() = default;
 
-    ~Mesh();
+    ~Mesh() = default;
 
-    bool LoadMesh(const std::string& Filename);
+    bool LoadMesh(const std::string& fileName);
 
     void Render(IRenderCallbacks* pRenderCallbacks);
     
-    void Render(unsigned int DrawIndex, unsigned int PrimID);
+    void Render(unsigned int drawIndex, unsigned int primID);
 
   private:
-    bool InitFromScene(const aiScene* pScene, const std::string& Filename);
+    bool InitFromScene(const aiScene* pScene, const std::string& fileName);
     void InitMesh(unsigned int Index, const aiMesh* paiMesh);
-    bool InitMaterials(const aiScene* pScene, const std::string& Filename);
+    bool InitMaterials(const aiScene* pScene, const std::string& fileName);
     void Clear();
 
 #define INVALID_MATERIAL 0xFFFFFFFF
@@ -76,8 +71,7 @@ namespace t29
 
       ~MeshEntry();
 
-      bool Init(const std::vector<Vertex>& Vertices,
-                const std::vector<unsigned int>& Indices);
+      bool Init(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
 
       GLuint VB;
       GLuint IB;
@@ -86,7 +80,7 @@ namespace t29
     };
 
     std::vector<MeshEntry> m_Entries;
-    std::vector<Texture*> m_Textures;
+    std::vector<std::shared_ptr<Texture>> m_Textures;
   };
 }
 #endif	/* MESH_H */

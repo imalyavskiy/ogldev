@@ -35,7 +35,7 @@ namespace t29
 
   private:
     
-    GLuint m_WVPLocation;
+    GLuint m_WVPLocation = 0;
   };
 }
 

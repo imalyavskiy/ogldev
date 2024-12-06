@@ -20,86 +20,81 @@
 
 namespace t29
 {
-  static const char* pVS = "                                                          \n\
-#version 410                                                                        \n\
-                                                                                    \n\
-layout (location = 0) in vec3 Position;                                             \n\
-                                                                                    \n\
-uniform mat4 gWVP;                                                                  \n\
-                                                                                    \n\
-void main()                                                                         \n\
-{                                                                                   \n\
-    gl_Position = gWVP * vec4(Position, 1.0);                                       \n\
-}";
+  static const char* pVertexShaderText = "                                          \n"\
+  "  #version 410                                                                   \n"\
+  "                                                                                 \n"\
+  "  layout (location = 0) in vec3 Position;                                        \n"\
+  "                                                                                 \n"\
+  "  uniform mat4 gWVP;                                                             \n"\
+  "                                                                                 \n"\
+  "  void main()                                                                    \n"\
+  "  {                                                                              \n"\
+  "      gl_Position = gWVP * vec4(Position, 1.0);                                  \n"\
+  "  }                                                                              \n";
 
-
-  static const char* pFS = "                                                          \n\
-#version 410                                                                        \n\
-                                                                                    \n\
-#extension GL_EXT_gpu_shader4 : enable                                              \n\
-                                                                                    \n\
-out uvec3 FragColor;                                                                \n\
-                                                                                    \n\
-uniform uint gDrawIndex;                                                            \n\
-uniform uint gObjectIndex;                                                          \n\
-                                                                                    \n\
-void main()                                                                         \n\
-{                                                                                   \n\
-    FragColor = uvec3(gObjectIndex, gDrawIndex,gl_PrimitiveID + 1);                 \n\
-}";
+  static const char* pFragmentShaderText =
+  "  #version 410                                                                   \n"\
+  "                                                                                 \n"\
+  "  #extension GL_EXT_gpu_shader4 : enable                                         \n"\
+  "                                                                                 \n"\
+  "  out uvec3 FragColor;                                                           \n"\
+  "                                                                                 \n"\
+  "  uniform uint gDrawIndex;                                                       \n"\
+  "  uniform uint gObjectIndex;                                                     \n"\
+  "                                                                                 \n"\
+  "  void main()                                                                    \n"\
+  "  {                                                                              \n"\
+  "      FragColor = uvec3(gObjectIndex, gDrawIndex,gl_PrimitiveID + 1);            \n"\
+  "  }                                                                              \n";
 
 
 
   PickingTechnique::PickingTechnique()
-  {   
+    : Technique("PickingTechnique")
+  {
   }
 
   bool PickingTechnique::Init()
   {
-    if (!Technique::Init()) {
+    if (!Technique::Init())
       return false;
-    }
 
-    if (!AddShader(GL_VERTEX_SHADER, pVS)) {
+    if (!AddShader(GL_VERTEX_SHADER, pVertexShaderText))
       return false;
-    }
 
-    if (!AddShader(GL_FRAGMENT_SHADER, pFS)) {
+    if (!AddShader(GL_FRAGMENT_SHADER, pFragmentShaderText))
       return false;
-    }
     
-    if (!Finalize()) {
+    if (!Finalize())
       return false;
-    }
 
     m_WVPLocation = GetUniformLocation("gWVP");
-    m_objectIndexLocation = GetUniformLocation("gObjectIndex");
-    m_drawIndexLocation = GetUniformLocation("gDrawIndex");
-
-    if (m_WVPLocation == INVALID_UNIFORM_LOCATION ||
-        m_objectIndexLocation == INVALID_UNIFORM_LOCATION ||
-        m_drawIndexLocation == INVALID_UNIFORM_LOCATION) {
+    if (m_WVPLocation == INVALID_UNIFORM_LOCATION)
       return false;
-        }
+
+    m_objectIndexLocation = GetUniformLocation("gObjectIndex");
+    if (m_objectIndexLocation == INVALID_UNIFORM_LOCATION)
+      return false;
+
+    m_drawIndexLocation = GetUniformLocation("gDrawIndex");
+    if (m_drawIndexLocation == INVALID_UNIFORM_LOCATION)
+      return false;
 
     return true;
   }
 
-
   void PickingTechnique::SetWVP(const Matrix4f& WVP)
   {
-    glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP.m);    
+    glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, reinterpret_cast<const GLfloat*>(WVP.m));
   }
 
-
-  void PickingTechnique::DrawStartCB(unsigned int DrawIndex)
+  void PickingTechnique::DrawStartCB(unsigned int drawIndex)
   {
-    glUniform1ui(m_drawIndexLocation, DrawIndex);
+    glUniform1ui(m_drawIndexLocation, drawIndex);
   }
 
-
-  void PickingTechnique::SetObjectIndex(unsigned int ObjectIndex)
+  void PickingTechnique::SetObjectIndex(unsigned int objectIndex)
   {
-    glUniform1ui(m_objectIndexLocation, ObjectIndex);
+    glUniform1ui(m_objectIndexLocation, objectIndex);
   }
 }

@@ -23,7 +23,7 @@ namespace t29
   class IRenderCallbacks
   {
   public:
-    virtual void DrawStartCB(unsigned int DrawIndex) = 0;
+    virtual void DrawStartCB(unsigned int drawIndex) = 0;
   };
 }
 
