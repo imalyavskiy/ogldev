@@ -15,9 +15,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef SHADOWMAPFBO_H
-#define	SHADOWMAPFBO_H
+#ifndef __SHADOW_MAP_FBO_H__
+#define	__SHADOW_MAP_FBO_H__
 
+#include <cstdint>
 #include <GL/glew.h>
 
 namespace t29
@@ -25,36 +26,29 @@ namespace t29
   class PickingTexture
   {
   public:
-    PickingTexture();
+    PickingTexture() = default;
 
     ~PickingTexture();
 
-    bool Init(unsigned int winWidth, unsigned int winHeight);
+    bool Init(uint32_t winWidth, uint32_t winHeight);
 
     void EnableWriting();
     
     void DisableWriting();
     
     struct PixelInfo {
-      unsigned int ObjectID;
-      unsigned int DrawID;
-      unsigned int PrimID;
-        
-      PixelInfo()
-      {
-        ObjectID = 0;
-        DrawID = 0;
-        PrimID = 0;
-      }
+      uint32_t ObjectID = 0;
+      uint32_t DrawID = 0;
+      uint32_t PrimID = 0;
     };
 
-    PixelInfo ReadPixel(unsigned int x, unsigned int y);
+    PixelInfo ReadPixel(uint32_t x, uint32_t y);
 
   private:
-    GLuint m_fbo;
-    GLuint m_pickingTexture;
-    GLuint m_depthTexture;
+    GLuint m_fbo = 0;
+    GLuint m_pickingTexture = 0;
+    GLuint m_depthTexture = 0;
   };
 }
-#endif	/* SHADOWMAPFBO_H */
+#endif	// __SHADOW_MAP_FBO_H__
 

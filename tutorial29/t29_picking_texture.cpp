@@ -15,7 +15,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cstdio>
+#include <iostream>
+#include <format>
 
 #include "t29_picking_texture.h"
 #include "t29_picking_technique.h"
@@ -23,13 +24,6 @@
 
 namespace t29
 {
-  PickingTexture::PickingTexture()
-  {
-    m_fbo = 0;
-    m_pickingTexture = 0;
-    m_depthTexture = 0;
-  }
-
   PickingTexture::~PickingTexture()
   {
     if (m_fbo != 0)
@@ -42,7 +36,7 @@ namespace t29
       glDeleteTextures(1, &m_depthTexture);
   }
 
-  bool PickingTexture::Init(unsigned int winWidth, unsigned int winHeight)
+  bool PickingTexture::Init(uint32_t winWidth, uint32_t winHeight)
   {
     // Create the FBO
     glGenFramebuffers(1, &m_fbo);
@@ -64,7 +58,7 @@ namespace t29
     const GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 
     if (status != GL_FRAMEBUFFER_COMPLETE) {
-      printf("FB error, status: 0x%x\n", status);
+      std::cerr << std::format("FB error, status: 0x{:x}\n", status) << "\n";
       return false;
     }
     
@@ -85,7 +79,7 @@ namespace t29
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
   }
 
-  PickingTexture::PixelInfo PickingTexture::ReadPixel(unsigned int x, unsigned int y)
+  PickingTexture::PixelInfo PickingTexture::ReadPixel(uint32_t x, uint32_t y)
   {
     glBindFramebuffer(GL_READ_FRAMEBUFFER, m_fbo);
     glReadBuffer(GL_COLOR_ATTACHMENT0);

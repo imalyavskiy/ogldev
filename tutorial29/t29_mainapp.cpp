@@ -71,11 +71,11 @@ namespace t29
 
   void MainApp::PickingPhase()
   {
-    Pipeline p;
-    p.Scale(0.1f, 0.1f, 0.1f);
-    p.Rotate(0.0f, 90.0f, 0.0f);
-    p.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
-    p.SetPerspectiveProj(m_perspProjInfo);
+    Pipeline pipeline;
+    pipeline.Scale(0.1f, 0.1f, 0.1f);
+    pipeline.Rotate(0.0f, 90.0f, 0.0f);
+    pipeline.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
+    pipeline.SetPerspectiveProj(m_perspProjInfo);
 
     m_pickingTexture.EnableWriting();
 
@@ -83,10 +83,10 @@ namespace t29
 
     m_pickingEffect.Enable();
 
-    for (unsigned int i = 0; i < ARRAY_SIZE_IN_ELEMENTS(m_worldPos); i++) {
-      p.WorldPos(m_worldPos[i]);
+    for (uint32_t i = 0; i < ARRAY_SIZE_IN_ELEMENTS(m_worldPos); i++) {
+      pipeline.WorldPos(m_worldPos[i]);
       m_pickingEffect.SetObjectIndex(i);
-      m_pickingEffect.SetWVP(p.GetWVPTrans());
+      m_pickingEffect.SetWVP(pipeline.GetWVPTrans());
       m_pMesh->Render(&m_pickingEffect);
     }
 

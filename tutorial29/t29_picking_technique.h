@@ -24,25 +24,27 @@
 
 namespace t29
 {
-  class PickingTechnique : public Technique, public IRenderCallbacks
+  class PickingTechnique
+  : public Technique
+  , public IRenderCallbacks
   {
   public:
 
     PickingTechnique();
 
-    virtual bool Init();
+    bool Init() override;
 
     void SetWVP(const Matrix4f& WVP);
 
     void SetObjectIndex(unsigned int objectIndex);
     
-    void DrawStartCB(unsigned int drawIndex);
+    void DrawStartCB(unsigned int drawIndex) override;
     
   private:
     
-    GLuint m_WVPLocation;
-    GLuint m_drawIndexLocation;
-    GLuint m_objectIndexLocation;
+    GLuint m_WVPLocation = GL_INVALID_VALUE;
+    GLuint m_drawIndexLocation = GL_INVALID_VALUE;
+    GLuint m_objectIndexLocation = GL_INVALID_VALUE;
   };
 }
 #endif	/* PICKING_TECHNIQUE_H */
