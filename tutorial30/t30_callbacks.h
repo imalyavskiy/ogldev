@@ -25,9 +25,11 @@ namespace t30
   {
   public:
 
-    virtual void SpecialKeyboardCB(int Key, int x, int y) = 0;
+    virtual ~ICallbacks() = default;
 
-    virtual void KeyboardCB(unsigned char Key, int x, int y) = 0;
+    virtual void SpecialKeyboardCB(int key, int x, int y) = 0;
+
+    virtual void KeyboardCB(unsigned char key, int x, int y) = 0;
 
     virtual void PassiveMouseCB(int x, int y) = 0;
 
@@ -35,7 +37,7 @@ namespace t30
 
     virtual void IdleCB() = 0;
     
-    virtual void MouseCB(int Button, int State, int x, int y) = 0;
+    virtual void MouseCB(int button, int state, int x, int y) = 0;
   };
 }
 #endif	/* CALLBACKS_H */

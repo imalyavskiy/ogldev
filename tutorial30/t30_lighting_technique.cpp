@@ -39,9 +39,9 @@ namespace t30
   "                                                                                                \n"\
   "  void main()                                                                                   \n"\
   "  {                                                                                             \n"\
-  "      WorldPos_CS_in = (gWorld * vec4(Position_VS_in, 1.0)).xyz;                                \n"\
-  "      TexCoord_CS_in = TexCoord_VS_in;                                                          \n"\
-  "      Normal_CS_in   = (gWorld * vec4(Normal_VS_in, 0.0)).xyz;                                  \n"\
+  "    WorldPos_CS_in = (gWorld * vec4(Position_VS_in, 1.0)).xyz;                                  \n"\
+  "    TexCoord_CS_in = TexCoord_VS_in;                                                            \n"\
+  "    Normal_CS_in   = (gWorld * vec4(Normal_VS_in, 0.0)).xyz;                                    \n"\
   "  }                                                                                             \n";
 
 
@@ -115,12 +115,12 @@ namespace t30
   "  out vec2 TexCoord_FS_in;                                                                      \n"\
   "  out vec3 Normal_FS_in;                                                                        \n"\
   "                                                                                                \n"\
-  "  vec2 interpolate2D(vec2 v0, vec2 v1, vec2 v2)                                                 \n"\
+  "  vec2 Interpolate2D(vec2 v0, vec2 v1, vec2 v2)                                                 \n"\
   "  {                                                                                             \n"\
   "      return vec2(gl_TessCoord.x) * v0 + vec2(gl_TessCoord.y) * v1 + vec2(gl_TessCoord.z) * v2; \n"\
   "  }                                                                                             \n"\
   "                                                                                                \n"\
-  "  vec3 interpolate3D(vec3 v0, vec3 v1, vec3 v2)                                                 \n"\
+  "  vec3 Interpolate3D(vec3 v0, vec3 v1, vec3 v2)                                                 \n"\
   "  {                                                                                             \n"\
   "      return vec3(gl_TessCoord.x) * v0 + vec3(gl_TessCoord.y) * v1 + vec3(gl_TessCoord.z) * v2; \n"\
   "  }                                                                                             \n"\
@@ -128,10 +128,10 @@ namespace t30
   "  void main()                                                                                   \n"\
   "  {                                                                                             \n"\
   "      // Interpolate the attributes of the output vertex using the barycentric coordinates      \n"\
-  "      TexCoord_FS_in = interpolate2D(TexCoord_ES_in[0], TexCoord_ES_in[1], TexCoord_ES_in[2]);  \n"\
-  "      Normal_FS_in = interpolate3D(Normal_ES_in[0], Normal_ES_in[1], Normal_ES_in[2]);          \n"\
+  "      TexCoord_FS_in = Interpolate2D(TexCoord_ES_in[0], TexCoord_ES_in[1], TexCoord_ES_in[2]);  \n"\
+  "      Normal_FS_in = Interpolate3D(Normal_ES_in[0], Normal_ES_in[1], Normal_ES_in[2]);          \n"\
   "      Normal_FS_in = normalize(Normal_FS_in);                                                   \n"\
-  "      WorldPos_FS_in = interpolate3D(WorldPos_ES_in[0], WorldPos_ES_in[1], WorldPos_ES_in[2]);  \n"\
+  "      WorldPos_FS_in = Interpolate3D(WorldPos_ES_in[0], WorldPos_ES_in[1], WorldPos_ES_in[2]);  \n"\
   "                                                                                                \n"\
   "      // Displace the vertex along the normal                                                   \n"\
   "      float Displacement = texture(gDisplacementMap, TexCoord_FS_in.xy).x;                      \n"\
