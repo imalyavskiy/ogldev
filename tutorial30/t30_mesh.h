@@ -53,7 +53,7 @@ namespace t30
   class Mesh
   {
   public:
-    Mesh();
+    Mesh() = default;
 
     ~Mesh();
 
@@ -61,7 +61,7 @@ namespace t30
 
     void Render(IRenderCallbacks* pRenderCallbacks);
     
-    void Render(unsigned int DrawIndex, unsigned int PrimID);
+    void Render(unsigned int drawIndex, unsigned int primId);
 
   private:
     bool InitFromScene(const aiScene* pScene, const std::string& Filename);
@@ -72,17 +72,17 @@ namespace t30
 #define INVALID_MATERIAL 0xFFFFFFFF
 
     struct MeshEntry {
-      MeshEntry();
+      MeshEntry() = default;
 
       ~MeshEntry();
 
       bool Init(const std::vector<Vertex>& Vertices,
                 const std::vector<unsigned int>& Indices);
 
-      GLuint VB;
-      GLuint IB;
-      unsigned int NumIndices;
-      unsigned int MaterialIndex;
+      GLuint VB = INVALID_OGL_VALUE;
+      GLuint IB = INVALID_OGL_VALUE;
+      unsigned int NumIndices = 0;
+      unsigned int MaterialIndex = INVALID_MATERIAL;
     };
 
     std::vector<MeshEntry> m_Entries;
