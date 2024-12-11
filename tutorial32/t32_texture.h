@@ -27,11 +27,11 @@ namespace t32 {
   class Texture
   {
   public:
-    Texture(GLenum TextureTarget, std::string FileName);
+    Texture(GLenum textureTarget, std::string fileName);
 
     bool Load() const;
 
-    void Bind(const GLenum TextureUnit) const;
+    void Bind(const GLenum textureUnit) const;
 
   private:
     std::string m_fileName;

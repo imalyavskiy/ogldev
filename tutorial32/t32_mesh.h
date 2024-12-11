@@ -55,19 +55,19 @@ namespace t32 {
 
     ~Mesh();
 
-    bool LoadMesh(const std::string& Filename);
+    bool LoadMesh(const std::string& fileName);
 
     void Render();
 
   private:
-    bool InitFromScene(const aiScene* pScene, const std::string& Filename);
+    bool InitFromScene(const aiScene* pScene, const std::string& fileName);
     void InitMesh(const aiMesh* paiMesh,
-      std::vector<Vector3f>& Positions,
-      std::vector<Vector3f>& Normals,
-      std::vector<Vector2f>& TexCoords,
-      std::vector<unsigned int>& Indices);
+      std::vector<Vector3f>& positions,
+      std::vector<Vector3f>& normals,
+      std::vector<Vector2f>& texCoords,
+      std::vector<unsigned int>& indices);
 
-    bool InitMaterials(const aiScene* pScene, const std::string& Filename);
+    bool InitMaterials(const aiScene* pScene, const std::string& fileName);
     void Clear();
 
 #define INVALID_MATERIAL 0xFFFFFFFF
