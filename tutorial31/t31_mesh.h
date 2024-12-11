@@ -75,8 +75,8 @@ namespace t31 {
 
       ~MeshEntry();
 
-      bool Init(const std::vector<Vertex>& Vertices,
-        const std::vector<unsigned int>& Indices);
+      bool Init(const std::vector<Vertex>& vertices,
+        const std::vector<unsigned int>& indices);
 
       GLuint VB;
       GLuint IB;

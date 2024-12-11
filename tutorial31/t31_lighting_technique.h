@@ -88,17 +88,17 @@ namespace t31 {
 
     virtual bool Init();
 
-    void SetVP(const Matrix4f& VP);
+    void SetVP(const Matrix4f& viewProjection);
     void SetWorldMatrix(const Matrix4f& WVP);
-    void SetColorTextureUnit(unsigned int TextureUnit);
+    void SetColorTextureUnit(unsigned int textureUnit);
     void SetDisplacementMapTextureUnit(unsigned int TextureUnit);
-    void SetDirectionalLight(const DirectionalLight& Light);
-    void SetPointLights(unsigned int NumLights, const PointLight* pLights);
-    void SetSpotLights(unsigned int NumLights, const SpotLight* pLights);
-    void SetEyeWorldPos(const Vector3f& EyeWorldPos);
-    void SetMatSpecularIntensity(float Intensity);
-    void SetMatSpecularPower(float Power);
-    void SetTessellationLevel(float TL);
+    void SetDirectionalLight(const DirectionalLight& light);
+    void SetPointLights(unsigned int numLights, const PointLight* pLights);
+    void SetSpotLights(unsigned int numLights, const SpotLight* pLights);
+    void SetEyeWorldPos(const Vector3f& eyeWorldPos);
+    void SetMatSpecularIntensity(float intensity);
+    void SetMatSpecularPower(float power);
+    void SetTessellationLevel(float tessellationLevel);
 
   private:
 

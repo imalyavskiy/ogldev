@@ -43,18 +43,17 @@ namespace t31 {
     }
   }
 
-  bool Mesh::MeshEntry::Init(const std::vector<Vertex>& Vertices,
-    const std::vector<unsigned int>& Indices)
+  bool Mesh::MeshEntry::Init(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
   {
-    NumIndices = Indices.size();
+    NumIndices = indices.size();
 
     glGenBuffers(1, &VB);
     glBindBuffer(GL_ARRAY_BUFFER, VB);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * Vertices.size(), &Vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
 
     glGenBuffers(1, &IB);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * NumIndices, &Indices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * NumIndices, &indices[0], GL_STATIC_DRAW);
 
     return GLCheckError();
   }
@@ -72,9 +71,8 @@ namespace t31 {
 
   void Mesh::Clear()
   {
-    for (unsigned int i = 0; i < m_Textures.size(); i++) {
-      SAFE_DELETE(m_Textures[i]);
-    }
+    for (auto& item : m_Textures)
+      SAFE_DELETE(item);
   }
 
 
@@ -88,12 +86,10 @@ namespace t31 {
 
     const aiScene* pScene = Importer.ReadFile(Filename.c_str(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
 
-    if (pScene) {
+    if (pScene)
       Ret = InitFromScene(pScene, Filename);
-    }
-    else {
+    else
       printf("Error parsing '%s': '%s'\n", Filename.c_str(), Importer.GetErrorString());
-    }
 
     return Ret;
   }
@@ -148,54 +144,51 @@ namespace t31 {
   {
     // Extract the directory part from the file name
     std::string::size_type SlashIndex = Filename.find_last_of("/");
-    std::string Dir;
+    std::string dir;
 
-    if (SlashIndex == std::string::npos) {
-      Dir = ".";
-    }
-    else if (SlashIndex == 0) {
-      Dir = "/";
-    }
-    else {
-      Dir = Filename.substr(0, SlashIndex);
-    }
+    if (SlashIndex == std::string::npos)
+      dir = ".";
+    else if (SlashIndex == 0)
+      dir = "/";
+    else
+      dir = Filename.substr(0, SlashIndex);
 
-    bool Ret = true;
+    bool ret = true;
 
     // Initialize the materials
     for (unsigned int i = 0; i < pScene->mNumMaterials; i++) {
       const aiMaterial* pMaterial = pScene->mMaterials[i];
 
-      m_Textures[i] = NULL;
+      m_Textures[i] = nullptr;
 
       if (pMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
-        aiString Path;
+        aiString path;
 
-        if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &Path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
-          std::string p(Path.data);
+        if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path, nullptr, nullptr, nullptr, nullptr, nullptr) == AI_SUCCESS) {
+          std::string p(path.data);
 
           if (p.substr(0, 2) == ".\\") {
             p = p.substr(2, p.size() - 2);
           }
 
-          std::string FullPath = Dir + "/" + p;
+          std::string fullPath = dir + "/" + p;
 
-          m_Textures[i] = new Texture(GL_TEXTURE_2D, FullPath.c_str());
+          m_Textures[i] = new Texture(GL_TEXTURE_2D, fullPath);
 
           if (!m_Textures[i]->Load()) {
-            printf("Error loading texture '%s'\n", FullPath.c_str());
+            printf("Error loading texture '%s'\n", fullPath.c_str());
             delete m_Textures[i];
-            m_Textures[i] = NULL;
-            Ret = false;
+            m_Textures[i] = nullptr;
+            ret = false;
           }
           else {
-            printf("Loaded texture '%s'\n", FullPath.c_str());
+            printf("Loaded texture '%s'\n", fullPath.c_str());
           }
         }
       }
     }
 
-    return Ret;
+    return ret;
   }
 
 
@@ -207,16 +200,16 @@ namespace t31 {
 
     for (unsigned int i = 0; i < m_Entries.size(); i++) {
       glBindBuffer(GL_ARRAY_BUFFER, m_Entries[i].VB);
-      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-      glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)12);
-      glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)20);
+      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>( 0));
+      glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>(12));
+      glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>(20));
 
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Entries[i].IB);
 
-      const unsigned int MaterialIndex = m_Entries[i].MaterialIndex;
+      const uint32_t materialIndex = m_Entries[i].MaterialIndex;
 
-      if (MaterialIndex < m_Textures.size() && m_Textures[MaterialIndex]) {
-        m_Textures[MaterialIndex]->Bind(COLOR_TEXTURE_UNIT);
+      if (materialIndex < m_Textures.size() && m_Textures[materialIndex]) {
+        m_Textures[materialIndex]->Bind(COLOR_TEXTURE_UNIT);
       }
 
       if (pRenderCallbacks) {
@@ -242,16 +235,16 @@ namespace t31 {
 
     glBindBuffer(GL_ARRAY_BUFFER, m_Entries[DrawIndex].VB);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)12);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)20);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>( 0));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>(12));
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const GLvoid*>(20));
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Entries[DrawIndex].IB);
 
-    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (const GLvoid*)(PrimID * 3 * sizeof(GLuint)));
+    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, reinterpret_cast<const GLvoid*>(PrimID * 3 * sizeof(GLuint)));
 
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(2);
+    glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(0);
   }
 }
