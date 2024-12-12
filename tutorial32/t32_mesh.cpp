@@ -85,13 +85,14 @@ namespace t32 {
     std::vector<Vector3f> positions;
     std::vector<Vector3f> normals;
     std::vector<Vector2f> texCoords;
-    std::vector<unsigned int> indices;
+    std::vector<uint32_t> indices;
 
     unsigned int numVertices = 0;
     unsigned int numIndices = 0;
 
     // Count the number of vertices and indices
-    for (unsigned int i = 0; i < m_Entries.size(); i++) {
+    for (unsigned int i = 0; i < m_Entries.size(); i++) 
+    {
       m_Entries[i].MaterialIndex = pScene->mMeshes[i]->mMaterialIndex;
       m_Entries[i].NumIndices = pScene->mMeshes[i]->mNumFaces * 3;
       m_Entries[i].BaseVertex = numVertices;
@@ -113,9 +114,8 @@ namespace t32 {
       InitMesh(paiMesh, positions, normals, texCoords, indices);
     }
 
-    if (!InitMaterials(pScene, fileName)) {
+    if (!InitMaterials(pScene, fileName))
       return false;
-    }
 
     // Generate and populate the buffers with vertex attributes and the indices
     glBindBuffer(GL_ARRAY_BUFFER, m_Buffers[POS_VB]);
@@ -139,19 +139,15 @@ namespace t32 {
     return GLCheckError();
   }
 
-  void Mesh::InitMesh(const aiMesh* paiMesh,
-    std::vector<Vector3f>& positions,
-    std::vector<Vector3f>& normals,
-    std::vector<Vector2f>& texCoords,
-    std::vector<unsigned int>& indices)
+  void Mesh::InitMesh(const aiMesh* paiMesh, std::vector<Vector3f>& positions, std::vector<Vector3f>& normals, std::vector<Vector2f>& texCoords, std::vector<uint32_t>& indices)
   {
-    const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
+    const aiVector3D zero3D(0.0f, 0.0f, 0.0f);
 
     // Populate the vertex attribute vectors
     for (unsigned int i = 0; i < paiMesh->mNumVertices; i++) {
       const aiVector3D* pPos = &(paiMesh->mVertices[i]);
       const aiVector3D* pNormal = &(paiMesh->mNormals[i]);
-      const aiVector3D* pTexCoord = paiMesh->HasTextureCoords(0) ? &(paiMesh->mTextureCoords[0][i]) : &Zero3D;
+      const aiVector3D* pTexCoord = paiMesh->HasTextureCoords(0) ? &(paiMesh->mTextureCoords[0][i]) : &zero3D;
 
       positions.emplace_back(pPos->x, pPos->y, pPos->z);
       normals.emplace_back(pNormal->x, pNormal->y, pNormal->z);
@@ -160,18 +156,18 @@ namespace t32 {
 
     // Populate the index buffer
     for (unsigned int i = 0; i < paiMesh->mNumFaces; i++) {
-      const aiFace& Face = paiMesh->mFaces[i];
-      assert(Face.mNumIndices == 3);
-      indices.push_back(Face.mIndices[0]);
-      indices.push_back(Face.mIndices[1]);
-      indices.push_back(Face.mIndices[2]);
+      const aiFace& face = paiMesh->mFaces[i];
+      assert(face.mNumIndices == 3);
+      indices.push_back(face.mIndices[0]);
+      indices.push_back(face.mIndices[1]);
+      indices.push_back(face.mIndices[2]);
     }
   }
 
   bool Mesh::InitMaterials(const aiScene* pScene, const std::string& fileName)
   {
     // Extract the directory part from the file name
-    std::string::size_type slashIndex = fileName.find_last_of("/");
+    const auto slashIndex = fileName.find_last_of("/");
     std::string dir;
 
     if (slashIndex == std::string::npos)
