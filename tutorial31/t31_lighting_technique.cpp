@@ -227,7 +227,7 @@ namespace t31 {
     "                                                                                                           \n"\
     "  struct DirectionalLight                                                                                  \n"\
     "  {                                                                                                        \n"\
-    "      struct BaseLight Base;                                                                               \n"\
+    "      BaseLight Base;                                                                                      \n"\
     "      vec3 Direction;                                                                                      \n"\
     "  };                                                                                                       \n"\
     "                                                                                                           \n"\
@@ -240,14 +240,14 @@ namespace t31 {
     "                                                                                                           \n"\
     "  struct PointLight                                                                                        \n"\
     "  {                                                                                                        \n"\
-    "      struct BaseLight Base;                                                                               \n"\
+    "      BaseLight Base;                                                                                      \n"\
     "      vec3 Position;                                                                                       \n"\
     "      Attenuation Atten;                                                                                   \n"\
     "  };                                                                                                       \n"\
     "                                                                                                           \n"\
     "  struct SpotLight                                                                                         \n"\
     "  {                                                                                                        \n"\
-    "      struct PointLight Base;                                                                              \n"\
+    "      PointLight Base;                                                                                     \n"\
     "      vec3 Direction;                                                                                      \n"\
     "      float Cutoff;                                                                                        \n"\
     "  };                                                                                                       \n"\
@@ -262,7 +262,7 @@ namespace t31 {
     "  uniform float gMatSpecularIntensity;                                                                     \n"\
     "  uniform float gSpecularPower;                                                                            \n"\
     "                                                                                                           \n"\
-    "  vec4 CalcLightInternal(struct BaseLight Light, vec3 LightDirection, vec3 Normal)                         \n"\
+    "  vec4 CalcLightInternal(BaseLight Light, vec3 LightDirection, vec3 Normal)                                \n"\
     "  {                                                                                                        \n"\
     "      vec4 AmbientColor = vec4(Light.Color, 1.0f) * Light.AmbientIntensity;                                \n"\
     "      float DiffuseFactor = dot(Normal, -LightDirection);                                                  \n"\
