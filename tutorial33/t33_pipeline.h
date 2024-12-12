@@ -86,9 +86,9 @@ namespace t33 {
       Vector3f Up;
     } m_camera;
 
-    Matrix4f m_WVPtransformation;
-    Matrix4f m_VPTtransformation;
-    Matrix4f m_WorldTransformation;
+    Matrix4f m_WorldViewProjTransform;
+    Matrix4f m_ViewProjTransform;
+    Matrix4f m_WorldTransform;
   };
 }
 
