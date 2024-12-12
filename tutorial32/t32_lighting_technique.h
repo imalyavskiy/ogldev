@@ -88,15 +88,15 @@ namespace t32 {
 
     virtual bool Init();
 
-    void SetWVP(const Matrix4f& WVP);
+    void SetWVP(const Matrix4f& worldViewProjection);
     void SetWorldMatrix(const Matrix4f& WVP);
-    void SetColorTextureUnit(unsigned int TextureUnit);
-    void SetDirectionalLight(const DirectionalLight& Light);
-    void SetPointLights(unsigned int NumLights, const PointLight* pLights);
-    void SetSpotLights(unsigned int NumLights, const SpotLight* pLights);
-    void SetEyeWorldPos(const Vector3f& EyeWorldPos);
-    void SetMatSpecularIntensity(float Intensity);
-    void SetMatSpecularPower(float Power);
+    void SetColorTextureUnit(unsigned int textureUnit);
+    void SetDirectionalLight(const DirectionalLight& light);
+    void SetPointLights(unsigned int numLights, const PointLight* pLights);
+    void SetSpotLights(unsigned int numLights, const SpotLight* pLights);
+    void SetEyeWorldPos(const Vector3f& eyeWorldPos);
+    void SetMatSpecularIntensity(float intensity);
+    void SetMatSpecularPower(float power);
 
   private:
 

@@ -19,31 +19,80 @@
 #include "t32_pipeline.h"
 
 namespace t32 {
-  const Matrix4f& Pipeline::GetVPTrans()
+  Pipeline::Pipeline()
   {
-    Matrix4f CameraTranslationTrans, CameraRotateTrans, PersProjTrans;
+    m_scale = Vector3f(1.0f, 1.0f, 1.0f);
+    m_worldPos = Vector3f(0.0f, 0.0f, 0.0f);
+    m_rotateInfo = Vector3f(0.0f, 0.0f, 0.0f);
+  }
 
-    CameraTranslationTrans.InitTranslationTransform(-m_camera.Pos.x, -m_camera.Pos.y, -m_camera.Pos.z);
-    CameraRotateTrans.InitCameraTransform(m_camera.Target, m_camera.Up);
-    PersProjTrans.InitPersProjTransform(m_persProjInfo);
+  void Pipeline::Scale(float scaleX, float scaleY, float scaleZ)
+  {
+    m_scale.x = scaleX;
+    m_scale.y = scaleY;
+    m_scale.z = scaleZ;
+  }
 
-    m_VPTtransformation = PersProjTrans * CameraRotateTrans * CameraTranslationTrans;
+  void Pipeline::WorldPos(float x, float y, float z)
+  {
+    m_worldPos.x = x;
+    m_worldPos.y = y;
+    m_worldPos.z = z;
+  }
+
+  void Pipeline::WorldPos(const Vector3f& pos)
+  {
+    m_worldPos = pos;
+  }
+
+  void Pipeline::Rotate(float rotateX, float rotateY, float rotateZ)
+  {
+    m_rotateInfo.x = rotateX;
+    m_rotateInfo.y = rotateY;
+    m_rotateInfo.z = rotateZ;
+  }
+
+  void Pipeline::SetPerspectiveProj(const PersProjInfo& perspProjectionInfo)
+  {
+    m_persProjInfo = perspProjectionInfo;
+  }
+
+  void Pipeline::SetCamera(const Vector3f& pos, const Vector3f& target, const Vector3f& up)
+  {
+    m_camera.Pos = pos;
+    m_camera.Target = target;
+    m_camera.Up = up;
+  }
+
+  auto Pipeline::GetVPTrans() -> const Matrix4f&
+  {
+    Matrix4f cameraTranslationTrans;
+    Matrix4f cameraRotateTrans;
+    Matrix4f persProjTrans;
+
+    cameraTranslationTrans.InitTranslationTransform(-m_camera.Pos.x, -m_camera.Pos.y, -m_camera.Pos.z);
+    cameraRotateTrans.InitCameraTransform(m_camera.Target, m_camera.Up);
+    persProjTrans.InitPersProjTransform(m_persProjInfo);
+
+    m_VPTtransformation = persProjTrans * cameraRotateTrans * cameraTranslationTrans;
     return m_VPTtransformation;
   }
 
-  const Matrix4f& Pipeline::GetWorldTrans()
+  auto Pipeline::GetWorldTrans() -> const Matrix4f&
   {
-    Matrix4f ScaleTrans, RotateTrans, TranslationTrans;
+    Matrix4f scaleTrans;
+    Matrix4f rotateTrans;
+    Matrix4f translationTrans;
 
-    ScaleTrans.InitScaleTransform(m_scale.x, m_scale.y, m_scale.z);
-    RotateTrans.InitRotateTransform(m_rotateInfo.x, m_rotateInfo.y, m_rotateInfo.z);
-    TranslationTrans.InitTranslationTransform(m_worldPos.x, m_worldPos.y, m_worldPos.z);
+    scaleTrans.InitScaleTransform(m_scale.x, m_scale.y, m_scale.z);
+    rotateTrans.InitRotateTransform(m_rotateInfo.x, m_rotateInfo.y, m_rotateInfo.z);
+    translationTrans.InitTranslationTransform(m_worldPos.x, m_worldPos.y, m_worldPos.z);
 
-    m_WorldTransformation = TranslationTrans * RotateTrans * ScaleTrans;
+    m_WorldTransformation = translationTrans * rotateTrans * scaleTrans;
     return m_WorldTransformation;
   }
 
-  const Matrix4f& Pipeline::GetWVPTrans()
+  auto Pipeline::GetWVPTrans() -> const Matrix4f&
   {
     GetWorldTrans();
     GetVPTrans();

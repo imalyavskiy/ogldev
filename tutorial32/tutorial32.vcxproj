@@ -16,6 +16,7 @@
     <ClInclude Include="t32_engine_common.h" />
     <ClInclude Include="t32_glut_backend.h" />
     <ClInclude Include="t32_lighting_technique.h" />
+    <ClInclude Include="t32_mainapp.h" />
     <ClInclude Include="t32_math_3d.h" />
     <ClInclude Include="t32_mesh.h" />
     <ClInclude Include="t32_pipeline.h" />
@@ -28,6 +29,7 @@
     <ClCompile Include="t32_glut_backend.cpp" />
     <ClCompile Include="t32_lighting_technique.cpp" />
     <ClCompile Include="t32_main.cpp" />
+    <ClCompile Include="t32_mainapp.cpp" />
     <ClCompile Include="t32_math_3d.cpp" />
     <ClCompile Include="t32_mesh.cpp" />
     <ClCompile Include="t32_pipeline.cpp" />

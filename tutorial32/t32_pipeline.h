@@ -24,54 +24,25 @@ namespace t32 {
   class Pipeline
   {
   public:
-    Pipeline()
-    {
-      m_scale = Vector3f(1.0f, 1.0f, 1.0f);
-      m_worldPos = Vector3f(0.0f, 0.0f, 0.0f);
-      m_rotateInfo = Vector3f(0.0f, 0.0f, 0.0f);
-    }
+    Pipeline();
 
-    void Scale(float ScaleX, float ScaleY, float ScaleZ)
-    {
-      m_scale.x = ScaleX;
-      m_scale.y = ScaleY;
-      m_scale.z = ScaleZ;
-    }
+    void Scale(float scaleX, float scaleY, float scaleZ);
 
-    void WorldPos(float x, float y, float z)
-    {
-      m_worldPos.x = x;
-      m_worldPos.y = y;
-      m_worldPos.z = z;
-    }
+    void WorldPos(float x, float y, float z);
 
-    void WorldPos(const Vector3f& Pos)
-    {
-      m_worldPos = Pos;
-    }
+    void WorldPos(const Vector3f& pos);
 
-    void Rotate(float RotateX, float RotateY, float RotateZ)
-    {
-      m_rotateInfo.x = RotateX;
-      m_rotateInfo.y = RotateY;
-      m_rotateInfo.z = RotateZ;
-    }
+    void Rotate(float rotateX, float rotateY, float rotateZ);
 
-    void SetPerspectiveProj(const PersProjInfo& p)
-    {
-      m_persProjInfo = p;
-    }
+    void SetPerspectiveProj(const PersProjInfo& perspProjectionInfo);
 
-    void SetCamera(const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up)
-    {
-      m_camera.Pos = Pos;
-      m_camera.Target = Target;
-      m_camera.Up = Up;
-    }
+    void SetCamera(const Vector3f& pos, const Vector3f& target, const Vector3f& up);
 
-    const Matrix4f& GetVPTrans();
-    const Matrix4f& GetWVPTrans();
-    const Matrix4f& GetWorldTrans();
+    auto GetVPTrans() -> const Matrix4f&;
+
+    auto GetWVPTrans() -> const Matrix4f&;
+
+    auto GetWorldTrans() -> const Matrix4f&;
 
   private:
     Vector3f m_scale;
