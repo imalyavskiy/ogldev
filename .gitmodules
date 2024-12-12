@@ -16,3 +16,6 @@
 [submodule "deps/origins/glfw"]
 	path = deps/origins/glfw
 	url = https://github.com/imalyavskiy/glfw.git
+[submodule "deps/origins/glfx"]
+	path = deps/origins/glfx
+	url = https://github.com/imalyavskiy/glfx.git
