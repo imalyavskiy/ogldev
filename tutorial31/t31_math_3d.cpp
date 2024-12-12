@@ -32,51 +32,53 @@ namespace t31 {
 
   Vector3f& Vector3f::Normalize()
   {
-    const float Length = sqrtf(x * x + y * y + z * z);
+    const float length = sqrtf(x * x + y * y + z * z);
 
-    x /= Length;
-    y /= Length;
-    z /= Length;
+    x /= length;
+    y /= length;
+    z /= length;
 
     return *this;
   }
 
   void Vector3f::Rotate(float Angle, const Vector3f& Axe)
   {
-    const float SinHalfAngle = sinf(ToRadian(Angle / 2));
-    const float CosHalfAngle = cosf(ToRadian(Angle / 2));
+    const float sinHalfAngle = sinf(ToRadian(Angle / 2));
+    const float cosHalfAngle = cosf(ToRadian(Angle / 2));
 
-    const float Rx = Axe.x * SinHalfAngle;
-    const float Ry = Axe.y * SinHalfAngle;
-    const float Rz = Axe.z * SinHalfAngle;
-    const float Rw = CosHalfAngle;
-    Quaternion RotationQ(Rx, Ry, Rz, Rw);
+    const float rx = Axe.x * sinHalfAngle;
+    const float ry = Axe.y * sinHalfAngle;
+    const float rz = Axe.z * sinHalfAngle;
+    const float rw = cosHalfAngle;
 
-    Quaternion ConjugateQ = RotationQ.Conjugate();
+    Quaternion rotationQ(rx, ry, rz, rw);
+
+    const Quaternion conjugateQ = rotationQ.Conjugate();
     //  ConjugateQ.Normalize();
-    Quaternion W = RotationQ * (*this) * ConjugateQ;
 
-    x = W.x;
-    y = W.y;
-    z = W.z;
+    const Quaternion w = rotationQ * (*this) * conjugateQ;
+
+    x = w.x;
+    y = w.y;
+    z = w.z;
   }
 
 
-  void Matrix4f::InitScaleTransform(float ScaleX, float ScaleY, float ScaleZ)
+  void Matrix4f::InitScaleTransform(float scaleX, float scaleY, float scaleZ)
   {
-    m[0][0] = ScaleX; m[0][1] = 0.0f;   m[0][2] = 0.0f;   m[0][3] = 0.0f;
-    m[1][0] = 0.0f;   m[1][1] = ScaleY; m[1][2] = 0.0f;   m[1][3] = 0.0f;
-    m[2][0] = 0.0f;   m[2][1] = 0.0f;   m[2][2] = ScaleZ; m[2][3] = 0.0f;
+    m[0][0] = scaleX; m[0][1] = 0.0f;   m[0][2] = 0.0f;   m[0][3] = 0.0f;
+    m[1][0] = 0.0f;   m[1][1] = scaleY; m[1][2] = 0.0f;   m[1][3] = 0.0f;
+    m[2][0] = 0.0f;   m[2][1] = 0.0f;   m[2][2] = scaleZ; m[2][3] = 0.0f;
     m[3][0] = 0.0f;   m[3][1] = 0.0f;   m[3][2] = 0.0f;   m[3][3] = 1.0f;
   }
 
-  void Matrix4f::InitRotateTransform(float RotateX, float RotateY, float RotateZ)
+  void Matrix4f::InitRotateTransform(float rotateX, float rotateY, float rotateZ)
   {
     Matrix4f rx, ry, rz;
 
-    const float x = ToRadian(RotateX);
-    const float y = ToRadian(RotateY);
-    const float z = ToRadian(RotateZ);
+    const float x = ToRadian(rotateX);
+    const float y = ToRadian(rotateY);
+    const float z = ToRadian(rotateZ);
 
     rx.m[0][0] = 1.0f; rx.m[0][1] = 0.0f; rx.m[0][2] = 0.0f; rx.m[0][3] = 0.0f;
     rx.m[1][0] = 0.0f; rx.m[1][1] = cosf(x); rx.m[1][2] = -sinf(x); rx.m[1][3] = 0.0f;
@@ -105,11 +107,11 @@ namespace t31 {
   }
 
 
-  void Matrix4f::InitCameraTransform(const Vector3f& Target, const Vector3f& Up)
+  void Matrix4f::InitCameraTransform(const Vector3f& target, const Vector3f& up)
   {
-    Vector3f N = Target;
+    Vector3f N = target;
     N.Normalize();
-    Vector3f U = Up;
+    Vector3f U = up;
     U.Normalize();
     U = U.Cross(N);
     Vector3f V = N.Cross(U);
