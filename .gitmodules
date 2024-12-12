@@ -13,3 +13,6 @@
 [submodule "deps/origins/FreeImage3180"]
 	path = deps/origins/FreeImage3180
 	url = https://github.com/imalyavskiy/FreeImage3180.git
+[submodule "deps/origins/glfw"]
+	path = deps/origins/glfw
+	url = https://github.com/imalyavskiy/glfw.git
