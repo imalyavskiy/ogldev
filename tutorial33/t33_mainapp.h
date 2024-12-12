@@ -21,10 +21,6 @@
 #include "freetypeGL.h"
 #endif
 
-#define NUM_ROWS 50
-#define NUM_COLS 20
-#define NUM_INSTANCES NUM_ROWS * NUM_COLS
-
 namespace t33 {
   class MainApp : public ICallbacks
   {
@@ -51,6 +47,10 @@ namespace t33 {
     void MouseCB(int button, int state, int x, int y) override;
 
   private:
+
+    static constexpr uint32_t NUM_ROWS =  50;
+    static constexpr uint32_t NUM_COLS =  20;
+    static constexpr uint32_t NUM_INSTANCES = NUM_ROWS * NUM_COLS;
 
     void CalcFPS();
 

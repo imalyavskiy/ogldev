@@ -87,7 +87,7 @@ namespace t33 {
     Matrix4f matricesWorldViewProjection[NUM_INSTANCES];
     Matrix4f matricesWorld[NUM_INSTANCES];
 
-    for (unsigned int i = 0; i < NUM_INSTANCES; i++) {
+    for (uint32_t i = 0; i < NUM_INSTANCES; i++) {
       Vector3f pos(m_positions[i]);
       pos.y += sinf(m_scale) * m_velocity[i];
       pipeline.WorldPos(pos);
@@ -154,16 +154,15 @@ namespace t33 {
 
   void MainApp::CalcPositions()
   {
-    for (unsigned int i = 0; i < NUM_ROWS; i++) {
-      for (unsigned int j = 0; j < NUM_COLS; j++) {
-        unsigned int Index = i * NUM_COLS + j;
-        m_positions[Index].x = static_cast<float>(j);
-        m_positions[Index].y = RandomFloat() * 5.0f;
-        m_positions[Index].z = static_cast<float>(i);
-        m_velocity[Index] = RandomFloat();
-        if (i & 1) {
-          m_velocity[Index] *= (-1.0f);
-        }
+    for (uint32_t i = 0; i < NUM_ROWS; i++) {
+      for (uint32_t j = 0; j < NUM_COLS; j++) {
+        const uint32_t index = i * NUM_COLS + j;
+        m_positions[index].x = static_cast<float>(j);
+        m_positions[index].y = RandomFloat() * 5.0f;
+        m_positions[index].z = static_cast<float>(i);
+        m_velocity[index] = RandomFloat();
+        if (i & 1)
+          m_velocity[index] *= (-1.0f);
       }
     }
   }

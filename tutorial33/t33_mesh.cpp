@@ -16,17 +16,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <assert.h>
+#include <cassert>
 
 #include "t33_mesh.h"
 
 using namespace std;
 
-#define POSITION_LOCATION 0
-#define TEX_COORD_LOCATION 1
-#define NORMAL_LOCATION 2
-#define WVP_LOCATION 3
-#define WORLD_LOCATION 7
+static constexpr uint32_t POSITION_LOCATION = 0;
+static constexpr uint32_t TEX_COORD_LOCATION = 1;
+static constexpr uint32_t NORMAL_LOCATION = 2;
+static constexpr uint32_t WVP_LOCATION = 3;
+static constexpr uint32_t WORLD_LOCATION = 7;
 
 namespace t33 {
   Mesh::Mesh()
@@ -133,17 +133,17 @@ namespace t33 {
     glBindBuffer(GL_ARRAY_BUFFER, m_Buffers[POS_VB]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(positions[0]) * positions.size(), &positions[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(POSITION_LOCATION);
-    glVertexAttribPointer(POSITION_LOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(POSITION_LOCATION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_Buffers[TEXCOORD_VB]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords[0]) * texCoords.size(), &texCoords[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(TEX_COORD_LOCATION);
-    glVertexAttribPointer(TEX_COORD_LOCATION, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(TEX_COORD_LOCATION, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_Buffers[NORMAL_VB]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(normals[0]) * normals.size(), &normals[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(NORMAL_LOCATION);
-    glVertexAttribPointer(NORMAL_LOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(NORMAL_LOCATION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Buffers[INDEX_BUFFER]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices[0]) * indices.size(), &indices[0], GL_STATIC_DRAW);
@@ -247,28 +247,31 @@ namespace t33 {
   void Mesh::Render(unsigned int numInstances, const Matrix4f* matricesWorldViewProjection, const Matrix4f* matricesWorld)
   {
     glBindBuffer(GL_ARRAY_BUFFER, m_Buffers[WVP_MAT_VB]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Matrix4f) * numInstances, matricesWorldViewProjection, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, numInstances * sizeof(Matrix4f), 
+                   matricesWorldViewProjection, GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_Buffers[WORLD_MAT_VB]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Matrix4f) * numInstances, matricesWorld, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, numInstances * sizeof(Matrix4f), 
+                   matricesWorld, GL_DYNAMIC_DRAW);
 
     glBindVertexArray(m_VAO);
 
-    for (unsigned int i = 0; i < m_Entries.size(); i++) {
-      const unsigned int materialIndex = m_Entries[i].MaterialIndex;
+    for (const auto& entry : m_Entries)
+    {
+      const uint32_t materialIndex = entry.MaterialIndex;
 
       assert(materialIndex < m_Textures.size());
 
-      if (m_Textures[materialIndex]) {
+      if (m_Textures[materialIndex])
         m_Textures[materialIndex]->Bind(GL_TEXTURE0);
-      }
 
-      glDrawElementsInstancedBaseVertex(GL_TRIANGLES,
-        m_Entries[i].NumIndices,
-        GL_UNSIGNED_INT,
-        (void*)(sizeof(unsigned int) * m_Entries[i].BaseIndex),
-        numInstances,
-        m_Entries[i].BaseVertex);
+      glDrawElementsInstancedBaseVertex(GL_TRIANGLES, 
+                                        entry.NumIndices,
+                                        GL_UNSIGNED_INT,
+                                        reinterpret_cast<void*>
+                                          (sizeof(unsigned int) * entry.BaseIndex),
+                                        numInstances,
+                                        entry.BaseVertex);
     }
 
     // Make sure the VAO is not changed from the outside    
