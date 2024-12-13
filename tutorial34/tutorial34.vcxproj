@@ -36,6 +36,9 @@
     <ClCompile Include="t34_technique.cpp" />
     <ClCompile Include="t34_texture.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\lighting.glsl" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C6EC9373-2CD6-4F23-8B1F-1593B6157724}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
