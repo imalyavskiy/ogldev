@@ -20,13 +20,16 @@
 #define	TECHNIQUE_H
 
 #include <list>
+
 #include <GL/glew.h>
 
-#include "ogldev_util.h"
+#include "t34_util.h"
 
-class Technique
+namespace t34
 {
-public:
+  class Technique
+  {
+  public:
 
     Technique(const char* pEffectFile);
 
@@ -34,7 +37,7 @@ public:
 
     void Enable();
 
-protected:
+  protected:
     
     bool CompileProgram(const char* pProgram);
     
@@ -42,10 +45,10 @@ protected:
     
     GLint GetProgramParam(GLint param);
 
-private:    
+  private:    
     GLint m_effect;    
-    GLint m_shaderProg;
+    GLint m_shaderProg = 0;
     const char* m_pEffectFile;
-};
-
+  };
+}
 #endif	/* TECHNIQUE_H */

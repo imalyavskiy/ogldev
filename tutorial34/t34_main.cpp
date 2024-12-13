@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2011 Etay Meiri
+  Copyright 2011 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,18 +14,33 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+    Tutorial 34 - OpenGL effect library
 */
 
-#ifndef GLUT_BACKEND_H
-#define	GLUT_BACKEND_H
+#define WINDOW_WIDTH      1280  
+#define WINDOW_HEIGHT     1024
+#define WINDOW_BPP        32
+#define WINDOW_FULLSCREEN false
+#define WINDOW_TITLE      "Tutorial 34"
 
-#include "callbacks.h"
+#include "t34_mainapp.h"
 
-void GLUTBackendInit(int argc, char** argv);
+int main(int argc, char** argv)
+{
+  t34::GLUTBackendInit(argc, argv);
 
-bool GLUTBackendCreateWindow(unsigned int Width, unsigned int Height, unsigned int bpp, bool isFullScreen, const char* pTitle);
+  if (!t34::GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_BPP, WINDOW_FULLSCREEN, WINDOW_TITLE))
+    return 1;
 
-void GLUTBackendRun(ICallbacks* pCallbacks);
+  std::srand(/*WINAPI->*/GetCurrentProcessId());
 
-#endif	/* GLUT_BACKEND_H */
+  const auto pApp = std::make_unique<t34::MainApp>(WINDOW_WIDTH, WINDOW_HEIGHT);
 
+  if (!pApp->Init())
+    return 1;
+
+  pApp->Run();
+
+  return 0;
+}

@@ -4,9 +4,9 @@
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
 ga('create', 'UA-35259428-1', 'auto');
-ga('send', 'pageview');</script></head><body><div class="row header"><div class="large-12 columns"><div class="nav-bar right"><ul class="button-group"><li><a href="../index.html" class="button nav-left">Содержание</a></li><li><a href="../instr.html" class="button">Инструкции</a></li><li><a href="../cont.html" class="button nav-right">Контакты</a></li></ul></div><h1><small>Уроки по OpenGL с сайта OGLDev</small></h1><hr /></div></div><div class="row"><div class="large-12 columns"><div class="tutorial"><h2><a href="http://ogldev.atspace.co.uk/www/tutorial34/tutorial34.html">Урок 34 - GLFX - An OpenGL Effect Library</a></h2><p>Этот урок слегка отличается от предыдущих. Вместо изучения возможностей технологий OpenGL мы собираемся рассмотреть GLFX, библиотеку эффектов OpenGL. <em>Эффект</em> - это текстовый файл, который, возможно, содержит несколько шейдеров и упрощает комбинирование их в программе. Это позволяет обойти ограничение функции glShaderSource(), которая требует указать текст только одного этапа шейдеров. Она насильно заставляет использовать различные текстовые файлы для каждого шейдера (или различные буферы, как мы делали в прошлых уроках). Помещение всех шейдеров в один файл упрощает обмен определением структур между ними. Кроме того, GLFX предоставляет простой API для перевода эффектов в программу GLSL, что частично скрывает сложность функций OpenGL.</p>
+ga('send', 'pageview');</script></head><body><div class="row header"><div class="large-12 columns"><div class="nav-bar right"><ul class="button-group"><li><a href="../index.html" class="button nav-left">Содержание</a></li><li><a href="../instr.html" class="button">Инструкции</a></li><li><a href="../cont.html" class="button nav-right">Контакты</a></li></ul></div><h1><small>Уроки по OpenGL с сайта OGLDev</small></h1><hr /></div></div><div class="row"><div class="large-12 columns"><div class="tutorial"><h2><a href="http://ogldev.atspace.co.uk/www/tutorial34/tutorial34.html">Урок 34 - GLFX - An OpenGL Effect Library</a></h2><p>Этот урок слегка отличается от предыдущих. Вместо изучения возможностей технологий OpenGL мы собираемся рассмотреть GLFX, библиотеку эффектов OpenGL. <em>Эффект</em> - это текстовый файл, который, возможно, содержит несколько шейдеров и упрощает комбинирование их в программе. Это позволяет обойти ограничение функции <font size=4 face="Courier New">glShaderSource()</font>, которая требует указать текст только одного этапа шейдеров. Она насильно заставляет использовать различные текстовые файлы для каждого шейдера (или различные буферы, как мы делали в прошлых уроках). Помещение всех шейдеров в один файл упрощает обмен определением структур между ними. Кроме того, GLFX предоставляет простой API для перевода эффектов в программу GLSL, что частично скрывает сложность функций OpenGL.</p>
 
-<p>Идея файлов эффектов не нова. На самом деле, Microsoft уже годами раннее реализовало это в мире DirectX. Я уверен, что игровые студии имеют их собственный инструментарий, но к стыду говорят, в OpenGL нет для этого стандарта. Библиотека эффектов, которую мы будем использовать, - свободный проект Max Aizenshtein. Домашняя страница библиотеки <a href="http://code.google.com/p/glfx/">тута</a>.</p>
+<p>Идея файлов эффектов не нова. На самом деле, Microsoft уже годами раннее реализовало это в мире DirectX. Я уверен, что игровые студии имеют их собственный инструментарий, но к стыду говоря, в OpenGL нет для этого стандарта. Библиотека эффектов, которую мы будем использовать, - свободный проект Max Aizenshtein. Домашняя страница библиотеки <a href="http://code.google.com/p/glfx/">тут</a>.</p>
 
 <p>Существует 2 способа установки GLFX. Если вы используете Ubuntu, то вы можете просто установить deb пакет из моего ppa на launchpad.net, или вы можете скачать исходный код и собрать самостоятельно.</p>
 
@@ -46,29 +46,29 @@ ga('send', 'pageview');</script></head><body><div class="row header"><div class=
 
 <h3 id="glfx--">Внедрении GLFX в проект</h3>
 
-<p>Добавьте следующее для получения доступа к api GLFX:</p>
+<p>Добавьте следующее для получения доступа к api GLFX(см. t34_lighting_technique.cpp) :</p>
 
 <pre><code>#include &lt;glfx.h&gt;
 </code></pre>
 
 <p>Создание указателя на эффект:</p>
 
-<pre><code>int effect = glfxGenEffect();
-</code></pre>
+<pre><code>Technique::Technique(const char* pEffectFile)
+  : m_effect(glfxGenEffect())
+  ...
+  </code></pre>
 
 <p>Проход по файлу эффекта (мы получим его содержание мгновенно):</p>
 
-<pre><code>if (!glfxParseEffectFromFile(effect, "effect.glsl")) {
-#ifdef __cplusplus	// C++ error handling
-    std::string log = glfxGetEffectLog(effect);
-    std::cout &lt;&lt; "Error parsing effect: " &lt;&lt; log &lt;&lt; std::endl;
-#else // C error handling
-    char log[10000];
-    glfxGetEffectLog(effect, log, sizeof(log));
-    printf("Error parsing effect: %s:\n", log);
-#endif
-    return;
-}
+<pre><code>bool Technique::CompileProgram(const char* pProgram)
+{
+  if (!glfxParseEffectFromFile(m_effect, m_pEffectFile)) {
+    const string log = glfxGetEffectLog(m_effect);
+    printf("Error creating effect from file '%s':\n", m_pEffectFile);
+    printf("%s\n", log.c_str());
+    return false;
+  }
+  ...
 </code></pre>
 
 <p>Компилирование программы (комбинация из VS, FS и прочих) определяется в файле эффекта следующим образом:</p>

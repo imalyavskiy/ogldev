@@ -18,67 +18,69 @@
 #ifndef LIGHTING_TECHNIQUE_H
 #define	LIGHTING_TECHNIQUE_H
 
-#include "technique.h"
-#include "math_3d.h"
+#include "t34_technique.h"
+#include "t34_math_3d.h"
 
-struct BaseLight
+namespace t34
 {
+  struct BaseLight
+  {
     Vector3f Color;
     float AmbientIntensity;
     float DiffuseIntensity;
 
     BaseLight()
     {
-        Color = Vector3f(0.0f, 0.0f, 0.0f);
-        AmbientIntensity = 0.0f;
-        DiffuseIntensity = 0.0f;
+      Color = Vector3f(0.0f, 0.0f, 0.0f);
+      AmbientIntensity = 0.0f;
+      DiffuseIntensity = 0.0f;
     }
-};
+  };
 
-struct DirectionalLight : public BaseLight
-{        
+  struct DirectionalLight : public BaseLight
+  {        
     Vector3f Direction;
 
     DirectionalLight()
     {
-        Direction = Vector3f(0.0f, 0.0f, 0.0f);
+      Direction = Vector3f(0.0f, 0.0f, 0.0f);
     }
-};
+  };
 
-struct PointLight : public BaseLight
-{
+  struct PointLight : public BaseLight
+  {
     Vector3f Position;
 
     struct
     {
-        float Constant;
-        float Linear;
-        float Exp;
+      float Constant;
+      float Linear;
+      float Exp;
     } Attenuation;
 
     PointLight()
     {
-        Position = Vector3f(0.0f, 0.0f, 0.0f);
-        Attenuation.Constant = 1.0f;
-        Attenuation.Linear = 0.0f;
-        Attenuation.Exp = 0.0f;
+      Position = Vector3f(0.0f, 0.0f, 0.0f);
+      Attenuation.Constant = 1.0f;
+      Attenuation.Linear = 0.0f;
+      Attenuation.Exp = 0.0f;
     }
-};
+  };
 
-struct SpotLight : public PointLight
-{
+  struct SpotLight : public PointLight
+  {
     Vector3f Direction;
     float Cutoff;
 
     SpotLight()
     {
-        Direction = Vector3f(0.0f, 0.0f, 0.0f);
-        Cutoff = 0.0f;
+      Direction = Vector3f(0.0f, 0.0f, 0.0f);
+      Cutoff = 0.0f;
     }
-};
+  };
 
-class LightingTechnique : public Technique {
-public:
+  class LightingTechnique : public Technique {
+  public:
 
     static const unsigned int MAX_POINT_LIGHTS = 2;
     static const unsigned int MAX_SPOT_LIGHTS = 2;
@@ -89,16 +91,16 @@ public:
 
     void SetWVP(const Matrix4f& WVP);
     void SetWorldMatrix(const Matrix4f& WVP);
-    void SetColorTextureUnit(unsigned int TextureUnit);
-    void SetDirectionalLight(const DirectionalLight& Light);
-    void SetPointLights(unsigned int NumLights, const PointLight* pLights);
-    void SetSpotLights(unsigned int NumLights, const SpotLight* pLights);
-    void SetEyeWorldPos(const Vector3f& EyeWorldPos);
-    void SetMatSpecularIntensity(float Intensity);
-    void SetMatSpecularPower(float Power);
-    void SetColor(const Vector4f& Color);
+    void SetColorTextureUnit(unsigned int textureUnit);
+    void SetDirectionalLight(const DirectionalLight& light);
+    void SetPointLights(unsigned int numLights, const PointLight* pLights);
+    void SetSpotLights(unsigned int numLights, const SpotLight* pLights);
+    void SetEyeWorldPos(const Vector3f& eyeWorldPos);
+    void SetMatSpecularIntensity(float intensity);
+    void SetMatSpecularPower(float power);
+    void SetColor(const Vector4f& color);
 
-private:
+  private:
     
     GLuint m_WVPLocation;
     GLuint m_WorldMatrixLocation;
@@ -111,38 +113,38 @@ private:
     GLuint m_colorLocation;
 
     struct {
-        GLuint Color;
-        GLuint AmbientIntensity;
-        GLuint DiffuseIntensity;
-        GLuint Direction;
+      GLuint Color;
+      GLuint AmbientIntensity;
+      GLuint DiffuseIntensity;
+      GLuint Direction;
     } m_dirLightLocation;
 
     struct {
-        GLuint Color;
-        GLuint AmbientIntensity;
-        GLuint DiffuseIntensity;
-        GLuint Position;
-        struct {
-            GLuint Constant;
-            GLuint Linear;
-            GLuint Exp;
-        } Atten;
+      GLuint Color;
+      GLuint AmbientIntensity;
+      GLuint DiffuseIntensity;
+      GLuint Position;
+      struct {
+        GLuint Constant;
+        GLuint Linear;
+        GLuint Exp;
+      } Atten;
     } m_pointLightsLocation[MAX_POINT_LIGHTS];
 
     struct {
-        GLuint Color;
-        GLuint AmbientIntensity;
-        GLuint DiffuseIntensity;
-        GLuint Position;
-        GLuint Direction;
-        GLuint Cutoff;
-        struct {
-            GLuint Constant;
-            GLuint Linear;
-            GLuint Exp;
-        } Atten;
+      GLuint Color;
+      GLuint AmbientIntensity;
+      GLuint DiffuseIntensity;
+      GLuint Position;
+      GLuint Direction;
+      GLuint Cutoff;
+      struct {
+        GLuint Constant;
+        GLuint Linear;
+        GLuint Exp;
+      } Atten;
     } m_spotLightsLocation[MAX_SPOT_LIGHTS];
-};
-
+  };
+}
 
 #endif	/* LIGHTING_TECHNIQUE_H */
