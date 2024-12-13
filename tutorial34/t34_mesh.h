@@ -30,8 +30,10 @@
 #include "t34_math_3d.h"
 #include "t34_texture.h"
 
-struct Vertex
+namespace t34
 {
+  struct Vertex
+  {
     Vector3f m_pos;
     Vector2f m_tex;
     Vector3f m_normal;
@@ -40,16 +42,16 @@ struct Vertex
 
     Vertex(const Vector3f& pos, const Vector2f& tex, const Vector3f& normal)
     {
-        m_pos    = pos;
-        m_tex    = tex;
-        m_normal = normal;
+      m_pos    = pos;
+      m_tex    = tex;
+      m_normal = normal;
     }
-};
+  };
 
 
-class Mesh
-{
-public:
+  class Mesh
+  {
+  public:
     Mesh();
 
     ~Mesh();
@@ -60,7 +62,7 @@ public:
 	
     void Render(unsigned int NumInstances, const Matrix4f* WVPMats, const Matrix4f* WorldMats);
 
-private:
+  private:
     bool InitFromScene(const aiScene* pScene, const std::string& Filename);
     void InitMesh(const aiMesh* paiMesh,
                   std::vector<Vector3f>& Positions,
@@ -84,24 +86,24 @@ private:
     GLuint m_Buffers[6];
 
     struct MeshEntry {
-        MeshEntry()
-        {
-            NumIndices = 0;
-            BaseVertex = 0;
-            BaseIndex = 0;
-            MaterialIndex = INVALID_MATERIAL;
-        }
+      MeshEntry()
+      {
+        NumIndices = 0;
+        BaseVertex = 0;
+        BaseIndex = 0;
+        MaterialIndex = INVALID_MATERIAL;
+      }
         
-        unsigned int NumIndices;
-	unsigned int BaseVertex;
-        unsigned int BaseIndex;
-        unsigned int MaterialIndex;
+      unsigned int NumIndices;
+      unsigned int BaseVertex;
+      unsigned int BaseIndex;
+      unsigned int MaterialIndex;
     };
     
     std::vector<MeshEntry> m_Entries;
     std::vector<Texture*> m_Textures;
-};
-
+  };
+}
 
 #endif	/* MESH_H */
 

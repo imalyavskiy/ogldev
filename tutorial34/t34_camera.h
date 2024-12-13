@@ -21,10 +21,11 @@
 
 #include "t34_math_3d.h"
 
-
-class Camera
+namespace t34
 {
-public:
+  class Camera
+  {
+  public:
 
     Camera(int WindowWidth, int WindowHeight);
 
@@ -38,20 +39,20 @@ public:
 
     const Vector3f& GetPos() const
     {
-        return m_pos;
+      return m_pos;
     }
 
     const Vector3f& GetTarget() const
     {
-        return m_target;
+      return m_target;
     }
 
     const Vector3f& GetUp() const
     {
-        return m_up;
+      return m_up;
     }
 
-private:
+  private:
 
     void Init();
     void Update();
@@ -72,7 +73,8 @@ private:
     bool m_OnRightEdge;
 
     Vector2i m_mousePos;
-};
+  };
+}
 
 #endif	/* CAMERA_H */
 
