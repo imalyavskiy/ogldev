@@ -16,21 +16,20 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <limits.h>
-#include "math_3d.h"
+#include <climits>
 #include <string>
 #include <GL/glfx.h>
 
-
-#include "lighting_technique.h"
-#include "util.h"
+#include "t34_math_3d.h"
+#include "t34_lighting_technique.h"
+#include "t34_util.h"
 
 using namespace std;
 
 static const char* pEffectFile = "../tutorial34/shaders/lighting.glsl";
 
 LightingTechnique::LightingTechnique() : Technique(pEffectFile)
-{   
+{
 }
 
 
@@ -39,7 +38,7 @@ bool LightingTechnique::Init()
     if (!CompileProgram("Lighting")) {
         return false;
     }
-    
+
     m_WVPLocation = GetUniformLocation("gWVP");
     m_WorldMatrixLocation = GetUniformLocation("gWorld");
     m_colorTextureLocation = GetUniformLocation("gColorMap");

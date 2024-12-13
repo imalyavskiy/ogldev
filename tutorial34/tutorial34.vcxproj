@@ -11,28 +11,28 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="callbacks.h" />
-    <ClInclude Include="camera.h" />
-    <ClInclude Include="engine_common.h" />
-    <ClInclude Include="glut_backend.h" />
-    <ClInclude Include="lighting_technique.h" />
-    <ClInclude Include="math_3d.h" />
-    <ClInclude Include="mesh.h" />
-    <ClInclude Include="pipeline.h" />
-    <ClInclude Include="technique.h" />
-    <ClInclude Include="texture.h" />
-    <ClInclude Include="util.h" />
+    <ClInclude Include="t34_callbacks.h" />
+    <ClInclude Include="t34_camera.h" />
+    <ClInclude Include="t34_engine_common.h" />
+    <ClInclude Include="t34_glut_backend.h" />
+    <ClInclude Include="t34_lighting_technique.h" />
+    <ClInclude Include="t34_math_3d.h" />
+    <ClInclude Include="t34_mesh.h" />
+    <ClInclude Include="t34_pipeline.h" />
+    <ClInclude Include="t34_technique.h" />
+    <ClInclude Include="t34_texture.h" />
+    <ClInclude Include="t34_util.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="camera.cpp" />
-    <ClCompile Include="glut_backend.cpp" />
-    <ClCompile Include="lighting_technique.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="math_3d.cpp" />
-    <ClCompile Include="mesh.cpp" />
-    <ClCompile Include="pipeline.cpp" />
-    <ClCompile Include="technique.cpp" />
-    <ClCompile Include="texture.cpp" />
+    <ClCompile Include="t34_camera.cpp" />
+    <ClCompile Include="t34_glut_backend.cpp" />
+    <ClCompile Include="t34_lighting_technique.cpp" />
+    <ClCompile Include="t34_main.cpp" />
+    <ClCompile Include="t34_math_3d.cpp" />
+    <ClCompile Include="t34_mesh.cpp" />
+    <ClCompile Include="t34_pipeline.cpp" />
+    <ClCompile Include="t34_technique.cpp" />
+    <ClCompile Include="t34_texture.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C6EC9373-2CD6-4F23-8B1F-1593B6157724}</ProjectGuid>

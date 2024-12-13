@@ -16,13 +16,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdio.h>
+#include <cstdio>
 #include <string>
-#include <assert.h>
+#include <cassert>
+
 #include <GL/glfx.h>
 
-#include "technique.h"
-#include "util.h"
+#include "t34_technique.h"
+#include "t34_util.h"
 
 using namespace std;
 

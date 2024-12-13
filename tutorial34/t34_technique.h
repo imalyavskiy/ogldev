@@ -20,9 +20,10 @@
 #define	TECHNIQUE_H
 
 #include <list>
+
 #include <GL/glew.h>
 
-#include "ogldev_util.h"
+#include "t34_util.h"
 
 class Technique
 {

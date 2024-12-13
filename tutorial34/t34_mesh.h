@@ -26,9 +26,9 @@
 #include <assimp/scene.h>       // Output data structure
 #include <assimp/postprocess.h> // Post processing flags
 
-#include "util.h"
-#include "math_3d.h"
-#include "texture.h"
+#include "t34_util.h"
+#include "t34_math_3d.h"
+#include "t34_texture.h"
 
 struct Vertex
 {

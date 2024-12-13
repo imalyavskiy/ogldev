@@ -17,7 +17,7 @@
 */
 #include <GL/freeglut.h>
 
-#include "camera.h"
+#include "t34_camera.h"
 
 const static float STEP_SCALE = 0.1f;
 const static int MARGIN = 10;

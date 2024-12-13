@@ -18,22 +18,25 @@
     Tutorial 34 - OpenGL effect library
 */
 
-#include <math.h>
-#include <GL/glew.h>
-#include <GL/freeglut.h>
+#include <cmath>
 #include <string>
 
-#include "engine_common.h"
-#include "ogldev_util.h"
-#include "pipeline.h"
-#include "camera.h"
-#include "ogldev_texture.h"
-#include "lighting_technique.h"
-#include "glut_backend.h"
-#include "mesh.h"
+#include <GL/glew.h>
+#include <GL/freeglut.h>
+
+#include "t34_engine_common.h"
+#include "t34_util.h"
+#include "t34_pipeline.h"
+#include "t34_camera.h"
+#include "t34_texture.h"
+#include "t34_lighting_technique.h"
+#include "t34_glut_backend.h"
+#include "t34_mesh.h"
+
 #ifdef FREETYPE
 #include "freetypeGL.h"
 #endif
+
 using namespace std;
 
 #define WINDOW_WIDTH  1280  
