@@ -69,6 +69,11 @@ namespace t33 {
     PersProjInfo m_persProjInfo;
 #ifdef FREETYPE
     FontRenderer m_fontRenderer;
+    // The FontRenderer class resides in the original repo placed here(https://github.com/emeiri/ogldev) at
+    // https://github.com/emeiri/ogldev/blob/master/Common/FreetypeGL/freetypeGL.h but in order to made the
+    // code compilable some unidentified libraries required. Thus I decided to got rid of this stuff and get
+    // back later also I suppose it is better to use self contained ImGUI(https://github.com/ocornut/imgui)
+    // library for such tasks
 #endif
     int m_time;
     int m_frameCount = 0;
