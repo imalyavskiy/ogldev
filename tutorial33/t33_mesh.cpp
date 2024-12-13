@@ -16,17 +16,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <assert.h>
+#include <cassert>
 
 #include "t33_mesh.h"
 
 using namespace std;
 
-#define POSITION_LOCATION 0
-#define TEX_COORD_LOCATION 1
-#define NORMAL_LOCATION 2
-#define WVP_LOCATION 3
-#define WORLD_LOCATION 7
+static constexpr uint32_t POSITION_LOCATION = 0;
+static constexpr uint32_t TEX_COORD_LOCATION = 1;
+static constexpr uint32_t NORMAL_LOCATION = 2;
+static constexpr uint32_t WVP_LOCATION = 3;
+static constexpr uint32_t WORLD_LOCATION = 7;
 
 namespace t33 {
   Mesh::Mesh()
@@ -59,7 +59,7 @@ namespace t33 {
   }
 
 
-  bool Mesh::LoadMesh(const string& Filename)
+  bool Mesh::LoadMesh(const string& fileName)
   {
     // Release the previously loaded mesh (if it exists)
     Clear();
@@ -71,33 +71,33 @@ namespace t33 {
     // Create the buffers for the vertices attributes
     glGenBuffers(ARRAY_SIZE_IN_ELEMENTS(m_Buffers), m_Buffers);
 
-    bool Ret = false;
-    Assimp::Importer Importer;
+    bool ret = false;
+    Assimp::Importer importer;
 
-    const aiScene* pScene = Importer.ReadFile(Filename.c_str(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
+    const aiScene* pScene = importer.ReadFile(fileName.c_str(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
 
     if (pScene) {
-      Ret = InitFromScene(pScene, Filename);
+      ret = InitFromScene(pScene, fileName);
     }
     else {
-      printf("Error parsing '%s': '%s'\n", Filename.c_str(), Importer.GetErrorString());
+      printf("Error parsing '%s': '%s'\n", fileName.c_str(), importer.GetErrorString());
     }
 
     // Make sure the VAO is not changed from the outside
     glBindVertexArray(0);
 
-    return Ret;
+    return ret;
   }
 
-  bool Mesh::InitFromScene(const aiScene* pScene, const string& Filename)
+  bool Mesh::InitFromScene(const aiScene* pScene, const string& fileName)
   {
     m_Entries.resize(pScene->mNumMeshes);
     m_Textures.resize(pScene->mNumMaterials);
 
-    vector<Vector3f> Positions;
-    vector<Vector3f> Normals;
-    vector<Vector2f> TexCoords;
-    vector<unsigned int> Indices;
+    vector<Vector3f> positions;
+    vector<Vector3f> normals;
+    vector<Vector2f> texCoords;
+    vector<unsigned int> indices;
 
     unsigned int NumVertices = 0;
     unsigned int NumIndices = 0;
@@ -114,45 +114,45 @@ namespace t33 {
     }
 
     // Reserve space in the vectors for the vertex attributes and indices
-    Positions.reserve(NumVertices);
-    Normals.reserve(NumVertices);
-    TexCoords.reserve(NumVertices);
-    Indices.reserve(NumIndices);
+    positions.reserve(NumVertices);
+    normals.reserve(NumVertices);
+    texCoords.reserve(NumVertices);
+    indices.reserve(NumIndices);
 
     // Initialize the meshes in the scene one by one
     for (unsigned int i = 0; i < m_Entries.size(); i++) {
       const aiMesh* paiMesh = pScene->mMeshes[i];
-      InitMesh(paiMesh, Positions, Normals, TexCoords, Indices);
+      InitMesh(paiMesh, positions, normals, texCoords, indices);
     }
 
-    if (!InitMaterials(pScene, Filename)) {
+    if (!InitMaterials(pScene, fileName)) {
       return false;
     }
 
     // Generate and populate the buffers with vertex attributes and the indices
     glBindBuffer(GL_ARRAY_BUFFER, m_Buffers[POS_VB]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Positions[0]) * Positions.size(), &Positions[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(positions[0]) * positions.size(), &positions[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(POSITION_LOCATION);
-    glVertexAttribPointer(POSITION_LOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(POSITION_LOCATION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_Buffers[TEXCOORD_VB]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(TexCoords[0]) * TexCoords.size(), &TexCoords[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords[0]) * texCoords.size(), &texCoords[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(TEX_COORD_LOCATION);
-    glVertexAttribPointer(TEX_COORD_LOCATION, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(TEX_COORD_LOCATION, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_Buffers[NORMAL_VB]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Normals[0]) * Normals.size(), &Normals[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(normals[0]) * normals.size(), &normals[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(NORMAL_LOCATION);
-    glVertexAttribPointer(NORMAL_LOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(NORMAL_LOCATION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Buffers[INDEX_BUFFER]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices[0]) * Indices.size(), &Indices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices[0]) * indices.size(), &indices[0], GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_Buffers[WVP_MAT_VB]);
 
     for (unsigned int i = 0; i < 4; i++) {
       glEnableVertexAttribArray(WVP_LOCATION + i);
-      glVertexAttribPointer(WVP_LOCATION + i, 4, GL_FLOAT, GL_FALSE, sizeof(Matrix4f), (const GLvoid*)(sizeof(GLfloat) * i * 4));
+      glVertexAttribPointer(WVP_LOCATION + i, 4, GL_FLOAT, GL_FALSE, sizeof(Matrix4f), reinterpret_cast<const GLvoid*>(sizeof(GLfloat) * i * 4));
       glVertexAttribDivisor(WVP_LOCATION + i, 1);
     }
 
@@ -160,57 +160,50 @@ namespace t33 {
 
     for (unsigned int i = 0; i < 4; i++) {
       glEnableVertexAttribArray(WORLD_LOCATION + i);
-      glVertexAttribPointer(WORLD_LOCATION + i, 4, GL_FLOAT, GL_FALSE, sizeof(Matrix4f), (const GLvoid*)(sizeof(GLfloat) * i * 4));
+      glVertexAttribPointer(WORLD_LOCATION + i, 4, GL_FLOAT, GL_FALSE, sizeof(Matrix4f), reinterpret_cast<const GLvoid*>(sizeof(GLfloat) * i * 4));
       glVertexAttribDivisor(WORLD_LOCATION + i, 1);
     }
 
     return GLCheckError();
   }
 
-  void Mesh::InitMesh(const aiMesh* paiMesh,
-    vector<Vector3f>& Positions,
-    vector<Vector3f>& Normals,
-    vector<Vector2f>& TexCoords,
-    vector<unsigned int>& Indices)
+  void Mesh::InitMesh(const aiMesh* paiMesh, vector<Vector3f>& positions, vector<Vector3f>& normals, vector<Vector2f>& texCoords, vector<unsigned int>& indices)
   {
-    const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
+    const aiVector3D zero3D(0.0f, 0.0f, 0.0f);
 
     // Populate the vertex attribute vectors
     for (unsigned int i = 0; i < paiMesh->mNumVertices; i++) {
       const aiVector3D* pPos = &(paiMesh->mVertices[i]);
       const aiVector3D* pNormal = &(paiMesh->mNormals[i]);
-      const aiVector3D* pTexCoord = paiMesh->HasTextureCoords(0) ? &(paiMesh->mTextureCoords[0][i]) : &Zero3D;
+      const aiVector3D* pTexCoord = paiMesh->HasTextureCoords(0) ? &(paiMesh->mTextureCoords[0][i]) : &zero3D;
 
-      Positions.push_back(Vector3f(pPos->x, pPos->y, pPos->z));
-      Normals.push_back(Vector3f(pNormal->x, pNormal->y, pNormal->z));
-      TexCoords.push_back(Vector2f(pTexCoord->x, pTexCoord->y));
+      positions.emplace_back(pPos->x, pPos->y, pPos->z);
+      normals.emplace_back(pNormal->x, pNormal->y, pNormal->z);
+      texCoords.emplace_back(pTexCoord->x, pTexCoord->y);
     }
 
     // Populate the index buffer
     for (unsigned int i = 0; i < paiMesh->mNumFaces; i++) {
-      const aiFace& Face = paiMesh->mFaces[i];
-      assert(Face.mNumIndices == 3);
-      Indices.push_back(Face.mIndices[0]);
-      Indices.push_back(Face.mIndices[1]);
-      Indices.push_back(Face.mIndices[2]);
+      const aiFace& face = paiMesh->mFaces[i];
+      assert(face.mNumIndices == 3);
+      indices.push_back(face.mIndices[0]);
+      indices.push_back(face.mIndices[1]);
+      indices.push_back(face.mIndices[2]);
     }
   }
 
   bool Mesh::InitMaterials(const aiScene* pScene, const string& Filename)
   {
     // Extract the directory part from the file name
-    string::size_type SlashIndex = Filename.find_last_of("/");
-    string Dir;
+    const string::size_type slashIndex = Filename.find_last_of("/");
+    string dir;
 
-    if (SlashIndex == string::npos) {
-      Dir = ".";
-    }
-    else if (SlashIndex == 0) {
-      Dir = "/";
-    }
-    else {
-      Dir = Filename.substr(0, SlashIndex);
-    }
+    if (slashIndex == string::npos)
+      dir = ".";
+    else if (slashIndex == 0)
+      dir = "/";
+    else
+      dir = Filename.substr(0, slashIndex);
 
     bool Ret = true;
 
@@ -218,30 +211,30 @@ namespace t33 {
     for (unsigned int i = 0; i < pScene->mNumMaterials; i++) {
       const aiMaterial* pMaterial = pScene->mMaterials[i];
 
-      m_Textures[i] = NULL;
+      m_Textures[i] = nullptr;
 
       if (pMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
-        aiString Path;
+        aiString path;
 
-        if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &Path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
-          string p(Path.data);
+        if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path, nullptr, nullptr, nullptr, nullptr, nullptr) == AI_SUCCESS) {
+          string p(path.data);
 
           if (p.substr(0, 2) == ".\\") {
             p = p.substr(2, p.size() - 2);
           }
 
-          string FullPath = Dir + "/" + p;
+          string fullPath = dir + "/" + p;
 
-          m_Textures[i] = new Texture(GL_TEXTURE_2D, FullPath.c_str());
+          m_Textures[i] = new Texture(GL_TEXTURE_2D, fullPath);
 
           if (!m_Textures[i]->Load()) {
-            printf("Error loading texture '%s'\n", FullPath.c_str());
+            printf("Error loading texture '%s'\n", fullPath.c_str());
             delete m_Textures[i];
-            m_Textures[i] = NULL;
+            m_Textures[i] = nullptr;
             Ret = false;
           }
           else {
-            printf("Loaded texture '%s'\n", FullPath.c_str());
+            printf("Loaded texture '%s'\n", fullPath.c_str());
           }
         }
       }
@@ -251,31 +244,34 @@ namespace t33 {
   }
 
 
-  void Mesh::Render(unsigned int NumInstances, const Matrix4f* WVPMats, const Matrix4f* WorldMats)
+  void Mesh::Render(unsigned int numInstances, const Matrix4f* matricesWorldViewProjection, const Matrix4f* matricesWorld)
   {
     glBindBuffer(GL_ARRAY_BUFFER, m_Buffers[WVP_MAT_VB]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Matrix4f) * NumInstances, WVPMats, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, numInstances * sizeof(Matrix4f), 
+                   matricesWorldViewProjection, GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_Buffers[WORLD_MAT_VB]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Matrix4f) * NumInstances, WorldMats, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, numInstances * sizeof(Matrix4f), 
+                   matricesWorld, GL_DYNAMIC_DRAW);
 
     glBindVertexArray(m_VAO);
 
-    for (unsigned int i = 0; i < m_Entries.size(); i++) {
-      const unsigned int MaterialIndex = m_Entries[i].MaterialIndex;
+    for (const auto& entry : m_Entries)
+    {
+      const uint32_t materialIndex = entry.MaterialIndex;
 
-      assert(MaterialIndex < m_Textures.size());
+      assert(materialIndex < m_Textures.size());
 
-      if (m_Textures[MaterialIndex]) {
-        m_Textures[MaterialIndex]->Bind(GL_TEXTURE0);
-      }
+      if (m_Textures[materialIndex])
+        m_Textures[materialIndex]->Bind(GL_TEXTURE0);
 
-      glDrawElementsInstancedBaseVertex(GL_TRIANGLES,
-        m_Entries[i].NumIndices,
-        GL_UNSIGNED_INT,
-        (void*)(sizeof(unsigned int) * m_Entries[i].BaseIndex),
-        NumInstances,
-        m_Entries[i].BaseVertex);
+      glDrawElementsInstancedBaseVertex(GL_TRIANGLES, 
+                                        entry.NumIndices,
+                                        GL_UNSIGNED_INT,
+                                        reinterpret_cast<void*>
+                                          (sizeof(unsigned int) * entry.BaseIndex),
+                                        numInstances,
+                                        entry.BaseVertex);
     }
 
     // Make sure the VAO is not changed from the outside    
