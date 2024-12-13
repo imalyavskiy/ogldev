@@ -47,7 +47,7 @@ namespace t34
 
   private:    
     GLint m_effect;    
-    GLint m_shaderProg;
+    GLint m_shaderProg = 0;
     const char* m_pEffectFile;
   };
 }

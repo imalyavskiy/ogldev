@@ -18,283 +18,29 @@
     Tutorial 34 - OpenGL effect library
 */
 
-#include <cmath>
-#include <string>
+#define WINDOW_WIDTH      1280  
+#define WINDOW_HEIGHT     1024
+#define WINDOW_BPP        32
+#define WINDOW_FULLSCREEN false
+#define WINDOW_TITLE      "Tutorial 34"
 
-#include <GL/glew.h>
-#include <GL/freeglut.h>
-
-#include "t34_engine_common.h"
-#include "t34_util.h"
-#include "t34_pipeline.h"
-#include "t34_camera.h"
-#include "t34_texture.h"
-#include "t34_lighting_technique.h"
-#include "t34_glut_backend.h"
-#include "t34_mesh.h"
-
-#ifdef FREETYPE
-#include "freetypeGL.h"
-#endif
-
-using namespace std;
-
-#define WINDOW_WIDTH  1280  
-#define WINDOW_HEIGHT 1024
-
-#ifdef FREETYPE
-Markup sMarkup = { (char*)"Arial", 64, 1, 0, 0.0, 0.0,
-                   {.1,1.0,1.0,.5}, {1,1,1,0},
-                   0, {1,0,0,1}, 0, {1,0,0,1},
-                   0, {0,0,0,1}, 0, {0,0,0,1} };
-#endif
-
-namespace t34 {
-  class MainApp : public ICallbacks
-  {
-  public:
-
-    MainApp()
-#ifdef FREETYPE
-      : m_fontRenderer2(sMarkup)
-#endif
-    {
-      m_pGameCamera = NULL;
-      m_pEffect = NULL;
-      m_scale = 0.0f;
-      m_directionalLight.Color = Vector3f(1.0f, 1.0f, 1.0f);
-      m_directionalLight.AmbientIntensity = 0.55f;
-      m_directionalLight.DiffuseIntensity = 0.9f;
-      m_directionalLight.Direction = Vector3f(1.0f, 0.0, 0.0);
-
-      m_persProjInfo.FOV = 60.0f;
-      m_persProjInfo.Height = WINDOW_HEIGHT;
-      m_persProjInfo.Width = WINDOW_WIDTH;
-      m_persProjInfo.zNear = 1.0f;
-      m_persProjInfo.zFar = 100.0f;
-
-      m_frameCount = 0;
-      m_fps = 0.0f;
-
-      m_positions[0] = Vector3f(-2.0f, 0.0f, 6.0f);
-      m_positions[1] = Vector3f(0.0f, 0.0f, 6.0f);
-      m_positions[2] = Vector3f(2.0f, 0.0f, 6.0f);
-      m_positions[3] = Vector3f(4.0f, 0.0f, 6.0f);
-
-      m_velocity[0] = 10.0f;
-      m_velocity[1] = 15.0f;
-      m_velocity[2] = 50.0f;
-      m_velocity[3] = 20.0f;
-
-      m_colors[0] = Vector4f(1.0f, 0.0, 0.0, 0.0f);
-      m_colors[1] = Vector4f(0.0f, 1.0, 0.0, 0.0f);
-      m_colors[2] = Vector4f(0.0f, 0.0, 1.0, 0.0f);
-      m_colors[3] = Vector4f(1.0f, 0.0, 1.0, 0.0f);
-    }
-
-    ~MainApp()
-    {
-      SAFE_DELETE(m_pEffect);
-      SAFE_DELETE(m_pGameCamera);
-    }
-
-    bool Init()
-    {
-      Vector3f Pos(0.8f, 0.0f, 0.0f);
-      Vector3f Target(0.0f, 0.0f, 1.0f);
-      Vector3f Up(0.0, 1.0f, 0.0f);
-
-      m_pGameCamera = new Camera(WINDOW_WIDTH, WINDOW_HEIGHT, Pos, Target, Up);
-
-      m_pEffect = new LightingTechnique();
-
-      if (!m_pEffect->Init()) {
-        printf("Error initializing the lighting technique\n");
-        return false;
-      }
-
-      m_pEffect->Enable();
-
-      m_pEffect->SetColorTextureUnit(COLOR_TEXTURE_UNIT_INDEX);
-      m_pEffect->SetDirectionalLight(m_directionalLight);
-      m_pEffect->SetMatSpecularIntensity(0.0f);
-      m_pEffect->SetMatSpecularPower(0);
-
-      if (!m_mesh[0].LoadMesh("../Content/glfx/g.obj")) {
-        return false;
-      }
-
-      if (!m_mesh[1].LoadMesh("../Content/glfx/l.obj")) {
-        return false;
-      }
-
-      if (!m_mesh[2].LoadMesh("../Content/glfx/f.obj")) {
-        return false;
-      }
-
-      if (!m_mesh[3].LoadMesh("../Content/glfx/x.obj")) {
-        return false;
-      }
-
-#ifdef FREETYPE
-      if (!m_fontRenderer.InitFontRenderer()) {
-        return false;
-      }
-
-      if (!m_fontRenderer2.InitFontRenderer()) {
-        return false;
-      }
-#endif
-
-      m_time = glutGet(GLUT_ELAPSED_TIME);
-
-      return true;
-    }
-
-    void Run()
-    {
-      GLUTBackendRun(this);
-    }
-
-
-    virtual void RenderSceneCB()
-    {
-      CalcFPS();
-
-      m_scale += 0.005f;
-
-      m_pGameCamera->OnRender();
-
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-      m_pEffect->Enable();
-      m_pEffect->SetEyeWorldPos(m_pGameCamera->GetPos());
-
-      Pipeline p;
-      p.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
-      p.SetPerspectiveProj(m_persProjInfo);
-      p.Scale(0.1f, 0.1f, 0.1f);
-
-      Matrix4f WVPMatrics[1];
-      Matrix4f WorldMatrices[1];
-
-      for (int i = 0; i < ARRAY_SIZE_IN_ELEMENTS(m_mesh); i++) {
-        m_pEffect->SetColor(m_colors[i]);
-
-        p.Rotate(0.0, m_scale * m_velocity[i], 0.0f);
-        Vector3f Pos(m_positions[i]);
-        p.WorldPos(Pos);
-        m_pEffect->SetWVP(p.GetWVPTrans());
-        m_pEffect->SetWorldMatrix(p.GetWorldTrans());
-
-        m_mesh[i].Render(1, WVPMatrics, WorldMatrices);
-      }
-
-      RenderFPS();
-
-      glutSwapBuffers();
-    }
-
-    virtual void IdleCB()
-    {
-      RenderSceneCB();
-    }
-
-    virtual void SpecialKeyboardCB(int Key, int x, int y)
-    {
-      m_pGameCamera->OnKeyboard(Key);
-    }
-
-
-    virtual void KeyboardCB(unsigned char Key, int x, int y)
-    {
-      switch (Key) {
-      case 0x1b:
-        glutLeaveMainLoop();
-        break;
-      }
-    }
-
-
-    virtual void PassiveMouseCB(int x, int y)
-    {
-      m_pGameCamera->OnMouse(x, y);
-    }
-
-
-    virtual void MouseCB(int Button, int State, int x, int y)
-    {
-    }
-
-
-  private:
-
-    void CalcFPS()
-    {
-      m_frameCount++;
-
-      int time = glutGet(GLUT_ELAPSED_TIME);
-
-      if (time - m_time > 1000) {
-        m_fps = (float)m_frameCount * 1000.0f / (time - m_time);
-        m_time = time;
-        m_frameCount = 0;
-      }
-    }
-
-    void RenderFPS()
-    {
-      char text[32];
-      ZERO_MEM(text);
-      SNPRINTF(text, sizeof(text), "FPS: %.2f", m_fps);
-#ifdef FREETYPE
-      m_fontRenderer.RenderText(10, 10, text);
-      // The FontRenderer class resides in the original repo placed here(https://github.com/emeiri/ogldev) at
-      // https://github.com/emeiri/ogldev/blob/master/Common/FreetypeGL/freetypeGL.h but in order to made the
-      // code compilable some unidentified libraries required. Thus I decided to got rid of this stuff and get
-      // back later also I suppose it is better to use self contained ImGUI(https://github.com/ocornut/imgui)
-      // library for such tasks
-#endif
-    }
-
-    LightingTechnique* m_pEffect;
-    Camera* m_pGameCamera;
-    float m_scale;
-    DirectionalLight m_directionalLight;
-    Mesh m_mesh[4];
-    Vector3f m_positions[4];
-    float m_velocity[4];
-    Vector4f m_colors[4];
-    PersProjInfo m_persProjInfo;
-#ifdef FREETYPE
-    FontRenderer m_fontRenderer;
-    FontRenderer m_fontRenderer2;
-#endif
-    int m_time;
-    int m_frameCount;
-    float m_fps;
-  };
-}
+#include "t34_mainapp.h"
 
 int main(int argc, char** argv)
 {
   t34::GLUTBackendInit(argc, argv);
 
-  if (!t34::GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 32, false, "Tutorial 34")) {
+  if (!t34::GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_BPP, WINDOW_FULLSCREEN, WINDOW_TITLE))
     return 1;
-  }
 
   std::srand(/*WINAPI->*/GetCurrentProcessId());
 
-  auto pApp = new t34::MainApp();
+  const auto pApp = std::make_unique<t34::MainApp>(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-  if (!pApp->Init()) {
+  if (!pApp->Init())
     return 1;
-  }
 
   pApp->Run();
-
-  delete pApp;
 
   return 0;
 }

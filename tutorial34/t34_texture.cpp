@@ -61,7 +61,7 @@ namespace t34 {
 
   bool Texture::Load() const
   {
-    auto src = GenericLoader(m_fileName.c_str(), 0);
+    const auto src = GenericLoader(m_fileName.c_str(), 0);
     if (!src)
       return false;
 

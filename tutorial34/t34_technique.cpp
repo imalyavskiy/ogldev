@@ -29,10 +29,9 @@ using namespace std;
 
 namespace t34 {
   Technique::Technique(const char* pEffectFile)
+  : m_effect(glfxGenEffect())
+  , m_pEffectFile(pEffectFile)
   {
-    m_pEffectFile = pEffectFile;
-    m_shaderProg = 0;
-    m_effect = glfxGenEffect();
   }
 
 
@@ -50,7 +49,7 @@ namespace t34 {
   bool Technique::CompileProgram(const char* pProgram)
   {
     if (!glfxParseEffectFromFile(m_effect, m_pEffectFile)) {
-      string log = glfxGetEffectLog(m_effect);
+      const string log = glfxGetEffectLog(m_effect);
       printf("Error creating effect from file '%s':\n", m_pEffectFile);
       printf("%s\n", log.c_str());
       return false;
@@ -59,7 +58,7 @@ namespace t34 {
     m_shaderProg = glfxCompileProgram(m_effect, pProgram);
 
     if (m_shaderProg < 0) {
-      string log = glfxGetEffectLog(m_effect);
+      const string log = glfxGetEffectLog(m_effect);
       printf("Error compiling program '%s' in effect file '%s':\n", pProgram, m_pEffectFile);
       printf("%s\n", log.c_str());
       return false;
