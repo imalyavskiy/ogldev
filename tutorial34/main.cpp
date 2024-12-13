@@ -46,11 +46,11 @@ Markup sMarkup = { (char*)"Arial", 64, 1, 0, 0.0, 0.0,
                    0, {0,0,0,1}, 0, {0,0,0,1} };
 #endif
 
-class Tutorial34 : public ICallbacks
+class MainApp : public ICallbacks
 {
 public:
 
-    Tutorial34() 
+    MainApp() 
 #ifdef FREETYPE
            : m_fontRenderer2(sMarkup)
 #endif
@@ -88,7 +88,7 @@ public:
         m_colors[3] = Vector4f(1.0f, 0.0, 1.0, 0.0f);
     }
 
-    ~Tutorial34()
+    ~MainApp()
     {
         SAFE_DELETE(m_pEffect);
         SAFE_DELETE(m_pGameCamera);
@@ -205,7 +205,7 @@ public:
     virtual void KeyboardCB(unsigned char Key, int x, int y)
     {
         switch (Key) {
-            case 'q':
+            case 0x1b:
                 glutLeaveMainLoop();
                 break;
         }
@@ -216,15 +216,15 @@ public:
     {
         m_pGameCamera->OnMouse(x, y);
     }
-    
-    
+
+
     virtual void MouseCB(int Button, int State, int x, int y)
     {
     }
 
 
 private:
-    
+
     void CalcFPS()
     {
         m_frameCount++;
@@ -241,20 +241,25 @@ private:
     void RenderFPS()
     {
         char text[32];
-        ZERO_MEM(text);        
+        ZERO_MEM(text);
         SNPRINTF(text, sizeof(text), "FPS: %.2f", m_fps);
 #ifdef FREETYPE
-        m_fontRenderer.RenderText(10, 10, text);        
+        m_fontRenderer.RenderText(10, 10, text);
+        // The FontRenderer class resides in the original repo placed here(https://github.com/emeiri/ogldev) at
+        // https://github.com/emeiri/ogldev/blob/master/Common/FreetypeGL/freetypeGL.h but in order to made the
+        // code compilable some unidentified libraries required. Thus I decided to got rid of this stuff and get
+        // back later also I suppose it is better to use self contained ImGUI(https://github.com/ocornut/imgui)
+        // library for such tasks
 #endif
-    }       
+    }
 
     LightingTechnique* m_pEffect;
     Camera* m_pGameCamera;
     float m_scale;
     DirectionalLight m_directionalLight;
     Mesh m_mesh[4];
-    Vector3f m_positions[4];            
-    float m_velocity[4];    
+    Vector3f m_positions[4];
+    float m_velocity[4];
     Vector4f m_colors[4];
     PersProjInfo m_persProjInfo;
 #ifdef FREETYPE
@@ -274,15 +279,15 @@ int main(int argc, char** argv)
     if (!GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 32, false, "Tutorial 34")) {
         return 1;
     }
-    
+
     std::srand(/*WINAPI->*/GetCurrentProcessId());
     
-    Tutorial34* pApp = new Tutorial34();
+    MainApp* pApp = new MainApp();
 
     if (!pApp->Init()) {
         return 1;
     }
-    
+
     pApp->Run();
 
     delete pApp;
