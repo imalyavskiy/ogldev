@@ -21,7 +21,7 @@
 #include "t35_technique.h"
 #include "t35_math_3d.h"
 
-namespace t35
+namespace t36
 {
   namespace glfx
   {

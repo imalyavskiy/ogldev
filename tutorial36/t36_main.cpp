@@ -356,9 +356,13 @@ namespace t36
 #endif
     }
 
-    DSGeomPassTech m_DSGeomPassTech;
-    DSPointLightPassTech m_DSPointLightPassTech;
-    DSDirLightPassTech m_DSDirLightPassTech;
+    //glfx::DSGeomPassTech m_DSGeomPassTech;
+    bare::DSGeomPassTech m_DSGeomPassTech;
+    //glfx::DSPointLightPassTech m_DSPointLightPassTech;
+    bare::DSPointLightPassTech m_DSPointLightPassTech;
+    //glfx::DSDirLightPassTech m_DSDirLightPassTech;
+    bare::DSDirLightPassTech m_DSDirLightPassTech;
+
     Camera* m_pGameCamera;
     float m_scale;
     SpotLight m_spotLight;

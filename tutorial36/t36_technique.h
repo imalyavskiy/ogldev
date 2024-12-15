@@ -1,6 +1,6 @@
 /*
 
-  Copyright 2011 Etay Meiri
+	Copyright 2011 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,29 +24,67 @@
 
 namespace t36
 {
-  class Technique
+  namespace glfx
   {
-  public:
+    class Technique
+    {
+    public:
 
-    Technique(const char* pEffectFile);
+      Technique(const char* pEffectFile);
 
-    ~Technique();
+      ~Technique();
 
-    void Enable();
+      void Enable();
 
-  protected:
+    protected:
 
-    bool CompileProgram(const char* pProgram);
+      bool CompileProgram(const char* pProgram);
 
-    GLint GetUniformLocation(const char* pUniformName);
+      GLint GetUniformLocation(const char* pUniformName);
 
-    GLint GetProgramParam(GLint param);
+      GLint GetProgramParam(GLint param);
 
-  private:
-    GLint m_effect;
-    GLint m_shaderProg;
-    const char* m_pEffectFile;
-  };
+    private:
+      GLint m_effect;
+      GLint m_shaderProg;
+      const char* m_pEffectFile;
+    };
+  }
+
+  namespace bare
+  {
+    class Technique
+    {
+    public:
+
+      Technique();
+
+      virtual ~Technique();
+
+      virtual bool Init();
+
+      void Enable();
+
+      GLuint GetProgram() const { return m_shaderProg; }
+
+    protected:
+
+      bool AddShader(GLenum ShaderType, const char* pFilename);
+
+      bool Finalize();
+
+      GLint GetUniformLocation(const char* pUniformName);
+
+      GLuint m_shaderProg = 0;
+
+    private:
+
+      void PrintUniformList();
+
+      typedef std::list<GLuint> ShaderObjList;
+      ShaderObjList m_shaderObjList;
+    };
+  }
 }
 
 #endif	/* TECHNIQUE_H */

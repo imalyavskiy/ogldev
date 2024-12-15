@@ -22,7 +22,7 @@
 #include "t35_ds_geom_pass_tech.h"
 #include "t35_util.h"
 
-namespace t35
+namespace t36
 {
   namespace glfx {
     DSGeomPassTech::DSGeomPassTech() : Technique("../tutorial35/shaders/geometry_pass.glsl")

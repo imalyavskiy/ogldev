@@ -23,29 +23,60 @@
 
 namespace t36
 {
-  class DSPointLightPassTech : public DSLightPassTech
+  namespace glfx
   {
-  public:
+    class DSPointLightPassTech : public DSLightPassTech
+    {
+    public:
 
-    DSPointLightPassTech();
+      DSPointLightPassTech();
 
-    bool Init();
+      bool Init();
 
-    void SetPointLight(const PointLight& Lights);
+      void SetPointLight(const PointLight& Lights);
 
-  private:
+    private:
 
-    struct {
-      GLuint Color;
-      GLuint AmbientIntensity;
-      GLuint DiffuseIntensity;
-      GLuint Position;
       struct {
-        GLuint Constant;
-        GLuint Linear;
-        GLuint Exp;
-      } Atten;
-    } m_pointLightLocation;
-  };
+        GLuint Color;
+        GLuint AmbientIntensity;
+        GLuint DiffuseIntensity;
+        GLuint Position;
+        struct {
+          GLuint Constant;
+          GLuint Linear;
+          GLuint Exp;
+        } Atten;
+      } m_pointLightLocation;
+    };
+  }
+
+  namespace bare
+  {
+    class DSPointLightPassTech : public DSLightPassTech
+    {
+    public:
+
+      DSPointLightPassTech();
+
+      bool Init();
+
+      void SetPointLight(const PointLight& Lights);
+
+    private:
+
+      struct {
+        GLuint Color;
+        GLuint AmbientIntensity;
+        GLuint DiffuseIntensity;
+        GLuint Position;
+        struct {
+          GLuint Constant;
+          GLuint Linear;
+          GLuint Exp;
+        } Atten;
+      } m_pointLightLocation;
+    };
+  }
 }
 #endif
