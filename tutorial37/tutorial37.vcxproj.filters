@@ -15,99 +15,99 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="callbacks.h">
+    <ClInclude Include="t37_callbacks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="camera.h">
+    <ClInclude Include="t37_camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ds_dir_light_pass_tech.h">
+    <ClInclude Include="t37_ds_dir_light_pass_tech.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ds_geom_pass_tech.h">
+    <ClInclude Include="t37_ds_geom_pass_tech.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ds_light_pass_tech.h">
+    <ClInclude Include="t37_ds_light_pass_tech.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ds_point_light_pass_tech.h">
+    <ClInclude Include="t37_ds_point_light_pass_tech.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine_common.h">
+    <ClInclude Include="t37_engine_common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gbuffer.h">
+    <ClInclude Include="t37_gbuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="glut_backend.h">
+    <ClInclude Include="t37_glut_backend.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="lights_common.h">
+    <ClInclude Include="t37_lights_common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="math_3d.h">
+    <ClInclude Include="t37_math_3d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mesh.h">
+    <ClInclude Include="t37_mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="null_technique.h">
+    <ClInclude Include="t37_null_technique.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pipeline.h">
+    <ClInclude Include="t37_pipeline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="technique.h">
+    <ClInclude Include="t37_technique.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="texture.h">
+    <ClInclude Include="t37_texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="util.h">
+    <ClInclude Include="t37_util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="camera.cpp">
+    <ClCompile Include="t37_camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ds_dir_light_pass_tech.cpp">
+    <ClCompile Include="t37_ds_dir_light_pass_tech.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ds_geom_pass_tech.cpp">
+    <ClCompile Include="t37_ds_geom_pass_tech.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ds_light_pass_tech.cpp">
+    <ClCompile Include="t37_ds_light_pass_tech.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ds_point_light_pass_tech.cpp">
+    <ClCompile Include="t37_ds_point_light_pass_tech.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gbuffer.cpp">
+    <ClCompile Include="t37_gbuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="glut_backend.cpp">
+    <ClCompile Include="t37_glut_backend.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="t37_main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="math_3d.cpp">
+    <ClCompile Include="t37_math_3d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mesh.cpp">
+    <ClCompile Include="t37_mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="null_technique.cpp">
+    <ClCompile Include="t37_null_technique.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pipeline.cpp">
+    <ClCompile Include="t37_pipeline.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="technique.cpp">
+    <ClCompile Include="t37_technique.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="texture.cpp">
+    <ClCompile Include="t37_texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
