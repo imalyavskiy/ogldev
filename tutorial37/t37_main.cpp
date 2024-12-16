@@ -24,7 +24,7 @@
 #define WINDOW_HEIGHT     1024
 #define WINDOW_BPP        32
 #define WINDOW_FULLSCREEN false
-#define WINDOW_TITLE   "Tutorial 37"
+#define WINDOW_TITLE      "Tutorial 37"
 
 int main(int argc, char** argv)
 {

@@ -30,7 +30,7 @@ namespace t37
 
     virtual bool Init();
 
-    void SetWVP(const Matrix4f& WVP);
+    void SetWVP(const Matrix4f& worldViewProjection);
     void SetWorldMatrix(const Matrix4f& WVP);
     void SetColorTextureUnit(unsigned int TextureUnit);
 

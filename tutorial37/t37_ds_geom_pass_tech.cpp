@@ -30,46 +30,44 @@ namespace t37
 
   bool DSGeomPassTech::Init()
   {
-    if (!Technique::Init()) {
+    if (!Technique::Init())
       return false;
-    }
 
-    if (!AddShader(GL_VERTEX_SHADER, "shaders/geometry_pass.vs")) {
+    if (!AddShader(GL_VERTEX_SHADER, "shaders/geometry_pass.vs"))
       return false;
-    }
 
 
-    if (!AddShader(GL_FRAGMENT_SHADER, "shaders/geometry_pass.fs")) {
+    if (!AddShader(GL_FRAGMENT_SHADER, "shaders/geometry_pass.fs"))
       return false;
-    }
 
-    if (!Finalize()) {
+    if (!Finalize())
       return false;
-    }
 
     m_WVPLocation = GetUniformLocation("gWVP");
-    m_WorldMatrixLocation = GetUniformLocation("gWorld");
-    m_colorTextureUnitLocation = GetUniformLocation("gColorMap");
-
-    if (m_WVPLocation == INVALID_UNIFORM_LOCATION ||
-      m_WorldMatrixLocation == INVALID_UNIFORM_LOCATION ||
-      m_colorTextureUnitLocation == INVALID_UNIFORM_LOCATION) {
+    if (m_WVPLocation == INVALID_UNIFORM_LOCATION)
       return false;
-    }
+
+    m_WorldMatrixLocation = GetUniformLocation("gWorld");
+    if (m_WorldMatrixLocation == INVALID_UNIFORM_LOCATION)
+      return false;
+
+    m_colorTextureUnitLocation = GetUniformLocation("gColorMap");
+    if (m_colorTextureUnitLocation == INVALID_UNIFORM_LOCATION)
+      return false;
 
     return true;
   }
 
 
-  void DSGeomPassTech::SetWVP(const Matrix4f& WVP)
+  void DSGeomPassTech::SetWVP(const Matrix4f& worldViewProjection)
   {
-    glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP.m);
+    glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, reinterpret_cast<const GLfloat*>(worldViewProjection.m));
   }
 
 
-  void DSGeomPassTech::SetWorldMatrix(const Matrix4f& WorldInverse)
+  void DSGeomPassTech::SetWorldMatrix(const Matrix4f& world)
   {
-    glUniformMatrix4fv(m_WorldMatrixLocation, 1, GL_TRUE, (const GLfloat*)WorldInverse.m);
+    glUniformMatrix4fv(m_WorldMatrixLocation, 1, GL_TRUE, reinterpret_cast<const GLfloat*>(world.m));
   }
 
 

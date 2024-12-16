@@ -56,21 +56,21 @@ namespace t37
 
     ~Mesh();
 
-    bool LoadMesh(const std::string& Filename);
+    bool LoadMesh(const std::string& fileName);
 
     void Render();
 
-    void Render(unsigned int NumInstances, const Matrix4f* WVPMats, const Matrix4f* WorldMats);
+    void Render(unsigned int numInstances, const Matrix4f* WVPMats, const Matrix4f* WorldMats);
 
   private:
-    bool InitFromScene(const aiScene* pScene, const std::string& Filename);
+    bool InitFromScene(const aiScene* pScene, const std::string& fileName);
     void InitMesh(const aiMesh* paiMesh,
-      std::vector<Vector3f>& Positions,
-      std::vector<Vector3f>& Normals,
-      std::vector<Vector2f>& TexCoords,
-      std::vector<unsigned int>& Indices);
+      std::vector<Vector3f>& positions,
+      std::vector<Vector3f>& normals,
+      std::vector<Vector2f>& texCoords,
+      std::vector<unsigned int>& indices);
 
-    bool InitMaterials(const aiScene* pScene, const std::string& Filename);
+    bool InitMaterials(const aiScene* pScene, const std::string& fileName);
     void Clear();
 
 #define INVALID_MATERIAL 0xFFFFFFFF
@@ -83,7 +83,7 @@ namespace t37
 #define WORLD_MAT_VB 5
 
     GLuint m_VAO;
-    GLuint m_Buffers[6];
+    GLuint m_buffers[6];
 
     struct MeshEntry {
       MeshEntry()
@@ -94,10 +94,10 @@ namespace t37
         MaterialIndex = INVALID_MATERIAL;
       }
 
-      unsigned int NumIndices;
-      unsigned int BaseVertex;
-      unsigned int BaseIndex;
-      unsigned int MaterialIndex;
+      uint32_t NumIndices;
+      uint32_t BaseVertex;
+      uint32_t BaseIndex;
+      uint32_t MaterialIndex;
     };
 
     std::vector<MeshEntry> m_Entries;

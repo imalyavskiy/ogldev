@@ -2,10 +2,11 @@
 
 namespace t37
 {
-  MainApp::MainApp(int winWidth, int winHeight): m_winWidth(winWidth)
-                                                 , m_winHeight(winHeight)
+  MainApp::MainApp(int winWidth, int winHeight)
+    : m_winWidth(winWidth)
+    , m_winHeight(winHeight)
   {
-    m_pGameCamera = NULL;
+    m_pGameCamera = nullptr;
     m_scale = 0.0f;
 
     m_persProjInfo.FOV = 60.0f;
@@ -25,13 +26,12 @@ namespace t37
 
   bool MainApp::Init()
   {
-    if (!m_gbuffer.Init(m_winWidth, m_winHeight)) {
+    if (false == m_gbuffer.Init(m_winWidth, m_winHeight))
       return false;
-    }
 
     m_pGameCamera = std::make_unique<Camera>(m_winWidth, m_winHeight);
 
-    if (!m_DSGeomPassTech.Init()) {
+    if (false == m_DSGeomPassTech.Init()) {
       printf("Error initializing DSGeomPassTech\n");
       return false;
     }
@@ -39,7 +39,7 @@ namespace t37
     m_DSGeomPassTech.Enable();
     m_DSGeomPassTech.SetColorTextureUnit(COLOR_TEXTURE_UNIT_INDEX);
 
-    if (!m_DSPointLightPassTech.Init()) {
+    if (false == m_DSPointLightPassTech.Init()) {
       printf("Error initializing DSPointLightPassTech\n");
       return false;
     }
@@ -51,7 +51,7 @@ namespace t37
     m_DSPointLightPassTech.SetNormalTextureUnit(GBuffer::GBUFFER_TEXTURE_TYPE_NORMAL);
     m_DSPointLightPassTech.SetScreenSize(m_winWidth, m_winHeight);
 
-    if (!m_DSDirLightPassTech.Init()) {
+    if (false == m_DSDirLightPassTech.Init()) {
       printf("Error initializing DSDirLightPassTech\n");
       return false;
     }
@@ -63,30 +63,27 @@ namespace t37
     m_DSDirLightPassTech.SetNormalTextureUnit(GBuffer::GBUFFER_TEXTURE_TYPE_NORMAL);
     m_DSDirLightPassTech.SetDirectionalLight(m_dirLight);
     m_DSDirLightPassTech.SetScreenSize(m_winWidth, m_winHeight);
-    Matrix4f WVP;
-    WVP.InitIdentity();
-    m_DSDirLightPassTech.SetWVP(WVP);
 
-    if (!m_nullTech.Init()) {
-      return false;
-    }
+    Matrix4f worldViewProjection;
+    worldViewProjection.InitIdentity();
+    m_DSDirLightPassTech.SetWVP(worldViewProjection);
 
-    if (!m_quad.LoadMesh("../Content/quad.obj")) {
+    if (false == m_nullTech.Init())
       return false;
-    }
 
-    if (!m_box.LoadMesh("../Content/box.obj")) {
+    if (false == m_quad.LoadMesh("../Content/quad.obj"))
       return false;
-    }
 
-    if (!m_bsphere.LoadMesh("../Content/sphere.obj")) {
+    if (false == m_box.LoadMesh("../Content/box.obj"))
       return false;
-    }
+
+    if (false == m_bsphere.LoadMesh("../Content/sphere.obj"))
+      return false;
 
 #ifdef FREETYPE
-      if (!m_fontRenderer.InitFontRenderer()) {
-        return false;
-      }
+    if (!m_fontRenderer.InitFontRenderer()) {
+      return false;
+    }
 #endif        	
     return true;
   }
@@ -180,18 +177,18 @@ namespace t37
     glStencilOpSeparate(GL_BACK, GL_KEEP, GL_INCR_WRAP, GL_KEEP);
     glStencilOpSeparate(GL_FRONT, GL_KEEP, GL_DECR_WRAP, GL_KEEP);
 
-    Pipeline p;
-    p.WorldPos(m_pointLight[PointLightIndex].Position);
-    float BBoxScale = CalcPointLightBSphere(m_pointLight[PointLightIndex]);
-    p.Scale(BBoxScale, BBoxScale, BBoxScale);
-    p.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
-    p.SetPerspectiveProj(m_persProjInfo);
+    Pipeline pipeline;
+    pipeline.WorldPos(m_pointLight[PointLightIndex].Position);
+    float BBoxScale = CalcPointLightBSphere(m_pointLight[PointLightIndex]); // BBox - WTF???
+    pipeline.Scale(BBoxScale, BBoxScale, BBoxScale);
+    pipeline.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
+    pipeline.SetPerspectiveProj(m_persProjInfo);
 
-    m_nullTech.SetWVP(p.GetWVPTrans());
+    m_nullTech.SetWVP(pipeline.GetWVPTrans());
     m_bsphere.Render();
   }
 
-  void MainApp::DSPointLightPass(unsigned PointLightIndex)
+  void MainApp::DSPointLightPass(unsigned pointLightIndex)
   {
     m_gbuffer.BindForLightPass();
 
@@ -209,13 +206,13 @@ namespace t37
     glCullFace(GL_FRONT);
 
     Pipeline p;
-    p.WorldPos(m_pointLight[PointLightIndex].Position);
-    float BBoxScale = CalcPointLightBSphere(m_pointLight[PointLightIndex]);
+    p.WorldPos(m_pointLight[pointLightIndex].Position);
+    float BBoxScale = CalcPointLightBSphere(m_pointLight[pointLightIndex]);
     p.Scale(BBoxScale, BBoxScale, BBoxScale);
     p.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
     p.SetPerspectiveProj(m_persProjInfo);
     m_DSPointLightPassTech.SetWVP(p.GetWVPTrans());
-    m_DSPointLightPassTech.SetPointLight(m_pointLight[PointLightIndex]);
+    m_DSPointLightPassTech.SetPointLight(m_pointLight[pointLightIndex]);
     m_bsphere.Render();
     glCullFace(GL_BACK);
 
@@ -243,7 +240,7 @@ namespace t37
   {
     m_gbuffer.BindForFinalPass();
     glBlitFramebuffer(0, 0, m_winWidth, m_winHeight,
-                      0, 0, m_winWidth, m_winHeight, GL_COLOR_BUFFER_BIT, GL_LINEAR);
+      0, 0, m_winWidth, m_winHeight, GL_COLOR_BUFFER_BIT, GL_LINEAR);
   }
 
   void MainApp::IdleCB()
@@ -251,14 +248,14 @@ namespace t37
     RenderSceneCB();
   }
 
-  void MainApp::SpecialKeyboardCB(int Key, int x, int y)
+  void MainApp::SpecialKeyboardCB(int key, int x, int y)
   {
-    m_pGameCamera->OnKeyboard(Key);
+    m_pGameCamera->OnKeyboard(key);
   }
 
-  void MainApp::KeyboardCB(unsigned char Key, int x, int y)
+  void MainApp::KeyboardCB(unsigned char key, int x, int y)
   {
-    switch (Key) {
+    switch (key) {
     case 0x1b:
       glutLeaveMainLoop();
       break;
@@ -270,17 +267,17 @@ namespace t37
     m_pGameCamera->OnMouse(x, y);
   }
 
-  void MainApp::MouseCB(int Button, int State, int x, int y)
+  void MainApp::MouseCB(int button, int state, int x, int y)
   {
   }
 
-  float MainApp::CalcPointLightBSphere(const PointLight& Light)
+  float MainApp::CalcPointLightBSphere(const PointLight& light)
   {
-    float MaxChannel = fmax(fmax(Light.Color.x, Light.Color.y), Light.Color.z);
+    const float maxChannel = fmax(fmax(light.Color.x, light.Color.y), light.Color.z);
 
-    float ret = (-Light.Attenuation.Linear + sqrtf(Light.Attenuation.Linear * Light.Attenuation.Linear - 4 * Light.Attenuation.Exp * (Light.Attenuation.Exp - 256 * MaxChannel * Light.DiffuseIntensity)))
-      /
-      2 * Light.Attenuation.Exp;
+    float ret = sqrtf(light.Attenuation.Linear * light.Attenuation.Linear - 4 * light.Attenuation.Exp * (light.Attenuation.Exp - 256 * maxChannel * light.DiffuseIntensity));
+    ret -= light.Attenuation.Linear;
+    ret = ret / 2 * light.Attenuation.Exp;
 
     return ret;
   }
@@ -335,10 +332,10 @@ namespace t37
   {
     m_frameCount++;
 
-    int time = glutGet(GLUT_ELAPSED_TIME);
+    const int time = glutGet(GLUT_ELAPSED_TIME);
 
     if (time - m_time > 1000) {
-      m_fps = (float)m_frameCount * 1000.0f / (time - m_time);
+      m_fps = m_frameCount * 1000.0f / (time - m_time);
       m_time = time;
       m_frameCount = 0;
     }
@@ -346,11 +343,10 @@ namespace t37
 
   void MainApp::RenderFPS()
   {
-    char text[32];
-    ZERO_MEM(text);
+    char text[32] = {};
     SNPRINTF(text, sizeof(text), "FPS: %.2f", m_fps);
 #ifdef FREETYPE
-      m_fontRenderer.RenderText(10, 10, text);
+    m_fontRenderer.RenderText(10, 10, text);
 #endif
   }
 }

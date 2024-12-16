@@ -34,11 +34,11 @@ namespace t37
       GBUFFER_NUM_TEXTURES
     };
 
-    GBuffer();
+    GBuffer() = default;
 
     ~GBuffer();
 
-    bool Init(unsigned int WindowWidth, unsigned int WindowHeight);
+    bool Init(unsigned int winWidth, unsigned int winHeight);
 
     void StartFrame();
     void BindForGeomPass();
@@ -48,10 +48,10 @@ namespace t37
 
   private:
 
-    GLuint m_fbo;
-    GLuint m_textures[GBUFFER_NUM_TEXTURES];
-    GLuint m_depthTexture;
-    GLuint m_finalTexture;
+    GLuint m_fbo = 0;
+    GLuint m_textures[GBUFFER_NUM_TEXTURES] = {};
+    GLuint m_depthTexture = 0;
+    GLuint m_finalTexture = 0;
   };
 }
 #endif	/* SHADOWMAPFBO_H */

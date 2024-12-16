@@ -30,7 +30,7 @@ namespace t37
 
     virtual bool Init();
 
-    void SetDirectionalLight(const DirectionalLight& Light);
+    void SetDirectionalLight(const DirectionalLight& light);
 
   private:
 

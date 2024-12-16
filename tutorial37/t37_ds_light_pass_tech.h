@@ -32,14 +32,14 @@ namespace t37
 
     virtual bool Init();
 
-    void SetWVP(const Matrix4f& WVP);
-    void SetPositionTextureUnit(unsigned int TextureUnit);
-    void SetColorTextureUnit(unsigned int TextureUnit);
-    void SetNormalTextureUnit(unsigned int TextureUnit);
+    void SetWVP(const Matrix4f& worldViewProjection);
+    void SetPositionTextureUnit(unsigned int textureUnit);
+    void SetColorTextureUnit(unsigned int textureUnit);
+    void SetNormalTextureUnit(unsigned int textureUnit);
     void SetEyeWorldPos(const Vector3f& EyeWorldPos);
     void SetMatSpecularIntensity(float Intensity);
     void SetMatSpecularPower(float Power);
-    void SetScreenSize(unsigned int Width, unsigned int Height);
+    void SetScreenSize(unsigned int width, unsigned int height);
 
   private:
 
