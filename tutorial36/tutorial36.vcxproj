@@ -21,6 +21,7 @@
     <ClInclude Include="t36_gbuffer.h" />
     <ClInclude Include="t36_glut_backend.h" />
     <ClInclude Include="t36_lights_common.h" />
+    <ClInclude Include="t36_mainapp.h" />
     <ClInclude Include="t36_math_3d.h" />
     <ClInclude Include="t36_mesh.h" />
     <ClInclude Include="t36_pipeline.h" />
@@ -37,6 +38,7 @@
     <ClCompile Include="t36_gbuffer.cpp" />
     <ClCompile Include="t36_glut_backend.cpp" />
     <ClCompile Include="t36_main.cpp" />
+    <ClCompile Include="t36_mainapp.cpp" />
     <ClCompile Include="t36_math_3d.cpp" />
     <ClCompile Include="t36_mesh.cpp" />
     <ClCompile Include="t36_pipeline.cpp" />

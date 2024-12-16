@@ -23,49 +23,24 @@
 
 namespace t36
 {
-  namespace glfx
-  {
-    class DSDirLightPassTech : public DSLightPassTech {
-    public:
+  class DSDirLightPassTech : public DSLightPassTech {
+  public:
 
-      DSDirLightPassTech();
+    DSDirLightPassTech();
 
-      virtual bool Init();
+    virtual bool Init();
 
-      void SetDirectionalLight(const DirectionalLight& Light);
+    void SetDirectionalLight(const DirectionalLight& Light);
 
-    private:
+  private:
 
-      struct {
-        GLuint Color;
-        GLuint AmbientIntensity;
-        GLuint DiffuseIntensity;
-        GLuint Direction;
-      } m_dirLightLocation;
-    };
-  }
-
-  namespace bare
-  {
-    class DSDirLightPassTech : public DSLightPassTech {
-    public:
-
-      DSDirLightPassTech();
-
-      virtual bool Init();
-
-      void SetDirectionalLight(const DirectionalLight& Light);
-
-    private:
-
-      struct {
-        GLuint Color;
-        GLuint AmbientIntensity;
-        GLuint DiffuseIntensity;
-        GLuint Direction;
-      } m_dirLightLocation;
-    };
-  }
+    struct {
+      GLuint Color;
+      GLuint AmbientIntensity;
+      GLuint DiffuseIntensity;
+      GLuint Direction;
+    } m_dirLightLocation;
+  };
 }
 
 #endif

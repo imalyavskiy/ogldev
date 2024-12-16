@@ -23,8 +23,6 @@
 
 namespace t36
 {
-  namespace glfx
-  {
     class DSGeomPassTech : public Technique {
     public:
 
@@ -42,28 +40,6 @@ namespace t36
       GLuint m_WorldMatrixLocation;
       GLuint m_colorTextureUnitLocation;
     };
-  }
-
-  namespace bare
-  {
-    class DSGeomPassTech : public Technique {
-    public:
-
-      DSGeomPassTech();
-
-      virtual bool Init();
-
-      void SetWVP(const Matrix4f& WVP);
-      void SetWorldMatrix(const Matrix4f& WVP);
-      void SetColorTextureUnit(unsigned int TextureUnit);
-
-    private:
-
-      GLuint m_WVPLocation;
-      GLuint m_WorldMatrixLocation;
-      GLuint m_colorTextureUnitLocation;
-    };
-  }
 }
 
 #endif
