@@ -19,3 +19,6 @@
 [submodule "deps/origins/glfx"]
 	path = deps/origins/glfx
 	url = https://github.com/imalyavskiy/glfx.git
+[submodule "deps/origins/anttweakbar-1.16"]
+	path = deps/origins/anttweakbar-1.16
+	url = https://github.com/imalyavskiy/AntTweakBar.git

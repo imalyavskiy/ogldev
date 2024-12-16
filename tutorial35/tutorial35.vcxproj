@@ -108,6 +108,10 @@
       <AdditionalDependencies>glfx.lib;assimp-vc143-mtd.lib;FreeImaged.lib;glew32sd.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImaged.dll $(OutDir)FreeImaged.dll
+copy $(SolutionDir)deps\exports\assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc143-mtd.dll $(OutDir)assimp-vc143-mtd.dll</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -130,6 +134,10 @@
       <AdditionalDependencies>glfx.lib;assimp-vc143-mt.lib;FreeImage.lib;glew32s.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImage.dll $(OutDir)FreeImage.dll
+copy $(SolutionDir)deps\exports\assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc143-mt.dll $(OutDir)assimp-vc143-mt.dll</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
