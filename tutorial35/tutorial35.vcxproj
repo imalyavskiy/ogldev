@@ -43,6 +43,10 @@
       <Project>{6e9d80e7-c4f1-4ae3-8082-4a5efdce8ccc}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\geometry_pass.fs" />
+    <None Include="shaders\geometry_pass.vs" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CA96BE72-E51A-4F96-ADA4-DC2937750DC8}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

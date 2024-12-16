@@ -90,4 +90,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\geometry_pass.fs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\geometry_pass.vs">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

@@ -19,7 +19,7 @@ ga('send', 'pageview');</script></head><body><div class="row header"><div class=
 <p>Мы изучим deferred shading в 3 этапа (и 3 урока):</p>
 
 <ol>
-  <li>В этом уроке мы заполним G буффер используя MRT. Кроме того, для наглядности мы выведем его содержимое на экран.</li>
+  <li>В этом уроке мы заполним G буффер используя MRT(<em>Multiple Render Targets</em>). Кроме того, для наглядности мы выведем его содержимое на экран.</li>
   <li>В следующем уроке мы добавим вычисления света в стиле deferred shading.</li>
   <li>И, наконец, мы изучим как использовать стенсил, что бы отбрасывать далекий свет, который не влияет на сцену (проблема станет понятней во втором уроке).</li>
 </ol>
@@ -35,11 +35,11 @@ ga('send', 'pageview');</script></head><body><div class="row header"><div class=
 public:
 
     enum GBUFFER_TEXTURE_TYPE {
-    GBUFFER_TEXTURE_TYPE_POSITION,
-            GBUFFER_TEXTURE_TYPE_DIFFUSE,
-    GBUFFER_TEXTURE_TYPE_NORMAL,
-            GBUFFER_TEXTURE_TYPE_TEXCOORD,
-            GBUFFER_NUM_TEXTURES
+      GBUFFER_TEXTURE_TYPE_POSITION,
+      GBUFFER_TEXTURE_TYPE_DIFFUSE,
+      GBUFFER_TEXTURE_TYPE_NORMAL,
+      GBUFFER_TEXTURE_TYPE_TEXCOORD,
+      GBUFFER_NUM_TEXTURES
     };
 
     GBuffer();
@@ -119,7 +119,7 @@ private:
 
 <p>Инициализация текстуры глубины производится отдельно так как она имеет отдельный формат и слот в FBO.</p>
 
-<p>Для использования MRT нам требуется разрешить запись во все 4 текстуры. Мы делаем это через отправление массива указателей в функцию glDrawBuffers(). Этот массив дает некоторую гибкость, поскольку мы ставим GL_COLOR_ATTACHMENT6 как первый индекс, а затем, когда FS записывает в первую переменную вывода, то он пойдет в текстуру, которая подсоединена к GL_COLOR_ATTACHMENT6. Пока что нам не важна сложность этих действий, в этом уроке мы просто хотим присоединить их одну за другой.</p>
+<p>Для использования MRT(<em>Multiple Render Targets</em>) нам требуется разрешить запись во все 4 текстуры. Мы делаем это через отправление массива указателей в функцию glDrawBuffers(). Этот массив дает некоторую гибкость, поскольку мы ставим GL_COLOR_ATTACHMENT0 как первый индекс, а затем, когда FS записывает в первую переменную вывода, то он пойдет в текстуру, которая подсоединена к GL_COLOR_ATTACHMENT1. Пока что нам не важна сложность этих действий, в этом уроке мы просто хотим присоединить их одну за другой.</p>
 
 <p>Наконец, мы проверяем состояние FBO, что бы убедиться, что все операции прошли успешно, а затем возвращаем FBO по-умолчанию (тогда дальнейшие изменения не затронут наш G буффер). G буффер готов к использованию.</p>
 
@@ -170,7 +170,7 @@ private:
 }
 </code></pre>
 
-<p>Мы начинаем геометрический проход с разрешения использовать соответствующую технологию и задаем объект GBuffer на запись. После этого мы очищаем G буффер (glClear() работает с текущим FBO - наш G буффер). Теперь, когда все готово, мы настраиваем преобразования и рендерим меш. В настоящей игре мы будем рендерить множество мешей, один за другим. Когда мы закончим, G буффер будет содержать аттрибуты ближайших пикселей, что позволит пройти этап света.</p>
+<p>Мы начинаем геометрический проход с разрешения использовать соответствующую технологию и задаем объект GBuffer на запись. После этого мы очищаем G буффер (glClear() работает с текущим FBO - наш G буффер). Теперь, когда все готово, мы настраиваем преобразования и рендерим меш. <em>В настоящей игре мы будем рендерить множество мешей, один за другим.</em> Когда мы закончим, G буффер будет содержать аттрибуты ближайших к камере(ближней отсекающей плоскости) пикселей, что позволит пройти этап света.</p>
 
 <blockquote>
   <p>tutorial35.cpp:137</p>
@@ -206,60 +206,60 @@ private:
 <p>Девятый параметр говорит, откуда мы хотим считывать - цвет, глубина или стенсил буффер, и может принимаеть значения GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT, или GL_STENCIL_BUFFER_BIT. Последний параметр определяет тип масштабирования OpenGL (когда параметры источника и назначения не совпадают) - GL_NEAREST или GL_LINEAR (дает результат лучше, чем GL_NEAREST, но и требует больше ресурсов). Для буффера цвета применяется только GL_LINEAR. В примере выше видно, как мы масштабируем все текстуры в одну четверть экрана.</p>
 
 <blockquote>
-  <p>geometry_pass.glsl</p>
+  <p>geometry_pass.vs</p>
 </blockquote>
 
-<pre><code>struct VSInput
-{
-    vec3 Position;
-    vec2 TexCoord;
-    vec3 Normal;
-};
+<pre><code>#version 330
 
-interface VSOutput
-{
-    vec3 WorldPos;
-    vec2 TexCoord;
-    vec3 Normal;
-};
+layout (location = 0) in vec3 Position;
+layout (location = 1) in vec2 TexCoord;
+layout (location = 2) in vec3 Normal;
 
 uniform mat4 gWVP;
 uniform mat4 gWorld;
 
-shader VSmain(in VSInput VSin:0, out VSOutput VSout)
-{
-    gl_Position = gWVP * vec4(VSin.Position, 1.0);
-    VSout.TexCoord   = VSin.TexCoord;
-    VSout.Normal     = (gWorld * vec4(VSin.Normal, 0.0)).xyz;
-    VSout.WorldPos   = (gWorld * vec4(VSin.Position, 1.0)).xyz;
-};
+out vec2 TexCoord0;
+out vec3 Normal0;
+out vec3 WorldPos0;
 
-struct FSOutput
+
+void main()
 {
-    vec3 WorldPos;
-    vec3 Diffuse;
-    vec3 Normal;
-    vec3 TexCoord;
-};
+  gl_Position  = gWVP * vec4(Position, 1.0);
+  TexCoord0    = TexCoord;
+  Normal0      = (gWorld * vec4(Normal, 0.0)).xyz;
+  WorldPos0    = (gWorld * vec4(Position, 1.0)).xyz;
+}
+</code></pre>
+
+<blockquote>
+  <p>geometry_pass.fs</p>
+</blockquote>
+
+<pre><code>#version 330
+
+in vec2 TexCoord0;
+in vec3 Normal0;
+in vec3 WorldPos0;
+
+layout (location = 0) out vec3 WorldPosOut;
+layout (location = 1) out vec3 DiffuseOut;
+layout (location = 2) out vec3 NormalOut;
+layout (location = 3) out vec3 TexCoordOut;
 
 uniform sampler2D gColorMap;
 
-shader FSmain(in VSOutput FSin, out FSOutput FSout)
+void main()
 {
-    FSout.WorldPos = FSin.WorldPos;
-    FSout.Diffuse  = texture(gColorMap, FSin.TexCoord).xyz;
-    FSout.Normal   = normalize(FSin.Normal);
-    FSout.TexCoord = vec3(FSin.TexCoord, 0.0);
-};
-
-program GeometryPass
-{
-    vs(410)=VSmain();
-    fs(410)=FSmain();
-};
+  WorldPosOut = WorldPos0;
+  DiffuseOut  = texture(gColorMap, TexCoord0).xyz;
+  NormalOut   = normalize(Normal0);
+  TexCoordOut = vec3(TexCoord0, 0.0);
+}
 </code></pre>
 
-<p>Это файл эффекта для геометрического прохода. Здесь ничего нового в VS - просто производит преобразования и передает результат в FS. FS ответственнен за MRT. Вместо вывода единственного вектора он выдает структуру из векторов. Каждый из этих векторов имеет соответствующий индекс в массиве, который был задан в glDrawBuffers(). Поэтому каждый вызов FS мы записываем в 4 текстуры G буффера.</p>
+
+<p>Это файлы вершинного и фрагментного шейдеров геометрического прохода. Здесь ничего нового в VS - просто производит преобразования и передает результат в FS. FS ответственнен за MRT. Вместо вывода единственного вектора он выдает структуру из векторов. Каждый из этих векторов имеет соответствующий индекс в массиве, который был задан в glDrawBuffers(). Поэтому каждый вызов FS мы записываем в 4 текстуры G буффера.</p>
 
 <blockquote>
   <p>gbuffer.cpp:90</p>
@@ -267,17 +267,17 @@ program GeometryPass
 
 <pre><code>void GBuffer::BindForWriting()
 {
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fbo);
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fbo);
 }
 
 void GBuffer::BindForReading()
 {
-    glBindFramebuffer(GL_READ_FRAMEBUFFER, m_fbo);
+  glBindFramebuffer(GL_READ_FRAMEBUFFER, m_fbo);
 }
 
 void GBuffer::SetReadBuffer(GBUFFER_TEXTURE_TYPE TextureType)
 {
-    glReadBuffer(GL_COLOR_ATTACHMENT0 + TextureType);
+  glReadBuffer(GL_COLOR_ATTACHMENT0 + TextureType);
 }
 </code></pre>
 

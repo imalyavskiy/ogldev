@@ -18,6 +18,7 @@
 #ifndef GBUFFER_H
 #define	GBUFFER_H
 
+#include <array>
 #include <GL/glew.h>
 
 #define GBUFFER_POSITION_TEXTURE_UNIT 0
@@ -27,35 +28,36 @@
 
 namespace t35
 {
+  // Geometry Buffer
   class GBuffer
   {
   public:
 
     enum GBUFFER_TEXTURE_TYPE {
-      GBUFFER_TEXTURE_TYPE_POSITION,
-      GBUFFER_TEXTURE_TYPE_DIFFUSE,
-      GBUFFER_TEXTURE_TYPE_NORMAL,
-      GBUFFER_TEXTURE_TYPE_TEXCOORD,
-      GBUFFER_NUM_TEXTURES
+      GBUFFER_TEXTURE_TYPE_POSITION = 0,
+      GBUFFER_TEXTURE_TYPE_DIFFUSE  = 1,
+      GBUFFER_TEXTURE_TYPE_NORMAL   = 2,
+      GBUFFER_TEXTURE_TYPE_TEXCOORD = 3,
+      GBUFFER_NUM_TEXTURES          = 4,
     };
 
-    GBuffer();
+    GBuffer() = default;
 
     ~GBuffer();
 
-    bool Init(unsigned int WindowWidth, unsigned int WindowHeight);
+    bool Init(uint32_t winWidth, uint32_t winHeight);
 
     void BindForWriting();
 
     void BindForReading();
 
-    void SetReadBuffer(GBUFFER_TEXTURE_TYPE TextureType);
+    void SetReadBuffer(GBUFFER_TEXTURE_TYPE textureType);
 
   private:
 
-    GLuint m_fbo;
-    GLuint m_textures[GBUFFER_NUM_TEXTURES];
-    GLuint m_depthTexture;
+    GLuint m_fbo = 0;
+    std::array<GLuint, GBUFFER_NUM_TEXTURES> m_textures = {};
+    GLuint m_depthTexture = 0;
   };
 }
 #endif	/* SHADOWMAPFBO_H */

@@ -73,39 +73,49 @@ namespace t35
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    Pipeline p;
-    p.Scale(0.1f, 0.1f, 0.1f);
-    p.Rotate(0.0f, m_scale, 0.0f);
-    p.WorldPos(-0.8f, -1.0f, 12.0f);
-    p.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
-    p.SetPerspectiveProj(m_persProjInfo);
-    m_DSGeomPassTech.SetWVP(p.GetWVPTrans());
-    m_DSGeomPassTech.SetWorldMatrix(p.GetWorldTrans());
+    Pipeline pipeline;
+    pipeline.Scale(0.1f, 0.1f, 0.1f);
+    pipeline.Rotate(0.0f, m_scale, 0.0f);
+    pipeline.WorldPos(-0.8f, -1.0f, 12.0f);
+    pipeline.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
+    pipeline.SetPerspectiveProj(m_persProjInfo);
+    m_DSGeomPassTech.SetWVP(pipeline.GetWVPTrans());
+    m_DSGeomPassTech.SetWorldMatrix(pipeline.GetWorldTrans());
+
     m_mesh.Render();
   }
 
   void MainApp::DSLightPass()
   {
+    // recover default framebuffer state
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     m_gbuffer.BindForReading();
 
-    GLint HalfWidth = (GLint)(m_winWidth / 2.0f);
-    GLint HalfHeight = (GLint)(m_winHeight / 2.0f);
+    const auto halfWidth = static_cast<GLint>(m_winWidth / 2.0f);
+    const auto halfHeight = static_cast<GLint>(m_winHeight / 2.0f);
 
     m_gbuffer.SetReadBuffer(GBuffer::GBUFFER_TEXTURE_TYPE_POSITION);
-    glBlitFramebuffer(0, 0, m_winWidth, m_winHeight, 0, 0, HalfWidth, HalfHeight, GL_COLOR_BUFFER_BIT, GL_LINEAR);
+    glBlitFramebuffer( 0, 0, m_winWidth, m_winHeight,                  // src rect
+                       0, 0, halfWidth, halfHeight,                    // dst rect
+                       GL_COLOR_BUFFER_BIT, GL_LINEAR);
 
     m_gbuffer.SetReadBuffer(GBuffer::GBUFFER_TEXTURE_TYPE_DIFFUSE);
-    glBlitFramebuffer(0, 0, m_winWidth, m_winHeight, 0, HalfHeight, HalfWidth, m_winHeight, GL_COLOR_BUFFER_BIT, GL_LINEAR);
+    glBlitFramebuffer( 0, 0, m_winWidth, m_winHeight,                  // src rect
+                       0, halfHeight, halfWidth, m_winHeight,          // dst rect
+                       GL_COLOR_BUFFER_BIT, GL_LINEAR);
 
     m_gbuffer.SetReadBuffer(GBuffer::GBUFFER_TEXTURE_TYPE_NORMAL);
-    glBlitFramebuffer(0, 0, m_winWidth, m_winHeight, HalfWidth, HalfHeight, m_winWidth, m_winHeight, GL_COLOR_BUFFER_BIT, GL_LINEAR);
+    glBlitFramebuffer( 0, 0, m_winWidth, m_winHeight,                  // src rect
+                       halfWidth, halfHeight, m_winWidth, m_winHeight, // dst rect
+                       GL_COLOR_BUFFER_BIT, GL_LINEAR);
 
     m_gbuffer.SetReadBuffer(GBuffer::GBUFFER_TEXTURE_TYPE_TEXCOORD);
-    glBlitFramebuffer(0, 0, m_winWidth, m_winHeight, HalfWidth, 0, m_winWidth, HalfHeight, GL_COLOR_BUFFER_BIT, GL_LINEAR);
+    glBlitFramebuffer( 0, 0, m_winWidth, m_winHeight,                  // src rect
+                       halfWidth, 0, m_winWidth, halfHeight,           // dst rect
+                       GL_COLOR_BUFFER_BIT, GL_LINEAR);
   }
 
   void MainApp::IdleCB()
