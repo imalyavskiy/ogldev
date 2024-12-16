@@ -17,6 +17,7 @@
     <ClInclude Include="t35_engine_common.h" />
     <ClInclude Include="t35_gbuffer.h" />
     <ClInclude Include="t35_glut_backend.h" />
+    <ClInclude Include="t35_mainapp.h" />
     <ClInclude Include="t35_math_3d.h" />
     <ClInclude Include="t35_mesh.h" />
     <ClInclude Include="t35_pipeline.h" />
@@ -30,6 +31,7 @@
     <ClCompile Include="t35_gbuffer.cpp" />
     <ClCompile Include="t35_glut_backend.cpp" />
     <ClCompile Include="t35_main.cpp" />
+    <ClCompile Include="t35_mainapp.cpp" />
     <ClCompile Include="t35_math_3d.cpp" />
     <ClCompile Include="t35_mesh.cpp" />
     <ClCompile Include="t35_pipeline.cpp" />

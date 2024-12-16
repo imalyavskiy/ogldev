@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2011 Etay Meiri
+  Copyright 2011 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,67 +24,37 @@
 
 namespace t35
 {
-  namespace glfx
+  class Technique
   {
-    class Technique
-    {
-    public:
+  public:
 
-      Technique(const char* pEffectFile);
+    Technique();
 
-      ~Technique();
+    virtual ~Technique();
 
-      void Enable();
+    virtual bool Init();
 
-    protected:
+    void Enable();
 
-      bool CompileProgram(const char* pProgram);
+    GLuint GetProgram() const { return m_shaderProg; }
 
-      GLint GetUniformLocation(const char* pUniformName);
+  protected:
 
-      GLint GetProgramParam(GLint param);
+    bool AddShader(GLenum ShaderType, const char* pFilename);
 
-    private:
-      GLint m_effect;
-      GLint m_shaderProg;
-      const char* m_pEffectFile;
-    };
-  }
+    bool Finalize();
 
-  namespace bare
-  {
-    class Technique
-    {
-    public:
+    GLint GetUniformLocation(const char* pUniformName);
 
-      Technique();
+    GLuint m_shaderProg = 0;
 
-      virtual ~Technique();
+  private:
 
-      virtual bool Init();
+    void PrintUniformList();
 
-      void Enable();
-
-      GLuint GetProgram() const { return m_shaderProg; }
-
-    protected:
-
-      bool AddShader(GLenum ShaderType, const char* pFilename);
-
-      bool Finalize();
-
-      GLint GetUniformLocation(const char* pUniformName);
-
-      GLuint m_shaderProg = 0;
-
-    private:
-
-      void PrintUniformList();
-
-      typedef std::list<GLuint> ShaderObjList;
-      ShaderObjList m_shaderObjList;
-    };
-  }
+    typedef std::list<GLuint> ShaderObjList;
+    ShaderObjList m_shaderObjList;
+  };
 }
 
 #endif	/* TECHNIQUE_H */

@@ -23,6 +23,7 @@ namespace t35
   class ICallbacks
   {
   public:
+    virtual ~ICallbacks() = default;
 
     virtual void SpecialKeyboardCB(int Key, int x, int y) = 0;
 

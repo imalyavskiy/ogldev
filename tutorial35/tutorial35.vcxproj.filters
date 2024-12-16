@@ -51,6 +51,9 @@
     <ClInclude Include="t35_util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="t35_mainapp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="t35_camera.cpp">
@@ -81,6 +84,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="t35_texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="t35_mainapp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

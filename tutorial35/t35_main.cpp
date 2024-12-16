@@ -18,239 +18,29 @@
     Tutorial 35 - Deferred Shading - Part 1
 */
 
-#include <cmath>
-#include <GL/glew.h>
-#include <GL/freeglut.h>
-#include <string>
+#include "t35_mainapp.h"
 
-#include "t35_engine_common.h"
-#include "t35_util.h"
-#include "t35_pipeline.h"
-#include "t35_camera.h"
-#include "t35_texture.h"
-#include "t35_ds_geom_pass_tech.h"
-#include "t35_glut_backend.h"
-#include "t35_mesh.h"
-#ifdef FREETYPE
-#include "freetypeGL.h"
-#endif
-#include "t35_gbuffer.h"
-
-#define WINDOW_WIDTH  1280  
-#define WINDOW_HEIGHT 1024
-
-namespace t35
-{
-  class MainApp : public ICallbacks
-  {
-  public:
-
-    MainApp()
-    {
-      m_pGameCamera = NULL;
-      m_scale = 0.0f;
-
-      m_persProjInfo.FOV = 60.0f;
-      m_persProjInfo.Height = WINDOW_HEIGHT;
-      m_persProjInfo.Width = WINDOW_WIDTH;
-      m_persProjInfo.zNear = 1.0f;
-      m_persProjInfo.zFar = 100.0f;
-
-      m_frameCount = 0;
-      m_fps = 0.0f;
-
-      m_time = glutGet(GLUT_ELAPSED_TIME);
-    }
-
-    ~MainApp()
-    {
-      SAFE_DELETE(m_pGameCamera);
-    }
-
-    bool Init()
-    {
-      if (!m_gbuffer.Init(WINDOW_WIDTH, WINDOW_HEIGHT)) {
-        return false;
-      }
-
-      m_pGameCamera = new Camera(WINDOW_WIDTH, WINDOW_HEIGHT);
-
-      if (!m_DSGeomPassTech.Init()) {
-        printf("Error initializing DSGeomPassTech\n");
-        return false;
-      }
-
-      m_DSGeomPassTech.Enable();
-      m_DSGeomPassTech.SetColorTextureUnit(COLOR_TEXTURE_UNIT_INDEX);
-
-      if (!m_mesh.LoadMesh("../Content/phoenix_ugv.md2")) {
-        return false;
-      }
-
-#ifdef FREETYPE
-      if (!m_fontRenderer.InitFontRenderer()) {
-        return false;
-      }
-#endif
-
-      return true;
-    }
-
-    void Run()
-    {
-      GLUTBackendRun(this);
-    }
-
-
-    virtual void RenderSceneCB()
-    {
-      CalcFPS();
-
-      m_scale += 0.05f;
-
-      m_pGameCamera->OnRender();
-
-      DSGeometryPass();
-      DSLightPass();
-
-      RenderFPS();
-
-      glutSwapBuffers();
-    }
-
-
-    void DSGeometryPass()
-    {
-      m_DSGeomPassTech.Enable();
-
-      m_gbuffer.BindForWriting();
-
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-      Pipeline p;
-      p.Scale(0.1f, 0.1f, 0.1f);
-      p.Rotate(0.0f, m_scale, 0.0f);
-      p.WorldPos(-0.8f, -1.0f, 12.0f);
-      p.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
-      p.SetPerspectiveProj(m_persProjInfo);
-      m_DSGeomPassTech.SetWVP(p.GetWVPTrans());
-      m_DSGeomPassTech.SetWorldMatrix(p.GetWorldTrans());
-      m_mesh.Render();
-    }
-
-    void DSLightPass()
-    {
-      glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-      m_gbuffer.BindForReading();
-
-      GLint HalfWidth = (GLint)(WINDOW_WIDTH / 2.0f);
-      GLint HalfHeight = (GLint)(WINDOW_HEIGHT / 2.0f);
-
-      m_gbuffer.SetReadBuffer(GBuffer::GBUFFER_TEXTURE_TYPE_POSITION);
-      glBlitFramebuffer(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0, HalfWidth, HalfHeight, GL_COLOR_BUFFER_BIT, GL_LINEAR);
-
-      m_gbuffer.SetReadBuffer(GBuffer::GBUFFER_TEXTURE_TYPE_DIFFUSE);
-      glBlitFramebuffer(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0, HalfHeight, HalfWidth, WINDOW_HEIGHT, GL_COLOR_BUFFER_BIT, GL_LINEAR);
-
-      m_gbuffer.SetReadBuffer(GBuffer::GBUFFER_TEXTURE_TYPE_NORMAL);
-      glBlitFramebuffer(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, HalfWidth, HalfHeight, WINDOW_WIDTH, WINDOW_HEIGHT, GL_COLOR_BUFFER_BIT, GL_LINEAR);
-
-      m_gbuffer.SetReadBuffer(GBuffer::GBUFFER_TEXTURE_TYPE_TEXCOORD);
-      glBlitFramebuffer(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, HalfWidth, 0, WINDOW_WIDTH, HalfHeight, GL_COLOR_BUFFER_BIT, GL_LINEAR);
-    }
-
-    virtual void IdleCB()
-    {
-      RenderSceneCB();
-    }
-
-    virtual void SpecialKeyboardCB(int Key, int x, int y)
-    {
-      m_pGameCamera->OnKeyboard(Key);
-    }
-
-
-    virtual void KeyboardCB(unsigned char Key, int x, int y)
-    {
-      switch (Key) {
-      case 0x1b:
-        glutLeaveMainLoop();
-        break;
-      }
-    }
-
-
-    virtual void PassiveMouseCB(int x, int y)
-    {
-      m_pGameCamera->OnMouse(x, y);
-    }
-
-
-    virtual void MouseCB(int Button, int State, int x, int y)
-    {
-    }
-
-  private:
-
-    void CalcFPS()
-    {
-      m_frameCount++;
-
-      int time = glutGet(GLUT_ELAPSED_TIME);
-
-      if (time - m_time > 1000) {
-        m_fps = (float)m_frameCount * 1000.0f / (time - m_time);
-        m_time = time;
-        m_frameCount = 0;
-      }
-    }
-
-    void RenderFPS()
-    {
-      char text[32];
-      ZERO_MEM(text);
-      SNPRINTF(text, sizeof(text), "FPS: %.2f", m_fps);
-#ifdef FREETYPE
-      m_fontRenderer.RenderText(10, 10, text);
-#endif
-    }
-
-    //glfx::DSGeomPassTech m_DSGeomPassTech;
-    bare::DSGeomPassTech m_DSGeomPassTech;
-    Camera* m_pGameCamera;
-    float m_scale;
-    Mesh m_mesh;
-    PersProjInfo m_persProjInfo;
-#ifdef FREETYPE
-    FontRenderer m_fontRenderer;
-#endif
-    int m_time;
-    int m_frameCount;
-    float m_fps;
-    GBuffer m_gbuffer;
-  };
-}
+#define WINDOW_WIDTH      1280  
+#define WINDOW_HEIGHT     1024
+#define WINDOW_BPP        32
+#define WINDOW_FULLSCREEN false
+#define WINDOW_TITLE      "Tutorial 35"
 
 int main(int argc, char** argv)
 {
   t35::GLUTBackendInit(argc, argv);
 
-  if (!t35::GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 32, false, "Tutorial 35"))
+  if (!t35::GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_BPP, WINDOW_FULLSCREEN, WINDOW_TITLE))
     return 1;
 
   std::srand(GetCurrentProcessId());
 
-  auto pApp = new t35::MainApp();
+  const auto pApp = std::make_unique<t35::MainApp>(WINDOW_WIDTH, WINDOW_HEIGHT);
 
   if (!pApp->Init())
     return 1;
 
   pApp->Run();
-
-  delete pApp;
 
   return 0;
 }
