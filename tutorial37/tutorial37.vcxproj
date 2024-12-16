@@ -45,6 +45,11 @@
     <ClCompile Include="t37_technique.cpp" />
     <ClCompile Include="t37_texture.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.vcxproj">
+      <Project>{6e9d80e7-c4f1-4ae3-8082-4a5efdce8ccc}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F47482F8-50BE-42F0-B51D-39AD645252C9}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

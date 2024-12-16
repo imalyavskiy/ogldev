@@ -419,10 +419,14 @@ namespace t37
 #endif
     }
 
-    DSGeomPassTech m_DSGeomPassTech;
-    DSPointLightPassTech m_DSPointLightPassTech;
-    DSDirLightPassTech m_DSDirLightPassTech;
-    NullTechnique m_nullTech;
+    //glfx::DSGeomPassTech m_DSGeomPassTech;
+    bare::DSGeomPassTech m_DSGeomPassTech;
+    //glfx::DSPointLightPassTech m_DSPointLightPassTech;
+    bare::DSPointLightPassTech m_DSPointLightPassTech;
+    //glfx::DSDirLightPassTech m_DSDirLightPassTech;
+    bare::DSDirLightPassTech m_DSDirLightPassTech;
+    //glfx::NullTechnique m_nullTech;
+    bare::NullTechnique m_nullTech;
     Camera* m_pGameCamera;
     float m_scale;
     SpotLight m_spotLight;

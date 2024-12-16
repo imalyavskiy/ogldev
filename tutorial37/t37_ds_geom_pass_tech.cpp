@@ -24,44 +24,105 @@
 
 namespace t37
 {
-  DSGeomPassTech::DSGeomPassTech() : Technique("../tutorial37/shaders/geometry_pass.glsl")
+  namespace glfx
   {
-  }
-
-  bool DSGeomPassTech::Init()
-  {
-    if (!CompileProgram("GeometryPass")) {
-      return false;
+    DSGeomPassTech::DSGeomPassTech() : Technique("../tutorial37/shaders/geometry_pass.glsl")
+    {
     }
 
-    m_WVPLocation = GetUniformLocation("gWVP");
-    m_WorldMatrixLocation = GetUniformLocation("gWorld");
-    m_colorTextureUnitLocation = GetUniformLocation("gColorMap");
+    bool DSGeomPassTech::Init()
+    {
+      if (!CompileProgram("GeometryPass")) {
+        return false;
+      }
 
-    if (m_WVPLocation == INVALID_UNIFORM_LOCATION ||
-      m_WorldMatrixLocation == INVALID_UNIFORM_LOCATION ||
-      m_colorTextureUnitLocation == INVALID_UNIFORM_LOCATION) {
-      return false;
+      m_WVPLocation = GetUniformLocation("gWVP");
+      m_WorldMatrixLocation = GetUniformLocation("gWorld");
+      m_colorTextureUnitLocation = GetUniformLocation("gColorMap");
+
+      if (m_WVPLocation == INVALID_UNIFORM_LOCATION ||
+        m_WorldMatrixLocation == INVALID_UNIFORM_LOCATION ||
+        m_colorTextureUnitLocation == INVALID_UNIFORM_LOCATION) {
+        return false;
+        }
+
+      return true;
     }
 
-    return true;
+
+    void DSGeomPassTech::SetWVP(const Matrix4f& WVP)
+    {
+      glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP.m);
+    }
+
+
+    void DSGeomPassTech::SetWorldMatrix(const Matrix4f& WorldInverse)
+    {
+      glUniformMatrix4fv(m_WorldMatrixLocation, 1, GL_TRUE, (const GLfloat*)WorldInverse.m);
+    }
+
+
+    void DSGeomPassTech::SetColorTextureUnit(unsigned int TextureUnit)
+    {
+      glUniform1i(m_colorTextureUnitLocation, TextureUnit);
+    }
   }
 
-
-  void DSGeomPassTech::SetWVP(const Matrix4f& WVP)
+  namespace bare
   {
-    glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP.m);
-  }
+    DSGeomPassTech::DSGeomPassTech()
+    {
+    }
+
+    bool DSGeomPassTech::Init()
+    {
+      if (!Technique::Init()) {
+        return false;
+      }
+
+      if (!AddShader(GL_VERTEX_SHADER, "shaders/geometry_pass.vs")) {
+        return false;
+      }
 
 
-  void DSGeomPassTech::SetWorldMatrix(const Matrix4f& WorldInverse)
-  {
-    glUniformMatrix4fv(m_WorldMatrixLocation, 1, GL_TRUE, (const GLfloat*)WorldInverse.m);
-  }
+      if (!AddShader(GL_FRAGMENT_SHADER, "shaders/geometry_pass.fs")) {
+        return false;
+      }
+
+      if (!Finalize()) {
+        return false;
+      }
+
+      m_WVPLocation = GetUniformLocation("gWVP");
+      m_WorldMatrixLocation = GetUniformLocation("gWorld");
+      m_colorTextureUnitLocation = GetUniformLocation("gColorMap");
+
+      if (m_WVPLocation == INVALID_UNIFORM_LOCATION ||
+        m_WorldMatrixLocation == INVALID_UNIFORM_LOCATION ||
+        m_colorTextureUnitLocation == INVALID_UNIFORM_LOCATION) {
+        return false;
+      }
+
+      return true;
+    }
 
 
-  void DSGeomPassTech::SetColorTextureUnit(unsigned int TextureUnit)
-  {
-    glUniform1i(m_colorTextureUnitLocation, TextureUnit);
+    void DSGeomPassTech::SetWVP(const Matrix4f& WVP)
+    {
+      glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP.m);
+    }
+
+
+    void DSGeomPassTech::SetWorldMatrix(const Matrix4f& WorldInverse)
+    {
+      glUniformMatrix4fv(m_WorldMatrixLocation, 1, GL_TRUE, (const GLfloat*)WorldInverse.m);
+    }
+
+
+    void DSGeomPassTech::SetColorTextureUnit(unsigned int TextureUnit)
+    {
+      glUniform1i(m_colorTextureUnitLocation, TextureUnit);
+    }
+
   }
 }

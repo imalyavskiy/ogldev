@@ -24,33 +24,68 @@
 
 namespace t37
 {
-  class Technique
+  namespace glfx
   {
-  public:
+    class Technique
+    {
+    public:
 
-    Technique(const char* pEffectFile);
+      Technique(const char* pEffectFile);
 
-    ~Technique();
+      ~Technique();
 
-    void Enable();
+      void Enable();
 
-  protected:
+    protected:
 
-    bool CompileProgram(const char* pProgram);
+      bool CompileProgram(const char* pProgram);
 
-    GLint GetUniformLocation(const char* pUniformName);
+      GLint GetUniformLocation(const char* pUniformName);
 
-    GLint GetProgramParam(GLint param);
+      GLint GetProgramParam(GLint param);
 
-  private:
-    GLint m_effect;
-    GLint m_shaderProg;
-    const char* m_pEffectFile;
-  };
+    private:
+      GLint m_effect;
+      GLint m_shaderProg;
+      const char* m_pEffectFile;
+    };
+  }
+
+  namespace bare
+  {
+    class Technique
+    {
+    public:
+
+      Technique();
+
+      virtual ~Technique();
+
+      virtual bool Init();
+
+      void Enable();
+
+      GLuint GetProgram() const { return m_shaderProg; }
+
+    protected:
+
+      bool AddShader(GLenum ShaderType, const char* pFilename);
+
+      bool Finalize();
+
+      GLint GetUniformLocation(const char* pUniformName);
+
+      GLuint m_shaderProg = 0;
+
+    private:
+
+      void PrintUniformList();
+
+      typedef std::list<GLuint> ShaderObjList;
+      ShaderObjList m_shaderObjList;
+    };
+  }
 }
-
-#define INVALID_UNIFORM_LOCATION 0xFFFFFFFF
-
 
 #endif	/* TECHNIQUE_H */
 

@@ -23,19 +23,39 @@
 
 namespace t37
 {
-  class NullTechnique : public Technique {
-  public:
+  namespace glfx
+  {
+    class NullTechnique : public Technique {
+    public:
 
-    NullTechnique();
+      NullTechnique();
 
-    virtual bool Init();
+      virtual bool Init();
 
-    void SetWVP(const Matrix4f& WVP);
+      void SetWVP(const Matrix4f& WVP);
 
-  private:
+    private:
 
-    GLuint m_WVPLocation;
-  };
+      GLuint m_WVPLocation;
+    };
+  }
+
+  namespace bare
+  {
+    class NullTechnique : public Technique {
+    public:
+
+      NullTechnique();
+
+      virtual bool Init();
+
+      void SetWVP(const Matrix4f& WVP);
+
+    private:
+
+      GLuint m_WVPLocation;
+    };
+  }
 }
 
 #endif
