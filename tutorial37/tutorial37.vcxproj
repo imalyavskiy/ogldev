@@ -21,6 +21,7 @@
     <ClInclude Include="t37_gbuffer.h" />
     <ClInclude Include="t37_glut_backend.h" />
     <ClInclude Include="t37_lights_common.h" />
+    <ClInclude Include="t37_mainapp.h" />
     <ClInclude Include="t37_math_3d.h" />
     <ClInclude Include="t37_mesh.h" />
     <ClInclude Include="t37_null_technique.h" />
@@ -38,6 +39,7 @@
     <ClCompile Include="t37_gbuffer.cpp" />
     <ClCompile Include="t37_glut_backend.cpp" />
     <ClCompile Include="t37_main.cpp" />
+    <ClCompile Include="t37_mainapp.cpp" />
     <ClCompile Include="t37_math_3d.cpp" />
     <ClCompile Include="t37_mesh.cpp" />
     <ClCompile Include="t37_null_technique.cpp" />

@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2011 Etay Meiri
+  Copyright 2011 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,105 +24,57 @@
 
 namespace t37
 {
-  namespace glfx
+  DSGeomPassTech::DSGeomPassTech()
   {
-    DSGeomPassTech::DSGeomPassTech() : Technique("../tutorial37/shaders/geometry_pass.glsl")
-    {
-    }
-
-    bool DSGeomPassTech::Init()
-    {
-      if (!CompileProgram("GeometryPass")) {
-        return false;
-      }
-
-      m_WVPLocation = GetUniformLocation("gWVP");
-      m_WorldMatrixLocation = GetUniformLocation("gWorld");
-      m_colorTextureUnitLocation = GetUniformLocation("gColorMap");
-
-      if (m_WVPLocation == INVALID_UNIFORM_LOCATION ||
-        m_WorldMatrixLocation == INVALID_UNIFORM_LOCATION ||
-        m_colorTextureUnitLocation == INVALID_UNIFORM_LOCATION) {
-        return false;
-        }
-
-      return true;
-    }
-
-
-    void DSGeomPassTech::SetWVP(const Matrix4f& WVP)
-    {
-      glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP.m);
-    }
-
-
-    void DSGeomPassTech::SetWorldMatrix(const Matrix4f& WorldInverse)
-    {
-      glUniformMatrix4fv(m_WorldMatrixLocation, 1, GL_TRUE, (const GLfloat*)WorldInverse.m);
-    }
-
-
-    void DSGeomPassTech::SetColorTextureUnit(unsigned int TextureUnit)
-    {
-      glUniform1i(m_colorTextureUnitLocation, TextureUnit);
-    }
   }
 
-  namespace bare
+  bool DSGeomPassTech::Init()
   {
-    DSGeomPassTech::DSGeomPassTech()
-    {
+    if (!Technique::Init()) {
+      return false;
     }
 
-    bool DSGeomPassTech::Init()
-    {
-      if (!Technique::Init()) {
-        return false;
-      }
-
-      if (!AddShader(GL_VERTEX_SHADER, "shaders/geometry_pass.vs")) {
-        return false;
-      }
-
-
-      if (!AddShader(GL_FRAGMENT_SHADER, "shaders/geometry_pass.fs")) {
-        return false;
-      }
-
-      if (!Finalize()) {
-        return false;
-      }
-
-      m_WVPLocation = GetUniformLocation("gWVP");
-      m_WorldMatrixLocation = GetUniformLocation("gWorld");
-      m_colorTextureUnitLocation = GetUniformLocation("gColorMap");
-
-      if (m_WVPLocation == INVALID_UNIFORM_LOCATION ||
-        m_WorldMatrixLocation == INVALID_UNIFORM_LOCATION ||
-        m_colorTextureUnitLocation == INVALID_UNIFORM_LOCATION) {
-        return false;
-      }
-
-      return true;
+    if (!AddShader(GL_VERTEX_SHADER, "shaders/geometry_pass.vs")) {
+      return false;
     }
 
 
-    void DSGeomPassTech::SetWVP(const Matrix4f& WVP)
-    {
-      glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP.m);
+    if (!AddShader(GL_FRAGMENT_SHADER, "shaders/geometry_pass.fs")) {
+      return false;
     }
 
-
-    void DSGeomPassTech::SetWorldMatrix(const Matrix4f& WorldInverse)
-    {
-      glUniformMatrix4fv(m_WorldMatrixLocation, 1, GL_TRUE, (const GLfloat*)WorldInverse.m);
+    if (!Finalize()) {
+      return false;
     }
 
+    m_WVPLocation = GetUniformLocation("gWVP");
+    m_WorldMatrixLocation = GetUniformLocation("gWorld");
+    m_colorTextureUnitLocation = GetUniformLocation("gColorMap");
 
-    void DSGeomPassTech::SetColorTextureUnit(unsigned int TextureUnit)
-    {
-      glUniform1i(m_colorTextureUnitLocation, TextureUnit);
+    if (m_WVPLocation == INVALID_UNIFORM_LOCATION ||
+      m_WorldMatrixLocation == INVALID_UNIFORM_LOCATION ||
+      m_colorTextureUnitLocation == INVALID_UNIFORM_LOCATION) {
+      return false;
     }
 
+    return true;
+  }
+
+
+  void DSGeomPassTech::SetWVP(const Matrix4f& WVP)
+  {
+    glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP.m);
+  }
+
+
+  void DSGeomPassTech::SetWorldMatrix(const Matrix4f& WorldInverse)
+  {
+    glUniformMatrix4fv(m_WorldMatrixLocation, 1, GL_TRUE, (const GLfloat*)WorldInverse.m);
+  }
+
+
+  void DSGeomPassTech::SetColorTextureUnit(unsigned int TextureUnit)
+  {
+    glUniform1i(m_colorTextureUnitLocation, TextureUnit);
   }
 }

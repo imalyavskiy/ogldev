@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2011 Etay Meiri
+  Copyright 2011 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,73 +23,40 @@
 #include "t37_util.h"
 namespace t37
 {
-  namespace glfx
+  NullTechnique::NullTechnique()
   {
-    static const char* pEffectFile = "../tutorial37/shaders/null_technique.glsl";
-
-    NullTechnique::NullTechnique() : Technique(pEffectFile)
-    {
-    }
-
-    bool NullTechnique::Init()
-    {
-      if (!CompileProgram("NullTechnique")) {
-        return false;
-      }
-
-      m_WVPLocation = GetUniformLocation("gWVP");
-
-      if (m_WVPLocation == INVALID_UNIFORM_LOCATION) {
-        return false;
-      }
-
-      return true;
-    }
-
-
-    void NullTechnique::SetWVP(const Matrix4f& WVP)
-    {
-      glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP.m);
-    }
   }
 
-  namespace bare
+  bool NullTechnique::Init()
   {
-    NullTechnique::NullTechnique()
-    {
+    if (!Technique::Init()) {
+      return false;
     }
 
-    bool NullTechnique::Init()
-    {
-      if (!Technique::Init()) {
-        return false;
-      }
-
-      if (!AddShader(GL_VERTEX_SHADER, "shaders/null_technique.vs")) {
-        return false;
-      }
-
-      if (!AddShader(GL_FRAGMENT_SHADER, "shaders/null_technique.fs")) {
-        return false;
-      }
-
-      if (!Finalize()) {
-        return false;
-      }
-
-      m_WVPLocation = GetUniformLocation("gWVP");
-
-      if (m_WVPLocation == INVALID_UNIFORM_LOCATION) {
-        return false;
-      }
-
-      return true;
+    if (!AddShader(GL_VERTEX_SHADER, "shaders/null_technique.vs")) {
+      return false;
     }
 
-
-    void NullTechnique::SetWVP(const Matrix4f& WVP)
-    {
-      glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP.m);
+    if (!AddShader(GL_FRAGMENT_SHADER, "shaders/null_technique.fs")) {
+      return false;
     }
+
+    if (!Finalize()) {
+      return false;
+    }
+
+    m_WVPLocation = GetUniformLocation("gWVP");
+
+    if (m_WVPLocation == INVALID_UNIFORM_LOCATION) {
+      return false;
+    }
+
+    return true;
+  }
+
+
+  void NullTechnique::SetWVP(const Matrix4f& WVP)
+  {
+    glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP.m);
   }
 }
