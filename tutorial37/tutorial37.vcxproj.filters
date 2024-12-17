@@ -117,4 +117,30 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\dir_light_pass.fs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\geometry_pass.fs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\geometry_pass.vs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\light_pass.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\light_pass.vs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\null_technique.fs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\null_technique.vs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\point_light_pass.fs">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

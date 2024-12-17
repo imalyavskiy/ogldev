@@ -52,6 +52,16 @@
       <Project>{6e9d80e7-c4f1-4ae3-8082-4a5efdce8ccc}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\dir_light_pass.fs" />
+    <None Include="shaders\geometry_pass.fs" />
+    <None Include="shaders\geometry_pass.vs" />
+    <None Include="shaders\light_pass.glsl" />
+    <None Include="shaders\light_pass.vs" />
+    <None Include="shaders\null_technique.fs" />
+    <None Include="shaders\null_technique.vs" />
+    <None Include="shaders\point_light_pass.fs" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F47482F8-50BE-42F0-B51D-39AD645252C9}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
