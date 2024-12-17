@@ -58,7 +58,7 @@ namespace t36
       m_rotateInfo.z = RotateZ;
     }
 
-    void SetPerspectiveProj(const PersProjInfo& p)
+    void SetPerspectiveProj(const PerspProjInfo& p)
     {
       m_persProjInfo = p;
     }
@@ -79,7 +79,7 @@ namespace t36
     Vector3f m_worldPos;
     Vector3f m_rotateInfo;
 
-    PersProjInfo m_persProjInfo;
+    PerspProjInfo m_persProjInfo;
 
     struct {
       Vector3f Pos;

@@ -132,32 +132,20 @@ namespace t36
 
   inline Vector3f operator+(const Vector3f& l, const Vector3f& r)
   {
-    Vector3f Ret(l.x + r.x,
-      l.y + r.y,
-      l.z + r.z);
-
-    return Ret;
+    return { l.x + r.x, l.y + r.y, l.z + r.z };
   }
 
   inline Vector3f operator-(const Vector3f& l, const Vector3f& r)
   {
-    Vector3f Ret(l.x - r.x,
-      l.y - r.y,
-      l.z - r.z);
-
-    return Ret;
+    return { l.x - r.x, l.y - r.y, l.z - r.z };
   }
 
   inline Vector3f operator*(const Vector3f& l, float f)
   {
-    Vector3f Ret(l.x * f,
-      l.y * f,
-      l.z * f);
-
-    return Ret;
+    return { l.x * f, l.y * f, l.z * f };
   }
 
-  struct PersProjInfo
+  struct PerspProjInfo
   {
     float FOV;
     float Width;
@@ -173,68 +161,22 @@ namespace t36
 
     Matrix4f() = default;
 
-    Matrix4f Transpose() const
-    {
-      Matrix4f n;
+    [[nodiscard]]
+    inline Matrix4f Transpose() const;
 
-      for (unsigned int i = 0; i < 4; i++) {
-        for (unsigned int j = 0; j < 4; j++) {
-          n.m[i][j] = m[j][i];
-        }
-      }
+    void InitIdentity();
 
-      return n;
-    }
+    inline Matrix4f operator*(const Matrix4f& Right) const;
 
+    Vector4f operator*(const Vector4f& v) const;
 
-    inline void InitIdentity()
-    {
-      m[0][0] = 1.0f; m[0][1] = 0.0f; m[0][2] = 0.0f; m[0][3] = 0.0f;
-      m[1][0] = 0.0f; m[1][1] = 1.0f; m[1][2] = 0.0f; m[1][3] = 0.0f;
-      m[2][0] = 0.0f; m[2][1] = 0.0f; m[2][2] = 1.0f; m[2][3] = 0.0f;
-      m[3][0] = 0.0f; m[3][1] = 0.0f; m[3][2] = 0.0f; m[3][3] = 1.0f;
-    }
+    void Print() const;
 
-    inline Matrix4f operator*(const Matrix4f& Right) const
-    {
-      Matrix4f Ret;
-
-      for (unsigned int i = 0; i < 4; i++) {
-        for (unsigned int j = 0; j < 4; j++) {
-          Ret.m[i][j] = m[i][0] * Right.m[0][j] +
-            m[i][1] * Right.m[1][j] +
-            m[i][2] * Right.m[2][j] +
-            m[i][3] * Right.m[3][j];
-        }
-      }
-
-      return Ret;
-    }
-
-    Vector4f operator*(const Vector4f& v) const
-    {
-      Vector4f r;
-
-      r.x = m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z + m[0][3] * v.w;
-      r.y = m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z + m[1][3] * v.w;
-      r.z = m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z + m[2][3] * v.w;
-      r.w = m[3][0] * v.x + m[3][1] * v.y + m[3][2] * v.z + m[3][3] * v.w;
-
-      return r;
-    }
-
-    void Print() const
-    {
-      for (int i = 0; i < 4; i++) {
-        printf("%f %f %f %f\n", m[i][0], m[i][1], m[i][2], m[i][3]);
-      }
-    }
-
-    void InitScaleTransform(float ScaleX, float ScaleY, float ScaleZ);
-    void InitRotateTransform(float RotateX, float RotateY, float RotateZ);
+    void InitScaleTransform(float scaleX, float scaleY, float scaleZ);
+    void InitRotateTransform(float rotateX, float rotateY, float rotateZ);
     void InitTranslationTransform(float x, float y, float z);
-    void InitCameraTransform(const Vector3f& Target, const Vector3f& Up);
-    void InitPersProjTransform(const PersProjInfo& p);
+    void InitCameraTransform(const Vector3f& target, const Vector3f& up);
+    void InitPerspProjTransform(const PerspProjInfo& perspProjInfo);
   };
 
 
@@ -247,7 +189,7 @@ namespace t36
 
     Quaternion() = default;
 
-    Quaternion(const float _x, const float _y, const float _z, const float _w);
+    Quaternion(float _x, float _y, float _z, float _w);
 
     void Normalize();
 

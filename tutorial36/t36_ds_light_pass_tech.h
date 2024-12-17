@@ -30,16 +30,16 @@ namespace t36
 
     DSLightPassTech();
 
-    virtual bool Init();
+    bool Init() override;
 
-    void SetWVP(const Matrix4f& WVP);
-    void SetPositionTextureUnit(unsigned int TextureUnit);
-    void SetColorTextureUnit(unsigned int TextureUnit);
-    void SetNormalTextureUnit(unsigned int TextureUnit);
-    void SetEyeWorldPos(const Vector3f& EyeWorldPos);
-    void SetMatSpecularIntensity(float Intensity);
-    void SetMatSpecularPower(float Power);
-    void SetScreenSize(unsigned int Width, unsigned int Height);
+    void SetWVP(const Matrix4f& worlViewProjection);
+    void SetPositionTextureUnit(uint32_t textureUnit);
+    void SetColorTextureUnit(uint32_t textureUnit);
+    void SetNormalTextureUnit(uint32_t textureUnit);
+    void SetEyeWorldPos(const Vector3f& eyeWorldPos);
+    void SetMatSpecularIntensity(float intensity);
+    void SetMatSpecularPower(float power);
+    void SetScreenSize(uint32_t width, uint32_t height);
 
   private:
 

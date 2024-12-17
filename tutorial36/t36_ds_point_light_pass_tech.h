@@ -29,9 +29,9 @@ namespace t36
 
     DSPointLightPassTech();
 
-    bool Init();
+    bool Init() override;
 
-    void SetPointLight(const PointLight& Lights);
+    void SetPointLight(const PointLight& lights);
 
   private:
 

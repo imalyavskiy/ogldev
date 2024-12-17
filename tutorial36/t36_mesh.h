@@ -38,14 +38,9 @@ namespace t36
     Vector2f m_tex;
     Vector3f m_normal;
 
-    Vertex() {}
+    Vertex() = default;
 
-    Vertex(const Vector3f& pos, const Vector2f& tex, const Vector3f& normal)
-    {
-      m_pos = pos;
-      m_tex = tex;
-      m_normal = normal;
-    }
+    Vertex(const Vector3f& pos, const Vector2f& tex, const Vector3f& normal);
   };
 
 
@@ -56,21 +51,21 @@ namespace t36
 
     ~Mesh();
 
-    bool LoadMesh(const std::string& Filename);
+    bool LoadMesh(const std::string& fileName);
 
     void Render();
 
-    void Render(unsigned int NumInstances, const Matrix4f* WVPMats, const Matrix4f* WorldMats);
+    void Render(unsigned int numInstances, const Matrix4f* WVPMats, const Matrix4f* WorldMats);
 
   private:
-    bool InitFromScene(const aiScene* pScene, const std::string& Filename);
+    bool InitFromScene(const aiScene* pScene, const std::string& fileName);
     void InitMesh(const aiMesh* paiMesh,
-      std::vector<Vector3f>& Positions,
-      std::vector<Vector3f>& Normals,
-      std::vector<Vector2f>& TexCoords,
-      std::vector<unsigned int>& Indices);
+                  std::vector<Vector3f>& positions,
+                  std::vector<Vector3f>& normals,
+                  std::vector<Vector2f>& texCoords,
+                  std::vector<uint32_t>& indices);
 
-    bool InitMaterials(const aiScene* pScene, const std::string& Filename);
+    bool InitMaterials(const aiScene* pScene, const std::string& fileName);
     void Clear();
 
 #define INVALID_MATERIAL 0xFFFFFFFF
@@ -86,18 +81,10 @@ namespace t36
     GLuint m_Buffers[6];
 
     struct MeshEntry {
-      MeshEntry()
-      {
-        NumIndices = 0;
-        BaseVertex = 0;
-        BaseIndex = 0;
-        MaterialIndex = INVALID_MATERIAL;
-      }
-
-      unsigned int NumIndices;
-      unsigned int BaseVertex;
-      unsigned int BaseIndex;
-      unsigned int MaterialIndex;
+      unsigned int NumIndices = 0;
+      unsigned int BaseVertex = 0;
+      unsigned int BaseIndex = 0;
+      unsigned int MaterialIndex = INVALID_MATERIAL;
     };
 
     std::vector<MeshEntry> m_Entries;

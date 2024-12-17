@@ -36,11 +36,12 @@ namespace t36
 
     void Enable();
 
-    GLuint GetProgram() const { return m_shaderProg; }
+    [[nodiscard]]
+    GLuint GetProgram() const;
 
   protected:
 
-    bool AddShader(GLenum ShaderType, const char* pFilename);
+    bool AddShader(GLenum shaderType, const char* pFileName);
 
     bool Finalize();
 

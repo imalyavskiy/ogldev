@@ -64,18 +64,18 @@ namespace t36
   }
 
   // Use this method to add shaders to the program. When finished - call finalize()
-  bool Technique::AddShader(GLenum ShaderType, const char* pFilename)
+  bool Technique::AddShader(GLenum shaderType, const char* pFileName)
   {
     std::string s;
 
-    if (!ReadFile(pFilename, s)) {
+    if (!ReadFile(pFileName, s)) {
       return false;
     }
 
-    GLuint ShaderObj = glCreateShader(ShaderType);
+    GLuint ShaderObj = glCreateShader(shaderType);
 
     if (ShaderObj == 0) {
-      fprintf(stderr, "Error creating shader type %d\n", ShaderType);
+      fprintf(stderr, "Error creating shader type %d\n", shaderType);
       return false;
     }
 
@@ -96,7 +96,7 @@ namespace t36
     if (!success) {
       GLchar InfoLog[1024];
       glGetShaderInfoLog(ShaderObj, 1024, NULL, InfoLog);
-      fprintf(stderr, "Error compiling '%s': '%s'\n", pFilename, InfoLog);
+      fprintf(stderr, "Error compiling '%s': '%s'\n", pFileName, InfoLog);
       return false;
     }
 
@@ -110,31 +110,31 @@ namespace t36
   // to link and validate the program.
   bool Technique::Finalize()
   {
-    GLint Success = 0;
-    GLchar ErrorLog[1024] = { 0 };
+    GLint success = 0;
+    GLchar errorLog[1024] = { 0 };
 
     glLinkProgram(m_shaderProg);
 
-    glGetProgramiv(m_shaderProg, GL_LINK_STATUS, &Success);
+    glGetProgramiv(m_shaderProg, GL_LINK_STATUS, &success);
 
-    if (Success == 0) {
-      glGetProgramInfoLog(m_shaderProg, sizeof(ErrorLog), NULL, ErrorLog);
-      fprintf(stderr, "Error linking shader program: '%s'\n", ErrorLog);
+    if (success == 0) {
+      glGetProgramInfoLog(m_shaderProg, sizeof(errorLog), nullptr, errorLog);
+      fprintf(stderr, "Error linking shader program: '%s'\n", errorLog);
       return false;
     }
 
     glValidateProgram(m_shaderProg);
 
-    glGetProgramiv(m_shaderProg, GL_VALIDATE_STATUS, &Success);
+    glGetProgramiv(m_shaderProg, GL_VALIDATE_STATUS, &success);
 
-    if (Success == 0) {
-      glGetProgramInfoLog(m_shaderProg, sizeof(ErrorLog), NULL, ErrorLog);
-      fprintf(stderr, "Invalid shader program: '%s'\n", ErrorLog);
+    if (success == 0) {
+      glGetProgramInfoLog(m_shaderProg, sizeof(errorLog), nullptr, errorLog);
+      fprintf(stderr, "Invalid shader program: '%s'\n", errorLog);
       return false;
     }
 
     // Delete the intermediate shader objects that have been added to the program
-    for (ShaderObjList::iterator it = m_shaderObjList.begin(); it != m_shaderObjList.end(); it++) {
+    for (auto it = m_shaderObjList.begin(); it != m_shaderObjList.end(); ++it) {
       glDeleteShader(*it);
     }
 
@@ -148,20 +148,20 @@ namespace t36
 
   void Technique::PrintUniformList()
   {
-    int Count = 0;
-    glGetProgramiv(m_shaderProg, GL_ACTIVE_UNIFORMS, &Count);
-    printf("Active Uniforms: %d\n", Count);
+    int count = 0;
+    glGetProgramiv(m_shaderProg, GL_ACTIVE_UNIFORMS, &count);
+    printf("Active Uniforms: %d\n", count);
 
-    GLint Size;
-    GLenum Type;
-    const GLsizei BufSize = 16;
-    GLchar Name[BufSize];
+    GLint size;
+    GLenum type;
+    constexpr GLsizei bufSize = 16;
+    GLchar Name[bufSize];
     GLsizei Length;
 
-    for (int i = 0; i < Count; i++) {
-      glGetActiveUniform(m_shaderProg, (GLuint)i, BufSize, &Length, &Size, &Type, Name);
+    for (int i = 0; i < count; i++) {
+      glGetActiveUniform(m_shaderProg, static_cast<GLuint>(i), bufSize, &Length, &size, &type, Name);
 
-      printf("Uniform #%d Type: %u Name: %s\n", i, Type, Name);
+      printf("Uniform #%d Type: %u Name: %s\n", i, type, Name);
     }
   }
 
@@ -171,15 +171,20 @@ namespace t36
     glUseProgram(m_shaderProg);
   }
 
+  GLuint Technique::GetProgram() const
+  {
+    return m_shaderProg;
+  }
+
 
   GLint Technique::GetUniformLocation(const char* pUniformName)
   {
-    GLuint Location = glGetUniformLocation(m_shaderProg, pUniformName);
+    const GLuint location = glGetUniformLocation(m_shaderProg, pUniformName);
 
-    if (Location == INVALID_UNIFORM_LOCATION) {
+    if (location == INVALID_UNIFORM_LOCATION) {
       fprintf(stderr, "Warning! Unable to get the location of uniform '%s'\n", pUniformName);
     }
 
-    return Location;
+    return location;
   }
 }

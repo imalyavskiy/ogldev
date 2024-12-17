@@ -28,7 +28,7 @@ namespace t36
 
     DSDirLightPassTech();
 
-    virtual bool Init();
+    bool Init() override;
 
     void SetDirectionalLight(const DirectionalLight& Light);
 

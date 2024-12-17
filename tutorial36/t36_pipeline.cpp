@@ -26,7 +26,7 @@ namespace t36
 
     CameraTranslationTrans.InitTranslationTransform(-m_camera.Pos.x, -m_camera.Pos.y, -m_camera.Pos.z);
     CameraRotateTrans.InitCameraTransform(m_camera.Target, m_camera.Up);
-    PersProjTrans.InitPersProjTransform(m_persProjInfo);
+    PersProjTrans.InitPerspProjTransform(m_persProjInfo);
 
     m_VPTtransformation = PersProjTrans * CameraRotateTrans * CameraTranslationTrans;
     return m_VPTtransformation;

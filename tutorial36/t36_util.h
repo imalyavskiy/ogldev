@@ -23,9 +23,9 @@
 #ifndef WIN32
 #include <unistd.h>
 #endif
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
 
 #define ZERO_MEM(a) memset(a, 0, sizeof(a))
 

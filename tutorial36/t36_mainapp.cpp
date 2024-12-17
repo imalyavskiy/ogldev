@@ -71,7 +71,7 @@ namespace t36
       return false;
     }
 
-    if (!m_bsphere.LoadMesh("../Content/sphere.obj")) {
+    if (!m_boundingSphere.LoadMesh("../Content/sphere.obj")) {
       return false;
     }
 
@@ -125,15 +125,15 @@ namespace t36
 
     glDisable(GL_BLEND);
 
-    Pipeline p;
-    p.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
-    p.SetPerspectiveProj(m_persProjInfo);
-    p.Rotate(0.0f, m_scale, 0.0f);
+    Pipeline pipeline;
+    pipeline.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
+    pipeline.SetPerspectiveProj(m_persProjInfo);
+    pipeline.Rotate(0.0f, m_scale, 0.0f);
 
-    for (unsigned int i = 0; i < ARRAY_SIZE_IN_ELEMENTS(m_boxPositions); i++) {
-      p.WorldPos(m_boxPositions[i]);
-      m_DSGeomPassTech.SetWVP(p.GetWVPTrans());
-      m_DSGeomPassTech.SetWorldMatrix(p.GetWorldTrans());
+    for (uint32_t i = 0; i < std::size(m_boxPositions); ++i) {
+      pipeline.WorldPos(m_boxPositions[i]);
+      m_DSGeomPassTech.SetWVP(pipeline.GetWVPTrans());
+      m_DSGeomPassTech.SetWorldMatrix(pipeline.GetWorldTrans());
       m_box.Render();
     }
 
@@ -159,17 +159,24 @@ namespace t36
     m_DSPointLightPassTech.Enable();
     m_DSPointLightPassTech.SetEyeWorldPos(m_pGameCamera->GetPos());
 
-    Pipeline p;
-    p.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
-    p.SetPerspectiveProj(m_persProjInfo);
+    Pipeline pipeline;
+    pipeline.SetCamera(m_pGameCamera->GetPos(), 
+                       m_pGameCamera->GetTarget(), 
+                       m_pGameCamera->GetUp()
+    );
+    pipeline.SetPerspectiveProj(m_persProjInfo);
 
-    for (unsigned int i = 0; i < ARRAY_SIZE_IN_ELEMENTS(m_pointLight); i++) {
+    for (uint32_t i = 0; i < std::size(m_pointLight); i++) {
       m_DSPointLightPassTech.SetPointLight(m_pointLight[i]);
-      p.WorldPos(m_pointLight[i].Position);
-      float BSphereScale = CalcPointLightBSphere(m_pointLight[i]);
-      p.Scale(BSphereScale, BSphereScale, BSphereScale);
-      m_DSPointLightPassTech.SetWVP(p.GetWVPTrans());
-      m_bsphere.Render();
+      pipeline.WorldPos(m_pointLight[i].Position);
+      const float boundingSphereScale = 
+        CalcPointLightBSphere(m_pointLight[i]);
+      pipeline.Scale( boundingSphereScale, 
+        boundingSphereScale, 
+        boundingSphereScale
+      );
+      m_DSPointLightPassTech.SetWVP(pipeline.GetWVPTrans());
+      m_boundingSphere.Render();
     }
   }
 
@@ -177,9 +184,11 @@ namespace t36
   {
     m_DSDirLightPassTech.Enable();
     m_DSDirLightPassTech.SetEyeWorldPos(m_pGameCamera->GetPos());
-    Matrix4f WVP;
-    WVP.InitIdentity();
-    m_DSDirLightPassTech.SetWVP(WVP);
+
+    Matrix4f worldViewProjection;
+    worldViewProjection.InitIdentity();
+
+    m_DSDirLightPassTech.SetWVP(worldViewProjection);
     m_quad.Render();
   }
 
@@ -188,14 +197,14 @@ namespace t36
     RenderSceneCB();
   }
 
-  void MainApp::SpecialKeyboardCB(int Key, int x, int y)
+  void MainApp::SpecialKeyboardCB(int key, int x, int y)
   {
-    m_pGameCamera->OnKeyboard(Key);
+    m_pGameCamera->OnKeyboard(key);
   }
 
-  void MainApp::KeyboardCB(unsigned char Key, int x, int y)
+  void MainApp::KeyboardCB(unsigned char key, int x, int y)
   {
-    switch (Key) {
+    switch (key) {
     case 0x1b:
       glutLeaveMainLoop();
       break;
@@ -207,19 +216,34 @@ namespace t36
     m_pGameCamera->OnMouse(x, y);
   }
 
-  void MainApp::MouseCB(int Button, int State, int x, int y)
+  void MainApp::MouseCB(int button, int state, int x, int y)
   {
   }
 
-  float MainApp::CalcPointLightBSphere(const PointLight& Light)
+  float MainApp::CalcPointLightBSphere(const PointLight& light)
   {
-    float MaxChannel = fmax(fmax(Light.Color.x, Light.Color.y), Light.Color.z);
+    const float maxCh = 
+      fmax(
+        fmax( light.Color.x,
+                  light.Color.y
+            ),
+        light.Color.z
+      );
 
-    float ret = (-Light.Attenuation.Linear + sqrtf(Light.Attenuation.Linear * Light.Attenuation.Linear - 4 * Light.Attenuation.Exp * (Light.Attenuation.Exp - 256 * MaxChannel * Light.DiffuseIntensity)))
-      /
-      2 * Light.Attenuation.Exp;
+    const float lin = 
+      light.Attenuation.Linear;
+    const float exp = 
+      light.Attenuation.Exp;
+    const float intensity = 
+      light.DiffuseIntensity;
 
-    return ret;
+    const float discriminant = 
+      lin * lin - 4 * exp * (exp - 256 * maxCh * intensity);
+    
+    return (-lin + sqrtf(discriminant)) / 2 * exp;
+      // here is an error - right of the division
+      // must be in brackets, but in this way
+      // light is cannot be seen
   }
 
   void MainApp::InitLights()

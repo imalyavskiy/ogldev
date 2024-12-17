@@ -51,18 +51,18 @@ namespace t36
 
     void IdleCB() override;
 
-    void SpecialKeyboardCB(int Key, int x, int y) override;
+    void SpecialKeyboardCB(int key, int x, int y) override;
 
-    void KeyboardCB(unsigned char Key, int x, int y) override;
+    void KeyboardCB(unsigned char key, int x, int y) override;
 
     void PassiveMouseCB(int x, int y) override;
 
-    void MouseCB(int Button, int State, int x, int y) override;
+    void MouseCB(int button, int state, int x, int y) override;
 
   private:
 
     // The calculation solves a quadratic equation (see http://en.wikipedia.org/wiki/Quadratic_equation)
-    float CalcPointLightBSphere(const PointLight& Light);
+    float CalcPointLightBSphere(const PointLight& light);
 
     void InitLights();
 
@@ -85,9 +85,9 @@ namespace t36
     DirectionalLight m_dirLight;
     PointLight m_pointLight[3];
     Mesh m_box;
-    Mesh m_bsphere;
+    Mesh m_boundingSphere;
     Mesh m_quad;
-    PersProjInfo m_persProjInfo;
+    PerspProjInfo m_persProjInfo;
 #ifdef FREETYPE
     FontRenderer m_fontRenderer;
 #endif
