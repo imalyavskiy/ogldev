@@ -2,17 +2,18 @@
 
 namespace t35
 {
-  MainApp::MainApp(int winWidth, int winHeight): m_winWidth(winWidth)
-                                                 , m_winHeight(winHeight)
+  MainApp::MainApp(int winWidth, int winHeight)
+    : m_winWidth(winWidth)
+    , m_winHeight(winHeight)
   {
-    m_pGameCamera = NULL;
+    m_pGameCamera = nullptr;
     m_scale = 0.0f;
 
-    m_persProjInfo.FOV = 60.0f;
-    m_persProjInfo.Height = m_winHeight;
-    m_persProjInfo.Width = m_winWidth;
-    m_persProjInfo.zNear = 1.0f;
-    m_persProjInfo.zFar = 100.0f;
+    m_perspProjInfo.FOV = 60.0f;
+    m_perspProjInfo.Height = m_winHeight;
+    m_perspProjInfo.Width = m_winWidth;
+    m_perspProjInfo.zNear = 1.0f;
+    m_perspProjInfo.zFar = 100.0f;
 
     m_frameCount = 0;
     m_fps = 0.0f;
@@ -41,12 +42,17 @@ namespace t35
     }
 
 #ifdef FREETYPE
-      if (!m_fontRenderer.InitFontRenderer()) {
-        return false;
-      }
+    if (!m_fontRenderer.InitFontRenderer()) {
+      return false;
+    }
 #endif
 
     return true;
+  }
+
+  void MainApp::Run()
+  {
+    GLUTBackendRun(this);
   }
 
   void MainApp::RenderSceneCB()
@@ -78,7 +84,7 @@ namespace t35
     pipeline.Rotate(0.0f, m_scale, 0.0f);
     pipeline.WorldPos(-0.8f, -1.0f, 12.0f);
     pipeline.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
-    pipeline.SetPerspectiveProj(m_persProjInfo);
+    pipeline.SetPerspectiveProj(m_perspProjInfo);
     m_DSGeomPassTech.SetWVP(pipeline.GetWVPTrans());
     m_DSGeomPassTech.SetWorldMatrix(pipeline.GetWorldTrans());
 
@@ -98,24 +104,24 @@ namespace t35
     const auto halfHeight = static_cast<GLint>(m_winHeight / 2.0f);
 
     m_gbuffer.SetReadBuffer(GBuffer::GBUFFER_TEXTURE_TYPE_POSITION);
-    glBlitFramebuffer( 0, 0, m_winWidth, m_winHeight,                  // src rect
-                       0, 0, halfWidth, halfHeight,                    // dst rect
-                       GL_COLOR_BUFFER_BIT, GL_LINEAR);
+    glBlitFramebuffer(0, 0, m_winWidth, m_winHeight,                  // src rect
+                      0, 0, halfWidth, halfHeight,                    // dst rect
+                      GL_COLOR_BUFFER_BIT, GL_LINEAR);
 
     m_gbuffer.SetReadBuffer(GBuffer::GBUFFER_TEXTURE_TYPE_DIFFUSE);
-    glBlitFramebuffer( 0, 0, m_winWidth, m_winHeight,                  // src rect
-                       0, halfHeight, halfWidth, m_winHeight,          // dst rect
-                       GL_COLOR_BUFFER_BIT, GL_LINEAR);
+    glBlitFramebuffer(0, 0, m_winWidth, m_winHeight,                  // src rect
+                      0, halfHeight, halfWidth, m_winHeight,          // dst rect
+                      GL_COLOR_BUFFER_BIT, GL_LINEAR);
 
     m_gbuffer.SetReadBuffer(GBuffer::GBUFFER_TEXTURE_TYPE_NORMAL);
-    glBlitFramebuffer( 0, 0, m_winWidth, m_winHeight,                  // src rect
-                       halfWidth, halfHeight, m_winWidth, m_winHeight, // dst rect
-                       GL_COLOR_BUFFER_BIT, GL_LINEAR);
+    glBlitFramebuffer(0, 0, m_winWidth, m_winHeight,                  // src rect
+                      halfWidth, halfHeight, m_winWidth, m_winHeight, // dst rect
+                      GL_COLOR_BUFFER_BIT, GL_LINEAR);
 
     m_gbuffer.SetReadBuffer(GBuffer::GBUFFER_TEXTURE_TYPE_TEXCOORD);
-    glBlitFramebuffer( 0, 0, m_winWidth, m_winHeight,                  // src rect
-                       halfWidth, 0, m_winWidth, halfHeight,           // dst rect
-                       GL_COLOR_BUFFER_BIT, GL_LINEAR);
+    glBlitFramebuffer(0, 0, m_winWidth, m_winHeight,                  // src rect
+                      halfWidth, 0, m_winWidth, halfHeight,           // dst rect
+                      GL_COLOR_BUFFER_BIT, GL_LINEAR);
   }
 
   void MainApp::IdleCB()
@@ -123,14 +129,14 @@ namespace t35
     RenderSceneCB();
   }
 
-  void MainApp::SpecialKeyboardCB(int Key, int x, int y)
+  void MainApp::SpecialKeyboardCB(int key, int x, int y)
   {
-    m_pGameCamera->OnKeyboard(Key);
+    m_pGameCamera->OnKeyboard(key);
   }
 
-  void MainApp::KeyboardCB(unsigned char Key, int x, int y)
+  void MainApp::KeyboardCB(unsigned char key, int x, int y)
   {
-    switch (Key) {
+    switch (key) {
     case 0x1b:
       glutLeaveMainLoop();
       break;
@@ -142,7 +148,7 @@ namespace t35
     m_pGameCamera->OnMouse(x, y);
   }
 
-  void MainApp::MouseCB(int Button, int State, int x, int y)
+  void MainApp::MouseCB(int button, int state, int x, int y)
   {
   }
 
@@ -161,11 +167,10 @@ namespace t35
 
   void MainApp::RenderFPS()
   {
-    char text[32];
-    ZERO_MEM(text);
+    char text[32] = {0};
     SNPRINTF(text, sizeof(text), "FPS: %.2f", m_fps);
 #ifdef FREETYPE
-      m_fontRenderer.RenderText(10, 10, text);
+    m_fontRenderer.RenderText(10, 10, text);
 #endif
   }
 }

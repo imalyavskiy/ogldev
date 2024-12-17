@@ -28,11 +28,11 @@ namespace t35
 
     DSGeomPassTech();
 
-    virtual bool Init();
+    bool Init() override;
 
-    void SetWVP(const Matrix4f& WVP);
+    void SetWVP(const Matrix4f& worldViewProjection);
     void SetWorldMatrix(const Matrix4f& WVP);
-    void SetColorTextureUnit(unsigned int TextureUnit);
+    void SetColorTextureUnit(unsigned int textureUnit);
 
   private:
 

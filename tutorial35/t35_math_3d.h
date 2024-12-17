@@ -131,32 +131,20 @@ namespace t35
 
   inline Vector3f operator+(const Vector3f& l, const Vector3f& r)
   {
-    Vector3f Ret(l.x + r.x,
-      l.y + r.y,
-      l.z + r.z);
-
-    return Ret;
+    return { l.x + r.x, l.y + r.y, l.z + r.z };
   }
 
   inline Vector3f operator-(const Vector3f& l, const Vector3f& r)
   {
-    Vector3f Ret(l.x - r.x,
-      l.y - r.y,
-      l.z - r.z);
-
-    return Ret;
+    return { l.x - r.x, l.y - r.y, l.z - r.z };
   }
 
   inline Vector3f operator*(const Vector3f& l, float f)
   {
-    Vector3f Ret(l.x * f,
-      l.y * f,
-      l.z * f);
-
-    return Ret;
+    return { l.x * f, l.y * f, l.z * f };
   }
 
-  struct PersProjInfo
+  struct PerspProjInfo
   {
     float FOV;
     float Width;
@@ -229,11 +217,11 @@ namespace t35
       }
     }
 
-    void InitScaleTransform(float ScaleX, float ScaleY, float ScaleZ);
-    void InitRotateTransform(float RotateX, float RotateY, float RotateZ);
+    void InitScaleTransform(float scaleX, float scaleY, float scaleZ);
+    void InitRotateTransform(float rotateX, float rotateY, float rotateZ);
     void InitTranslationTransform(float x, float y, float z);
-    void InitCameraTransform(const Vector3f& Target, const Vector3f& Up);
-    void InitPersProjTransform(const PersProjInfo& p);
+    void InitCameraTransform(const Vector3f& target, const Vector3f& up);
+    void InitPerspProjTransform(const PerspProjInfo& perspProjInfo);
   };
 
 
@@ -250,7 +238,8 @@ namespace t35
 
     void Normalize();
 
-    Quaternion Conjugate();
+    [[nodiscard]]
+    Quaternion Conjugate() const;
   };
 
   Quaternion operator*(const Quaternion& l, const Quaternion& r);

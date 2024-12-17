@@ -32,11 +32,11 @@ namespace t35
       m_rotateInfo = Vector3f(0.0f, 0.0f, 0.0f);
     }
 
-    void Scale(float ScaleX, float ScaleY, float ScaleZ)
+    void Scale(float scaleX, float scaleY, float scaleZ)
     {
-      m_scale.x = ScaleX;
-      m_scale.y = ScaleY;
-      m_scale.z = ScaleZ;
+      m_scale.x = scaleX;
+      m_scale.y = scaleY;
+      m_scale.z = scaleZ;
     }
 
     void WorldPos(float x, float y, float z)
@@ -46,28 +46,28 @@ namespace t35
       m_worldPos.z = z;
     }
 
-    void WorldPos(const Vector3f& Pos)
+    void WorldPos(const Vector3f& pos)
     {
-      m_worldPos = Pos;
+      m_worldPos = pos;
     }
 
-    void Rotate(float RotateX, float RotateY, float RotateZ)
+    void Rotate(float rotateX, float rotateY, float rotateZ)
     {
-      m_rotateInfo.x = RotateX;
-      m_rotateInfo.y = RotateY;
-      m_rotateInfo.z = RotateZ;
+      m_rotateInfo.x = rotateX;
+      m_rotateInfo.y = rotateY;
+      m_rotateInfo.z = rotateZ;
     }
 
-    void SetPerspectiveProj(const PersProjInfo& p)
+    void SetPerspectiveProj(const PerspProjInfo& perspProjInfo)
     {
-      m_persProjInfo = p;
+      m_perspProjInfo = perspProjInfo;
     }
 
-    void SetCamera(const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up)
+    void SetCamera(const Vector3f& pos, const Vector3f& target, const Vector3f& up)
     {
-      m_camera.Pos = Pos;
-      m_camera.Target = Target;
-      m_camera.Up = Up;
+      m_camera.Pos = pos;
+      m_camera.Target = target;
+      m_camera.Up = up;
     }
 
     const Matrix4f& GetVPTrans();
@@ -79,7 +79,7 @@ namespace t35
     Vector3f m_worldPos;
     Vector3f m_rotateInfo;
 
-    PersProjInfo m_persProjInfo;
+    PerspProjInfo m_perspProjInfo;
 
     struct {
       Vector3f Pos;

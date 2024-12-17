@@ -20,13 +20,13 @@
 #include "t35_camera.h"
 namespace t35
 {
-  const static float STEP_SCALE = 0.1f;
-  const static int MARGIN = 10;
+  constexpr static float   STEP_SCALE = 0.1f;
+  constexpr static int32_t MARGIN     = 10;
 
-  Camera::Camera(int WindowWidth, int WindowHeight)
+  Camera::Camera(int winWidth, int winHeight)
   {
-    m_windowWidth = WindowWidth;
-    m_windowHeight = WindowHeight;
+    m_winWidth = winWidth;
+    m_winHeight = winHeight;
     m_pos = Vector3f(0.0f, 0.0f, 0.0f);
     m_target = Vector3f(0.0f, 0.0f, 1.0f);
     m_target.Normalize();
@@ -36,16 +36,16 @@ namespace t35
   }
 
 
-  Camera::Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up)
+  Camera::Camera(int winWidth, int winHeight, const Vector3f& pos, const Vector3f& target, const Vector3f& up)
   {
-    m_windowWidth = WindowWidth;
-    m_windowHeight = WindowHeight;
-    m_pos = Pos;
+    m_winWidth = winWidth;
+    m_winHeight = winHeight;
+    m_pos = pos;
 
-    m_target = Target;
+    m_target = target;
     m_target.Normalize();
 
-    m_up = Up;
+    m_up = up;
     m_up.Normalize();
 
     Init();
@@ -54,116 +54,105 @@ namespace t35
 
   void Camera::Init()
   {
-    Vector3f HTarget(m_target.x, 0.0, m_target.z);
-    HTarget.Normalize();
+    Vector3f hTarget(m_target.x, 0.0, m_target.z);
+    hTarget.Normalize();
 
-    if (HTarget.z >= 0.0f)
+    if (hTarget.z >= 0.0f)
     {
-      if (HTarget.x >= 0.0f)
+      if (hTarget.x >= 0.0f)
       {
-        m_AngleH = 360.0f - ToDegree(asinf(HTarget.z));
+        m_hAngle = 360.0f - ToDegree(asinf(hTarget.z));
       }
       else
       {
-        m_AngleH = 180.0f + ToDegree(asinf(HTarget.z));
+        m_hAngle = 180.0f + ToDegree(asinf(hTarget.z));
       }
     }
     else
     {
-      if (HTarget.x >= 0.0f)
+      if (hTarget.x >= 0.0f)
       {
-        m_AngleH = ToDegree(asinf(-HTarget.z));
+        m_hAngle = ToDegree(asinf(-hTarget.z));
       }
       else
       {
-        m_AngleH = 90.0f + ToDegree(asinf(-HTarget.z));
+        m_hAngle = 90.0f + ToDegree(asinf(-hTarget.z));
       }
     }
 
-    m_AngleV = -ToDegree(asinf(m_target.y));
+    m_vAngle = -ToDegree(asinf(m_target.y));
 
     m_OnUpperEdge = false;
     m_OnLowerEdge = false;
     m_OnLeftEdge = false;
     m_OnRightEdge = false;
-    m_mousePos.x = m_windowWidth / 2;
-    m_mousePos.y = m_windowHeight / 2;
+    m_mousePos.x = m_winWidth / 2;
+    m_mousePos.y = m_winHeight / 2;
 
     glutWarpPointer(m_mousePos.x, m_mousePos.y);
   }
 
 
-  bool Camera::OnKeyboard(int Key)
+  bool Camera::OnKeyboard(int key)
   {
-    bool Ret = false;
+    switch (key) {
+      case GLUT_KEY_UP: {
+        m_pos += (m_target * STEP_SCALE);
+        return true;
+      }
 
-    switch (Key) {
+      case GLUT_KEY_DOWN: {
+        m_pos -= (m_target * STEP_SCALE);
+        return true;
+      }
 
-    case GLUT_KEY_UP:
-    {
-      m_pos += (m_target * STEP_SCALE);
-      Ret = true;
-    }
-    break;
+      case GLUT_KEY_LEFT: {
+        Vector3f Left = m_target.Cross(m_up);
+        Left.Normalize();
+        Left *= STEP_SCALE;
+        m_pos += Left;
+        return true;
+      }
 
-    case GLUT_KEY_DOWN:
-    {
-      m_pos -= (m_target * STEP_SCALE);
-      Ret = true;
-    }
-    break;
+      case GLUT_KEY_RIGHT: {
+        Vector3f Right = m_up.Cross(m_target);
+        Right.Normalize();
+        Right *= STEP_SCALE;
+        m_pos += Right;
+        return true;
+      }
 
-    case GLUT_KEY_LEFT:
-    {
-      Vector3f Left = m_target.Cross(m_up);
-      Left.Normalize();
-      Left *= STEP_SCALE;
-      m_pos += Left;
-      Ret = true;
-    }
-    break;
+      case GLUT_KEY_PAGE_UP:
+        m_pos.y += STEP_SCALE;
+        break;
 
-    case GLUT_KEY_RIGHT:
-    {
-      Vector3f Right = m_up.Cross(m_target);
-      Right.Normalize();
-      Right *= STEP_SCALE;
-      m_pos += Right;
-      Ret = true;
-    }
-    break;
-
-    case GLUT_KEY_PAGE_UP:
-      m_pos.y += STEP_SCALE;
-      break;
-
-    case GLUT_KEY_PAGE_DOWN:
-      m_pos.y -= STEP_SCALE;
-      break;
+      case GLUT_KEY_PAGE_DOWN:
+        m_pos.y -= STEP_SCALE;
+        break;
     }
 
-    return Ret;
+    return false;
   }
 
 
   void Camera::OnMouse(int x, int y)
   {
-    const int DeltaX = x - m_mousePos.x;
-    const int DeltaY = y - m_mousePos.y;
+    const int dx = x - m_mousePos.x;
+    const int dy = y - m_mousePos.y;
 
     m_mousePos.x = x;
     m_mousePos.y = y;
 
-    m_AngleH += (float)DeltaX / 20.0f;
-    m_AngleV += (float)DeltaY / 20.0f;
+    m_hAngle += dx / 20.0f;
+    m_vAngle += dy / 20.0f;
 
-    if (DeltaX == 0) {
+    if (dx == 0) {
       if (x <= MARGIN) {
-        //    m_AngleH -= 1.0f;
+        //    m_hAngle -= 1.0f;
         m_OnLeftEdge = true;
       }
-      else if (x >= (m_windowWidth - MARGIN)) {
-        //    m_AngleH += 1.0f;
+      else if (x >= (m_winWidth - MARGIN)) {
+        //    m_hAngle += 1.0f;
         m_OnRightEdge = true;
       }
     }
@@ -172,11 +161,11 @@ namespace t35
       m_OnRightEdge = false;
     }
 
-    if (DeltaY == 0) {
+    if (dy == 0) {
       if (y <= MARGIN) {
         m_OnUpperEdge = true;
       }
-      else if (y >= (m_windowHeight - MARGIN)) {
+      else if (y >= (m_winHeight - MARGIN)) {
         m_OnLowerEdge = true;
       }
     }
@@ -191,53 +180,68 @@ namespace t35
 
   void Camera::OnRender()
   {
-    bool ShouldUpdate = false;
+    bool shouldUpdate = false;
 
     if (m_OnLeftEdge) {
-      m_AngleH -= 0.1f;
-      ShouldUpdate = true;
+      m_hAngle -= 0.1f;
+      shouldUpdate = true;
     }
     else if (m_OnRightEdge) {
-      m_AngleH += 0.1f;
-      ShouldUpdate = true;
+      m_hAngle += 0.1f;
+      shouldUpdate = true;
     }
 
     if (m_OnUpperEdge) {
-      if (m_AngleV > -90.0f) {
-        m_AngleV -= 0.1f;
-        ShouldUpdate = true;
+      if (m_vAngle > -90.0f) {
+        m_vAngle -= 0.1f;
+        shouldUpdate = true;
       }
     }
     else if (m_OnLowerEdge) {
-      if (m_AngleV < 90.0f) {
-        m_AngleV += 0.1f;
-        ShouldUpdate = true;
+      if (m_vAngle < 90.0f) {
+        m_vAngle += 0.1f;
+        shouldUpdate = true;
       }
     }
 
-    if (ShouldUpdate) {
+    if (shouldUpdate) {
       Update();
     }
   }
 
+  const Vector3f& Camera::GetPos() const
+  {
+    return m_pos;
+  }
+
+  const Vector3f& Camera::GetTarget() const
+  {
+    return m_target;
+  }
+
+  const Vector3f& Camera::GetUp() const
+  {
+    return m_up;
+  }
+
   void Camera::Update()
   {
-    const Vector3f Vaxis(0.0f, 1.0f, 0.0f);
+    const Vector3f vAxis(0.0f, 1.0f, 0.0f);
 
     // Rotate the view vector by the horizontal angle around the vertical axis
     Vector3f View(1.0f, 0.0f, 0.0f);
-    View.Rotate(m_AngleH, Vaxis);
+    View.Rotate(m_hAngle, vAxis);
     View.Normalize();
 
     // Rotate the view vector by the vertical angle around the horizontal axis
-    Vector3f Haxis = Vaxis.Cross(View);
-    Haxis.Normalize();
-    View.Rotate(m_AngleV, Haxis);
+    Vector3f hAxis = vAxis.Cross(View);
+    hAxis.Normalize();
+    View.Rotate(m_vAngle, hAxis);
 
     m_target = View;
     m_target.Normalize();
 
-    m_up = m_target.Cross(Haxis);
+    m_up = m_target.Cross(hAxis);
     m_up.Normalize();
   }
 }

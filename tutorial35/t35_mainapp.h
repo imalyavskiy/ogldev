@@ -36,14 +36,9 @@ namespace t35
 
     bool Init();
 
-    void Run()
-    {
-      GLUTBackendRun(this);
-    }
-
+    void Run();
 
     void RenderSceneCB() override;
-
 
     void DSGeometryPass();
 
@@ -51,16 +46,13 @@ namespace t35
 
     void IdleCB() override;
 
-    void SpecialKeyboardCB(int Key, int x, int y) override;
+    void SpecialKeyboardCB(int key, int x, int y) override;
 
-
-    void KeyboardCB(unsigned char Key, int x, int y) override;
-
+    void KeyboardCB(unsigned char key, int x, int y) override;
 
     void PassiveMouseCB(int x, int y) override;
 
-
-    void MouseCB(int Button, int State, int x, int y) override;
+    void MouseCB(int button, int state, int x, int y) override;
 
   private:
 
@@ -75,7 +67,7 @@ namespace t35
     std::unique_ptr<Camera> m_pGameCamera;
     float m_scale;
     Mesh m_mesh;
-    PersProjInfo m_persProjInfo;
+    PerspProjInfo m_perspProjInfo;
 #ifdef FREETYPE
     FontRenderer m_fontRenderer;
 #endif

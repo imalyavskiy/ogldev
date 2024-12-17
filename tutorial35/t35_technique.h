@@ -40,7 +40,7 @@ namespace t35
 
   protected:
 
-    bool AddShader(GLenum ShaderType, const char* pFilename);
+    bool AddShader(GLenum shaderType, const char* pFilename);
 
     bool Finalize();
 
