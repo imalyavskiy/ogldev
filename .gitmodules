@@ -22,3 +22,6 @@
 [submodule "deps/origins/anttweakbar-1.16"]
 	path = deps/origins/anttweakbar-1.16
 	url = https://github.com/imalyavskiy/AntTweakBar.git
+[submodule "original_lessons"]
+	path = original_lessons
+	url = https://github.com/emeiri/ogldev
