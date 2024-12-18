@@ -18,11 +18,11 @@
 #ifndef GBUFFER_H
 #define	GBUFFER_H
 
+#include <cstdint>
 #include <GL/glew.h>
 
 namespace t37
 {
-
   class GBuffer
   {
   public:
@@ -38,7 +38,7 @@ namespace t37
 
     ~GBuffer();
 
-    bool Init(unsigned int winWidth, unsigned int winHeight);
+    bool Init(uint32_t winWidth, uint32_t winHeight);
 
     void StartFrame();
     void BindForGeomPass();

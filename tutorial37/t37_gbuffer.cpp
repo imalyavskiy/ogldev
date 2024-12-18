@@ -38,7 +38,7 @@ namespace t37
       glDeleteTextures(1, &m_finalTexture);
   }
 
-  bool GBuffer::Init(unsigned int winWidth, unsigned int winHeight)
+  bool GBuffer::Init(uint32_t winWidth, uint32_t winHeight)
   {
     // Create the FBO
     glGenFramebuffers(1, &m_fbo);
