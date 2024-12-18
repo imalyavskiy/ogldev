@@ -56,7 +56,6 @@
     <None Include="shaders\dir_light_pass.fs" />
     <None Include="shaders\geometry_pass.fs" />
     <None Include="shaders\geometry_pass.vs" />
-    <None Include="shaders\light_pass.glsl" />
     <None Include="shaders\light_pass.vs" />
     <None Include="shaders\null_technique.fs" />
     <None Include="shaders\null_technique.vs" />

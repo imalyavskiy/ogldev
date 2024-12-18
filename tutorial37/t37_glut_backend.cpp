@@ -16,7 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdio.h>
+#include <cstdio>
+#include <cstdint>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
@@ -85,7 +86,7 @@ namespace t37
   }
 
 
-  bool GLUTBackendCreateWindow(unsigned int width, unsigned int height, unsigned int bpp, bool isFullScreen, const char* pTitle)
+  bool GLUTBackendCreateWindow(uint32_t width, uint32_t height, uint32_t bpp, bool isFullScreen, const char* pTitle)
   {
     if (isFullScreen) {
       char ModeString[64] = { 0 };
@@ -99,7 +100,7 @@ namespace t37
     }
 
     // Must be done after glut is initialized!
-    GLenum res = glewInit();
+    const GLenum res = glewInit();
     if (res != GLEW_OK) {
       fprintf(stderr, "Error: '%s'\n", glewGetErrorString(res));
       return false;

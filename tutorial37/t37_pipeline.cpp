@@ -21,29 +21,29 @@ namespace t37
 {
   const Matrix4f& Pipeline::GetVPTrans()
   {
-    Matrix4f CameraTranslationTrans;
-    Matrix4f CameraRotateTrans;
-    Matrix4f PersProjTrans;
+    Matrix4f cameraTranslationTrans;
+    Matrix4f cameraRotateTrans;
+    Matrix4f perspProjTrans;
 
-    CameraTranslationTrans.InitTranslationTransform(-m_camera.Pos.x, -m_camera.Pos.y, -m_camera.Pos.z);
-    CameraRotateTrans.InitCameraTransform(m_camera.Target, m_camera.Up);
-    PersProjTrans.InitPerspProjTransform(m_persProjInfo);
+    cameraTranslationTrans.InitTranslationTransform(-m_camera.Pos.x, -m_camera.Pos.y, -m_camera.Pos.z);
+    cameraRotateTrans.InitCameraTransform(m_camera.Target, m_camera.Up);
+    perspProjTrans.InitPerspProjTransform(m_persProjInfo);
 
-    m_VPTtransformation = PersProjTrans * CameraRotateTrans * CameraTranslationTrans;
+    m_VPTtransformation = perspProjTrans * cameraRotateTrans * cameraTranslationTrans;
     return m_VPTtransformation;
   }
 
   const Matrix4f& Pipeline::GetWorldTrans()
   {
-    Matrix4f ScaleTrans;
-    Matrix4f RotateTrans;
-    Matrix4f TranslationTrans;
+    Matrix4f scaleTrans;
+    Matrix4f rotateTrans;
+    Matrix4f translationTrans;
 
-    ScaleTrans.InitScaleTransform(m_scale.x, m_scale.y, m_scale.z);
-    RotateTrans.InitRotateTransform(m_rotateInfo.x, m_rotateInfo.y, m_rotateInfo.z);
-    TranslationTrans.InitTranslationTransform(m_worldPos.x, m_worldPos.y, m_worldPos.z);
+    scaleTrans.InitScaleTransform(m_scale.x, m_scale.y, m_scale.z);
+    rotateTrans.InitRotateTransform(m_rotateInfo.x, m_rotateInfo.y, m_rotateInfo.z);
+    translationTrans.InitTranslationTransform(m_worldPos.x, m_worldPos.y, m_worldPos.z);
 
-    m_WorldTransformation = TranslationTrans * RotateTrans * ScaleTrans;
+    m_WorldTransformation = translationTrans * rotateTrans * scaleTrans;
     return m_WorldTransformation;
   }
 

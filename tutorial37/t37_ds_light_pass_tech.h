@@ -28,17 +28,17 @@ namespace t37
   class DSLightPassTech : public Technique {
   public:
 
-    DSLightPassTech();
+    DSLightPassTech() = default;
 
-    virtual bool Init();
+    bool Init() override;
 
     void SetWVP(const Matrix4f& worldViewProjection);
     void SetPositionTextureUnit(unsigned int textureUnit);
     void SetColorTextureUnit(unsigned int textureUnit);
     void SetNormalTextureUnit(unsigned int textureUnit);
-    void SetEyeWorldPos(const Vector3f& EyeWorldPos);
-    void SetMatSpecularIntensity(float Intensity);
-    void SetMatSpecularPower(float Power);
+    void SetEyeWorldPos(const Vector3f& eyeWorldPos);
+    void SetMatSpecularIntensity(float intensity);
+    void SetMatSpecularPower(float power);
     void SetScreenSize(unsigned int width, unsigned int height);
 
   private:

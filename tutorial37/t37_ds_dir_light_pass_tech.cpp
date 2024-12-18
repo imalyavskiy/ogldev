@@ -24,10 +24,6 @@
 
 namespace t37
 {
-    DSDirLightPassTech::DSDirLightPassTech()
-    {
-    }
-
     bool DSDirLightPassTech::Init()
     {
       if (!Technique::Init())

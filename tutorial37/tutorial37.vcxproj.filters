@@ -127,9 +127,6 @@
     <None Include="shaders\geometry_pass.vs">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="shaders\light_pass.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="shaders\light_pass.vs">
       <Filter>Resource Files</Filter>
     </None>

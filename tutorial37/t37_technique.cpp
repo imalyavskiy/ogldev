@@ -39,9 +39,7 @@ namespace t37
     // The list will only contain something if shaders were compiled but the object itself
     // was destroyed prior to linking.
     for (auto it = m_shaderObjList.begin(); it != m_shaderObjList.end(); ++it)
-    {
       glDeleteShader(*it);
-    }
 
     if (m_shaderProg != 0)
     {
@@ -72,7 +70,7 @@ namespace t37
       return false;
     }
 
-    GLuint shaderObj = glCreateShader(shaderType);
+    const GLuint shaderObj = glCreateShader(shaderType);
 
     if (shaderObj == 0) {
       fprintf(stderr, "Error creating shader type %d\n", shaderType);
@@ -84,7 +82,7 @@ namespace t37
 
     const GLchar* p[1];
     p[0] = s.c_str();
-    GLint lengths[1] = { (GLint)s.size() };
+    const GLint lengths[1] = { static_cast<GLint>(s.size()) };
 
     glShaderSource(shaderObj, 1, p, lengths);
 
@@ -175,12 +173,12 @@ namespace t37
 
   GLint Technique::GetUniformLocation(const char* pUniformName)
   {
-    GLuint Location = glGetUniformLocation(m_shaderProg, pUniformName);
+    const GLuint location = glGetUniformLocation(m_shaderProg, pUniformName);
 
-    if (Location == INVALID_UNIFORM_LOCATION) {
+    if (location == INVALID_UNIFORM_LOCATION) {
       fprintf(stderr, "Warning! Unable to get the location of uniform '%s'\n", pUniformName);
     }
 
-    return Location;
+    return location;
   }
 }

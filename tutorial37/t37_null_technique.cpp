@@ -50,8 +50,8 @@ namespace t37
   }
 
 
-  void NullTechnique::SetWVP(const Matrix4f& WVP)
+  void NullTechnique::SetWVP(const Matrix4f& worldViewProjection)
   {
-    glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, reinterpret_cast<const GLfloat*>(WVP.m));
+    glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, reinterpret_cast<const GLfloat*>(worldViewProjection.m));
   }
 }
