@@ -24,10 +24,6 @@
 
 namespace t37
 {
-  DSLightPassTech::DSLightPassTech()
-  {
-  }
-
   bool DSLightPassTech::Init()
   {
     m_WVPLocation = GetUniformLocation("gWVP");

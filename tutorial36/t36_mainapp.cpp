@@ -170,7 +170,7 @@ namespace t36
       m_DSPointLightPassTech.SetPointLight(m_pointLight[i]);
       pipeline.WorldPos(m_pointLight[i].Position);
       const float boundingSphereScale = 
-        CalcPointLightBSphere(m_pointLight[i]);
+        CalcPointLightBoundingSphere(m_pointLight[i]);
       pipeline.Scale( boundingSphereScale, 
         boundingSphereScale, 
         boundingSphereScale
@@ -220,7 +220,7 @@ namespace t36
   {
   }
 
-  float MainApp::CalcPointLightBSphere(const PointLight& light)
+  float MainApp::CalcPointLightBoundingSphere(const PointLight& light)
   {
     const float maxCh = 
       fmax(

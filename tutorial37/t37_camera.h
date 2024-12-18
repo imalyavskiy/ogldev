@@ -32,7 +32,7 @@ namespace t37
 
     Camera(int winWidth, int winHeight, const Vector3f& pos, const Vector3f& target, const Vector3f& up);
 
-    bool OnKeyboard(int Key);
+    bool OnKeyboard(int key);
 
     void OnMouse(int x, int y);
 
@@ -58,22 +58,22 @@ namespace t37
     void Init();
     void Update();
 
-    Vector3f m_pos;
-    Vector3f m_target;
-    Vector3f m_up;
-
     int m_winWidth;
     int m_winHeight;
 
-    float m_hAngle;
-    float m_vAngle;
+    Vector3f m_pos = { 0.0f, 0.0f, 0.0f };
+    Vector3f m_target = { 0.0f, 0.0f, 1.0f };
+    Vector3f m_up = { 0.0f, 1.0f, 0.0f };
 
-    bool m_onUpperEdge;
-    bool m_onLowerEdge;
-    bool m_onLeftEdge;
-    bool m_onRightEdge;
+    float m_hAngle = 0.f;
+    float m_vAngle = 0.f;
 
-    Vector2i m_mousePos;
+    bool m_onUpperEdge = false;
+    bool m_onLowerEdge = false;
+    bool m_onLeftEdge = false;
+    bool m_onRightEdge = false;
+
+    Vector2i m_mousePos = { 0,0 };
   };
 }
 #endif	/* CAMERA_H */

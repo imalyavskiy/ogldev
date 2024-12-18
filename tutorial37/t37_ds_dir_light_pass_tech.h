@@ -26,9 +26,9 @@ namespace t37
   class DSDirLightPassTech : public DSLightPassTech {
   public:
 
-    DSDirLightPassTech();
+    DSDirLightPassTech() = default;
 
-    virtual bool Init();
+    bool Init() override;
 
     void SetDirectionalLight(const DirectionalLight& light);
 

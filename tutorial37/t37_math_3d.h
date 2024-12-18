@@ -253,7 +253,7 @@ namespace t37
 
     void Normalize();
 
-    Quaternion Conjugate();
+    Quaternion Conjugate() const;
   };
 
   Quaternion operator*(const Quaternion& l, const Quaternion& r);

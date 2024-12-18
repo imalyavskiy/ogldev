@@ -141,15 +141,15 @@ namespace t37
 
     glEnable(GL_DEPTH_TEST);
 
-    Pipeline p;
-    p.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
-    p.SetPerspectiveProj(m_persProjInfo);
-    p.Rotate(0.0f, m_scale, 0.0f);
+    Pipeline pipeline;
+    pipeline.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
+    pipeline.SetPerspectiveProj(m_persProjInfo);
+    pipeline.Rotate(0.0f, m_scale, 0.0f);
 
-    for (unsigned int i = 0; i < ARRAY_SIZE_IN_ELEMENTS(m_boxPositions); i++) {
-      p.WorldPos(m_boxPositions[i]);
-      m_DSGeomPassTech.SetWVP(p.GetWVPTrans());
-      m_DSGeomPassTech.SetWorldMatrix(p.GetWorldTrans());
+    for (uint32_t i = 0; i < std::size(m_boxPositions); i++) {
+      pipeline.WorldPos(m_boxPositions[i]);
+      m_DSGeomPassTech.SetWVP(pipeline.GetWVPTrans());
+      m_DSGeomPassTech.SetWorldMatrix(pipeline.GetWorldTrans());
       m_box.Render();
     }
 
@@ -177,10 +177,12 @@ namespace t37
     glStencilOpSeparate(GL_BACK, GL_KEEP, GL_INCR_WRAP, GL_KEEP);
     glStencilOpSeparate(GL_FRONT, GL_KEEP, GL_DECR_WRAP, GL_KEEP);
 
+    const float bsScale =
+      CalcPointLightBoundingSphere(m_pointLight[PointLightIndex]);
+
     Pipeline pipeline;
     pipeline.WorldPos(m_pointLight[PointLightIndex].Position);
-    float BBoxScale = CalcPointLightBSphere(m_pointLight[PointLightIndex]); // BBox - WTF???
-    pipeline.Scale(BBoxScale, BBoxScale, BBoxScale);
+    pipeline.Scale(bsScale, bsScale, bsScale);
     pipeline.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
     pipeline.SetPerspectiveProj(m_persProjInfo);
 
@@ -205,13 +207,15 @@ namespace t37
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
 
-    Pipeline p;
-    p.WorldPos(m_pointLight[pointLightIndex].Position);
-    float BBoxScale = CalcPointLightBSphere(m_pointLight[pointLightIndex]);
-    p.Scale(BBoxScale, BBoxScale, BBoxScale);
-    p.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
-    p.SetPerspectiveProj(m_persProjInfo);
-    m_DSPointLightPassTech.SetWVP(p.GetWVPTrans());
+    const float bsScale = 
+      CalcPointLightBoundingSphere(m_pointLight[pointLightIndex]);
+
+    Pipeline pipeline;
+    pipeline.WorldPos(m_pointLight[pointLightIndex].Position);
+    pipeline.Scale(bsScale, bsScale, bsScale);
+    pipeline.SetCamera(m_pGameCamera->GetPos(), m_pGameCamera->GetTarget(), m_pGameCamera->GetUp());
+    pipeline.SetPerspectiveProj(m_persProjInfo);
+    m_DSPointLightPassTech.SetWVP(pipeline.GetWVPTrans());
     m_DSPointLightPassTech.SetPointLight(m_pointLight[pointLightIndex]);
     m_bsphere.Render();
     glCullFace(GL_BACK);
@@ -271,15 +275,30 @@ namespace t37
   {
   }
 
-  float MainApp::CalcPointLightBSphere(const PointLight& light)
+  float MainApp::CalcPointLightBoundingSphere(const PointLight& light)
   {
-    const float maxChannel = fmax(fmax(light.Color.x, light.Color.y), light.Color.z);
+    const float maxCh =
+      fmax(
+        fmax(light.Color.x,
+          light.Color.y
+        ),
+        light.Color.z
+      );
 
-    float ret = sqrtf(light.Attenuation.Linear * light.Attenuation.Linear - 4 * light.Attenuation.Exp * (light.Attenuation.Exp - 256 * maxChannel * light.DiffuseIntensity));
-    ret -= light.Attenuation.Linear;
-    ret = ret / 2 * light.Attenuation.Exp;
+    const float lin =
+      light.Attenuation.Linear;
+    const float exp =
+      light.Attenuation.Exp;
+    const float intensity =
+      light.DiffuseIntensity;
 
-    return ret;
+    const float discriminant =
+      lin * lin - 4 * exp * (exp - 256 * maxCh * intensity);
+
+    return (-lin + sqrtf(discriminant)) / 2 * exp;
+    // here is an error - right of the division
+    // must be in brackets, but in this way
+    // light is cannot be seen
   }
 
   void MainApp::InitLights()
@@ -288,32 +307,32 @@ namespace t37
     m_spotLight.DiffuseIntensity = 0.9f;
     m_spotLight.Color = COLOR_WHITE;
     m_spotLight.Attenuation.Linear = 0.01f;
-    m_spotLight.Position = Vector3f(-20.0, 20.0, 5.0f);
-    m_spotLight.Direction = Vector3f(1.0f, -1.0f, 0.0f);
+    m_spotLight.Position  = { -20.0, 20.0, 5.0f };
+    m_spotLight.Direction = { 1.0f, -1.0f, 0.0f };
     m_spotLight.Cutoff = 20.0f;
 
     m_dirLight.AmbientIntensity = 0.1f;
     m_dirLight.Color = COLOR_CYAN;
     m_dirLight.DiffuseIntensity = 0.5f;
-    m_dirLight.Direction = Vector3f(1.0f, 0.0f, 0.0f);
+    m_dirLight.Direction = { 1.0f, 0.0f, 0.0f };
 
     m_pointLight[0].DiffuseIntensity = 0.2f;
     m_pointLight[0].Color = COLOR_GREEN;
-    m_pointLight[0].Position = Vector3f(0.0f, 1.5f, 5.0f);
+    m_pointLight[0].Position = { 0.0f, 1.5f, 5.0f };
     m_pointLight[0].Attenuation.Constant = 0.0f;
     m_pointLight[0].Attenuation.Linear = 0.0f;
     m_pointLight[0].Attenuation.Exp = 0.3f;
 
     m_pointLight[1].DiffuseIntensity = 0.2f;
     m_pointLight[1].Color = COLOR_RED;
-    m_pointLight[1].Position = Vector3f(2.0f, 0.0f, 5.0f);
+    m_pointLight[1].Position = { 2.0f, 0.0f, 5.0f };
     m_pointLight[1].Attenuation.Constant = 0.0f;
     m_pointLight[1].Attenuation.Linear = 0.0f;
     m_pointLight[1].Attenuation.Exp = 0.3f;
 
     m_pointLight[2].DiffuseIntensity = 0.2f;
     m_pointLight[2].Color = COLOR_BLUE;
-    m_pointLight[2].Position = Vector3f(0.0f, 0.0f, 3.0f);
+    m_pointLight[2].Position = {0.0f, 0.0f, 3.0f};
     m_pointLight[2].Attenuation.Constant = 0.0f;
     m_pointLight[2].Attenuation.Linear = 0.0f;
     m_pointLight[2].Attenuation.Exp = 0.3f;
@@ -321,11 +340,11 @@ namespace t37
 
   void MainApp::InitBoxPositions()
   {
-    m_boxPositions[0] = Vector3f(0.0f, 0.0f, 5.0f);
-    m_boxPositions[1] = Vector3f(6.0f, 1.0f, 10.0f);
+    m_boxPositions[0] = Vector3f( 0.0f,  0.0f,  5.0f);
+    m_boxPositions[1] = Vector3f( 6.0f,  1.0f, 10.0f);
     m_boxPositions[2] = Vector3f(-5.0f, -1.0f, 12.0f);
-    m_boxPositions[3] = Vector3f(4.0f, 4.0f, 15.0f);
-    m_boxPositions[4] = Vector3f(-4.0f, 2.0f, 20.0f);
+    m_boxPositions[3] = Vector3f( 4.0f,  4.0f, 15.0f);
+    m_boxPositions[4] = Vector3f(-4.0f,  2.0f, 20.0f);
   }
 
   void MainApp::CalcFPS()

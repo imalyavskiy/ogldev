@@ -25,10 +25,6 @@
 
 namespace t37
 {
-  DSPointLightPassTech::DSPointLightPassTech()
-  {
-  }
-
   bool DSPointLightPassTech::Init()
   {
     if (!Technique::Init())

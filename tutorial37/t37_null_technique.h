@@ -30,7 +30,7 @@ namespace t37
 
     virtual bool Init();
 
-    void SetWVP(const Matrix4f& WVP);
+    void SetWVP(const Matrix4f& worldViewProjection);
 
   private:
 

@@ -62,7 +62,7 @@ namespace t36
   private:
 
     // The calculation solves a quadratic equation (see http://en.wikipedia.org/wiki/Quadratic_equation)
-    float CalcPointLightBSphere(const PointLight& light);
+    float CalcPointLightBoundingSphere(const PointLight& light);
 
     void InitLights();
 

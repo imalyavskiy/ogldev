@@ -27,9 +27,9 @@ namespace t37
   {
   public:
 
-    DSPointLightPassTech();
+    DSPointLightPassTech() = default;
 
-    bool Init();
+    bool Init() override;
 
     void SetPointLight(const PointLight& Lights);
 

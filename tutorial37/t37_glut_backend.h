@@ -25,7 +25,7 @@ namespace t37
 {
   void GLUTBackendInit(int argc, char** argv);
 
-  bool GLUTBackendCreateWindow(unsigned int width, unsigned int height, unsigned int bpp, bool isFullScreen, const char* pTitle);
+  bool GLUTBackendCreateWindow(uint32_t width, uint32_t height, uint32_t bpp, bool isFullScreen, const char* pTitle);
 
   void GLUTBackendRun(ICallbacks* pCallbacks);
 }

@@ -25,28 +25,23 @@ namespace t37
   constexpr static int32_t MARGIN = 10;
 
   Camera::Camera(int winWidth, int winHeight)
+    : m_winWidth(winWidth)
+    , m_winHeight(winHeight)
   {
-    m_winWidth = winWidth;
-    m_winHeight = winHeight;
-    m_pos = Vector3f(0.0f, 0.0f, 0.0f);
-    m_target = Vector3f(0.0f, 0.0f, 1.0f);
     m_target.Normalize();
-    m_up = Vector3f(0.0f, 1.0f, 0.0f);
 
     Init();
   }
 
 
   Camera::Camera(int winWidth, int winHeight, const Vector3f& pos, const Vector3f& target, const Vector3f& up)
+    : m_winWidth(winWidth)
+    , m_winHeight(winHeight)
+    , m_pos(pos)
+    , m_target(target)
+    , m_up(up)
   {
-    m_winWidth = winWidth;
-    m_winHeight = winHeight;
-    m_pos = pos;
-
-    m_target = target;
     m_target.Normalize();
-
-    m_up = up;
     m_up.Normalize();
 
     Init();
@@ -73,7 +68,7 @@ namespace t37
         m_hAngle = 90.0f + ToDegree(asinf(-hTarget.z));
     }
 
-    m_vAngle = -ToDegree(asinf(m_target.y));
+    m_vAngle = (-1.f) * ToDegree(asinf(m_target.y));
 
     m_onUpperEdge = false;
     m_onLowerEdge = false;
@@ -86,11 +81,11 @@ namespace t37
   }
 
 
-  bool Camera::OnKeyboard(int Key)
+  bool Camera::OnKeyboard(int key)
   {
     bool Ret = false;
 
-    switch (Key)
+    switch (key)
     {
       case GLUT_KEY_UP: {
         m_pos += (m_target * STEP_SCALE);

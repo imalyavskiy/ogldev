@@ -33,14 +33,12 @@ int main(int argc, char** argv)
   if (!t37::GLUTBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_BPP, WINDOW_FULLSCREEN, WINDOW_TITLE))
     return 1;
 
-  auto pApp = new t37::MainApp(WINDOW_WIDTH, WINDOW_HEIGHT);
+  const auto pApp = std::make_unique<t37::MainApp>(WINDOW_WIDTH, WINDOW_HEIGHT);
 
   if (!pApp->Init())
     return 1;
 
   pApp->Run();
-
-  delete pApp;
 
   return 0;
 }

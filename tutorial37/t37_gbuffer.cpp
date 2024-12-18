@@ -44,7 +44,7 @@ namespace t37
     glGenFramebuffers(1, &m_fbo);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fbo);
 
-    // Create the gbuffer textures
+    // Create the G-Buffer textures
     glGenTextures(ARRAY_SIZE_IN_ELEMENTS(m_textures), m_textures);
 
     glGenTextures(1, &m_depthTexture);

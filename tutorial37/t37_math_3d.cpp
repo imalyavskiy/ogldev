@@ -32,11 +32,11 @@ namespace t37
 
   Vector3f& Vector3f::Normalize()
   {
-    const float Length = sqrtf(x * x + y * y + z * z);
+    const float len = sqrtf(x * x + y * y + z * z);
 
-    x /= Length;
-    y /= Length;
-    z /= Length;
+    x /= len;
+    y /= len;
+    z /= len;
 
     return *this;
   }
@@ -50,11 +50,12 @@ namespace t37
     const float ry = Axe.y * sinHalfAngle;
     const float rz = Axe.z * sinHalfAngle;
     const float rw = cosHalfAngle;
-    Quaternion rotationQ(rx, ry, rz, rw);
 
-    Quaternion conjugateQ = rotationQ.Conjugate();
+    const Quaternion rotationQ(rx, ry, rz, rw);
+
+    const Quaternion conjugateQ = rotationQ.Conjugate();
     //  ConjugateQ.Normalize();
-    Quaternion W = rotationQ * (*this) * conjugateQ;
+    const Quaternion W = rotationQ * (*this) * conjugateQ;
 
     x = W.x;
     y = W.y;
@@ -78,20 +79,20 @@ namespace t37
     const float y = ToRadian(rotateY);
     const float z = ToRadian(rotateZ);
 
-    rx.m[0][0] = 1.0f; rx.m[0][1] = 0.0f; rx.m[0][2] = 0.0f; rx.m[0][3] = 0.0f;
-    rx.m[1][0] = 0.0f; rx.m[1][1] = cosf(x); rx.m[1][2] = -sinf(x); rx.m[1][3] = 0.0f;
-    rx.m[2][0] = 0.0f; rx.m[2][1] = sinf(x); rx.m[2][2] = cosf(x); rx.m[2][3] = 0.0f;
-    rx.m[3][0] = 0.0f; rx.m[3][1] = 0.0f; rx.m[3][2] = 0.0f; rx.m[3][3] = 1.0f;
+    rx.m[0][0] = 1.0f;    rx.m[0][1] = 0.0f;     rx.m[0][2] = 0.0f;     rx.m[0][3] = 0.0f;
+    rx.m[1][0] = 0.0f;    rx.m[1][1] = cosf(x);  rx.m[1][2] = -sinf(x); rx.m[1][3] = 0.0f;
+    rx.m[2][0] = 0.0f;    rx.m[2][1] = sinf(x);  rx.m[2][2] = cosf(x);  rx.m[2][3] = 0.0f;
+    rx.m[3][0] = 0.0f;    rx.m[3][1] = 0.0f;     rx.m[3][2] = 0.0f;     rx.m[3][3] = 1.0f;
 
-    ry.m[0][0] = cosf(y); ry.m[0][1] = 0.0f; ry.m[0][2] = -sinf(y); ry.m[0][3] = 0.0f;
-    ry.m[1][0] = 0.0f; ry.m[1][1] = 1.0f; ry.m[1][2] = 0.0f; ry.m[1][3] = 0.0f;
-    ry.m[2][0] = sinf(y); ry.m[2][1] = 0.0f; ry.m[2][2] = cosf(y); ry.m[2][3] = 0.0f;
-    ry.m[3][0] = 0.0f; ry.m[3][1] = 0.0f; ry.m[3][2] = 0.0f; ry.m[3][3] = 1.0f;
+    ry.m[0][0] = cosf(y); ry.m[0][1] = 0.0f;     ry.m[0][2] = -sinf(y); ry.m[0][3] = 0.0f;
+    ry.m[1][0] = 0.0f;    ry.m[1][1] = 1.0f;     ry.m[1][2] = 0.0f;     ry.m[1][3] = 0.0f;
+    ry.m[2][0] = sinf(y); ry.m[2][1] = 0.0f;     ry.m[2][2] = cosf(y);  ry.m[2][3] = 0.0f;
+    ry.m[3][0] = 0.0f;    ry.m[3][1] = 0.0f;     ry.m[3][2] = 0.0f;     ry.m[3][3] = 1.0f;
 
-    rz.m[0][0] = cosf(z); rz.m[0][1] = -sinf(z); rz.m[0][2] = 0.0f; rz.m[0][3] = 0.0f;
-    rz.m[1][0] = sinf(z); rz.m[1][1] = cosf(z); rz.m[1][2] = 0.0f; rz.m[1][3] = 0.0f;
-    rz.m[2][0] = 0.0f; rz.m[2][1] = 0.0f; rz.m[2][2] = 1.0f; rz.m[2][3] = 0.0f;
-    rz.m[3][0] = 0.0f; rz.m[3][1] = 0.0f; rz.m[3][2] = 0.0f; rz.m[3][3] = 1.0f;
+    rz.m[0][0] = cosf(z); rz.m[0][1] = -sinf(z); rz.m[0][2] = 0.0f;     rz.m[0][3] = 0.0f;
+    rz.m[1][0] = sinf(z); rz.m[1][1] = cosf(z);  rz.m[1][2] = 0.0f;     rz.m[1][3] = 0.0f;
+    rz.m[2][0] = 0.0f;    rz.m[2][1] = 0.0f;     rz.m[2][2] = 1.0f;     rz.m[2][3] = 0.0f;
+    rz.m[3][0] = 0.0f;    rz.m[3][1] = 0.0f;     rz.m[3][2] = 0.0f;     rz.m[3][3] = 1.0f;
 
     *this = rz * ry * rx;
   }
@@ -126,10 +127,15 @@ namespace t37
     const float zRange = perspProjInfo.zNear - perspProjInfo.zFar;
     const float tanHalfFOV = tanf(ToRadian(perspProjInfo.FOV / 2.0f));
 
-    m[0][0] = 1.0f / (tanHalfFOV * ar); m[0][1] = 0.0f;            m[0][2] = 0.0f;            m[0][3] = 0.0;
-    m[1][0] = 0.0f;                   m[1][1] = 1.0f / tanHalfFOV; m[1][2] = 0.0f;            m[1][3] = 0.0;
-    m[2][0] = 0.0f;                   m[2][1] = 0.0f;            m[2][2] = (-perspProjInfo.zNear - perspProjInfo.zFar) / zRange; m[2][3] = 2.0f * perspProjInfo.zFar * perspProjInfo.zNear / zRange;
-    m[3][0] = 0.0f;                   m[3][1] = 0.0f;            m[3][2] = 1.0f;            m[3][3] = 0.0;
+    const float m00_ = 1.0f / (tanHalfFOV * ar);
+    const float m11_ = 1.0f / tanHalfFOV;
+    const float m22_ = (-perspProjInfo.zNear - perspProjInfo.zFar) / zRange;
+    const float m23_ = 2.0f * perspProjInfo.zFar * perspProjInfo.zNear / zRange;
+
+    m[0][0] = m00_; m[0][1] = 0.0f; m[0][2] = 0.0f; m[0][3] = 0.0f;
+    m[1][0] = 0.0f; m[1][1] = m11_; m[1][2] = 0.0f; m[1][3] = 0.0f;
+    m[2][0] = 0.0f; m[2][1] = 0.0f; m[2][2] = m22_; m[2][3] = m23_;
+    m[3][0] = 0.0f; m[3][1] = 0.0f; m[3][2] = 1.0f; m[3][3] = 0.0f;
   }
 
 
@@ -149,7 +155,7 @@ namespace t37
   }
 
 
-  Quaternion Quaternion::Conjugate()
+  Quaternion Quaternion::Conjugate() const
   {
     return { -x, -y, -z, w };
   }
@@ -161,9 +167,7 @@ namespace t37
     const float y = (l.y * r.w) + (l.w * r.y) + (l.z * r.x) - (l.x * r.z);
     const float z = (l.z * r.w) + (l.w * r.z) + (l.x * r.y) - (l.y * r.x);
 
-    Quaternion ret(x, y, z, w);
-
-    return ret;
+    return { x, y, z, w };
   }
 
   Quaternion operator*(const Quaternion& q, const Vector3f& v)
@@ -173,15 +177,12 @@ namespace t37
     const float y = (q.w * v.y) + (q.z * v.x) - (q.x * v.z);
     const float z = (q.w * v.z) + (q.x * v.y) - (q.y * v.x);
 
-    Quaternion ret(x, y, z, w);
-
-    return ret;
+    return { x, y, z, w };
   }
 
 
   float RandomFloat()
   {
-    float Max = RAND_MAX;
-    return ((float)RANDOM() / Max);
+    return RANDOM() / (1.f * RAND_MAX);
   }
 }
