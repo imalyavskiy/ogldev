@@ -25,3 +25,6 @@
 [submodule "original_lessons"]
 	path = original_lessons
 	url = https://github.com/emeiri/ogldev
+[submodule "books"]
+	path = books
+	url = https://github.com/imalyavskiy/ogldev.books
