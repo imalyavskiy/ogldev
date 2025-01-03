@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2011 Etay Meiri
+        Copyright 2011 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,29 +16,38 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <limits.h>
+#include <climits>
 #include <string>
-#include <GL/glfx.h>
-#include <assert.h>
 
-#include "skinning_technique.h"
-#include "util.h"
+
+#include "t38_skinning_technique.h"
+#include "t38_util.h"
 
 using namespace std;
 
-static const char* pEffectFile = "../tutorial38/shaders/skinning.glsl";
-
-SkinningTechnique::SkinningTechnique() : Technique(pEffectFile)
-{   
+SkinningTechnique::SkinningTechnique()
+{
 }
 
 
 bool SkinningTechnique::Init()
 {
-    if (!CompileProgram("Lighting")) {
+    if (!Technique::Init()) {
         return false;
     }
-    
+
+    if (!AddShader(GL_VERTEX_SHADER, "shaders/skinning.vs")) {
+        return false;
+    }
+
+    if (!AddShader(GL_FRAGMENT_SHADER, "shaders/skinning.fs")) {
+        return false;
+    }
+
+    if (!Finalize()) {
+        return false;
+    }
+
     m_WVPLocation = GetUniformLocation("gWVP");
     m_WorldMatrixLocation = GetUniformLocation("gWorld");
     m_colorTextureLocation = GetUniformLocation("gColorMap");
@@ -157,13 +166,13 @@ bool SkinningTechnique::Init()
 
 void SkinningTechnique::SetWVP(const Matrix4f& WVP)
 {
-    glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP.m);    
+    glUniformMatrix4fv(m_WVPLocation, 1, GL_TRUE, (const GLfloat*)WVP);
 }
 
 
-void SkinningTechnique::SetWorldMatrix(const Matrix4f& WorldInverse)
+void SkinningTechnique::SetWorldMatrix(const Matrix4f& World)
 {
-    glUniformMatrix4fv(m_WorldMatrixLocation, 1, GL_TRUE, (const GLfloat*)WorldInverse.m);
+    glUniformMatrix4fv(m_WorldMatrixLocation, 1, GL_TRUE, (const GLfloat*)World);
 }
 
 
@@ -205,7 +214,7 @@ void SkinningTechnique::SetMatSpecularPower(float Power)
 void SkinningTechnique::SetPointLights(unsigned int NumLights, const PointLight* pLights)
 {
     glUniform1i(m_numPointLightsLocation, NumLights);
-    
+
     for (unsigned int i = 0 ; i < NumLights ; i++) {
         glUniform3f(m_pointLightsLocation[i].Color, pLights[i].Color.x, pLights[i].Color.y, pLights[i].Color.z);
         glUniform1f(m_pointLightsLocation[i].AmbientIntensity, pLights[i].AmbientIntensity);
@@ -236,9 +245,13 @@ void SkinningTechnique::SetSpotLights(unsigned int NumLights, const SpotLight* p
     }
 }
 
+
 void SkinningTechnique::SetBoneTransform(uint Index, const Matrix4f& Transform)
 {
-    assert(Index < MAX_BONES);
+    //assert(Index < MAX_BONES);
+    if (Index >= MAX_BONES) {
+        return;
+    }
     //Transform.Print();
-    glUniformMatrix4fv(m_boneLocation[Index], 1, GL_TRUE, (const GLfloat*)Transform.m);       
+    glUniformMatrix4fv(m_boneLocation[Index], 1, GL_TRUE, (const GLfloat*)Transform);
 }

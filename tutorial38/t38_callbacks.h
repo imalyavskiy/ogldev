@@ -1,6 +1,6 @@
 /*
 
-    Copyright 2011 Etay Meiri
+	Copyright 2014 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,28 +16,24 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef TEXTURE_H
-#define	TEXTURE_H
 
-#include <string>
-#include <GL/glew.h>
-#include <FreeImage.h>
+#ifndef OGLDEV_CALLBACKS_H
+#define OGLDEV_CALLBACKS_H
 
-class Texture
+#include "t38_keys.h"
+
+class ICallbacks
 {
 public:
-    Texture(GLenum TextureTarget, std::string FileName);
 
-    bool Load() const;
+    virtual void KeyboardCB(OGLDEV_KEY OgldevKey, OGLDEV_KEY_STATE OgldevKeyState = OGLDEV_KEY_STATE_PRESS) {};
+    
+    virtual void PassiveMouseCB(int x, int y) {};
 
-    void Bind(const GLenum TextureUnit) const;
+    virtual void RenderSceneCB() {};
 
-private:
-    std::string m_fileName;
-    GLenum m_textureTarget;
-    GLuint m_textureObj;
+    virtual void MouseCB(OGLDEV_MOUSE Button, OGLDEV_KEY_STATE State, int x, int y) {};
 };
 
-FIBITMAP* GenericLoader(const char* lpszPathName, int flag);
 
-#endif	/* TEXTURE_H */
+#endif

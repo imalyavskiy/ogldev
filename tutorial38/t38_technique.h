@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2011 Etay Meiri
+        Copyright 2011 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 */
 
 #ifndef TECHNIQUE_H
-#define	TECHNIQUE_H
+#define TECHNIQUE_H
 
 #include <list>
 #include <GL/glew.h>
@@ -26,28 +26,43 @@ class Technique
 {
 public:
 
-    Technique(const char* pEffectFile);
+    Technique();
 
-    ~Technique();
+    virtual ~Technique();
+
+    virtual bool Init();
 
     void Enable();
 
-protected:
-    
-    bool CompileProgram(const char* pProgram);
-    
-    GLint GetUniformLocation(const char* pUniformName);
-    
-    GLint GetProgramParam(GLint param);
+    GLuint GetProgram() const { return m_shaderProg; }
 
-private:    
-    GLint m_effect;    
-    GLint m_shaderProg;
-    const char* m_pEffectFile;
+protected:
+
+    bool AddShader(GLenum ShaderType, const char* pFilename);
+
+    bool Finalize();
+
+    GLint GetUniformLocation(const char* pUniformName);
+
+    GLuint m_shaderProg = 0;
+
+private:
+
+    void PrintUniformList();
+
+    typedef std::list<GLuint> ShaderObjList;
+    ShaderObjList m_shaderObjList;
 };
 
-#define INVALID_UNIFORM_LOCATION 0xFFFFFFFF
+#ifdef FAIL_ON_MISSING_LOC                  
+#define GET_UNIFORM_AND_CHECK(loc, name)    \
+    loc = GetUniformLocation(name);         \
+    if (loc == INVALID_UNIFORM_LOCATION)    \
+        return false;                       
+#else
+#define GET_UNIFORM_AND_CHECK(loc, name)    \
+    loc = GetUniformLocation(name);         
+#endif
 
 
-#endif	/* TECHNIQUE_H */
-
+#endif  /* TECHNIQUE_H */

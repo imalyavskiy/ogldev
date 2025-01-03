@@ -15,11 +15,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIGHTING_TECHNIQUE_H
-#define	LIGHTING_TECHNIQUE_H
+#ifndef SKINNING_TECHNIQUE_H
+#define SKINNING_TECHNIQUE_H
 
-#include "technique.h"
-#include "math_3d.h"
+#include "t38_technique.h"
+#include "t38_math_3d.h"
 
 struct BaseLight
 {
@@ -36,7 +36,7 @@ struct BaseLight
 };
 
 struct DirectionalLight : public BaseLight
-{        
+{
     Vector3f Direction;
 
     DirectionalLight()
@@ -82,7 +82,6 @@ public:
 
     static const uint MAX_POINT_LIGHTS = 2;
     static const uint MAX_SPOT_LIGHTS = 2;
-    static const uint MAX_BONES = 100;
 
     SkinningTechnique();
 
@@ -100,7 +99,7 @@ public:
     void SetBoneTransform(uint Index, const Matrix4f& Transform);
 
 private:
-    
+
     GLuint m_WVPLocation;
     GLuint m_WorldMatrixLocation;
     GLuint m_colorTextureLocation;
@@ -142,9 +141,9 @@ private:
             GLuint Exp;
         } Atten;
     } m_spotLightsLocation[MAX_SPOT_LIGHTS];
-    
+
     GLuint m_boneLocation[MAX_BONES];
 };
 
 
-#endif	/* LIGHTING_TECHNIQUE_H */
+#endif  /* SKINNING_TECHNIQUE_H */

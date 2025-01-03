@@ -11,29 +11,42 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="callbacks.h" />
-    <ClInclude Include="camera.h" />
-    <ClInclude Include="engine_common.h" />
-    <ClInclude Include="glut_backend.h" />
-    <ClInclude Include="math_3d.h" />
-    <ClInclude Include="mesh.h" />
-    <ClInclude Include="ogldev_types.h" />
-    <ClInclude Include="pipeline.h" />
-    <ClInclude Include="skinning_technique.h" />
-    <ClInclude Include="technique.h" />
-    <ClInclude Include="texture.h" />
-    <ClInclude Include="util.h" />
+    <ClCompile Include="stb_image\stb_image.cpp" />
+    <ClCompile Include="t38_app.cpp" />
+    <ClCompile Include="t38_basic_mesh.cpp" />
+    <ClCompile Include="t38_camera.cpp" />
+    <ClCompile Include="t38_glut_backend.cpp" />
+    <ClCompile Include="t38_main.cpp" />
+    <ClCompile Include="t38_math_3d.cpp" />
+    <ClCompile Include="t38_pipeline.cpp" />
+    <ClCompile Include="t38_skinned_mesh.cpp" />
+    <ClCompile Include="t38_skinning_technique.cpp" />
+    <ClCompile Include="t38_technique.cpp" />
+    <ClCompile Include="t38_texture.cpp" />
+    <ClCompile Include="t38_util.cpp" />
+    <ClCompile Include="t38_world_transform.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="camera.cpp" />
-    <ClCompile Include="glut_backend.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="math_3d.cpp" />
-    <ClCompile Include="mesh.cpp" />
-    <ClCompile Include="pipeline.cpp" />
-    <ClCompile Include="skinning_technique.cpp" />
-    <ClCompile Include="technique.cpp" />
-    <ClCompile Include="texture.cpp" />
+    <ClInclude Include="stb_image\stb_image.h" />
+    <ClInclude Include="stb_image\stb_image_write.h" />
+    <ClInclude Include="t38_app.h" />
+    <ClInclude Include="t38_basic_mesh.h" />
+    <ClInclude Include="t38_callbacks.h" />
+    <ClInclude Include="t38_camera.h" />
+    <ClInclude Include="t38_engine_common.h" />
+    <ClInclude Include="t38_glut_backend.h" />
+    <ClInclude Include="t38_keys.h" />
+    <ClInclude Include="t38_material.h" />
+    <ClInclude Include="t38_math_3d.h" />
+    <ClInclude Include="t38_mesh_common.h" />
+    <ClInclude Include="t38_pipeline.h" />
+    <ClInclude Include="t38_skinned_mesh.h" />
+    <ClInclude Include="t38_skinning_technique.h" />
+    <ClInclude Include="t38_technique.h" />
+    <ClInclude Include="t38_texture.h" />
+    <ClInclude Include="t38_types.h" />
+    <ClInclude Include="t38_util.h" />
+    <ClInclude Include="t38_world_transform.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4B838BB4-E96D-41A6-A5DD-538F0A07F199}</ProjectGuid>
@@ -71,11 +84,15 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)_bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)_int\$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>$(SolutionDir)deps\exports\glfx\inc;$(SolutionDir)deps\exports\freeglut.3.0.0\inc;$(SolutionDir)deps\exports\glew.2.0.0\inc;$(SolutionDir)deps\exports\FreeImage3180\inc;$(SolutionDir)deps\exports\assimp\inc;$(SolutionDir)deps\exports\glm\inc;$(SolutionDir)deps\exports\meshoptimizer\inc;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)deps\exports\glm\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\freeglut.3.0.0\lib\$(PlatformShortName);$(SolutionDir)deps\exports\glew.2.0.0\lib\$(PlatformShortName);$(SolutionDir)deps\exports\FreeImage3180\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\assimp\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\anttweakbar-1.16\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\meshoptimizer\lib\$(PlatformShortName)\$(Configuration);$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)_bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)_int\$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>$(SolutionDir)deps\exports\glfx\inc;$(SolutionDir)deps\exports\freeglut.3.0.0\inc;$(SolutionDir)deps\exports\glew.2.0.0\inc;$(SolutionDir)deps\exports\FreeImage3180\inc;$(SolutionDir)deps\exports\assimp\inc;$(SolutionDir)deps\exports\glm\inc;$(SolutionDir)deps\exports\meshoptimizer\inc;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)deps\exports\glm\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\freeglut.3.0.0\lib\$(PlatformShortName);$(SolutionDir)deps\exports\glew.2.0.0\lib\$(PlatformShortName);$(SolutionDir)deps\exports\FreeImage3180\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\assimp\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\anttweakbar-1.16\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\meshoptimizer\lib\$(PlatformShortName)\$(Configuration);$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -83,7 +100,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;FREEGLUT_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
@@ -93,6 +110,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>meshoptimizer.lib;assimp-vc143-mtd.lib;FreeImaged.lib;glew32sd.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
   </ItemDefinitionGroup>
@@ -104,7 +122,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;FREEGLUT_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
@@ -114,6 +132,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>meshoptimizer.lib;assimp-vc143-mt.lib;FreeImage.lib;glew32s.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
   </ItemDefinitionGroup>

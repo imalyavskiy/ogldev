@@ -19,8 +19,8 @@
 #ifndef CAMERA_H
 #define	CAMERA_H
 
-#include "math_3d.h"
-
+#include "t38_math_3d.h"
+#include "t38_keys.h"
 
 class Camera
 {
@@ -30,7 +30,7 @@ public:
 
     Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
 
-    bool OnKeyboard(int Key);
+    bool OnKeyboard(OGLDEV_KEY Key);
 
     void OnMouse(int x, int y);
 
@@ -50,6 +50,8 @@ public:
     {
         return m_up;
     }
+    
+    //void AddToATB(TwBar* bar);
 
 private:
 

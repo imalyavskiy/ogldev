@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2011 Etay Meiri
+        Copyright 2011 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,25 +16,22 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef CALLBACKS_H
-#define	CALLBACKS_H
+#ifndef OGLDEV_TYPES_H
+#define OGLDEV_TYPES_H
 
-class ICallbacks
-{
-public:
+#include <cstdint>
 
-    virtual void SpecialKeyboardCB(int Key, int x, int y) = 0;
+typedef unsigned int uint;
+typedef unsigned short ushort;
+typedef unsigned char uchar;
 
-    virtual void KeyboardCB(unsigned char Key, int x, int y) = 0;
+typedef uint8_t u8;
+typedef int8_t i8;
+typedef uint16_t u16;
+typedef int16_t i16;
+typedef int32_t i32;
+typedef uint32_t u32;
+typedef int64_t i64;
+typedef uint64_t u64;
 
-    virtual void PassiveMouseCB(int x, int y) = 0;
-
-    virtual void RenderSceneCB() = 0;
-
-    virtual void IdleCB() = 0;
-    
-    virtual void MouseCB(int Button, int State, int x, int y) = 0;
-};
-
-#endif	/* I3DAPPLICATION_H */
-
+#endif  /* OGLDEV_TYPES_H */

@@ -28,3 +28,12 @@
 [submodule "books"]
 	path = books
 	url = https://github.com/imalyavskiy/ogldev.books
+[submodule "deps/origins/glm"]
+	path = deps/origins/glm
+	url = https://github.com/imalyavskiy/glm.git
+[submodule "deps/origins/meshoptimizer"]
+	path = deps/origins/meshoptimizer
+	url = https://github.com/imalyavskiy/meshoptimizer.git
+[submodule "deps/origins/stb_image"]
+	path = deps/origins/stb_image
+	url = https://github.com/imalyavskiy/stb_image

@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2011 Etay Meiri
+        Copyright 2014 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,12 +16,39 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef OGLDEV_TYPES_H
-#define	OGLDEV_TYPES_H
+//-----------
+// DEPRECATED
+//-----------
 
-typedef unsigned int uint;
-typedef unsigned short ushort;
-typedef unsigned char uchar;
+#ifndef OGLDEV_APP_H
+#define OGLDEV_APP_H
 
-#endif	/* OGLDEV_TYPES_H */
+#ifndef _WIN32
+#include "freetypeGL.h"
+#endif
 
+
+class OgldevApp
+{
+protected:
+	OgldevApp();
+
+	void CalcFPS();
+
+	void RenderFPS();
+
+	float GetRunningTime();
+
+protected:
+#ifndef _WIN32
+//	FontRenderer m_fontRenderer;
+#endif
+private:
+	long long m_frameTime;
+	long long m_startTime;
+	int m_frameCount;
+    int m_fps;
+};
+
+
+#endif
