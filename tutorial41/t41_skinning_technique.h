@@ -18,8 +18,8 @@
 #ifndef SKINNING_TECHNIQUE_H
 #define	SKINNING_TECHNIQUE_H
 
-#include "technique.h"
-#include "ogldev_math_3d.h"
+#include "t41_technique.h"
+#include "t41_math_3d.h"
 
 struct BaseLight
 {
@@ -80,9 +80,9 @@ struct SpotLight : public PointLight
 class SkinningTechnique : public Technique {
 public:
 
-    static const uint MAX_POINT_LIGHTS = 2;
-    static const uint MAX_SPOT_LIGHTS = 2;
-    static const uint MAX_BONES = 100;
+    static const uint32_t MAX_POINT_LIGHTS = 2;
+    static const uint32_t MAX_SPOT_LIGHTS = 2;
+    static const uint32_t MAX_BONES = 100;
 
     SkinningTechnique();
 

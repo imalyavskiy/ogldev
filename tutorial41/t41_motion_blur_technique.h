@@ -1,5 +1,6 @@
 /*
-        Copyright 2011 Etay Meiri
+
+	Copyright 2013 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -13,35 +14,30 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-#ifndef INTERMEDIATE_BUFFER_H
-#define	INTERMEDIATE_BUFFER_H
+#ifndef MOTION_BLUR_TECHNIQUE_H
+#define	MOTION_BLUR_TECHNIQUE_H
 
-#include <GL/glew.h>
+#include "t41_technique.h"
+#include "t41_math_3d.h"
 
-
-class IntermediateBuffer
-{
+class MotionBlurTechnique : public Technique {
 public:
 
-    IntermediateBuffer();
+    MotionBlurTechnique();
 
-    ~IntermediateBuffer();
+    virtual bool Init();
 
-    bool Init(unsigned int WindowWidth, unsigned int WindowHeight);
-
-    void BindForWriting();
-
-    void BindForReading();  
-
+    void SetColorTextureUnit(uint TextureUnit);    
+    void SetMotionTextureUnit(uint TextureUnit);
+    
 private:
-
-    GLuint m_fbo;
-    GLuint m_colorBuffer;
-    GLuint m_motionBuffer;
-	GLuint m_depthBuffer;
+    GLuint m_colorTextureLocation;
+    GLuint m_motionTextureLocation;
 };
 
-#endif	
+
+
+#endif	/* MOTION_BLUR_TECHNIQUE_H */
 

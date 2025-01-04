@@ -28,16 +28,16 @@
 #endif
 #include <sys/types.h>
 
-#include "ogldev_engine_common.h"
-#include "ogldev_app.h"
-#include "ogldev_util.h"
-#include "ogldev_pipeline.h"
-#include "ogldev_camera.h"
-#include "skinning_technique.h"
-#include "motion_blur_technique.h"
-#include "ogldev_glut_backend.h"
-#include "ogldev_skinned_mesh.h"
-#include "intermediate_buffer.h"
+#include "t41_engine_common.h"
+#include "t41_app.h"
+#include "t41_util.h"
+#include "t41_pipeline.h"
+#include "t41_camera.h"
+#include "t41_skinning_technique.h"
+#include "t41_motion_blur_technique.h"
+#include "t41_glut_backend.h"
+#include "t41_skinned_mesh.h"
+#include "t41_intermediate_buffer.h"
 
 using namespace std;
 

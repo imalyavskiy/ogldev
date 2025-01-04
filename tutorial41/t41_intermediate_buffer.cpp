@@ -16,11 +16,11 @@
 */
 
 
-#include <stdio.h>
+#include <cstdio>
 
-#include "ogldev_util.h"
-#include "ogldev_engine_common.h"
-#include "intermediate_buffer.h"
+#include "t41_util.h"
+#include "t41_engine_common.h"
+#include "t41_intermediate_buffer.h"
 
 IntermediateBuffer::IntermediateBuffer()
 {

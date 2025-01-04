@@ -17,8 +17,8 @@
  */
 
 
-#include "motion_blur_technique.h"
-#include "ogldev_util.h"
+#include "t41_motion_blur_technique.h"
+#include "t41_util.h"
 
 MotionBlurTechnique::MotionBlurTechnique()
 {

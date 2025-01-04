@@ -16,12 +16,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <limits.h>
+#include <climits>
 #include <string>
-#include <assert.h>
+#include <cassert>
 
-#include "skinning_technique.h"
-#include "ogldev_util.h"
+#include "t41_skinning_technique.h"
+#include "t41_util.h"
 
 using namespace std;
 
