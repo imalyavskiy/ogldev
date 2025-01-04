@@ -15,9 +15,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdio.h>
+#include <cstdio>
 
-#include "shadow_map_fbo.h"
+#include "t42_shadow_map_fbo.h"
 
 ShadowMapFBO::ShadowMapFBO()
 {

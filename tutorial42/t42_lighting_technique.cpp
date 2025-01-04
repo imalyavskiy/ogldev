@@ -16,12 +16,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <limits.h>
-#include "ogldev_math_3d.h"
-#include <string>
 
-#include "lighting_technique.h"
-#include "ogldev_util.h"
+#include <string>
+#include <climits>
+
+#include "t42_math_3d.h"
+#include "t42_lighting_technique.h"
+#include "t42_util.h"
 
 using namespace std;
 

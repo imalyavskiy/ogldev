@@ -18,23 +18,24 @@
     Tutorial 42 - Percentage Closer Filtering
 */
 
-#include <math.h>
-#include <GL/glew.h>
-#include <GL/freeglut.h>
+#include <cmath>
 #include <string>
 
-#include "ogldev_engine_common.h"
-#include "ogldev_app.h"
-#include "ogldev_backend.h"
-#include "ogldev_util.h"
-#include "ogldev_pipeline.h"
-#include "ogldev_camera.h"
-#include "ogldev_texture.h"
-#include "lighting_technique.h"
-#include "ogldev_glut_backend.h"
-#include "ogldev_basic_mesh.h"
-#include "shadow_map_technique.h"
-#include "shadow_map_fbo.h"
+#include <GL/glew.h>
+#include <GL/freeglut.h>
+
+#include "t42_engine_common.h"
+#include "t42_app.h"
+#include "t42_backend.h"
+#include "t42_util.h"
+#include "t42_pipeline.h"
+#include "t42_camera.h"
+#include "t42_texture.h"
+#include "t42_lighting_technique.h"
+#include "t42_glut_backend.h"
+#include "t42_basic_mesh.h"
+#include "t42_shadow_map_technique.h"
+#include "t42_shadow_map_fbo.h"
 
 using namespace std;
 

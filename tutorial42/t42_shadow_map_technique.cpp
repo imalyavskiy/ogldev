@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "shadow_map_technique.h"
+#include "t42_shadow_map_technique.h"
 
 
 ShadowMapTechnique::ShadowMapTechnique()
