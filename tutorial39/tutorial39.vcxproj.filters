@@ -13,77 +13,119 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\stb_image">
+      <UniqueIdentifier>{acaea941-f9b4-4485-a9a4-1dc27ee5572d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\stb_image">
+      <UniqueIdentifier>{02537ac6-693b-40fe-85d0-f10b76845149}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="callbacks.h">
+    <ClInclude Include="t39_engine_common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="camera.h">
+    <ClInclude Include="t39_mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine_common.h">
+    <ClInclude Include="t39_silhouette_technique.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="glut_backend.h">
+    <ClInclude Include="t39_app.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="lighting_technique.h">
+    <ClInclude Include="t39_basic_lighting.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="math_3d.h">
+    <ClInclude Include="t39_camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mesh.h">
+    <ClInclude Include="t39_glut_backend.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ogldev_types.h">
+    <ClInclude Include="t39_pipeline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pipeline.h">
+    <ClInclude Include="t39_texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="silhouette_technique.h">
+    <ClInclude Include="t39_util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="technique.h">
+    <ClInclude Include="t39_callbacks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="texture.h">
+    <ClInclude Include="t39_keys.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="util.h">
+    <ClInclude Include="t39_lights_common.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="t39_math_3d.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="t39_technique.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="t39_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="t39_world_transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="t39_atb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image\stb_image.h">
+      <Filter>Header Files\stb_image</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image\stb_image_write.h">
+      <Filter>Header Files\stb_image</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="camera.cpp">
+    <ClCompile Include="t39_main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="glut_backend.cpp">
+    <ClCompile Include="t39_mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lighting_technique.cpp">
+    <ClCompile Include="t39_silhouette_technique.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="t39_app.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="math_3d.cpp">
+    <ClCompile Include="t39_basic_lighting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mesh.cpp">
+    <ClCompile Include="t39_camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pipeline.cpp">
+    <ClCompile Include="t39_pipeline.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="silhouette_technique.cpp">
+    <ClCompile Include="t39_atb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="technique.cpp">
+    <ClCompile Include="t39_technique.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="texture.cpp">
+    <ClCompile Include="t39_texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="t39_util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="t39_world_transform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_image\stb_image.cpp">
+      <Filter>Source Files\stb_image</Filter>
+    </ClCompile>
+    <ClCompile Include="t39_math_3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="t39_glut_backend.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
