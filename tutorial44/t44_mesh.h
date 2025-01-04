@@ -26,10 +26,10 @@
 #include <assimp/scene.h>       // Output data structure
 #include <assimp/postprocess.h> // Post processing flags
 
-#include "ogldev_util.h"
-#include "ogldev_math_3d.h"
-#include "ogldev_texture.h"
-#include "ogldev_pipeline.h"
+#include "t44_util.h"
+#include "t44_math_3d.h"
+#include "t44_texture.h"
+#include "t44_pipeline.h"
 
 struct Vertex
 {

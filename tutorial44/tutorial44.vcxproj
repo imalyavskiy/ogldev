@@ -11,14 +11,31 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="engine_common.h" />
-    <ClInclude Include="lighting_technique.h" />
-    <ClInclude Include="mesh.h" />
+    <ClInclude Include="t44_app.h" />
+    <ClInclude Include="t44_backend.h" />
+    <ClInclude Include="t44_camera.h" />
+    <ClInclude Include="t44_engine_common.h" />
+    <ClInclude Include="t44_lighting_technique.h" />
+    <ClInclude Include="t44_math_3d.h" />
+    <ClInclude Include="t44_mesh.h" />
+    <ClInclude Include="t44_pipeline.h" />
+    <ClInclude Include="t44_technique.h" />
+    <ClInclude Include="t44_texture.h" />
+    <ClInclude Include="t44_types.h" />
+    <ClInclude Include="t44_util.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lighting_technique.cpp" />
-    <ClCompile Include="mesh.cpp" />
-    <ClCompile Include="tutorial44.cpp" />
+    <ClCompile Include="t44_app.cpp" />
+    <ClCompile Include="t44_backend.cpp" />
+    <ClCompile Include="t44_camera.cpp" />
+    <ClCompile Include="t44_lighting_technique.cpp" />
+    <ClCompile Include="t44_math_3d.cpp" />
+    <ClCompile Include="t44_mesh.cpp" />
+    <ClCompile Include="t44_main.cpp" />
+    <ClCompile Include="t44_pipeline.cpp" />
+    <ClCompile Include="t44_technique.cpp" />
+    <ClCompile Include="t44_texture.cpp" />
+    <ClCompile Include="t44_util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.vcxproj">
@@ -61,11 +78,15 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)_bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)_int\$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>$(SolutionDir)deps\exports\freeglut.3.0.0\inc;$(SolutionDir)deps\exports\glew.2.0.0\inc;$(SolutionDir)deps\exports\FreeImage3180\inc;$(SolutionDir)deps\exports\assimp\inc;$(SolutionDir)deps\exports\glm\inc;$(SolutionDir)deps\exports\meshoptimizer\inc;$(SolutionDir)deps\exports\anttweakbar-1.16\inc;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)deps\exports\glm\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\freeglut.3.0.0\lib\$(PlatformShortName);$(SolutionDir)deps\exports\glew.2.0.0\lib\$(PlatformShortName);$(SolutionDir)deps\exports\FreeImage3180\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\assimp\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\anttweakbar-1.16\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\meshoptimizer\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\glfw\lib\$(PlatformShortName)\$(Configuration);$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)_bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)_int\$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>$(SolutionDir)deps\exports\freeglut.3.0.0\inc;$(SolutionDir)deps\exports\glew.2.0.0\inc;$(SolutionDir)deps\exports\FreeImage3180\inc;$(SolutionDir)deps\exports\assimp\inc;$(SolutionDir)deps\exports\glm\inc;$(SolutionDir)deps\exports\meshoptimizer\inc;$(SolutionDir)deps\exports\anttweakbar-1.16\inc;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)deps\exports\glm\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\freeglut.3.0.0\lib\$(PlatformShortName);$(SolutionDir)deps\exports\glew.2.0.0\lib\$(PlatformShortName);$(SolutionDir)deps\exports\FreeImage3180\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\assimp\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\anttweakbar-1.16\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\meshoptimizer\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\glfw\lib\$(PlatformShortName)\$(Configuration);$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -73,7 +94,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;FREEGLUT_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
@@ -83,8 +104,15 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glfw3.lib;meshoptimizer.lib;assimp-vc143-mtd.lib;FreeImaged.lib;glew32sd.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImaged.dll $(OutDir)FreeImaged.dll
+copy $(SolutionDir)deps\exports\assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc143-mtd.dll $(OutDir)assimp-vc143-mtd.dll
+copy $(SolutionDir)deps\exports\freeglut.3.0.0\bin\$(PlatformShortName)\freeglutd.dll $(OutDir)freeglutd.dll
+copy $(SolutionDir)deps\exports\anttweakbar-1.16\bin\$(PlatformShortName)\AntTweakBar.dll $(OutDir)AntTweakBar.dll</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -94,7 +122,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;FREEGLUT_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
@@ -104,8 +132,15 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glfw3.lib;meshoptimizer.lib;assimp-vc143-mt.lib;FreeImage.lib;glew32s.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImage.dll $(OutDir)FreeImage.dll
+copy $(SolutionDir)deps\exports\assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc143-mt.dll $(OutDir)assimp-vc143-mt.dll
+copy $(SolutionDir)deps\exports\freeglut.3.0.0\bin\$(PlatformShortName)\freeglut.dll $(OutDir)freeglut.dll
+copy $(SolutionDir)deps\exports\anttweakbar-1.16\bin\$(PlatformShortName)\AntTweakBar.dll $(OutDir)AntTweakBar.dll</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

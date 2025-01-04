@@ -18,8 +18,8 @@
 #ifndef LIGHTING_TECHNIQUE_H
 #define	LIGHTING_TECHNIQUE_H
 
-#include "technique.h"
-#include "ogldev_math_3d.h"
+#include "t44_technique.h"
+#include "t44_math_3d.h"
 
 struct BaseLight
 {

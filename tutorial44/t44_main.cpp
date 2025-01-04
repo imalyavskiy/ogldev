@@ -19,24 +19,20 @@
 */
 
 #include <windows.h>
-#include <math.h>
+
+#include <cmath>
 #include <GL/glew.h>
 #include <string>
-#ifndef WIN32
-#include <sys/time.h>
-#include <unistd.h>
-#endif
 #include <sys/types.h>
 
-#include "engine_common.h"
-#include "ogldev_app.h"
-#include "ogldev_util.h"
-#include "ogldev_pipeline.h"
-#include "ogldev_camera.h"
-#include "lighting_technique.h"
-#include "ogldev_backend.h"
-#include "ogldev_camera.h"
-#include "mesh.h"
+#include "t44_engine_common.h"
+#include "t44_app.h"
+#include "t44_util.h"
+#include "t44_pipeline.h"
+#include "t44_camera.h"
+#include "t44_lighting_technique.h"
+#include "t44_backend.h"
+#include "t44_mesh.h"
 
 #define WINDOW_WIDTH  1280  
 #define WINDOW_HEIGHT 1024
