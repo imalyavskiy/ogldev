@@ -52,11 +52,6 @@
     <ClInclude Include="t42_util.h" />
     <ClInclude Include="t42_world_transform.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.vcxproj">
-      <Project>{6e9d80e7-c4f1-4ae3-8082-4a5efdce8ccc}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{86530C7F-C289-4627-9011-7009BE2B7D12}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

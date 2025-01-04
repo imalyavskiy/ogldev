@@ -17,9 +17,9 @@
 
 #include <stdio.h>
 
-#include "shadow_map_fbo.h"
-#include "ogldev_util.h"
-#include "shadow_map_technique.h"
+#include "t43_shadow_map_fbo.h"
+#include "t43_util.h"
+#include "t43_shadow_map_technique.h"
 
 ShadowMapFBO::ShadowMapFBO()
 {

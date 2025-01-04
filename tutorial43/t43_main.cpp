@@ -24,16 +24,16 @@
 #include <assert.h>
 #include <float.h>
 
-#include "engine_common.h"
-#include "ogldev_util.h"
-#include "pipeline.h"
-#include "camera.h"
-#include "ogldev_texture.h"
-#include "lighting_technique.h"
-#include "glut_backend.h"
-#include "mesh.h"
-#include "shadow_map_technique.h"
-#include "shadow_map_fbo.h"
+#include "t43_engine_common.h"
+#include "t43_util.h"
+#include "t43_pipeline.h"
+#include "t43_camera.h"
+#include "t43_texture.h"
+#include "t43_lighting_technique.h"
+#include "t43_glut_backend.h"
+#include "t43_mesh.h"
+#include "t43_shadow_map_technique.h"
+#include "t43_shadow_map_fbo.h"
 #ifdef FREETYPE
 #include "freetypeGL.h"
 #endif

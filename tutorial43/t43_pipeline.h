@@ -18,8 +18,8 @@
 #ifndef PIPELINE_H
 #define	PIPELINE_H
 
-#include "math_3d.h"
-#include "camera.h"
+#include "t43_math_3d.h"
+#include "t43_camera.h"
 
 struct Orientation
 {

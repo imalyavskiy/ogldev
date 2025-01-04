@@ -11,11 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.vcxproj">
-      <Project>{6e9d80e7-c4f1-4ae3-8082-4a5efdce8ccc}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="stb_image\stb_image.cpp" />
     <ClCompile Include="t41_app.cpp" />
     <ClCompile Include="t41_camera.cpp" />

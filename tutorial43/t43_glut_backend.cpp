@@ -23,8 +23,8 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
-#include "ogldev_util.h"
-#include "glut_backend.h"
+#include "t43_util.h"
+#include "t43_glut_backend.h"
 
 // Points to the object implementing the ICallbacks interface which was delivered to
 // GLUTBackendRun(). All events are forwarded to this object.

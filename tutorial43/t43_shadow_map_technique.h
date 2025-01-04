@@ -1,6 +1,5 @@
 /*
-
-	Copyright 2011 Etay Meiri
+        Copyright 2011 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,18 +13,37 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-#ifndef GLUT_BACKEND_H
-#define	GLUT_BACKEND_H
+#ifndef SHADOW_MAP_TECHNIQUE_H
+#define	SHADOW_MAP_TECHNIQUE_H
 
-#include "callbacks.h"
+#include "t43_technique.h"
+#include "t43_math_3d.h"
+#include "t43_mesh.h"
+#include "t43_camera.h"
 
-void GLUTBackendInit(int argc, char** argv);
+#define NUM_OF_LAYERS 6
 
-bool GLUTBackendCreateWindow(unsigned int Width, unsigned int Height, unsigned int bpp, bool isFullScreen, const char* pTitle);
+class ShadowMapTechnique : public Technique {
 
-void GLUTBackendRun(ICallbacks* pCallbacks);
+public:
 
-#endif	/* GLUT_BACKEND_H */
+    ShadowMapTechnique();
+
+    virtual bool Init();
+    
+    void SetWVP(const Matrix4f& WVP);	
+    void SetWorld(const Matrix4f& World);	
+    void SetLightWorldPos(const Vector3f& Pos);
+    
+private:
+
+    GLint m_WVPLocation;
+    GLint m_WorldMatrixLocation;
+    GLint m_lightWorldPosLoc;
+};
+
+
+#endif	/* SHADOW_MAP_TECHNIQUE_H */
 

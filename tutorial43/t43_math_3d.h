@@ -31,7 +31,7 @@
 #include <assimp/matrix3x3.h>
 #include <assimp/matrix4x4.h>
 
-#include "ogldev_util.h"
+#include "t43_util.h"
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846f   // pi

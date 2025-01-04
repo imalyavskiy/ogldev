@@ -15,9 +15,10 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <GL/glew.h>
 #include <GL/freeglut.h>
 
-#include "camera.h"
+#include "t43_camera.h"
 
 const static float STEP_SCALE = 0.1f;
 const static int MARGIN = 10;

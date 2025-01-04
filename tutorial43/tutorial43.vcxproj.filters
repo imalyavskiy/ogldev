@@ -13,66 +13,102 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\stb_image">
+      <UniqueIdentifier>{9c1f419c-db9d-43cc-ab9a-3b8f7859a75b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\stb_image">
+      <UniqueIdentifier>{70ebecf9-8417-425c-9b41-f26b15e784bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="callbacks.h">
+    <ClInclude Include="t43_callbacks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="camera.h">
+    <ClInclude Include="t43_camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine_common.h">
+    <ClInclude Include="t43_engine_common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="glut_backend.h">
+    <ClInclude Include="t43_glut_backend.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="lighting_technique.h">
+    <ClInclude Include="t43_lighting_technique.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="math_3d.h">
+    <ClInclude Include="t43_math_3d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mesh.h">
+    <ClInclude Include="t43_mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pipeline.h">
+    <ClInclude Include="t43_pipeline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="shadow_map_fbo.h">
+    <ClInclude Include="t43_shadow_map_fbo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="shadow_map_technique.h">
+    <ClInclude Include="t43_shadow_map_technique.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="t43_technique.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="t43_util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="t43_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="t43_texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image\stb_image.h">
+      <Filter>Header Files\stb_image</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image\stb_image_write.h">
+      <Filter>Header Files\stb_image</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="camera.cpp">
+    <ClCompile Include="t43_camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="glut_backend.cpp">
+    <ClCompile Include="t43_glut_backend.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lighting_technique.cpp">
+    <ClCompile Include="t43_lighting_technique.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="t43_main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="math_3d.cpp">
+    <ClCompile Include="t43_math_3d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mesh.cpp">
+    <ClCompile Include="t43_mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pipeline.cpp">
+    <ClCompile Include="t43_pipeline.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="shadow_map_fbo.cpp">
+    <ClCompile Include="t43_shadow_map_fbo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="shadow_map_technique.cpp">
+    <ClCompile Include="t43_shadow_map_technique.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="t43_technique.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="t43_util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="t43_texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_image\stb_image.cpp">
+      <Filter>Source Files\stb_image</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

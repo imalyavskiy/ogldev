@@ -17,13 +17,13 @@
 */
 
 #include <limits.h>
-#include "math_3d.h"
+#include "t43_math_3d.h"
 #include <string>
-#include <GL/glfx.h>
+//#include <GL/glfx.h>
 
 
-#include "lighting_technique.h"
-#include "ogldev_util.h"
+#include "t43_lighting_technique.h"
+#include "t43_util.h"
 
 using namespace std;
 

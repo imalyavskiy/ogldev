@@ -16,8 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "shadow_map_technique.h"
-#include "pipeline.h"
+#include "t43_shadow_map_technique.h"
+#include "t43_pipeline.h"
 
 
 ShadowMapTechnique::ShadowMapTechnique()

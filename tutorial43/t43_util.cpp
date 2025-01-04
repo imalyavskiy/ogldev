@@ -19,17 +19,23 @@
 
 #include <iostream>
 #include <fstream>
+#ifdef _WIN32
 #include <Windows.h>
+#else
+#include <sys/time.h>
+#endif
 
+#ifndef VULKAN
 #include <GL/glew.h>
 #include <GL/freeglut.h>
+#endif
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <stdarg.h>
 
-#include "t42_util.h"
+#include "t43_util.h"
 
 // Workaround for tutorials prior to switching to GLFW
 int IsGLVersionHigher(int MajorVer, int MinorVer)
