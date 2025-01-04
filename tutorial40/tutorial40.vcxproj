@@ -10,35 +10,6 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="callbacks.h" />
-    <ClInclude Include="camera.h" />
-    <ClInclude Include="engine_common.h" />
-    <ClInclude Include="glut_backend.h" />
-    <ClInclude Include="lighting_technique.h" />
-    <ClInclude Include="math_3d.h" />
-    <ClInclude Include="mesh.h" />
-    <ClInclude Include="null_technique.h" />
-    <ClInclude Include="ogldev_types.h" />
-    <ClInclude Include="pipeline.h" />
-    <ClInclude Include="shadow_volume_technique.h" />
-    <ClInclude Include="technique.h" />
-    <ClInclude Include="texture.h" />
-    <ClInclude Include="util.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="camera.cpp" />
-    <ClCompile Include="glut_backend.cpp" />
-    <ClCompile Include="lighting_technique.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="math_3d.cpp" />
-    <ClCompile Include="mesh.cpp" />
-    <ClCompile Include="null_technique.cpp" />
-    <ClCompile Include="pipeline.cpp" />
-    <ClCompile Include="shadow_volume_technique.cpp" />
-    <ClCompile Include="technique.cpp" />
-    <ClCompile Include="texture.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F8CAF153-FF5A-4B97-A4E5-DE3024C1DA83}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
