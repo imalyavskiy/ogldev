@@ -23,27 +23,28 @@
 #include "freetypeGL.h"
 #endif
 
+namespace t44 {
+  class OgldevApp
+  {
+  protected:
+    OgldevApp();
 
-class OgldevApp
-{
-protected:
-	OgldevApp();
+    void CalcFPS();
 
-	void CalcFPS();
+    void RenderFPS();
 
-	void RenderFPS();
+    float GetRunningTime();
 
-	float GetRunningTime();
-
-protected:
+  protected:
 #ifdef FREETYPE
-	FontRenderer m_fontRenderer;
+    FontRenderer m_fontRenderer;
 #endif
-private:
-	long long m_frameTime;
-	long long m_startTime;
-	int m_frameCount;
-        int m_fps;
-};
+  private:
+    long long m_frameTime;
+    long long m_startTime;
+    int m_frameCount;
+    int m_fps;
+  };
+}
 
 #endif

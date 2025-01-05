@@ -19,36 +19,37 @@
 #include <iostream>
 #include "t44_texture.h"
 
-FIBITMAP* GenericLoader(const char* lpszPathName, int flag) {
+namespace t44 {
+  FIBITMAP* GenericLoader(const char* lpszPathName, int flag) {
     auto fif = FIF_UNKNOWN;
 
     fif = FreeImage_GetFileType(lpszPathName, 0);
     if (fif == FIF_UNKNOWN) {
-        fif = FreeImage_GetFIFFromFilename(lpszPathName);
+      fif = FreeImage_GetFIFFromFilename(lpszPathName);
     }
 
     if ((fif != FIF_UNKNOWN) && FreeImage_FIFSupportsReading(fif)) {
-        return FreeImage_Load(fif, lpszPathName, flag);
+      return FreeImage_Load(fif, lpszPathName, flag);
     }
 
     return nullptr;
-}
+  }
 
 
-Texture::Texture(GLenum TextureTarget, const std::string& FileName)
+  Texture::Texture(GLenum TextureTarget, const std::string& FileName)
     : m_fileName(std::move(FileName))
     , m_textureTarget(TextureTarget)
-{
+  {
     glGenTextures(1, &m_textureObj);
-}
+  }
 
-bool Texture::Load() const
-{
+  bool Texture::Load() const
+  {
     bool result = false;
 
     const auto src = GenericLoader(m_fileName.c_str(), 0);
     if (!src)
-        return result;
+      return result;
 
     const auto type = FreeImage_GetColorType(src);
     const auto width = FreeImage_GetWidth(src);
@@ -58,31 +59,32 @@ bool Texture::Load() const
     FreeImage_FlipVertical(src);
 
     if (!FreeImage_HasPixels(src))
-        return result;
+      return result;
 
     glBindTexture(m_textureTarget, m_textureObj);
 
-    if(FIC_RGB == type) {
-        glTexImage2D(m_textureTarget, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
-        result = true;
+    if (FIC_RGB == type) {
+      glTexImage2D(m_textureTarget, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+      result = true;
     }
-    else if(FIC_RGBALPHA == type) {
-        glTexImage2D(m_textureTarget, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
-        result = true;
+    else if (FIC_RGBALPHA == type) {
+      glTexImage2D(m_textureTarget, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+      result = true;
     }
 
-    if(result) {
-        glTexParameterf(m_textureTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameterf(m_textureTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    if (result) {
+      glTexParameterf(m_textureTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+      glTexParameterf(m_textureTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
 
     FreeImage_Unload(src);
 
     return result;
-}
+  }
 
-void Texture::Bind(const GLenum TextureUnit) const
-{
+  void Texture::Bind(const GLenum TextureUnit) const
+  {
     glActiveTexture(TextureUnit);
     glBindTexture(m_textureTarget, m_textureObj);
+  }
 }

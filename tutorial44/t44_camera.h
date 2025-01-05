@@ -23,9 +23,10 @@
 #include "t44_keys.h"
 #include "t44_atb.h"
 
-class Camera
-{
-public:
+namespace t44 {
+  class Camera
+  {
+  public:
 
     Camera(int WindowWidth, int WindowHeight);
 
@@ -39,22 +40,22 @@ public:
 
     const Vector3f& GetPos() const
     {
-        return m_pos;
+      return m_pos;
     }
 
     const Vector3f& GetTarget() const
     {
-        return m_target;
+      return m_target;
     }
 
     const Vector3f& GetUp() const
     {
-        return m_up;
+      return m_up;
     }
-    
+
     void AddToATB(TwBar* bar);
 
-private:
+  private:
 
     void Init();
     void Update();
@@ -75,7 +76,7 @@ private:
     bool m_OnRightEdge;
 
     Vector2i m_mousePos;
-};
-
+  };
+}
 #endif	/* CAMERA_H */
 

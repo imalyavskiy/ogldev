@@ -19,22 +19,19 @@
 #ifndef OGLDEV_UTIL_H
 #define	OGLDEV_UTIL_H
 
-#ifndef WIN32
-#include <unistd.h>
-#endif
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <cassert>
 #include <string>
-#include <string.h>
-#include <assert.h>
+
 #include "t44_types.h"
 
-using namespace std;
+namespace t44 {
+  bool ReadFile(const char* fileName, std::string& outFile);
 
-bool ReadFile(const char* fileName, string& outFile);
-
-void OgldevError(const char* pFileName, uint line, const char* pError);
-void OgldevFileError(const char* pFileName, uint line, const char* pFileError);
+  void OgldevError(const char* pFileName, uint line, const char* pError);
+  void OgldevFileError(const char* pFileName, uint line, const char* pFileError);
 
 #define OGLDEV_ERROR(Error) OgldevError(__FILE__, __LINE__, Error);
 #define OGLDEV_FILE_ERROR(FileError) OgldevFileError(__FILE__, __LINE__, FileError);
@@ -46,7 +43,7 @@ void OgldevFileError(const char* pFileName, uint line, const char* pFileError);
 #define SNPRINTF _snprintf_s
 #define RANDOM rand
 #define SRANDOM srand((unsigned)time(NULL))
-//float fmax(float a, float b);
+  //float fmax(float a, float b);
 #else
 #define SNPRINTF snprintf
 #define RANDOM random
@@ -70,7 +67,7 @@ void OgldevFileError(const char* pFileName, uint line, const char* pFileError);
 
 #define GLCheckError() (glGetError() == GL_NO_ERROR)
 
-long long GetCurrentTimeMillis();
-
+  long long GetCurrentTimeMillis();
+}
 #endif	/* OGLDEV_UTIL_H */
 

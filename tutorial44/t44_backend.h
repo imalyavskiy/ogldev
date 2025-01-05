@@ -21,26 +21,27 @@
 
 #include "t44_types.h"
 #include "t44_callbacks.h"
+namespace t44 {
 
-enum OGLDEV_BACKEND_TYPE {
+  enum OGLDEV_BACKEND_TYPE {
     OGLDEV_BACKEND_TYPE_GLUT,
     OGLDEV_BACKEND_TYPE_GLFW
-};
+  };
 
 
-void OgldevBackendInit(OGLDEV_BACKEND_TYPE BackendType, int argc, char** argv, bool WithDepth, bool WithStencil);
+  void OgldevBackendInit(OGLDEV_BACKEND_TYPE BackendType, int argc, char** argv, bool WithDepth, bool WithStencil);
 
-void OgldevBackendTerminate();
+  void OgldevBackendTerminate();
 
-bool OgldevBackendCreateWindow(uint Width, uint Height, bool isFullScreen, const char* pTitle);
+  bool OgldevBackendCreateWindow(uint Width, uint Height, bool isFullScreen, const char* pTitle);
 
-void OgldevBackendRun(ICallbacks* pCallbacks);
+  void OgldevBackendRun(ICallbacks* pCallbacks);
 
-void OgldevBackendLeaveMainLoop();
+  void OgldevBackendLeaveMainLoop();
 
-void OgldevBackendSwapBuffers();
+  void OgldevBackendSwapBuffers();
 
-void OgldevBackendSetMousePos(uint x, uint y);
+  void OgldevBackendSetMousePos(uint x, uint y);
 
-
+}
 #endif
