@@ -49,30 +49,30 @@ namespace t44 {
       ret = true;
     }
     else {
-      OGLDEV_FILE_ERROR(pFileName);
+      REPORT_FILE_ERROR(pFileName);
     }
 
     return ret;
   }
 
-  void OgldevError(const char* pFileName, uint line, const char* pError)
+  void ReportError(const char* pFileName, uint32_t line, const char* pError)
   {
 #ifdef WIN32
     char msg[1000];
     _snprintf_s(msg, sizeof(msg), "%s:%d: %s", pFileName, line, pError);
-    MessageBoxA(NULL, msg, NULL, 0);
+    MessageBoxA(nullptr, msg, nullptr, 0);
 #else
     fprintf(stderr, "%s:%d: %s\n", pFileName, line, pError);
 #endif    
   }
 
 
-  void OgldevFileError(const char* pFileName, uint line, const char* pFileError)
+  void ReportFileError(const char* pFileName, uint32_t line, const char* pFileError)
   {
 #ifdef WIN32
     char msg[1000];
     _snprintf_s(msg, sizeof(msg), "%s:%d: unable to open file `%s`", pFileName, line, pFileError);
-    MessageBoxA(NULL, msg, NULL, 0);
+    MessageBoxA(nullptr, msg, nullptr, 0);
 #else
     fprintf(stderr, "%s:%d: unable to open file `%s`\n", pFileName, line, pFileError);
 #endif    
@@ -85,7 +85,7 @@ namespace t44 {
     return GetTickCount();
 #else
     timeval t;
-    gettimeofday(&t, NULL);
+    gettimeofday(&t, nullptr);
 
     long long ret = t.tv_sec * 1000 + t.tv_usec / 1000;
     return ret;

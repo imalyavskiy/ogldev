@@ -30,7 +30,7 @@ static ICallbacks* s_pCallbacks = NULL;
 static bool sWithDepth = false;
 static bool sWithStencil = false;
 
-OGLDEV_KEY GLUTKeyToOGLDEVKey(uint Key)
+KEYBOARD_KEY GLUTKeyToOGLDEVKey(uint Key)
 {
     switch (Key) {
                 case GLUT_KEY_F1:
@@ -86,7 +86,7 @@ OGLDEV_KEY GLUTKeyToOGLDEVKey(uint Key)
 }
 
 
-static OGLDEV_MOUSE GLUTMouseToOGLDEVMouse(uint Button)
+static MOUSE_BUTTON GLUTMouseToOGLDEVMouse(uint Button)
 {
     switch (Button) {
     case GLUT_LEFT_BUTTON:
@@ -105,7 +105,7 @@ static OGLDEV_MOUSE GLUTMouseToOGLDEVMouse(uint Button)
 
 static void SpecialKeyboardCB(int Key, int x, int y)
 {
-    OGLDEV_KEY OgldevKey = GLUTKeyToOGLDEVKey(Key);
+    KEYBOARD_KEY OgldevKey = GLUTKeyToOGLDEVKey(Key);
     s_pCallbacks->KeyboardCB(OgldevKey);
 }
 
@@ -118,7 +118,7 @@ static void KeyboardCB(unsigned char Key, int x, int y)
                 ((Key >= 'A') && (Key <= 'Z')) ||
                 ((Key >= 'a') && (Key <= 'z'))
         ) {
-                OGLDEV_KEY OgldevKey = (OGLDEV_KEY)Key;
+                KEYBOARD_KEY OgldevKey = (KEYBOARD_KEY)Key;
                 s_pCallbacks->KeyboardCB(OgldevKey);
         }
         else {
@@ -149,8 +149,8 @@ static void IdleCB()
 
 static void MouseCB(int Button, int State, int x, int y)
 {
-        OGLDEV_MOUSE OgldevMouse = GLUTMouseToOGLDEVMouse(Button);
-        OGLDEV_KEY_STATE OgldevKeyState = (State == GLUT_DOWN) ? OGLDEV_KEY_STATE_PRESS : OGLDEV_KEY_STATE_RELEASE;
+        MOUSE_BUTTON OgldevMouse = GLUTMouseToOGLDEVMouse(Button);
+        KEYBOARD_KEY_STATE OgldevKeyState = (State == GLUT_DOWN) ? OGLDEV_KEY_STATE_PRESS : OGLDEV_KEY_STATE_RELEASE;
 
     s_pCallbacks->MouseCB(OgldevMouse, OgldevKeyState, x, y);
 }

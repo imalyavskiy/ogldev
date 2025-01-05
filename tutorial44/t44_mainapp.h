@@ -21,11 +21,11 @@
 
 namespace t44
 {
-  class MainApp : public ICallbacks, public OgldevApp
+  class MainApp : public ICallbacks, public BaseApp
   {
   public:
 
-    MainApp(int winWidth, int winHeight);
+    MainApp(int32_t winWidth, int32_t winHeight);
 
     ~MainApp() = default;
 
@@ -35,9 +35,9 @@ namespace t44
 
     void RenderSceneCB() override;
 
-    virtual void KeyboardCB(OGLDEV_KEY OgldevKey);
+    virtual void KeyboardCB(KEYBOARD_KEY key);
 
-    void PassiveMouseCB(int x, int y) override;
+    void PassiveMouseCB(int32_t x, int32_t y) override;
 
   private:
     int m_winWidth;

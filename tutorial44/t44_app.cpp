@@ -27,7 +27,7 @@ Markup sMarkup = { (char*)"Arial", 64, 1, 0, 0.0, 0.0,
                    0, {0,0,0,1}, 0, {0,0,0,1} };
 #endif
 namespace t44 {
-  OgldevApp::OgldevApp()
+  BaseApp::BaseApp()
 #ifdef FREETYPE
     : m_fontRenderer(sMarkup)
 #endif
@@ -41,11 +41,11 @@ namespace t44 {
 
 
 
-  void OgldevApp::CalcFPS()
+  void BaseApp::CalcFPS()
   {
     m_frameCount++;
 
-    long long time = GetCurrentTimeMillis();
+    const int64_t time = GetCurrentTimeMillis();
 
     if (time - m_frameTime >= 1000) {
       m_frameTime = time;
@@ -54,10 +54,9 @@ namespace t44 {
     }
   }
 
-  void OgldevApp::RenderFPS()
+  void BaseApp::RenderFPS()
   {
-    char text[32];
-    ZERO_MEM(text);
+    char text[32] = {};
     SNPRINTF(text, sizeof(text), "FPS: %d", m_fps);
 
 #ifdef FREETYPE
@@ -65,9 +64,9 @@ namespace t44 {
 #endif
   }
 
-  float OgldevApp::GetRunningTime()
+  float BaseApp::GetRunningTime()
   {
-    float RunningTime = (float)((double)GetCurrentTimeMillis() - (double)m_startTime) / 1000.0f;
+    float RunningTime = static_cast<float>(static_cast<double>(GetCurrentTimeMillis()) - static_cast<double>(m_startTime)) / 1000.0f;
     return RunningTime;
   }
 }

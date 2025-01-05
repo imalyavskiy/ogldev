@@ -27,7 +27,7 @@
 
 int main(int argc, char** argv)
 {
-  OgldevBackendInit(t44::OGLDEV_BACKEND_TYPE_GLFW, argc, argv, true, false);
+  t44::OgldevBackendInit(t44::BACKEND_TYPE::GLFW, argc, argv, true, false);
 
   if (!t44::OgldevBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_FULLSCREEN, WINDOW_TITLE)) {
     t44::OgldevBackendTerminate();

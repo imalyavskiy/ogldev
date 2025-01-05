@@ -59,7 +59,7 @@ bool ATB::Init()
 }
 
 
-static int OgldevKeyToATBKey(OGLDEV_KEY OgldevKey)
+static int OgldevKeyToATBKey(KEYBOARD_KEY OgldevKey)
 {
 #if 0
     if (OgldevKey >= OGLDEV_KEY_SPACE && OgldevKey <= OGLDEV_KEY_RIGHT_BRACKET) {
@@ -132,7 +132,7 @@ static int OgldevKeyToATBKey(OGLDEV_KEY OgldevKey)
     return 0;
 }
 
-bool ATB::KeyboardCB(OGLDEV_KEY OgldevKey)
+bool ATB::KeyboardCB(KEYBOARD_KEY OgldevKey)
 {
 #if 0
     int ATBKey = OgldevKeyToATBKey(OgldevKey);
@@ -153,7 +153,7 @@ bool ATB::PassiveMouseCB(int x, int y)
 }
 
 
-bool ATB::MouseCB(OGLDEV_MOUSE Button, OGLDEV_KEY_STATE State, int x, int y)
+bool ATB::MouseCB(MOUSE_BUTTON Button, KEYBOARD_KEY_STATE State, int x, int y)
 {    
 //    TwMouseButtonID btn = (Button == OGLDEV_MOUSE_BUTTON_LEFT) ? TW_MOUSE_LEFT : TW_MOUSE_RIGHT;
  //   TwMouseAction ma = (State == OGLDEV_KEY_STATE_PRESS) ? TW_MOUSE_PRESSED : TW_MOUSE_RELEASED;

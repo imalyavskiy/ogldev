@@ -92,7 +92,7 @@ void Camera::Init()
 }
 
 
-bool Camera::OnKeyboard(OGLDEV_KEY Key)
+bool Camera::OnKeyboard(KEYBOARD_KEY Key)
 {
     bool Ret = false;
 

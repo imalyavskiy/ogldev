@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2014 Etay Meiri
+  Copyright 2014 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,55 +25,50 @@
 
 
 namespace t44 {
-  static OGLDEV_BACKEND_TYPE sBackendType = OGLDEV_BACKEND_TYPE_GLUT;
+  static BACKEND_TYPE sBackendType = BACKEND_TYPE::GLUT;
 
-  void OgldevBackendInit(OGLDEV_BACKEND_TYPE BackendType, int argc, char** argv, bool WithDepth, bool WithStencil)
+  void OgldevBackendInit(BACKEND_TYPE backendType, int argc, char** argv, bool withDepth, bool withStencil)
   {
-    sBackendType = BackendType;
+    sBackendType = backendType;
 
-    switch (BackendType) {
-    case OGLDEV_BACKEND_TYPE_GLUT:
-      GLUTBackendInit(argc, argv, WithDepth, WithStencil);
-      break;
-    case OGLDEV_BACKEND_TYPE_GLFW:
-      GLFWBackendInit(argc, argv, WithDepth, WithStencil);
-      break;
-    default:
-      assert(0);
+    switch (backendType) {
+    case BACKEND_TYPE::GLUT:
+      GLUTBackendInit(argc, argv, withDepth, withStencil);
+      return;
+    case BACKEND_TYPE::GLFW:
+      GLFWBackendInit(argc, argv, withDepth, withStencil);
+      return;
     }
+    assert(0);
   }
 
 
   void OgldevBackendTerminate()
   {
     switch (sBackendType) {
-    case OGLDEV_BACKEND_TYPE_GLUT:
+    case BACKEND_TYPE::GLUT:
       // nothing to do here...
-      break;
-    case OGLDEV_BACKEND_TYPE_GLFW:
+      return;
+    case BACKEND_TYPE::GLFW:
       GLFWBackendTerminate();
-      break;
-    default:
-      assert(0);
+      return;
     }
+    assert(0);
   }
 
 
-  bool OgldevBackendCreateWindow(uint Width, uint Height, bool isFullScreen, const char* pTitle)
+  bool OgldevBackendCreateWindow(uint32_t width, uint32_t height, bool isFullScreen, const char* pTitle)
   {
-    TwWindowSize(Width, Height);
+    TwWindowSize(width, height);
 
     switch (sBackendType) {
-    case OGLDEV_BACKEND_TYPE_GLUT:
-      return GLUTBackendCreateWindow(Width, Height, isFullScreen, pTitle);
-    case OGLDEV_BACKEND_TYPE_GLFW:
-      return GLFWBackendCreateWindow(Width, Height, isFullScreen, pTitle);
-    default:
-      assert(0);
+    case BACKEND_TYPE::GLUT:
+      return GLUTBackendCreateWindow(width, height, isFullScreen, pTitle);
+    case BACKEND_TYPE::GLFW:
+      return GLFWBackendCreateWindow(width, height, isFullScreen, pTitle);
     }
 
-
-
+    assert(0);
     return false;
   }
 
@@ -81,15 +76,14 @@ namespace t44 {
   void OgldevBackendRun(ICallbacks* pCallbacks)
   {
     switch (sBackendType) {
-    case OGLDEV_BACKEND_TYPE_GLUT:
+    case BACKEND_TYPE::GLUT:
       GLUTBackendRun(pCallbacks);
-      break;
-    case OGLDEV_BACKEND_TYPE_GLFW:
+      return;
+    case BACKEND_TYPE::GLFW:
       GLFWBackendRun(pCallbacks);
-      break;
-    default:
-      assert(0);
+      return;
     }
+    assert(0);
   }
 
 
@@ -98,44 +92,41 @@ namespace t44 {
     TwDraw();
 
     switch (sBackendType) {
-    case OGLDEV_BACKEND_TYPE_GLUT:
+    case BACKEND_TYPE::GLUT:
       GLUTBackendSwapBuffers();
-      break;
-    case OGLDEV_BACKEND_TYPE_GLFW:
+      return;
+    case BACKEND_TYPE::GLFW:
       GLFWBackendSwapBuffers();
-      break;
-    default:
-      assert(0);
+      return;
     }
+    assert(0);
   }
 
 
   void OgldevBackendLeaveMainLoop()
   {
     switch (sBackendType) {
-    case OGLDEV_BACKEND_TYPE_GLUT:
+    case BACKEND_TYPE::GLUT:
       GLUTBackendLeaveMainLoop();
-      break;
-    case OGLDEV_BACKEND_TYPE_GLFW:
+      return;
+    case BACKEND_TYPE::GLFW:
       GLFWBackendLeaveMainLoop();
-      break;
-    default:
-      assert(0);
+      return;
     }
+    assert(0);
   }
 
 
-  void OgldevBackendSetMousePos(uint x, uint y)
+  void OgldevBackendSetMousePos(uint32_t x, uint32_t y)
   {
     switch (sBackendType) {
-    case OGLDEV_BACKEND_TYPE_GLUT:
+    case BACKEND_TYPE::GLUT:
       //GLUTBackendLeaveMainLoop();
-      break;
-    case OGLDEV_BACKEND_TYPE_GLFW:
+      return;
+    case BACKEND_TYPE::GLFW:
       GLFWBackendSetMousePos(x, y);
-      break;
-    default:
-      assert(0);
+      return;
     }
+    assert(0);
   }
 }

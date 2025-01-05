@@ -13,13 +13,13 @@ public:
 
     bool Init();
 
-    bool KeyboardCB(OGLDEV_KEY OgldevKey);
+    bool KeyboardCB(KEYBOARD_KEY OgldevKey);
 
     bool PassiveMouseCB(int x, int y);
 
     void RenderSceneCB();
 
-    bool MouseCB(OGLDEV_MOUSE Button, OGLDEV_KEY_STATE State, int x, int y);
+    bool MouseCB(MOUSE_BUTTON Button, KEYBOARD_KEY_STATE State, int x, int y);
 };
 
 

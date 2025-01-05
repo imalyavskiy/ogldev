@@ -24,99 +24,32 @@
 namespace t44 {
   struct Orientation
   {
-    Vector3f m_scale;
-    Vector3f m_rotation;
-    Vector3f m_pos;
-
-    Orientation()
-    {
-      m_scale = Vector3f(1.0f, 1.0f, 1.0f);
-      m_rotation = Vector3f(0.0f, 0.0f, 0.0f);
-      m_pos = Vector3f(0.0f, 0.0f, 0.0f);
-    }
+    Vector3f m_scale = { 1.0f, 1.0f, 1.0f };
+    Vector3f m_rotation = { 0.0f, 0.0f, 0.0f };
+    Vector3f m_pos = { 0.0f, 0.0f, 0.0f };
   };
 
 
   class Pipeline
   {
   public:
-    Pipeline()
-    {
-      m_scale = Vector3f(1.0f, 1.0f, 1.0f);
-      m_worldPos = Vector3f(0.0f, 0.0f, 0.0f);
-      m_rotateInfo = Vector3f(0.0f, 0.0f, 0.0f);
-    }
+    void Scale(float s);
+    void Scale(const Vector3f& scale);
+    void Scale(float scaleX, float scaleY, float scaleZ);
 
-    void Scale(float s)
-    {
-      Scale(s, s, s);
-    }
+    void WorldPos(float x, float y, float z);
+    void WorldPos(const Vector3f& pos);
 
+    void Rotate(float rotateX, float rotateY, float rotateZ);
+    void Rotate(const Vector3f& r);
 
-    void Scale(const Vector3f& scale)
-    {
-      Scale(scale.x, scale.y, scale.z);
-    }
+    void SetPerspectiveProj(const PerspProjInfo& p);
+    void SetOrthographicProj(const OrthoProjInfo& p);
 
-    void Scale(float ScaleX, float ScaleY, float ScaleZ)
-    {
-      m_scale.x = ScaleX;
-      m_scale.y = ScaleY;
-      m_scale.z = ScaleZ;
-    }
+    void SetCamera(const Vector3f& pos, const Vector3f& target, const Vector3f& up);
+    void SetCamera(const Camera& camera);
 
-    void WorldPos(float x, float y, float z)
-    {
-      m_worldPos.x = x;
-      m_worldPos.y = y;
-      m_worldPos.z = z;
-    }
-
-    void WorldPos(const Vector3f& Pos)
-    {
-      m_worldPos = Pos;
-    }
-
-    void Rotate(float RotateX, float RotateY, float RotateZ)
-    {
-      m_rotateInfo.x = RotateX;
-      m_rotateInfo.y = RotateY;
-      m_rotateInfo.z = RotateZ;
-    }
-
-    void Rotate(const Vector3f& r)
-    {
-      Rotate(r.x, r.y, r.z);
-    }
-
-    void SetPerspectiveProj(const PerspProjInfo& p)
-    {
-      m_persProjInfo = p;
-    }
-
-    void SetOrthographicProj(const OrthoProjInfo& p)
-    {
-      m_orthoProjInfo = p;
-    }
-
-    void SetCamera(const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up)
-    {
-      m_camera.Pos = Pos;
-      m_camera.Target = Target;
-      m_camera.Up = Up;
-    }
-
-    void SetCamera(const Camera& camera)
-    {
-      SetCamera(camera.GetPos(), camera.GetTarget(), camera.GetUp());
-    }
-
-    void Orient(const Orientation& o)
-    {
-      m_scale = o.m_scale;
-      m_worldPos = o.m_pos;
-      m_rotateInfo = o.m_rotation;
-    }
+    void Orient(const Orientation& o);
 
     const Matrix4f& GetWPTrans();
     const Matrix4f& GetWVTrans();
@@ -128,9 +61,9 @@ namespace t44 {
     const Matrix4f& GetProjTrans();
 
   private:
-    Vector3f m_scale;
-    Vector3f m_worldPos;
-    Vector3f m_rotateInfo;
+    Vector3f m_scale = { 1.0f, 1.0f, 1.0f };
+    Vector3f m_worldPos = { 0.0f, 0.0f, 0.0f };
+    Vector3f m_rotateInfo = { 0.0f, 0.0f, 0.0f };
 
     PerspProjInfo m_persProjInfo;
     OrthoProjInfo m_orthoProjInfo;
@@ -141,13 +74,13 @@ namespace t44 {
       Vector3f Up;
     } m_camera;
 
-    Matrix4f m_WVPtransformation;
-    Matrix4f m_VPtransformation;
-    Matrix4f m_WPtransformation;
-    Matrix4f m_WVtransformation;
-    Matrix4f m_Wtransformation;
-    Matrix4f m_Vtransformation;
-    Matrix4f m_ProjTransformation;
+    Matrix4f m_worldViewProjTransform;
+    Matrix4f m_viewProjTransform;
+    Matrix4f m_worldProjTransform;
+    Matrix4f m_worldViewTransform;
+    Matrix4f m_worldTransform;
+    Matrix4f m_viewTransform;
+    Matrix4f m_projTransform;
   };
 }
 

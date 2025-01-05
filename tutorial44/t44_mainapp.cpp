@@ -2,7 +2,7 @@
 
 namespace t44
 {
-  MainApp::MainApp(int winWidth, int winHeight)
+  MainApp::MainApp(int32_t winWidth, int32_t winHeight)
   : m_winWidth(winWidth)
   , m_winHeight(winHeight)
   {
@@ -24,14 +24,14 @@ namespace t44
 
   bool MainApp::Init()
   {
-    Vector3f Pos(0.0f, 23.0f, -5.0f);
-    Vector3f Target(-1.0f, 0.0f, 0.1f);
-    Vector3f Up(0.0, 1.0f, 0.0f);
+    Vector3f pos(0.0f, 23.0f, -5.0f);
+    Vector3f target(-1.0f, 0.0f, 0.1f);
+    Vector3f up(0.0, 1.0f, 0.0f);
 
-    m_pGameCamera = std::make_unique<Camera>(m_winWidth, m_winHeight, Pos, Target, Up);
+    m_pGameCamera = std::make_unique<Camera>(m_winWidth, m_winHeight, pos, target, up);
 
     if (!m_LightingTech.Init()) {
-      OGLDEV_ERROR("Error initializing the lighting technique\n");
+      REPORT_ERROR("Error initializing the lighting technique\n");
       return false;
     }
 
@@ -75,19 +75,19 @@ namespace t44
     OgldevBackendSwapBuffers();
   }
 
-  void MainApp::KeyboardCB(OGLDEV_KEY OgldevKey)
+  void MainApp::KeyboardCB(KEYBOARD_KEY key)
   {
-    switch (OgldevKey) {
-    case OGLDEV_KEY_ESCAPE:
-    case OGLDEV_KEY_q:
+    switch (key) {
+    case KB_KEY_ESCAPE:
+    case KB_KEY_q:
       OgldevBackendLeaveMainLoop();
       break;
     default:
-      m_pGameCamera->OnKeyboard(OgldevKey);
+      m_pGameCamera->OnKeyboard(key);
     }
   }
 
-  void MainApp::PassiveMouseCB(int x, int y)
+  void MainApp::PassiveMouseCB(int32_t x, int32_t y)
   {
     m_pGameCamera->OnMouse(x, y);
   }

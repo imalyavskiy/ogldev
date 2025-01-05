@@ -48,9 +48,6 @@
     <ClInclude Include="t44_util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="t44_types.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="t44_mainapp.h">
       <Filter>Header Files</Filter>
     </ClInclude>

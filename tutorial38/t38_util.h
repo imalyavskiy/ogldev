@@ -44,8 +44,8 @@ void OgldevError(const char* pFileName, uint line, const char* msg, ... );
 void OgldevFileError(const char* pFileName, uint line, const char* pFileError);
 
 #define OGLDEV_ERROR0(msg) OgldevError(__FILE__, __LINE__, msg)
-#define OGLDEV_ERROR(msg, ...) OgldevError(__FILE__, __LINE__, msg, __VA_ARGS__)
-#define OGLDEV_FILE_ERROR(FileError) OgldevFileError(__FILE__, __LINE__, FileError);
+#define REPORT_ERROR(msg, ...) OgldevError(__FILE__, __LINE__, msg, __VA_ARGS__)
+#define REPORT_FILE_ERROR(FileError) OgldevFileError(__FILE__, __LINE__, FileError);
 
 #define ZERO_MEM(a) memset(a, 0, sizeof(a))
 #define ZERO_MEM_VAR(var) memset(&var, 0, sizeof(var))

@@ -19,13 +19,12 @@
 #ifndef GLUT_BACKEND_H
 #define	GLUT_BACKEND_H
 
-#include "t44_types.h"
 #include "t44_callbacks.h"
 
 void GLUTBackendInit(int argc, char** argv, bool WithDepth, bool WithStencil);
 
 
-bool GLUTBackendCreateWindow(uint Width, uint Height, bool isFullScreen, const char* pTitle);
+bool GLUTBackendCreateWindow(uint32_t Width, uint32_t Height, bool isFullScreen, const char* pTitle);
 
 void GLUTBackendRun(ICallbacks* pCallbacks);
 
@@ -33,7 +32,7 @@ void GLUTBackendSwapBuffers();
 
 void GLUTBackendLeaveMainLoop();
 
-OGLDEV_KEY GLUTKeyToOGLDEVKey(uint Key);
+KEYBOARD_KEY GLUTKeyToOGLDEVKey(uint32_t Key);
 
 #endif	/* GLUT_BACKEND_H */
 

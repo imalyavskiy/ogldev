@@ -19,15 +19,17 @@
 #ifndef OGLDEV_APP_H
 #define OGLDEV_APP_H
 
+#include <cstdint>
+
 #ifdef FREETYPE
 #include "freetypeGL.h"
 #endif
 
 namespace t44 {
-  class OgldevApp
+  class BaseApp
   {
   protected:
-    OgldevApp();
+    BaseApp();
 
     void CalcFPS();
 
@@ -40,10 +42,10 @@ namespace t44 {
     FontRenderer m_fontRenderer;
 #endif
   private:
-    long long m_frameTime;
-    long long m_startTime;
-    int m_frameCount;
-    int m_fps;
+    uint64_t m_frameTime;
+    uint64_t m_startTime;
+    int32_t  m_frameCount;
+    int32_t  m_fps;
   };
 }
 

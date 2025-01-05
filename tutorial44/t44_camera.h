@@ -28,30 +28,21 @@ namespace t44 {
   {
   public:
 
-    Camera(int WindowWidth, int WindowHeight);
+    Camera(int winWidth, int winHeight);
 
-    Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up);
+    Camera(int winWidth, int winHeight, const Vector3f& pos, const Vector3f& target, const Vector3f& up);
 
-    bool OnKeyboard(OGLDEV_KEY Key);
+    bool OnKeyboard(KEYBOARD_KEY key);
 
     void OnMouse(int x, int y);
 
     void OnRender();
 
-    const Vector3f& GetPos() const
-    {
-      return m_pos;
-    }
+    const Vector3f& GetPos() const;
 
-    const Vector3f& GetTarget() const
-    {
-      return m_target;
-    }
+    const Vector3f& GetTarget() const;
 
-    const Vector3f& GetUp() const
-    {
-      return m_up;
-    }
+    const Vector3f& GetUp() const;
 
     void AddToATB(TwBar* bar);
 
@@ -64,11 +55,11 @@ namespace t44 {
     Vector3f m_target;
     Vector3f m_up;
 
-    int m_windowWidth;
-    int m_windowHeight;
+    int m_winWidth;
+    int m_winHeight;
 
-    float m_AngleH;
-    float m_AngleV;
+    float m_hAngle;
+    float m_vAngle;
 
     bool m_OnUpperEdge;
     bool m_OnLowerEdge;

@@ -23,10 +23,10 @@ namespace t44 {
   const static float EDGE_STEP = 0.5f;
   const static int MARGIN = 10;
 
-  Camera::Camera(int WindowWidth, int WindowHeight)
+  Camera::Camera(int winWidth, int winHeight)
   {
-    m_windowWidth = WindowWidth;
-    m_windowHeight = WindowHeight;
+    m_winWidth = winWidth;
+    m_winHeight = winHeight;
     m_pos = Vector3f(0.0f, 0.0f, 0.0f);
     m_target = Vector3f(0.0f, 0.0f, 1.0f);
     m_target.Normalize();
@@ -36,16 +36,16 @@ namespace t44 {
   }
 
 
-  Camera::Camera(int WindowWidth, int WindowHeight, const Vector3f& Pos, const Vector3f& Target, const Vector3f& Up)
+  Camera::Camera(int winWidth, int winHeight, const Vector3f& pos, const Vector3f& target, const Vector3f& up)
   {
-    m_windowWidth = WindowWidth;
-    m_windowHeight = WindowHeight;
-    m_pos = Pos;
+    m_winWidth = winWidth;
+    m_winHeight = winHeight;
+    m_pos = pos;
 
-    m_target = Target;
+    m_target = target;
     m_target.Normalize();
 
-    m_up = Up;
+    m_up = up;
     m_up.Normalize();
 
     Init();
@@ -61,59 +61,59 @@ namespace t44 {
     {
       if (HTarget.x >= 0.0f)
       {
-        m_AngleH = 360.0f - ToDegree(asinf(HTarget.z));
+        m_hAngle = 360.0f - ToDegree(asinf(HTarget.z));
       }
       else
       {
-        m_AngleH = 180.0f + ToDegree(asinf(HTarget.z));
+        m_hAngle = 180.0f + ToDegree(asinf(HTarget.z));
       }
     }
     else
     {
       if (HTarget.x >= 0.0f)
       {
-        m_AngleH = ToDegree(asinf(-HTarget.z));
+        m_hAngle = ToDegree(asinf(-HTarget.z));
       }
       else
       {
-        m_AngleH = 90.0f + ToDegree(asinf(-HTarget.z));
+        m_hAngle = 90.0f + ToDegree(asinf(-HTarget.z));
       }
     }
 
-    m_AngleV = -ToDegree(asinf(m_target.y));
+    m_vAngle = -ToDegree(asinf(m_target.y));
 
     m_OnUpperEdge = false;
     m_OnLowerEdge = false;
     m_OnLeftEdge = false;
     m_OnRightEdge = false;
-    m_mousePos.x = m_windowWidth / 2;
-    m_mousePos.y = m_windowHeight / 2;
+    m_mousePos.x = m_winWidth / 2;
+    m_mousePos.y = m_winHeight / 2;
 
     // glutWarpPointer(m_mousePos.x, m_mousePos.y);
   }
 
 
-  bool Camera::OnKeyboard(OGLDEV_KEY Key)
+  bool Camera::OnKeyboard(KEYBOARD_KEY key)
   {
     bool Ret = false;
 
-    switch (Key) {
+    switch (key) {
 
-    case OGLDEV_KEY_UP:
+    case KB_KEY_UP:
     {
       m_pos += (m_target * STEP_SCALE);
       Ret = true;
     }
     break;
 
-    case OGLDEV_KEY_DOWN:
+    case KB_KEY_DOWN:
     {
       m_pos -= (m_target * STEP_SCALE);
       Ret = true;
     }
     break;
 
-    case OGLDEV_KEY_LEFT:
+    case KB_KEY_LEFT:
     {
       Vector3f Left = m_target.Cross(m_up);
       Left.Normalize();
@@ -123,7 +123,7 @@ namespace t44 {
     }
     break;
 
-    case OGLDEV_KEY_RIGHT:
+    case KB_KEY_RIGHT:
     {
       Vector3f Right = m_up.Cross(m_target);
       Right.Normalize();
@@ -133,11 +133,11 @@ namespace t44 {
     }
     break;
 
-    case OGLDEV_KEY_PAGE_UP:
+    case KB_KEY_PAGE_UP:
       m_pos.y += STEP_SCALE;
       break;
 
-    case OGLDEV_KEY_PAGE_DOWN:
+    case KB_KEY_PAGE_DOWN:
       m_pos.y -= STEP_SCALE;
       break;
 
@@ -157,16 +157,16 @@ namespace t44 {
     m_mousePos.x = x;
     m_mousePos.y = y;
 
-    m_AngleH += (float)DeltaX / 20.0f;
-    m_AngleV += (float)DeltaY / 20.0f;
+    m_hAngle += (float)DeltaX / 20.0f;
+    m_vAngle += (float)DeltaY / 20.0f;
 
     if (DeltaX == 0) {
       if (x <= MARGIN) {
-        //    m_AngleH -= 1.0f;
+        //    m_hAngle -= 1.0f;
         m_OnLeftEdge = true;
       }
-      else if (x >= (m_windowWidth - MARGIN)) {
-        //    m_AngleH += 1.0f;
+      else if (x >= (m_winWidth - MARGIN)) {
+        //    m_hAngle += 1.0f;
         m_OnRightEdge = true;
       }
     }
@@ -179,7 +179,7 @@ namespace t44 {
       if (y <= MARGIN) {
         m_OnUpperEdge = true;
       }
-      else if (y >= (m_windowHeight - MARGIN)) {
+      else if (y >= (m_winHeight - MARGIN)) {
         m_OnLowerEdge = true;
       }
     }
@@ -197,23 +197,23 @@ namespace t44 {
     bool ShouldUpdate = false;
 
     if (m_OnLeftEdge) {
-      m_AngleH -= EDGE_STEP;
+      m_hAngle -= EDGE_STEP;
       ShouldUpdate = true;
     }
     else if (m_OnRightEdge) {
-      m_AngleH += EDGE_STEP;
+      m_hAngle += EDGE_STEP;
       ShouldUpdate = true;
     }
 
     if (m_OnUpperEdge) {
-      if (m_AngleV > -90.0f) {
-        m_AngleV -= EDGE_STEP;
+      if (m_vAngle > -90.0f) {
+        m_vAngle -= EDGE_STEP;
         ShouldUpdate = true;
       }
     }
     else if (m_OnLowerEdge) {
-      if (m_AngleV < 90.0f) {
-        m_AngleV += EDGE_STEP;
+      if (m_vAngle < 90.0f) {
+        m_vAngle += EDGE_STEP;
         ShouldUpdate = true;
       }
     }
@@ -223,19 +223,34 @@ namespace t44 {
     }
   }
 
+  const Vector3f& Camera::GetPos() const
+  {
+    return m_pos;
+  }
+
+  const Vector3f& Camera::GetTarget() const
+  {
+    return m_target;
+  }
+
+  const Vector3f& Camera::GetUp() const
+  {
+    return m_up;
+  }
+
   void Camera::Update()
   {
     const Vector3f Vaxis(0.0f, 1.0f, 0.0f);
 
     // Rotate the view vector by the horizontal angle around the vertical axis
     Vector3f View(1.0f, 0.0f, 0.0f);
-    View.Rotate(m_AngleH, Vaxis);
+    View.Rotate(m_hAngle, Vaxis);
     View.Normalize();
 
     // Rotate the view vector by the vertical angle around the horizontal axis
     Vector3f Haxis = Vaxis.Cross(View);
     Haxis.Normalize();
-    View.Rotate(m_AngleV, Haxis);
+    View.Rotate(m_vAngle, Haxis);
 
     m_target = View;
     m_target.Normalize();
@@ -247,8 +262,8 @@ namespace t44 {
 
   void Camera::AddToATB(TwBar* bar)
   {
-    TwAddButton(bar, "Camera", NULL, NULL, "");
-    TwAddVarRW(bar, "Position", TW_TYPE_OGLDEV_VECTOR3F, (void*)&m_pos, NULL);
+    TwAddButton(bar, "Camera", nullptr, nullptr, "");
+    TwAddVarRW(bar, "Position", TW_TYPE_OGLDEV_VECTOR3F, (void*)&m_pos, nullptr);
     TwAddVarRO(bar, "Direction", TW_TYPE_DIR3F, &m_target, " axisz=-z ");
   }
 }

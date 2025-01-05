@@ -36,10 +36,10 @@ static bool sWithStencil = false;
 static GLFWwindow* s_pWindow = NULL;
 
 
-static OGLDEV_KEY GLFWKeyToOGLDEVKey(uint Key)
+static KEYBOARD_KEY GLFWKeyToOGLDEVKey(uint Key)
 {
     if (Key >= GLFW_KEY_SPACE && Key <= GLFW_KEY_RIGHT_BRACKET) {
-        return (OGLDEV_KEY)Key;
+        return (KEYBOARD_KEY)Key;
     }
     
     switch (Key) {
@@ -96,13 +96,13 @@ static OGLDEV_KEY GLFWKeyToOGLDEVKey(uint Key)
         case GLFW_KEY_F12:    
             return OGLDEV_KEY_F12;
         default:
-            OGLDEV_ERROR("Unimplemented OGLDEV key");
+            REPORT_ERROR("Unimplemented OGLDEV key");
     }
     
     return OGLDEV_KEY_UNDEFINED;
 }
 
-static OGLDEV_MOUSE GLFWMouseToOGLDEVMouse(uint Button)
+static MOUSE_BUTTON GLFWMouseToOGLDEVMouse(uint Button)
 {
 	switch (Button) {
 	case GLFW_MOUSE_BUTTON_LEFT:
@@ -112,7 +112,7 @@ static OGLDEV_MOUSE GLFWMouseToOGLDEVMouse(uint Button)
 	case GLFW_MOUSE_BUTTON_MIDDLE:
 		return OGLDEV_MOUSE_BUTTON_MIDDLE;
 	default:
-		OGLDEV_ERROR("Unimplemented OGLDEV mouse button");
+		REPORT_ERROR("Unimplemented OGLDEV mouse button");
 	}
 
 	return OGLDEV_MOUSE_UNDEFINED;
@@ -120,8 +120,8 @@ static OGLDEV_MOUSE GLFWMouseToOGLDEVMouse(uint Button)
 
 static void KeyCallback(GLFWwindow* pWindow, int key, int scancode, int action, int mods)
 {   
-    OGLDEV_KEY OgldevKey = GLFWKeyToOGLDEVKey(key);   
-    OGLDEV_KEY_STATE OgldevKeyState = (action == GLFW_PRESS) ? OGLDEV_KEY_STATE_PRESS : OGLDEV_KEY_STATE_RELEASE;
+    KEYBOARD_KEY OgldevKey = GLFWKeyToOGLDEVKey(key);   
+    KEYBOARD_KEY_STATE OgldevKeyState = (action == GLFW_PRESS) ? OGLDEV_KEY_STATE_PRESS : OGLDEV_KEY_STATE_RELEASE;
     s_pCallbacks->KeyboardCB(OgldevKey, OgldevKeyState);
 }
 
@@ -134,9 +134,9 @@ static void CursorPosCallback(GLFWwindow* pWindow, double x, double y)
 
 static void MouseButtonCallback(GLFWwindow* pWindow, int Button, int Action, int Mode)
 {
-    OGLDEV_MOUSE OgldevMouse = GLFWMouseToOGLDEVMouse(Button);
+    MOUSE_BUTTON OgldevMouse = GLFWMouseToOGLDEVMouse(Button);
 
-    OGLDEV_KEY_STATE State = (Action == GLFW_PRESS) ? OGLDEV_KEY_STATE_PRESS : OGLDEV_KEY_STATE_RELEASE;
+    KEYBOARD_KEY_STATE State = (Action == GLFW_PRESS) ? OGLDEV_KEY_STATE_PRESS : OGLDEV_KEY_STATE_RELEASE;
 
     double x, y;
 
@@ -173,7 +173,7 @@ void GLFWBackendInit(int argc, char** argv, bool WithDepth, bool WithStencil)
     glfwSetErrorCallback(GLFWErrorCallback);    
     
     if (glfwInit() != 1) {
-        OGLDEV_ERROR("Error initializing GLFW");
+        REPORT_ERROR("Error initializing GLFW");
         exit(1);
     }
     
@@ -199,7 +199,7 @@ bool GLFWBackendCreateWindow(uint Width, uint Height, bool isFullScreen, const c
     s_pWindow = glfwCreateWindow(Width, Height, pTitle, pMonitor, NULL);
 
     if (!s_pWindow) {
-        OGLDEV_ERROR("error creating window");
+        REPORT_ERROR("error creating window");
         exit(1);
     }
     
@@ -209,7 +209,7 @@ bool GLFWBackendCreateWindow(uint Width, uint Height, bool isFullScreen, const c
     glewExperimental = GL_TRUE;
     GLenum res = glewInit();
     if (res != GLEW_OK) {
-        OGLDEV_ERROR((const char*)glewGetErrorString(res));
+        REPORT_ERROR((const char*)glewGetErrorString(res));
         exit(1);
     }    
     
@@ -219,7 +219,7 @@ bool GLFWBackendCreateWindow(uint Width, uint Height, bool isFullScreen, const c
 void GLFWBackendRun(ICallbacks* pCallbacks)
 {
     if (!pCallbacks) {
-        OGLDEV_ERROR("callbacks not specified");
+        REPORT_ERROR("callbacks not specified");
         exit(1);
     }
 

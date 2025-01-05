@@ -51,7 +51,7 @@ bool ReadFile(const char* pFileName, string& outFile)
         ret = true;
     }
     else {
-        OGLDEV_FILE_ERROR(pFileName);
+        REPORT_FILE_ERROR(pFileName);
     }
 
     return ret;
@@ -68,7 +68,7 @@ char* ReadBinaryFile(const char* pFilename, int& size)
     if (!f) {
         char buf[256] = { 0 };
         strerror_s(buf, sizeof(buf), err);
-        OGLDEV_ERROR("Error opening '%s': %s\n", pFilename, buf);
+        REPORT_ERROR("Error opening '%s': %s\n", pFilename, buf);
         exit(0);
     }
 
@@ -78,7 +78,7 @@ char* ReadBinaryFile(const char* pFilename, int& size)
     if (error) {
         char buf[256] = { 0 };
         strerror_s(buf, sizeof(buf), err);
-        OGLDEV_ERROR("Error getting file stats: %s\n", buf);
+        REPORT_ERROR("Error getting file stats: %s\n", buf);
         return NULL;
     }
 
@@ -92,7 +92,7 @@ char* ReadBinaryFile(const char* pFilename, int& size)
     if (bytes_read != size) {
         char buf[256] = { 0 };
         strerror_s(buf, sizeof(buf), err);
-        OGLDEV_ERROR("Read file error file: %s\n", buf);
+        REPORT_ERROR("Read file error file: %s\n", buf);
         exit(0);
     }
 
@@ -108,14 +108,14 @@ void WriteBinaryFile(const char* pFilename, const void* pData, int size)
     errno_t err = fopen_s(&f, pFilename, "wb"); 
 
     if (!f) {
-        OGLDEV_ERROR("Error opening '%s'\n", pFilename);
+        REPORT_ERROR("Error opening '%s'\n", pFilename);
         exit(0);
     }
 
     size_t bytes_written = fwrite(pData, 1, size, f);
 
     if (bytes_written != size) {
-        OGLDEV_ERROR("Error write file\n");
+        REPORT_ERROR("Error write file\n");
         exit(0);
     }
 
@@ -128,7 +128,7 @@ char* ReadBinaryFile(const char* pFilename, int& size)
     FILE* f = fopen(pFilename, "rb");
 
     if (!f) {
-        OGLDEV_ERROR("Error opening '%s': %s\n", pFilename, strerror(errno));
+        REPORT_ERROR("Error opening '%s': %s\n", pFilename, strerror(errno));
         exit(0);
     }
 
@@ -136,7 +136,7 @@ char* ReadBinaryFile(const char* pFilename, int& size)
     int error = stat(pFilename, &stat_buf);
 
     if (error) {
-        OGLDEV_ERROR("Error getting file stats: %s\n", strerror(errno));
+        REPORT_ERROR("Error getting file stats: %s\n", strerror(errno));
         return NULL;
     }
 
@@ -148,7 +148,7 @@ char* ReadBinaryFile(const char* pFilename, int& size)
     size_t bytes_read = fread(p, 1, size, f);
 
     if (bytes_read != size) {
-        OGLDEV_ERROR("Read file error file: %s\n", strerror(errno));
+        REPORT_ERROR("Read file error file: %s\n", strerror(errno));
         exit(0);
     }
 
@@ -163,14 +163,14 @@ void WriteBinaryFile(const char* pFilename, const void* pData, int size)
     FILE* f = fopen(pFilename, "wb");
 
     if (!f) {
-        OGLDEV_ERROR("Error opening '%s': %s\n", pFilename, strerror(errno));
+        REPORT_ERROR("Error opening '%s': %s\n", pFilename, strerror(errno));
         exit(0);
     }
 
     int bytes_written = fwrite(pData, 1, size, f);
 
     if (bytes_written != size) {
-        OGLDEV_ERROR("Error write file: %s\n", strerror(errno));
+        REPORT_ERROR("Error write file: %s\n", strerror(errno));
         exit(0);
     }
 
@@ -179,14 +179,14 @@ void WriteBinaryFile(const char* pFilename, const void* pData, int size)
     /*    int f = open(pFilename, O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
 
     if (f == -1) {
-        OGLDEV_ERROR("Error opening '%s': %s\n", pFilename, strerror(errno));
+        REPORT_ERROR("Error opening '%s': %s\n", pFilename, strerror(errno));
         exit(0);
     }
 
     int write_len = write(f, pData, size);
     printf("%d\n", write_len);
     if (write_len != size) {
-        OGLDEV_ERROR("Error write file: %s\n", strerror(errno));
+        REPORT_ERROR("Error write file: %s\n", strerror(errno));
         exit(0);
     }
 

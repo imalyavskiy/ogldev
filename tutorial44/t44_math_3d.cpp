@@ -23,6 +23,58 @@
 #include "t44_math_3d.h"
 
 namespace t44 {
+  Vector2f::Vector2f(float _x, float _y) : x(_x), y(_y)
+  {
+  }
+
+  Vector3f::Vector3f(const float _x, const float _y, const float _z): x(_x), y(_y), z(_z)
+  {
+  }
+
+  Vector3f::Vector3f(const float* pFloat)
+  {
+    x = pFloat[0];
+    y = pFloat[0];
+    z = pFloat[0];
+  }
+
+  Vector3f::Vector3f(float f)
+  {
+    x = y = z = f;
+  }
+
+  Vector3f& Vector3f::operator+=(const Vector3f& r)
+  {
+    x += r.x;
+    y += r.y;
+    z += r.z;
+
+    return *this;
+  }
+
+  Vector3f& Vector3f::operator-=(const Vector3f& r)
+  {
+    x -= r.x;
+    y -= r.y;
+    z -= r.z;
+
+    return *this;
+  }
+
+  Vector3f& Vector3f::operator*=(float f)
+  {
+    x *= f;
+    y *= f;
+    z *= f;
+
+    return *this;
+  }
+
+  Vector3f::operator const float*() const
+  {
+    return &(x);
+  }
+
   Vector3f Vector3f::Cross(const Vector3f& v) const
   {
     const float _x = y * v.z - z * v.y;
@@ -43,10 +95,10 @@ namespace t44 {
     return *this;
   }
 
-  void Vector3f::Rotate(float Angle, const Vector3f& Axe)
+  void Vector3f::Rotate(float angle, const Vector3f& Axe)
   {
-    const float SinHalfAngle = sinf(ToRadian(Angle / 2));
-    const float CosHalfAngle = cosf(ToRadian(Angle / 2));
+    const float SinHalfAngle = sinf(ToRadian(angle / 2));
+    const float CosHalfAngle = cosf(ToRadian(angle / 2));
 
     const float Rx = Axe.x * SinHalfAngle;
     const float Ry = Axe.y * SinHalfAngle;
@@ -63,6 +115,28 @@ namespace t44 {
     z = W.z;
   }
 
+  void Vector3f::Print() const
+  {
+    printf("(%.02f, %.02f, %.02f)", x, y, z);
+  }
+
+  Vector4f::Vector4f(float _x, float _y, float _z, float _w): x(_x), y(_y), z(_z), w(_w)
+  {
+  }
+
+  void Vector4f::Print(bool endl) const
+  {
+    printf("(%.02f, %.02f, %.02f, %.02f)", x, y, z, w);
+
+    if (endl) {
+      printf("\n");
+    }
+  }
+
+  Vector3f Vector4f::To3F() const
+  {
+    return { x, y, z };
+  }
 
   void Matrix4f::InitScaleTransform(float ScaleX, float ScaleY, float ScaleZ)
   {
@@ -293,6 +367,97 @@ namespace t44 {
     f[2] = ToDegree(f[2]);
 
     return Vector3f(f);
+  }
+
+  Matrix4f::Matrix4f(const aiMatrix4x4& assimpMatrix)
+  {
+    m[0][0] = assimpMatrix.a1; m[0][1] = assimpMatrix.a2; m[0][2] = assimpMatrix.a3; m[0][3] = assimpMatrix.a4;
+    m[1][0] = assimpMatrix.b1; m[1][1] = assimpMatrix.b2; m[1][2] = assimpMatrix.b3; m[1][3] = assimpMatrix.b4;
+    m[2][0] = assimpMatrix.c1; m[2][1] = assimpMatrix.c2; m[2][2] = assimpMatrix.c3; m[2][3] = assimpMatrix.c4;
+    m[3][0] = assimpMatrix.d1; m[3][1] = assimpMatrix.d2; m[3][2] = assimpMatrix.d3; m[3][3] = assimpMatrix.d4;
+  }
+
+  Matrix4f::Matrix4f(const aiMatrix3x3& assimpMatrix)
+  {
+    m[0][0] = assimpMatrix.a1; m[0][1] = assimpMatrix.a2; m[0][2] = assimpMatrix.a3; m[0][3] = 0.0f;
+    m[1][0] = assimpMatrix.b1; m[1][1] = assimpMatrix.b2; m[1][2] = assimpMatrix.b3; m[1][3] = 0.0f;
+    m[2][0] = assimpMatrix.c1; m[2][1] = assimpMatrix.c2; m[2][2] = assimpMatrix.c3; m[2][3] = 0.0f;
+    m[3][0] = 0.0f; m[3][1] = 0.0f; m[3][2] = 0.0f; m[3][3] = 1.0f;
+  }
+
+  Matrix4f::Matrix4f( float a00, float a01, float a02, float a03,    float a10, float a11, float a12, float a13, 
+                      float a20, float a21, float a22, float a23,    float a30, float a31, float a32, float a33)
+  {
+    m[0][0] = a00; m[0][1] = a01; m[0][2] = a02; m[0][3] = a03;
+    m[1][0] = a10; m[1][1] = a11; m[1][2] = a12; m[1][3] = a13;
+    m[2][0] = a20; m[2][1] = a21; m[2][2] = a22; m[2][3] = a23;
+    m[3][0] = a30; m[3][1] = a31; m[3][2] = a32; m[3][3] = a33;
+  }
+
+  void Matrix4f::SetZero()
+  {
+    ZERO_MEM(m);
+  }
+
+  Matrix4f Matrix4f::Transpose() const
+  {
+    Matrix4f n;
+
+    for (unsigned int i = 0; i < 4; i++) {
+      for (unsigned int j = 0; j < 4; j++) {
+        n.m[i][j] = m[j][i];
+      }
+    }
+
+    return n;
+  }
+
+  void Matrix4f::InitIdentity()
+  {
+    m[0][0] = 1.0f; m[0][1] = 0.0f; m[0][2] = 0.0f; m[0][3] = 0.0f;
+    m[1][0] = 0.0f; m[1][1] = 1.0f; m[1][2] = 0.0f; m[1][3] = 0.0f;
+    m[2][0] = 0.0f; m[2][1] = 0.0f; m[2][2] = 1.0f; m[2][3] = 0.0f;
+    m[3][0] = 0.0f; m[3][1] = 0.0f; m[3][2] = 0.0f; m[3][3] = 1.0f;
+  }
+
+  Matrix4f Matrix4f::operator*(const Matrix4f& Right) const
+  {
+    Matrix4f Ret;
+
+    for (unsigned int i = 0; i < 4; i++) {
+      for (unsigned int j = 0; j < 4; j++) {
+        Ret.m[i][j] = m[i][0] * Right.m[0][j] +
+          m[i][1] * Right.m[1][j] +
+          m[i][2] * Right.m[2][j] +
+          m[i][3] * Right.m[3][j];
+      }
+    }
+
+    return Ret;
+  }
+
+  Vector4f Matrix4f::operator*(const Vector4f& v) const
+  {
+    Vector4f r;
+
+    r.x = m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z + m[0][3] * v.w;
+    r.y = m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z + m[1][3] * v.w;
+    r.z = m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z + m[2][3] * v.w;
+    r.w = m[3][0] * v.x + m[3][1] * v.y + m[3][2] * v.z + m[3][3] * v.w;
+
+    return r;
+  }
+
+  Matrix4f::operator const float*() const
+  {
+    return &(m[0][0]);
+  }
+
+  void Matrix4f::Print() const
+  {
+    for (int i = 0; i < 4; i++) {
+      printf("%f %f %f %f\n", m[i][0], m[i][1], m[i][2], m[i][3]);
+    }
   }
 
 

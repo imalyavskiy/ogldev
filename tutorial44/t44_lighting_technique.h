@@ -24,58 +24,31 @@
 namespace t44 {
   struct BaseLight
   {
-    Vector3f Color;
-    float AmbientIntensity;
-    float DiffuseIntensity;
-
-    BaseLight()
-    {
-      Color = Vector3f(0.0f, 0.0f, 0.0f);
-      AmbientIntensity = 0.0f;
-      DiffuseIntensity = 0.0f;
-    }
+    Vector3f Color = { 0.0f, 0.0f, 0.0f };
+    float AmbientIntensity = 0.f;
+    float DiffuseIntensity = 0.f;
   };
 
   struct DirectionalLight : public BaseLight
   {
-    Vector3f Direction;
-
-    DirectionalLight()
-    {
-      Direction = Vector3f(0.0f, 0.0f, 0.0f);
-    }
+    Vector3f Direction = { 0.0f, 0.0f, 0.0f };
   };
 
   struct PointLight : public BaseLight
   {
-    Vector3f Position;
+    Vector3f Position = { 0.0f, 0.0f, 0.0f };
 
-    struct
-    {
+    struct {
       float Constant;
       float Linear;
       float Exp;
-    } Attenuation;
-
-    PointLight()
-    {
-      Position = Vector3f(0.0f, 0.0f, 0.0f);
-      Attenuation.Constant = 1.0f;
-      Attenuation.Linear = 0.0f;
-      Attenuation.Exp = 0.0f;
-    }
+    } Attenuation = { 1.f, 0.f, 0.f };
   };
 
   struct SpotLight : public PointLight
   {
-    Vector3f Direction;
-    float Cutoff;
-
-    SpotLight()
-    {
-      Direction = Vector3f(0.0f, 0.0f, 0.0f);
-      Cutoff = 0.0f;
-    }
+    Vector3f Direction = { 0.0f, 0.0f, 0.0f };
+    float Cutoff = 0.f;
   };
 
   class LightingTechnique : public Technique {
@@ -88,20 +61,20 @@ namespace t44 {
 
     virtual bool Init();
 
-    void SetWVP(const Matrix4f& WVP);
-    void SetWorldMatrix(const Matrix4f& WVP);
-    void SetColorTextureUnit(unsigned int TextureUnit);
-    void SetDirectionalLight(const DirectionalLight& Light);
-    void SetPointLights(unsigned int NumLights, const PointLight* pLights);
-    void SetSpotLights(unsigned int NumLights, const SpotLight* pLights);
-    void SetEyeWorldPos(const Vector3f& EyeWorldPos);
-    void SetMatSpecularIntensity(float Intensity);
-    void SetMatSpecularPower(float Power);
+    void SetWVP(const Matrix4f& worldViewProj);
+    void SetWorldMatrix(const Matrix4f& world);
+    void SetColorTextureUnit(unsigned int textureUnit);
+    void SetDirectionalLight(const DirectionalLight& light);
+    void SetPointLights(unsigned int numLights, const PointLight* pLights);
+    void SetSpotLights(unsigned int numLights, const SpotLight* pLights);
+    void SetEyeWorldPos(const Vector3f& eyeWorldPos);
+    void SetMatSpecularIntensity(float intensity);
+    void SetMatSpecularPower(float power);
 
   private:
 
     GLuint m_WVPLocation;
-    GLuint m_WorldMatrixLocation;
+    GLuint m_worldMatrixLocation;
     GLuint m_colorTextureLocation;
     GLuint m_eyeWorldPosLocation;
     GLuint m_matSpecularIntensityLocation;

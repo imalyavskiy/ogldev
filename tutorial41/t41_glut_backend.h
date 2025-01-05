@@ -34,7 +34,7 @@ void GLUTBackendSwapBuffers();
 
 void GLUTBackendLeaveMainLoop();
 
-OGLDEV_KEY GLUTKeyToOGLDEVKey(uint Key);
+KEYBOARD_KEY GLUTKeyToOGLDEVKey(uint Key);
 
 #endif	/* GLUT_BACKEND_H */
 

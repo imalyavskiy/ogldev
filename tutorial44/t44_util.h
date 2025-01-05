@@ -25,35 +25,26 @@
 #include <cassert>
 #include <string>
 
-#include "t44_types.h"
-
 namespace t44 {
   bool ReadFile(const char* fileName, std::string& outFile);
 
-  void OgldevError(const char* pFileName, uint line, const char* pError);
-  void OgldevFileError(const char* pFileName, uint line, const char* pFileError);
+  void ReportError(const char* pFileName, uint32_t line, const char* pError);
+  void ReportFileError(const char* pFileName, uint32_t line, const char* pFileError);
 
-#define OGLDEV_ERROR(Error) OgldevError(__FILE__, __LINE__, Error);
-#define OGLDEV_FILE_ERROR(FileError) OgldevFileError(__FILE__, __LINE__, FileError);
+#define REPORT_ERROR(Error) ReportError(__FILE__, __LINE__, Error);
+#define REPORT_FILE_ERROR(FileError) ReportFileError(__FILE__, __LINE__, FileError);
 
 #define ZERO_MEM(a) memset(a, 0, sizeof(a))
 #define ARRAY_SIZE_IN_ELEMENTS(a) (sizeof(a)/sizeof(a[0]))
 
-#ifdef WIN32
 #define SNPRINTF _snprintf_s
 #define RANDOM rand
-#define SRANDOM srand((unsigned)time(NULL))
-  //float fmax(float a, float b);
-#else
-#define SNPRINTF snprintf
-#define RANDOM random
-#define SRANDOM srandom(getpid())
-#endif
+#define SRANDOM srand((unsigned)time(nullptr))
 
 #define INVALID_UNIFORM_LOCATION 0xffffffff
 #define INVALID_OGL_VALUE 0xffffffff
 
-#define SAFE_DELETE(p) if (p) { delete p; p = NULL; }
+#define SAFE_DELETE(p) if (p) { delete p; p = nullptr; }
 
 #define GLExitIfError                                                          \
 {                                                                               \

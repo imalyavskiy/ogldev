@@ -202,7 +202,7 @@ public:
     }
 
 
-    virtual void KeyboardCB(OGLDEV_KEY OgldevKey)
+    virtual void KeyboardCB(KEYBOARD_KEY OgldevKey)
     {
         switch (OgldevKey) {
         case OGLDEV_KEY_ESCAPE:

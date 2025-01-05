@@ -56,23 +56,23 @@ namespace t44 {
 
     ~Mesh();
 
-    bool LoadMesh(const std::string& Filename);
+    bool LoadMesh(const std::string& fileName);
 
     void Render();
 
-    void Render(unsigned int NumInstances, const Matrix4f* WVPMats, const Matrix4f* WorldMats);
+    void Render(uint32_t numInstances, const Matrix4f* WVPMats, const Matrix4f* worldMats);
 
     Orientation& GetOrientation() { return m_orientation; }
 
   private:
-    bool InitFromScene(const aiScene* pScene, const std::string& Filename);
+    bool InitFromScene(const aiScene* pScene, const std::string& fileName);
     void InitMesh(const aiMesh* paiMesh,
-      std::vector<Vector3f>& Positions,
-      std::vector<Vector3f>& Normals,
-      std::vector<Vector2f>& TexCoords,
-      std::vector<unsigned int>& Indices);
+      std::vector<Vector3f>& positions,
+      std::vector<Vector3f>& normals,
+      std::vector<Vector2f>& texCoords,
+      std::vector<uint32_t>& indices);
 
-    bool InitMaterials(const aiScene* pScene, const std::string& Filename);
+    bool InitMaterials(const aiScene* pScene, const std::string& fileName);
     void Clear();
 
 #define INVALID_MATERIAL 0xFFFFFFFF
@@ -96,10 +96,10 @@ namespace t44 {
         MaterialIndex = INVALID_MATERIAL;
       }
 
-      unsigned int NumIndices;
-      unsigned int BaseVertex;
-      unsigned int BaseIndex;
-      unsigned int MaterialIndex;
+      uint32_t NumIndices;
+      uint32_t BaseVertex;
+      uint32_t BaseIndex;
+      uint32_t MaterialIndex;
     };
 
     std::vector<MeshEntry> m_Entries;

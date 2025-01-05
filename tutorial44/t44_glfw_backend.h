@@ -19,14 +19,13 @@
 #ifndef OGLDEV_GLFW_BACKEND_H
 #define	OGLDEV_GLFW_BACKEND_H
 
-#include "t44_types.h"
 #include "t44_callbacks.h"
 
 void GLFWBackendInit(int argc, char** argv, bool WithDepth, bool WithStencil);
 
 void GLFWBackendTerminate();
 
-bool GLFWBackendCreateWindow(uint Width, uint Height, bool isFullScreen, const char* pTitle);
+bool GLFWBackendCreateWindow(uint32_t Width, uint32_t Height, bool isFullScreen, const char* pTitle);
 
 void GLFWBackendRun(ICallbacks* pCallbacks);
 
@@ -34,6 +33,6 @@ void GLFWBackendSwapBuffers();
 
 void GLFWBackendLeaveMainLoop();
 
-void GLFWBackendSetMousePos(uint x, uint y);
+void GLFWBackendSetMousePos(uint32_t x, uint32_t y);
 
 #endif

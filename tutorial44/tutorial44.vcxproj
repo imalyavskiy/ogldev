@@ -22,7 +22,6 @@
     <ClInclude Include="t44_pipeline.h" />
     <ClInclude Include="t44_technique.h" />
     <ClInclude Include="t44_texture.h" />
-    <ClInclude Include="t44_types.h" />
     <ClInclude Include="t44_util.h" />
   </ItemGroup>
   <ItemGroup>

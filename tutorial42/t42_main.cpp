@@ -213,7 +213,7 @@ public:
     }
 
 
-	void KeyboardCB(OGLDEV_KEY OgldevKey)
+	void KeyboardCB(KEYBOARD_KEY OgldevKey)
 	{
 		switch (OgldevKey) {
 		case OGLDEV_KEY_ESCAPE:

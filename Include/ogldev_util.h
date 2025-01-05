@@ -36,8 +36,8 @@ bool ReadFile(const char* fileName, string& outFile);
 void OgldevError(const char* pFileName, uint line, const char* pError);
 void OgldevFileError(const char* pFileName, uint line, const char* pFileError);
 
-#define OGLDEV_ERROR(Error) OgldevError(__FILE__, __LINE__, Error);
-#define OGLDEV_FILE_ERROR(FileError) OgldevFileError(__FILE__, __LINE__, FileError);
+#define REPORT_ERROR(Error) OgldevError(__FILE__, __LINE__, Error);
+#define REPORT_FILE_ERROR(FileError) OgldevFileError(__FILE__, __LINE__, FileError);
 
 #define ZERO_MEM(a) memset(a, 0, sizeof(a))
 #define ARRAY_SIZE_IN_ELEMENTS(a) (sizeof(a)/sizeof(a[0]))
