@@ -21,18 +21,20 @@
 
 #include "t44_callbacks.h"
 
-void GLFWBackendInit(int argc, char** argv, bool WithDepth, bool WithStencil);
+namespace t44
+{
+  void GLFWBackendInit(int argc, char** argv, bool WithDepth, bool WithStencil);
 
-void GLFWBackendTerminate();
+  void GLFWBackendTerminate();
 
-bool GLFWBackendCreateWindow(uint32_t Width, uint32_t Height, bool isFullScreen, const char* pTitle);
+  bool GLFWBackendCreateWindow(uint32_t width, uint32_t height, bool isFullScreen, const char* pTitle);
 
-void GLFWBackendRun(ICallbacks* pCallbacks);
+  void GLFWBackendRun(ICallbacks* pCallbacks);
 
-void GLFWBackendSwapBuffers();
+  void GLFWBackendSwapBuffers();
 
-void GLFWBackendLeaveMainLoop();
+  void GLFWBackendLeaveMainLoop();
 
-void GLFWBackendSetMousePos(uint32_t x, uint32_t y);
-
+  void GLFWBackendSetMousePos(uint32_t x, uint32_t y);
+}
 #endif

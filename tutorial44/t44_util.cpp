@@ -1,6 +1,6 @@
 /*
 
-	Copyright 2014 Etay Meiri
+  Copyright 2014 Etay Meiri
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,11 +22,8 @@
 
 #include <iostream>
 #include <fstream>
-#ifdef WIN32
+#include <format>
 #include <Windows.h>
-#else
-#include <sys/time.h>
-#endif
 
 #include "t44_util.h"
 
@@ -57,49 +54,20 @@ namespace t44 {
 
   void ReportError(const char* pFileName, uint32_t line, const char* pError)
   {
-#ifdef WIN32
-    char msg[1000];
-    _snprintf_s(msg, sizeof(msg), "%s:%d: %s", pFileName, line, pError);
-    MessageBoxA(nullptr, msg, nullptr, 0);
-#else
-    fprintf(stderr, "%s:%d: %s\n", pFileName, line, pError);
-#endif    
+    const std::string msg = std::format("{}:{}: {}", pFileName, line, pError);
+    MessageBoxA(nullptr, msg.c_str(), "Error", MB_ICONERROR | MB_OK);
   }
 
 
   void ReportFileError(const char* pFileName, uint32_t line, const char* pFileError)
   {
-#ifdef WIN32
-    char msg[1000];
-    _snprintf_s(msg, sizeof(msg), "%s:%d: unable to open file `%s`", pFileName, line, pFileError);
-    MessageBoxA(nullptr, msg, nullptr, 0);
-#else
-    fprintf(stderr, "%s:%d: unable to open file `%s`\n", pFileName, line, pFileError);
-#endif    
+    const std::string msg = std::format("{}:{}: unable to open file `{}`", pFileName, line, pFileError);
+    MessageBoxA(nullptr, msg.c_str(), "File error", MB_ICONERROR | MB_OK);
   }
-
 
   long long GetCurrentTimeMillis()
   {
-#ifdef WIN32    
     return GetTickCount();
-#else
-    timeval t;
-    gettimeofday(&t, nullptr);
-
-    long long ret = t.tv_sec * 1000 + t.tv_usec / 1000;
-    return ret;
-#endif    
   }
-
-#ifndef WIN32
-  float fmax(float a, float b)
-  {
-    if (a > b)
-      return a;
-    else
-      return b;
-  }
-#endif
 }
 #endif /* _OGLDEV_UTIL_ */

@@ -145,9 +145,9 @@ namespace t44 {
 
   void Pipeline::SetCamera(const Vector3f& pos, const Vector3f& target, const Vector3f& up)
   {
-    m_camera.Pos = pos;
+    m_camera.Pos    = pos;
     m_camera.Target = target;
-    m_camera.Up = up;
+    m_camera.Up     = up;
   }
 
   void Pipeline::SetCamera(const Camera& camera)
@@ -157,8 +157,8 @@ namespace t44 {
 
   void Pipeline::Orient(const Orientation& o)
   {
-    m_scale = o.m_scale;
-    m_worldPos = o.m_pos;
+    m_scale      = o.m_scale;
+    m_worldPos   = o.m_pos;
     m_rotateInfo = o.m_rotation;
   }
 

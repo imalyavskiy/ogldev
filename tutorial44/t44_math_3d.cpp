@@ -97,18 +97,18 @@ namespace t44 {
 
   void Vector3f::Rotate(float angle, const Vector3f& Axe)
   {
-    const float SinHalfAngle = sinf(ToRadian(angle / 2));
-    const float CosHalfAngle = cosf(ToRadian(angle / 2));
+    const float sinHalfAngle = sinf(ToRadian(angle / 2));
+    const float cosHalfAngle = cosf(ToRadian(angle / 2));
 
-    const float Rx = Axe.x * SinHalfAngle;
-    const float Ry = Axe.y * SinHalfAngle;
-    const float Rz = Axe.z * SinHalfAngle;
-    const float Rw = CosHalfAngle;
-    Quaternion RotationQ(Rx, Ry, Rz, Rw);
+    const float rx = Axe.x * sinHalfAngle;
+    const float ry = Axe.y * sinHalfAngle;
+    const float rz = Axe.z * sinHalfAngle;
+    const float rw = cosHalfAngle;
+    Quaternion rotationQ(rx, ry, rz, rw);
 
-    Quaternion ConjugateQ = RotationQ.Conjugate();
+    const Quaternion conjugateQ = rotationQ.Conjugate();
     //  ConjugateQ.Normalize();
-    Quaternion W = RotationQ * (*this) * ConjugateQ;
+    Quaternion W = rotationQ * (*this) * conjugateQ;
 
     x = W.x;
     y = W.y;
@@ -175,52 +175,54 @@ namespace t44 {
 
   void Matrix4f::InitRotateTransform(const Quaternion& quat)
   {
-    float yy2 = 2.0f * quat.y * quat.y;
-    float xy2 = 2.0f * quat.x * quat.y;
-    float xz2 = 2.0f * quat.x * quat.z;
-    float yz2 = 2.0f * quat.y * quat.z;
-    float zz2 = 2.0f * quat.z * quat.z;
-    float wz2 = 2.0f * quat.w * quat.z;
-    float wy2 = 2.0f * quat.w * quat.y;
-    float wx2 = 2.0f * quat.w * quat.x;
-    float xx2 = 2.0f * quat.x * quat.x;
-    m[0][0] = -yy2 - zz2 + 1.0f;
-    m[0][1] = xy2 + wz2;
-    m[0][2] = xz2 - wy2;
-    m[0][3] = 0;
-    m[1][0] = xy2 - wz2;
-    m[1][1] = -xx2 - zz2 + 1.0f;
-    m[1][2] = yz2 + wx2;
-    m[1][3] = 0;
-    m[2][0] = xz2 + wy2;
-    m[2][1] = yz2 - wx2;
-    m[2][2] = -xx2 - yy2 + 1.0f;
-    m[2][3] = 0.0f;
-    m[3][0] = m[3][1] = m[3][2] = 0;
-    m[3][3] = 1.0f;
+    const float yy2 = 2.0f * quat.y * quat.y;
+    const float xy2 = 2.0f * quat.x * quat.y;
+    const float xz2 = 2.0f * quat.x * quat.z;
+    const float yz2 = 2.0f * quat.y * quat.z;
+    const float zz2 = 2.0f * quat.z * quat.z;
+    const float wz2 = 2.0f * quat.w * quat.z;
+    const float wy2 = 2.0f * quat.w * quat.y;
+    const float wx2 = 2.0f * quat.w * quat.x;
+    const float xx2 = 2.0f * quat.x * quat.x;
+
+    const float m00 = -yy2 - zz2 + 1.f;
+    const float m01 = xy2 + wz2;
+    const float m02 = xz2 - wy2;
+    const float m10 = xy2 - wz2;
+    const float m11 = -xx2 - zz2 + 1.f;
+    const float m12 = yz2 + wx2;
+    const float m20 = xz2 + wy2;
+    const float m21 = yz2 - wx2;
+    const float m22 = -xx2 - yy2 + 1.f;
+
+    m[0][0] = m00; m[0][1] = m01; m[0][2] = m02; m[0][3] = 0.f;
+    m[1][0] = m10; m[1][1] = m11; m[1][2] = m12; m[1][3] = 0.f;
+    m[2][0] = m20; m[2][1] = m21; m[2][2] = m22; m[2][3] = 0.f;
+    m[3][0] = 0.f; m[3][1] = 0.f; m[3][2] = 0.f; m[3][3] = 1.f;
+
   }
 
   void Matrix4f::InitTranslationTransform(float x, float y, float z)
   {
-    m[0][0] = 1.0f; m[0][1] = 0.0f; m[0][2] = 0.0f; m[0][3] = x;
-    m[1][0] = 0.0f; m[1][1] = 1.0f; m[1][2] = 0.0f; m[1][3] = y;
-    m[2][0] = 0.0f; m[2][1] = 0.0f; m[2][2] = 1.0f; m[2][3] = z;
-    m[3][0] = 0.0f; m[3][1] = 0.0f; m[3][2] = 0.0f; m[3][3] = 1.0f;
+    m[0][0] = 1.f; m[0][1] = 0.f; m[0][2] = 0.f; m[0][3] =   x;
+    m[1][0] = 0.f; m[1][1] = 1.f; m[1][2] = 0.f; m[1][3] =   y;
+    m[2][0] = 0.f; m[2][1] = 0.f; m[2][2] = 1.f; m[2][3] =   z;
+    m[3][0] = 0.f; m[3][1] = 0.f; m[3][2] = 0.f; m[3][3] = 1.f;
   }
 
 
-  void Matrix4f::InitCameraTransform(const Vector3f& Target, const Vector3f& Up)
+  void Matrix4f::InitCameraTransform(const Vector3f& target, const Vector3f& up)
   {
-    Vector3f N = Target;
-    N.Normalize();
-    Vector3f U = Up;
-    U.Normalize();
-    U = U.Cross(N);
-    Vector3f V = N.Cross(U);
+    Vector3f n = target;
+    n.Normalize();
+    Vector3f u = up;
+    u.Normalize();
+    u = u.Cross(n);
+    Vector3f v = n.Cross(u);
 
-    m[0][0] = U.x;   m[0][1] = U.y;   m[0][2] = U.z;   m[0][3] = 0.0f;
-    m[1][0] = V.x;   m[1][1] = V.y;   m[1][2] = V.z;   m[1][3] = 0.0f;
-    m[2][0] = N.x;   m[2][1] = N.y;   m[2][2] = N.z;   m[2][3] = 0.0f;
+    m[0][0] = u.x;   m[0][1] = u.y;   m[0][2] = u.z;   m[0][3] = 0.0f;
+    m[1][0] = v.x;   m[1][1] = v.y;   m[1][2] = v.z;   m[1][3] = 0.0f;
+    m[2][0] = n.x;   m[2][1] = n.y;   m[2][2] = n.z;   m[2][3] = 0.0f;
     m[3][0] = 0.0f;  m[3][1] = 0.0f;  m[3][2] = 0.0f;  m[3][3] = 1.0f;
   }
 
@@ -230,32 +232,38 @@ namespace t44 {
     const float zRange = p.zNear - p.zFar;
     const float tanHalfFOV = tanf(ToRadian(p.FOV / 2.0f));
 
-    m[0][0] = 1.0f / (tanHalfFOV * ar); m[0][1] = 0.0f;            m[0][2] = 0.0f;            m[0][3] = 0.0;
-    m[1][0] = 0.0f;                   m[1][1] = 1.0f / tanHalfFOV; m[1][2] = 0.0f;            m[1][3] = 0.0;
-    m[2][0] = 0.0f;                   m[2][1] = 0.0f;            m[2][2] = (-p.zNear - p.zFar) / zRange; m[2][3] = 2.0f * p.zFar * p.zNear / zRange;
-    m[3][0] = 0.0f;                   m[3][1] = 0.0f;            m[3][2] = 1.0f;            m[3][3] = 0.0;
+    const float m00 = 1.f / (tanHalfFOV * ar);
+    const float m11 = 1.f / tanHalfFOV;
+    const float m22 = (-p.zNear - p.zFar) / zRange;
+    const float m23 = 2.f * p.zFar * p.zNear / zRange;
+
+    m[0][0] = m00; m[0][1] = 0.f; m[0][2] = 0.f; m[0][3] = 0.f;
+    m[1][0] = 0.f; m[1][1] = m11; m[1][2] = 0.f; m[1][3] = 0.f;
+    m[2][0] = 0.f; m[2][1] = 0.f; m[2][2] = m22; m[2][3] = m23;
+    m[3][0] = 0.f; m[3][1] = 0.f; m[3][2] = 1.f; m[3][3] = 0.f;
   }
 
 
   void Matrix4f::InitOrthoProjTransform(const OrthoProjInfo& p)
   {
-    float l = p.l;
-    float r = p.r;
-    float b = p.b;
-    float t = p.t;
-    float n = p.n;
-    float f = p.f;
+    const float m00 = 2.0f / (p.r - p.l);
+    const float m11 = 2.0f / (p.t - p.b);
+    const float m22 = 2.0f / (p.f - p.n);
+    const float m03 = -(p.r + p.l) / (p.r - p.l);
+    const float m13 = -(p.t + p.b) / (p.t - p.b);
+    const float m23 = -(p.f + p.n) / (p.f - p.n);
 
-    m[0][0] = 2.0f / (r - l); m[0][1] = 0.0f;         m[0][2] = 0.0f;         m[0][3] = -(r + l) / (r - l);
-    m[1][0] = 0.0f;         m[1][1] = 2.0f / (t - b); m[1][2] = 0.0f;         m[1][3] = -(t + b) / (t - b);
-    m[2][0] = 0.0f;         m[2][1] = 0.0f;         m[2][2] = 2.0f / (f - n); m[2][3] = -(f + n) / (f - n);
-    m[3][0] = 0.0f;         m[3][1] = 0.0f;         m[3][2] = 0.0f;         m[3][3] = 1.0;
+    m[0][0] = m00; m[0][1] = 0.f; m[0][2] = 0.f; m[0][3] = m03;
+    m[1][0] = 0.f; m[1][1] = m11; m[1][2] = 0.f; m[1][3] = m13;
+    m[2][0] = 0.f; m[2][1] = 0.f; m[2][2] = m22; m[2][3] = m23;
+    m[3][0] = 0.f; m[3][1] = 0.f; m[3][2] = 0.f; m[3][3] = 1.f;
   }
 
 
   float Matrix4f::Determinant() const
   {
-    return m[0][0] * m[1][1] * m[2][2] * m[3][3] - m[0][0] * m[1][1] * m[2][3] * m[3][2] + m[0][0] * m[1][2] * m[2][3] * m[3][1] - m[0][0] * m[1][2] * m[2][1] * m[3][3]
+    return
+        m[0][0] * m[1][1] * m[2][2] * m[3][3] - m[0][0] * m[1][1] * m[2][3] * m[3][2] + m[0][0] * m[1][2] * m[2][3] * m[3][1] - m[0][0] * m[1][2] * m[2][1] * m[3][3]
       + m[0][0] * m[1][3] * m[2][1] * m[3][2] - m[0][0] * m[1][3] * m[2][2] * m[3][1] - m[0][1] * m[1][2] * m[2][3] * m[3][0] + m[0][1] * m[1][2] * m[2][0] * m[3][3]
       - m[0][1] * m[1][3] * m[2][0] * m[3][2] + m[0][1] * m[1][3] * m[2][2] * m[3][0] - m[0][1] * m[1][0] * m[2][2] * m[3][3] + m[0][1] * m[1][0] * m[2][3] * m[3][2]
       + m[0][2] * m[1][3] * m[2][0] * m[3][1] - m[0][2] * m[1][3] * m[2][1] * m[3][0] + m[0][2] * m[1][0] * m[2][1] * m[3][3] - m[0][2] * m[1][0] * m[2][3] * m[3][1]
@@ -267,7 +275,7 @@ namespace t44 {
   Matrix4f& Matrix4f::Inverse()
   {
     // Compute the reciprocal determinant
-    float det = Determinant();
+    const float det = Determinant();
     if (det == 0.0f)
     {
       // Matrix not invertible. Setting all elements to nan is not really
@@ -286,22 +294,22 @@ namespace t44 {
     float invdet = 1.0f / det;
 
     Matrix4f res;
-    res.m[0][0] = invdet * (m[1][1] * (m[2][2] * m[3][3] - m[2][3] * m[3][2]) + m[1][2] * (m[2][3] * m[3][1] - m[2][1] * m[3][3]) + m[1][3] * (m[2][1] * m[3][2] - m[2][2] * m[3][1]));
+    res.m[0][0] =  invdet * (m[1][1] * (m[2][2] * m[3][3] - m[2][3] * m[3][2]) + m[1][2] * (m[2][3] * m[3][1] - m[2][1] * m[3][3]) + m[1][3] * (m[2][1] * m[3][2] - m[2][2] * m[3][1]));
     res.m[0][1] = -invdet * (m[0][1] * (m[2][2] * m[3][3] - m[2][3] * m[3][2]) + m[0][2] * (m[2][3] * m[3][1] - m[2][1] * m[3][3]) + m[0][3] * (m[2][1] * m[3][2] - m[2][2] * m[3][1]));
-    res.m[0][2] = invdet * (m[0][1] * (m[1][2] * m[3][3] - m[1][3] * m[3][2]) + m[0][2] * (m[1][3] * m[3][1] - m[1][1] * m[3][3]) + m[0][3] * (m[1][1] * m[3][2] - m[1][2] * m[3][1]));
+    res.m[0][2] =  invdet * (m[0][1] * (m[1][2] * m[3][3] - m[1][3] * m[3][2]) + m[0][2] * (m[1][3] * m[3][1] - m[1][1] * m[3][3]) + m[0][3] * (m[1][1] * m[3][2] - m[1][2] * m[3][1]));
     res.m[0][3] = -invdet * (m[0][1] * (m[1][2] * m[2][3] - m[1][3] * m[2][2]) + m[0][2] * (m[1][3] * m[2][1] - m[1][1] * m[2][3]) + m[0][3] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]));
     res.m[1][0] = -invdet * (m[1][0] * (m[2][2] * m[3][3] - m[2][3] * m[3][2]) + m[1][2] * (m[2][3] * m[3][0] - m[2][0] * m[3][3]) + m[1][3] * (m[2][0] * m[3][2] - m[2][2] * m[3][0]));
-    res.m[1][1] = invdet * (m[0][0] * (m[2][2] * m[3][3] - m[2][3] * m[3][2]) + m[0][2] * (m[2][3] * m[3][0] - m[2][0] * m[3][3]) + m[0][3] * (m[2][0] * m[3][2] - m[2][2] * m[3][0]));
+    res.m[1][1] =  invdet * (m[0][0] * (m[2][2] * m[3][3] - m[2][3] * m[3][2]) + m[0][2] * (m[2][3] * m[3][0] - m[2][0] * m[3][3]) + m[0][3] * (m[2][0] * m[3][2] - m[2][2] * m[3][0]));
     res.m[1][2] = -invdet * (m[0][0] * (m[1][2] * m[3][3] - m[1][3] * m[3][2]) + m[0][2] * (m[1][3] * m[3][0] - m[1][0] * m[3][3]) + m[0][3] * (m[1][0] * m[3][2] - m[1][2] * m[3][0]));
-    res.m[1][3] = invdet * (m[0][0] * (m[1][2] * m[2][3] - m[1][3] * m[2][2]) + m[0][2] * (m[1][3] * m[2][0] - m[1][0] * m[2][3]) + m[0][3] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]));
-    res.m[2][0] = invdet * (m[1][0] * (m[2][1] * m[3][3] - m[2][3] * m[3][1]) + m[1][1] * (m[2][3] * m[3][0] - m[2][0] * m[3][3]) + m[1][3] * (m[2][0] * m[3][1] - m[2][1] * m[3][0]));
+    res.m[1][3] =  invdet * (m[0][0] * (m[1][2] * m[2][3] - m[1][3] * m[2][2]) + m[0][2] * (m[1][3] * m[2][0] - m[1][0] * m[2][3]) + m[0][3] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]));
+    res.m[2][0] =  invdet * (m[1][0] * (m[2][1] * m[3][3] - m[2][3] * m[3][1]) + m[1][1] * (m[2][3] * m[3][0] - m[2][0] * m[3][3]) + m[1][3] * (m[2][0] * m[3][1] - m[2][1] * m[3][0]));
     res.m[2][1] = -invdet * (m[0][0] * (m[2][1] * m[3][3] - m[2][3] * m[3][1]) + m[0][1] * (m[2][3] * m[3][0] - m[2][0] * m[3][3]) + m[0][3] * (m[2][0] * m[3][1] - m[2][1] * m[3][0]));
-    res.m[2][2] = invdet * (m[0][0] * (m[1][1] * m[3][3] - m[1][3] * m[3][1]) + m[0][1] * (m[1][3] * m[3][0] - m[1][0] * m[3][3]) + m[0][3] * (m[1][0] * m[3][1] - m[1][1] * m[3][0]));
+    res.m[2][2] =  invdet * (m[0][0] * (m[1][1] * m[3][3] - m[1][3] * m[3][1]) + m[0][1] * (m[1][3] * m[3][0] - m[1][0] * m[3][3]) + m[0][3] * (m[1][0] * m[3][1] - m[1][1] * m[3][0]));
     res.m[2][3] = -invdet * (m[0][0] * (m[1][1] * m[2][3] - m[1][3] * m[2][1]) + m[0][1] * (m[1][3] * m[2][0] - m[1][0] * m[2][3]) + m[0][3] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]));
     res.m[3][0] = -invdet * (m[1][0] * (m[2][1] * m[3][2] - m[2][2] * m[3][1]) + m[1][1] * (m[2][2] * m[3][0] - m[2][0] * m[3][2]) + m[1][2] * (m[2][0] * m[3][1] - m[2][1] * m[3][0]));
-    res.m[3][1] = invdet * (m[0][0] * (m[2][1] * m[3][2] - m[2][2] * m[3][1]) + m[0][1] * (m[2][2] * m[3][0] - m[2][0] * m[3][2]) + m[0][2] * (m[2][0] * m[3][1] - m[2][1] * m[3][0]));
+    res.m[3][1] =  invdet * (m[0][0] * (m[2][1] * m[3][2] - m[2][2] * m[3][1]) + m[0][1] * (m[2][2] * m[3][0] - m[2][0] * m[3][2]) + m[0][2] * (m[2][0] * m[3][1] - m[2][1] * m[3][0]));
     res.m[3][2] = -invdet * (m[0][0] * (m[1][1] * m[3][2] - m[1][2] * m[3][1]) + m[0][1] * (m[1][2] * m[3][0] - m[1][0] * m[3][2]) + m[0][2] * (m[1][0] * m[3][1] - m[1][1] * m[3][0]));
-    res.m[3][3] = invdet * (m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) + m[0][1] * (m[1][2] * m[2][0] - m[1][0] * m[2][2]) + m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]));
+    res.m[3][3] =  invdet * (m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) + m[0][1] * (m[1][2] * m[2][0] - m[1][0] * m[2][2]) + m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]));
     *this = res;
 
     return *this;
@@ -314,19 +322,18 @@ namespace t44 {
 
   void Quaternion::Normalize()
   {
-    float Length = sqrtf(x * x + y * y + z * z + w * w);
+    const float len = sqrtf(x * x + y * y + z * z + w * w);
 
-    x /= Length;
-    y /= Length;
-    z /= Length;
-    w /= Length;
+    x /= len;
+    y /= len;
+    z /= len;
+    w /= len;
   }
 
 
-  Quaternion Quaternion::Conjugate()
+  Quaternion Quaternion::Conjugate() const
   {
-    Quaternion ret(-x, -y, -z, w);
-    return ret;
+    return { -x, -y, -z, w };
   }
 
   Quaternion operator*(const Quaternion& l, const Quaternion& r)
@@ -336,9 +343,7 @@ namespace t44 {
     const float y = (l.y * r.w) + (l.w * r.y) + (l.z * r.x) - (l.x * r.z);
     const float z = (l.z * r.w) + (l.w * r.z) + (l.x * r.y) - (l.y * r.x);
 
-    Quaternion ret(x, y, z, w);
-
-    return ret;
+    return { x, y, z, w };
   }
 
   Quaternion operator*(const Quaternion& q, const Vector3f& v)
@@ -348,9 +353,7 @@ namespace t44 {
     const float y = (q.w * v.y) + (q.z * v.x) - (q.x * v.z);
     const float z = (q.w * v.z) + (q.x * v.y) - (q.y * v.x);
 
-    Quaternion ret(x, y, z, w);
-
-    return ret;
+    return { x, y, z, w };
   }
 
 
@@ -424,12 +427,11 @@ namespace t44 {
   {
     Matrix4f Ret;
 
-    for (unsigned int i = 0; i < 4; i++) {
-      for (unsigned int j = 0; j < 4; j++) {
-        Ret.m[i][j] = m[i][0] * Right.m[0][j] +
-          m[i][1] * Right.m[1][j] +
-          m[i][2] * Right.m[2][j] +
-          m[i][3] * Right.m[3][j];
+    for (uint32_t i = 0; i < 4; i++) {
+      for (uint32_t j = 0; j < 4; j++) {
+        Ret.m[i][j] = 
+          m[i][0] * Right.m[0][j] + m[i][1] * Right.m[1][j] +
+          m[i][2] * Right.m[2][j] + m[i][3] * Right.m[3][j];
       }
     }
 
@@ -455,15 +457,13 @@ namespace t44 {
 
   void Matrix4f::Print() const
   {
-    for (int i = 0; i < 4; i++) {
-      printf("%f %f %f %f\n", m[i][0], m[i][1], m[i][2], m[i][3]);
-    }
+    for (const auto e : m)
+      printf("%f %f %f %f\n", e[0], e[1], e[2], e[3]);
   }
 
 
   float RandomFloat()
   {
-    float Max = RAND_MAX;
-    return ((float)RANDOM() / Max);
+    return (static_cast<float>(RANDOM()) / RAND_MAX);
   }
 }

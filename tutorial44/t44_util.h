@@ -31,8 +31,8 @@ namespace t44 {
   void ReportError(const char* pFileName, uint32_t line, const char* pError);
   void ReportFileError(const char* pFileName, uint32_t line, const char* pFileError);
 
-#define REPORT_ERROR(Error) ReportError(__FILE__, __LINE__, Error);
-#define REPORT_FILE_ERROR(FileError) ReportFileError(__FILE__, __LINE__, FileError);
+#define REPORT_ERROR(_ERROR_) ReportError(__FILE__, __LINE__, _ERROR_);
+#define REPORT_FILE_ERROR(_FILE_ERROR_) ReportFileError(__FILE__, __LINE__, _FILE_ERROR_);
 
 #define ZERO_MEM(a) memset(a, 0, sizeof(a))
 #define ARRAY_SIZE_IN_ELEMENTS(a) (sizeof(a)/sizeof(a[0]))

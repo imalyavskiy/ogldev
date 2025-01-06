@@ -68,7 +68,7 @@ namespace t44 {
       return false;
     }
 
-    GLuint shaderObj = glCreateShader(shaderType);
+    const GLuint shaderObj = glCreateShader(shaderType);
 
     if (shaderObj == 0) {
       fprintf(stderr, "Error creating shader type %d\n", shaderType);
@@ -80,7 +80,7 @@ namespace t44 {
 
     const GLchar* p[1];
     p[0] = s.c_str();
-    GLint lengths[1] = { static_cast<GLint>(s.size()) };
+    const GLint lengths[1] = { static_cast<GLint>(s.size()) };
 
     glShaderSource(shaderObj, 1, p, lengths);
 
@@ -89,7 +89,7 @@ namespace t44 {
     GLint success;
     glGetShaderiv(shaderObj, GL_COMPILE_STATUS, &success);
 
-    if (!success) {
+    if (false == success) {
       GLchar infoLog[1024] = {};
       glGetShaderInfoLog(shaderObj, 1024, nullptr, infoLog);
       fprintf(stderr, "Error compiling '%s': '%s'\n", pFilename, infoLog);
@@ -120,7 +120,7 @@ namespace t44 {
 
     glValidateProgram(m_shaderProg);
     glGetProgramiv(m_shaderProg, GL_VALIDATE_STATUS, &success);
-    if (!success) {
+    if (false == success) {
       glGetProgramInfoLog(m_shaderProg, sizeof(errorLog), nullptr, errorLog);
       fprintf(stderr, "Invalid shader program: '%s'\n", errorLog);
       //   return false;
@@ -145,13 +145,13 @@ namespace t44 {
 
   GLint Technique::GetUniformLocation(const char* pUniformName)
   {
-    GLuint Location = glGetUniformLocation(m_shaderProg, pUniformName);
+    const GLuint location = glGetUniformLocation(m_shaderProg, pUniformName);
 
-    if (Location == INVALID_UNIFORM_LOCATION) {
+    if (location == INVALID_UNIFORM_LOCATION) {
       fprintf(stderr, "Warning! Unable to get the location of uniform '%s'\n", pUniformName);
     }
 
-    return Location;
+    return location;
   }
 
   GLint Technique::GetProgramParam(GLint param)

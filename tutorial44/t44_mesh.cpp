@@ -21,9 +21,9 @@
 #include "t44_mesh.h"
 #include "t44_engine_common.h"
 
-#define POSITION_LOCATION 0
+#define POSITION_LOCATION  0
 #define TEX_COORD_LOCATION 1
-#define NORMAL_LOCATION 2
+#define NORMAL_LOCATION    2
 
 namespace t44 {
   Mesh::Mesh()
@@ -168,11 +168,11 @@ namespace t44 {
 
     // Populate the index buffer
     for (unsigned int i = 0; i < paiMesh->mNumFaces; i++) {
-      const aiFace& Face = paiMesh->mFaces[i];
-      assert(Face.mNumIndices == 3);
-      indices.push_back(Face.mIndices[0]);
-      indices.push_back(Face.mIndices[1]);
-      indices.push_back(Face.mIndices[2]);
+      const aiFace& face = paiMesh->mFaces[i];
+      assert(face.mNumIndices == 3);
+      indices.push_back(face.mIndices[0]);
+      indices.push_back(face.mIndices[1]);
+      indices.push_back(face.mIndices[2]);
     }
   }
 
@@ -180,19 +180,16 @@ namespace t44 {
   {
     // Extract the directory part from the file name
     std::string::size_type slashIndex = fileName.find_last_of("/");
-    std::string Dir;
+    std::string dir;
 
-    if (slashIndex == std::string::npos) {
-      Dir = ".";
-    }
-    else if (slashIndex == 0) {
-      Dir = "/";
-    }
-    else {
-      Dir = fileName.substr(0, slashIndex);
-    }
+    if (slashIndex == std::string::npos)
+      dir = ".";
+    else if (slashIndex == 0)
+      dir = "/";
+    else
+      dir = fileName.substr(0, slashIndex);
 
-    bool Ret = true;
+    bool ret = true;
 
     // Initialize the materials
     for (unsigned int i = 0; i < pScene->mNumMaterials; i++) {
@@ -201,18 +198,18 @@ namespace t44 {
       m_Textures[i] = nullptr;
 
       if (pMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
-        aiString Path;
+        aiString path;
 
-        if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &Path, nullptr, nullptr, nullptr, nullptr, nullptr) == AI_SUCCESS) {
-          std::string p(Path.data);
+        if (pMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path, nullptr, nullptr, nullptr, nullptr, nullptr) == AI_SUCCESS) {
+          std::string p(path.data);
 
           if (p.substr(0, 2) == ".\\") {
             p = p.substr(2, p.size() - 2);
           }
 
-          std::string FullPath = Dir + "/" + p;
+          std::string FullPath = dir + "/" + p;
 
-          m_Textures[i] = new Texture(GL_TEXTURE_2D, FullPath.c_str());
+          m_Textures[i] = new Texture(GL_TEXTURE_2D, FullPath);
 
           if (!m_Textures[i]->Load()) {
             printf("Error loading texture '%s'\n", FullPath.c_str());
@@ -227,7 +224,7 @@ namespace t44 {
       }
     }
 
-    return Ret;
+    return ret;
   }
 
 
@@ -235,7 +232,8 @@ namespace t44 {
   {
     glBindVertexArray(m_VAO);
 
-    for (uint32_t i = 0; i < m_Entries.size(); i++) {
+    for (uint32_t i = 0; i < m_Entries.size(); i++) 
+    {
       const uint32_t MaterialIndex = m_Entries[i].MaterialIndex;
 
       assert(MaterialIndex < m_Textures.size());

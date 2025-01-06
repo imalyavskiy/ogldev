@@ -42,10 +42,10 @@ namespace t44 {
     FontRenderer m_fontRenderer;
 #endif
   private:
-    uint64_t m_frameTime;
-    uint64_t m_startTime;
-    int32_t  m_frameCount;
-    int32_t  m_fps;
+    uint64_t m_frameTime = 0;
+    uint64_t m_startTime = 0;
+    int32_t  m_frameCount = 0;
+    int32_t  m_fps = 0;
   };
 }
 

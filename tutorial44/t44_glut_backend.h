@@ -21,18 +21,20 @@
 
 #include "t44_callbacks.h"
 
-void GLUTBackendInit(int argc, char** argv, bool WithDepth, bool WithStencil);
+namespace t44
+{
+  void GLUTBackendInit(int argc, char** argv, bool WithDepth, bool WithStencil);
 
 
-bool GLUTBackendCreateWindow(uint32_t Width, uint32_t Height, bool isFullScreen, const char* pTitle);
+  bool GLUTBackendCreateWindow(uint32_t Width, uint32_t Height, bool isFullScreen, const char* pTitle);
 
-void GLUTBackendRun(ICallbacks* pCallbacks);
+  void GLUTBackendRun(ICallbacks* pCallbacks);
 
-void GLUTBackendSwapBuffers();
+  void GLUTBackendSwapBuffers();
 
-void GLUTBackendLeaveMainLoop();
+  void GLUTBackendLeaveMainLoop();
 
-KEYBOARD_KEY GLUTKeyToOGLDEVKey(uint32_t Key);
-
+  KEYBOARD_KEY GLUTKeyToOGLDEVKey(uint32_t Key);
+}
 #endif	/* GLUT_BACKEND_H */
 

@@ -192,11 +192,11 @@ void GLFWBackendTerminate()
 }
 
 
-bool GLFWBackendCreateWindow(uint Width, uint Height, bool isFullScreen, const char* pTitle)
+bool GLFWBackendCreateWindow(uint width, uint height, bool isFullScreen, const char* pTitle)
 {
     GLFWmonitor* pMonitor = isFullScreen ? glfwGetPrimaryMonitor() : NULL;
 
-    s_pWindow = glfwCreateWindow(Width, Height, pTitle, pMonitor, NULL);
+    s_pWindow = glfwCreateWindow(width, height, pTitle, pMonitor, NULL);
 
     if (!s_pWindow) {
         REPORT_ERROR("error creating window");

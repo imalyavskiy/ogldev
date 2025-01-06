@@ -51,6 +51,21 @@
     <ClInclude Include="t44_mainapp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="t44_atb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="t44_callbacks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="t44_glfw_backend.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="t44_glut_backend.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="t44_keys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="t44_lighting_technique.cpp">
@@ -87,6 +102,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="t44_mainapp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="t44_atb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="t44_glfw_backend.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="t44_glut_backend.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

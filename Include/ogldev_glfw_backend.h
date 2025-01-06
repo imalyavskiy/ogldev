@@ -26,7 +26,7 @@ void GLFWBackendInit(int argc, char** argv, bool WithDepth, bool WithStencil);
 
 void GLFWBackendTerminate();
 
-bool GLFWBackendCreateWindow(uint Width, uint Height, bool isFullScreen, const char* pTitle);
+bool GLFWBackendCreateWindow(uint width, uint height, bool isFullScreen, const char* pTitle);
 
 void GLFWBackendRun(ICallbacks* pCallbacks);
 

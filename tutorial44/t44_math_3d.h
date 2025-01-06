@@ -161,7 +161,8 @@ namespace t44 {
 
     void Normalize();
 
-    Quaternion Conjugate();
+    [[nodiscard]]
+    Quaternion Conjugate() const;
 
     Vector3f ToDegrees();
   };
@@ -205,7 +206,7 @@ namespace t44 {
     void InitRotateTransform(float RotateX, float RotateY, float RotateZ);
     void InitRotateTransform(const Quaternion& quat);
     void InitTranslationTransform(float x, float y, float z);
-    void InitCameraTransform(const Vector3f& Target, const Vector3f& Up);
+    void InitCameraTransform(const Vector3f& target, const Vector3f& up);
     void InitPersProjTransform(const PerspProjInfo& p);
     void InitOrthoProjTransform(const OrthoProjInfo& p);
   };

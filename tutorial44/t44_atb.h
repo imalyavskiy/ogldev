@@ -6,9 +6,11 @@
 #include "t44_keys.h"
 #include "t44_math_3d.h"
 
-class ATB
+namespace t44
 {
-public:
+  class ATB
+  {
+  public:
     ATB();
 
     bool Init();
@@ -20,10 +22,10 @@ public:
     void RenderSceneCB();
 
     bool MouseCB(MOUSE_BUTTON Button, KEYBOARD_KEY_STATE State, int x, int y);
-};
+  };
 
 
-extern TwType TW_TYPE_OGLDEV_VECTOR3F;
-extern TwType TW_TYPE_OGLDEV_ATTENUATION;
-
+  extern TwType TW_TYPE_OGLDEV_VECTOR3F;
+  extern TwType TW_TYPE_OGLDEV_ATTENUATION;
+}
 #endif

@@ -32,10 +32,6 @@ namespace t44 {
     : m_fontRenderer(sMarkup)
 #endif
   {
-    m_frameCount = 0;
-    m_frameTime = 0;
-    m_fps = 0;
-
     m_frameTime = m_startTime = GetCurrentTimeMillis();
   }
 
@@ -66,7 +62,7 @@ namespace t44 {
 
   float BaseApp::GetRunningTime()
   {
-    float RunningTime = static_cast<float>(static_cast<double>(GetCurrentTimeMillis()) - static_cast<double>(m_startTime)) / 1000.0f;
-    return RunningTime;
+    const float runningTime = static_cast<float>(static_cast<double>(GetCurrentTimeMillis()) - static_cast<double>(m_startTime)) / 1000.0f;
+    return runningTime;
   }
 }
