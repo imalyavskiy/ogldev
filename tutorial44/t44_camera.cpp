@@ -99,21 +99,21 @@ namespace t44 {
 
     switch (key) {
 
-    case KB_KEY_UP:
+    case KEYBOARD_KEY::UP:
     {
       m_pos += (m_target * STEP_SCALE);
       Ret = true;
     }
     break;
 
-    case KB_KEY_DOWN:
+    case KEYBOARD_KEY::DOWN:
     {
       m_pos -= (m_target * STEP_SCALE);
       Ret = true;
     }
     break;
 
-    case KB_KEY_LEFT:
+    case KEYBOARD_KEY::LEFT:
     {
       Vector3f Left = m_target.Cross(m_up);
       Left.Normalize();
@@ -123,7 +123,7 @@ namespace t44 {
     }
     break;
 
-    case KB_KEY_RIGHT:
+    case KEYBOARD_KEY::RIGHT:
     {
       Vector3f Right = m_up.Cross(m_target);
       Right.Normalize();
@@ -133,11 +133,11 @@ namespace t44 {
     }
     break;
 
-    case KB_KEY_PAGE_UP:
+    case KEYBOARD_KEY::PAGE_UP:
       m_pos.y += STEP_SCALE;
       break;
 
-    case KB_KEY_PAGE_DOWN:
+    case KEYBOARD_KEY::PAGE_DN:
       m_pos.y -= STEP_SCALE;
       break;
 
@@ -257,13 +257,5 @@ namespace t44 {
 
     m_up = m_target.Cross(Haxis);
     m_up.Normalize();
-  }
-
-
-  void Camera::AddToATB(TwBar* bar)
-  {
-    TwAddButton(bar, "Camera", nullptr, nullptr, "");
-    TwAddVarRW(bar, "Position", TW_TYPE_OGLDEV_VECTOR3F, (void*)&m_pos, nullptr);
-    TwAddVarRO(bar, "Direction", TW_TYPE_DIR3F, &m_target, " axisz=-z ");
   }
 }

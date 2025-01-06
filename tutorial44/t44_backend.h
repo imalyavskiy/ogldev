@@ -24,23 +24,23 @@ namespace t44 {
 
   enum class BACKEND_TYPE {
     GLUT,
-    GLFW
+    GLFW,
   };
 
 
-  void OgldevBackendInit(BACKEND_TYPE backendType, int argc, char** argv, bool withDepth, bool withStencil);
+  void BackendInit(BACKEND_TYPE backendType, int32_t argc, char** argv, bool withDepth, bool withStencil);
 
-  void OgldevBackendTerminate();
+  void BackendTerminate();
 
-  bool OgldevBackendCreateWindow(uint32_t width, uint32_t height, bool isFullScreen, const char* pTitle);
+  bool BackendCreateWindow(uint32_t width, uint32_t height, bool isFullScreen, const char* pTitle);
 
-  void OgldevBackendRun(ICallbacks* pCallbacks);
+  void BackendRun(ICallbacks* pCallbacks);
 
-  void OgldevBackendLeaveMainLoop();
+  void BackendLeaveMainLoop();
 
-  void OgldevBackendSwapBuffers();
+  void BackendSwapBuffers();
 
-  void OgldevBackendSetMousePos(uint32_t x, uint32_t y);
+  void BackendSetMousePos(uint32_t x, uint32_t y);
 
 }
 #endif

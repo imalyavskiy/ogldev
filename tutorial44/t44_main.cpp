@@ -27,26 +27,26 @@
 
 int main(int argc, char** argv)
 {
-  t44::OgldevBackendInit(t44::BACKEND_TYPE::GLFW, argc, argv, true, false);
+  t44::BackendInit(t44::BACKEND_TYPE::GLFW, argc, argv, true, false);
 
-  if (!t44::OgldevBackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_FULLSCREEN, WINDOW_TITLE)) {
-    t44::OgldevBackendTerminate();
+  if (!t44::BackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_FULLSCREEN, WINDOW_TITLE)) {
+    t44::BackendTerminate();
     return 1;
   }
 
   std::srand(/*WINAPI->*/GetCurrentProcessId());
 
-  auto app = std::make_unique<t44::MainApp>(WINDOW_WIDTH, WINDOW_HEIGHT);
+  const auto app = std::make_unique<t44::MainApp>(WINDOW_WIDTH, WINDOW_HEIGHT);
 
   if (!app->Init())
   {
-    t44::OgldevBackendTerminate();
+    t44::BackendTerminate();
     return 1;
   }
 
   app->Run();
 
-  t44::OgldevBackendTerminate();
+  t44::BackendTerminate();
 
   return 0;
 }

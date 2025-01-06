@@ -21,7 +21,6 @@
 
 #include "t44_math_3d.h"
 #include "t44_keys.h"
-#include "t44_atb.h"
 
 namespace t44 {
   class Camera
@@ -43,8 +42,6 @@ namespace t44 {
     const Vector3f& GetTarget() const;
 
     const Vector3f& GetUp() const;
-
-    void AddToATB(TwBar* bar);
 
   private:
 

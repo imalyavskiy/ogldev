@@ -26,7 +26,7 @@ class ICallbacks
 {
 public:
 
-    virtual void KeyboardCB(KEYBOARD_KEY OgldevKey, KEYBOARD_KEY_STATE OgldevKeyState = KB_KEY_STATE_PRESS) {};
+    virtual void KeyboardCB(KEYBOARD_KEY OgldevKey, KEYBOARD_KEY_STATE OgldevKeyState = KEYBOARD_KEY_STATE::PRESS) {};
     
     virtual void PassiveMouseCB(int x, int y) {};
 

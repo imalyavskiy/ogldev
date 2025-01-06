@@ -37,55 +37,55 @@ namespace t44
   {
     switch (Key) {
     case GLUT_KEY_F1:
-      return KB_KEY_F1;
+      return KEYBOARD_KEY::F1;
     case GLUT_KEY_F2:
-      return KB_KEY_F2;
+      return KEYBOARD_KEY::F2;
     case GLUT_KEY_F3:
-      return KB_KEY_F3;
+      return KEYBOARD_KEY::F3;
     case GLUT_KEY_F4:
-      return KB_KEY_F4;
+      return KEYBOARD_KEY::F4;
     case GLUT_KEY_F5:
-      return KB_KEY_F5;
+      return KEYBOARD_KEY::F5;
     case GLUT_KEY_F6:
-      return KB_KEY_F6;
+      return KEYBOARD_KEY::F6;
     case GLUT_KEY_F7:
-      return KB_KEY_F7;
+      return KEYBOARD_KEY::F7;
     case GLUT_KEY_F8:
-      return KB_KEY_F8;
+      return KEYBOARD_KEY::F8;
     case GLUT_KEY_F9:
-      return KB_KEY_F9;
+      return KEYBOARD_KEY::F9;
     case GLUT_KEY_F10:
-      return KB_KEY_F10;
+      return KEYBOARD_KEY::F10;
     case GLUT_KEY_F11:
-      return KB_KEY_F11;
+      return KEYBOARD_KEY::F11;
     case GLUT_KEY_F12:
-      return KB_KEY_F12;
+      return KEYBOARD_KEY::F12;
     case GLUT_KEY_LEFT:
-      return KB_KEY_LEFT;
+      return KEYBOARD_KEY::LEFT;
     case GLUT_KEY_UP:
-      return KB_KEY_UP;
+      return KEYBOARD_KEY::UP;
     case GLUT_KEY_RIGHT:
-      return KB_KEY_RIGHT;
+      return KEYBOARD_KEY::RIGHT;
     case GLUT_KEY_DOWN:
-      return KB_KEY_DOWN;
+      return KEYBOARD_KEY::DOWN;
     case GLUT_KEY_PAGE_UP:
-      return KB_KEY_PAGE_UP;
+      return KEYBOARD_KEY::PAGE_UP;
     case GLUT_KEY_PAGE_DOWN:
-      return KB_KEY_PAGE_DOWN;
+      return KEYBOARD_KEY::PAGE_DN;
     case GLUT_KEY_HOME:
-      return KB_KEY_HOME;
+      return KEYBOARD_KEY::HOME;
     case GLUT_KEY_END:
-      return KB_KEY_END;
+      return KEYBOARD_KEY::END;
     case GLUT_KEY_INSERT:
-      return KB_KEY_INSERT;
+      return KEYBOARD_KEY::INSERT;
     case GLUT_KEY_DELETE:
-      return KB_KEY_DELETE;
+      return KEYBOARD_KEY::DEL;
     default:
       REPORT_ERROR("Unimplemented GLUT key");
       exit(1);
     }
 
-    return KB_KEY_UNDEFINED;
+    return KEYBOARD_KEY::UNDEF;
   }
 
 
@@ -93,16 +93,16 @@ namespace t44
   {
     switch (Button) {
     case GLUT_LEFT_BUTTON:
-      return MOUSE_BUTTON_LEFT;
+      return MOUSE_BUTTON::LEFT;
     case GLUT_RIGHT_BUTTON:
-      return MOUSE_BUTTON_RIGHT;
+      return MOUSE_BUTTON::RIGHT;
     case GLUT_MIDDLE_BUTTON:
-      return MOUSE_BUTTON_MIDDLE;
+      return MOUSE_BUTTON::MIDDLE;
     default:
       REPORT_ERROR("Unimplemented GLUT mouse button");
     }
 
-    return MOUSE_UNDEFINED;
+    return MOUSE_BUTTON::UNDEF;
   }
 
 
@@ -147,7 +147,7 @@ namespace t44
   static void MouseCB(int Button, int State, int x, int y)
   {
     MOUSE_BUTTON OgldevMouse = GLUTMouseToOGLDEVMouse(Button);
-    KEYBOARD_KEY_STATE OgldevKeyState = (State == GLUT_DOWN) ? KB_KEY_STATE_PRESS : KB_KEY_STATE_RELEASE;
+    KEYBOARD_KEY_STATE OgldevKeyState = (State == GLUT_DOWN) ? KEYBOARD_KEY_STATE::PRESS : KEYBOARD_KEY_STATE::RELEASE;
 
     s_pCallbacks->MouseCB(OgldevMouse, OgldevKeyState, x, y);
   }

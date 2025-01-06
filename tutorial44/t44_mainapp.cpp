@@ -51,7 +51,7 @@ namespace t44
 
   void MainApp::Run()
   {
-    OgldevBackendRun(this);
+    BackendRun(this);
   }
 
   void MainApp::RenderSceneCB()
@@ -72,15 +72,15 @@ namespace t44
     //    RenderFPS();     
     CalcFPS();
 
-    OgldevBackendSwapBuffers();
+    BackendSwapBuffers();
   }
 
   void MainApp::KeyboardCB(KEYBOARD_KEY key)
   {
     switch (key) {
-    case KB_KEY_ESCAPE:
-    case KB_KEY_q:
-      OgldevBackendLeaveMainLoop();
+    case KEYBOARD_KEY::ESCAPE:
+    case KEYBOARD_KEY::q:
+      BackendLeaveMainLoop();
       break;
     default:
       m_pGameCamera->OnKeyboard(key);

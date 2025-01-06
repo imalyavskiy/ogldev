@@ -44,84 +44,84 @@ namespace t44
 
     switch (Key) {
     case GLFW_KEY_ESCAPE:
-      return KB_KEY_ESCAPE;
+      return KEYBOARD_KEY::ESCAPE;
     case GLFW_KEY_ENTER:
-      return KB_KEY_ENTER;
+      return KEYBOARD_KEY::ENTER;
     case GLFW_KEY_TAB:
-      return KB_KEY_TAB;
+      return KEYBOARD_KEY::TAB;
     case GLFW_KEY_BACKSPACE:
-      return KB_KEY_BACKSPACE;
+      return KEYBOARD_KEY::BACKSPACE;
     case GLFW_KEY_INSERT:
-      return KB_KEY_INSERT;
+      return KEYBOARD_KEY::INSERT;
     case GLFW_KEY_DELETE:
-      return KB_KEY_DELETE;
+      return KEYBOARD_KEY::DEL;
     case GLFW_KEY_RIGHT:
-      return KB_KEY_RIGHT;
+      return KEYBOARD_KEY::RIGHT;
     case GLFW_KEY_LEFT:
-      return KB_KEY_LEFT;
+      return KEYBOARD_KEY::LEFT;
     case GLFW_KEY_DOWN:
-      return KB_KEY_DOWN;
+      return KEYBOARD_KEY::DOWN;
     case GLFW_KEY_UP:
-      return KB_KEY_UP;
+      return KEYBOARD_KEY::UP;
     case GLFW_KEY_PAGE_UP:
-      return KB_KEY_PAGE_UP;
+      return KEYBOARD_KEY::PAGE_UP;
     case GLFW_KEY_PAGE_DOWN:
-      return KB_KEY_PAGE_DOWN;
+      return KEYBOARD_KEY::PAGE_DN;
     case GLFW_KEY_HOME:
-      return KB_KEY_HOME;
+      return KEYBOARD_KEY::HOME;
     case GLFW_KEY_END:
-      return KB_KEY_END;
+      return KEYBOARD_KEY::END;
     case GLFW_KEY_F1:
-      return KB_KEY_F1;
+      return KEYBOARD_KEY::F1;
     case GLFW_KEY_F2:
-      return KB_KEY_F2;
+      return KEYBOARD_KEY::F2;
     case GLFW_KEY_F3:
-      return KB_KEY_F3;
+      return KEYBOARD_KEY::F3;
     case GLFW_KEY_F4:
-      return KB_KEY_F4;
+      return KEYBOARD_KEY::F4;
     case GLFW_KEY_F5:
-      return KB_KEY_F5;
+      return KEYBOARD_KEY::F5;
     case GLFW_KEY_F6:
-      return KB_KEY_F6;
+      return KEYBOARD_KEY::F6;
     case GLFW_KEY_F7:
-      return KB_KEY_F7;
+      return KEYBOARD_KEY::F7;
     case GLFW_KEY_F8:
-      return KB_KEY_F8;
+      return KEYBOARD_KEY::F8;
     case GLFW_KEY_F9:
-      return KB_KEY_F9;
+      return KEYBOARD_KEY::F9;
     case GLFW_KEY_F10:
-      return KB_KEY_F10;
+      return KEYBOARD_KEY::F10;
     case GLFW_KEY_F11:
-      return KB_KEY_F11;
+      return KEYBOARD_KEY::F11;
     case GLFW_KEY_F12:
-      return KB_KEY_F12;
+      return KEYBOARD_KEY::F12;
     default:
       REPORT_ERROR("Unimplemented keyboard key");
     }
 
-    return KB_KEY_UNDEFINED;
+    return KEYBOARD_KEY::UNDEF;
   }
 
   static MOUSE_BUTTON GLFWMouseToOGLDEVMouse(uint32_t Button)
   {
     switch (Button) {
     case GLFW_MOUSE_BUTTON_LEFT:
-      return MOUSE_BUTTON_LEFT;
+      return MOUSE_BUTTON::LEFT;
     case GLFW_MOUSE_BUTTON_RIGHT:
-      return MOUSE_BUTTON_RIGHT;
+      return MOUSE_BUTTON::RIGHT;
     case GLFW_MOUSE_BUTTON_MIDDLE:
-      return MOUSE_BUTTON_MIDDLE;
+      return MOUSE_BUTTON::MIDDLE;
     default:
       REPORT_ERROR("Unimplemented mouse button");
     }
 
-    return MOUSE_UNDEFINED;
+    return MOUSE_BUTTON::UNDEF;
   }
 
   static void KeyCallback(GLFWwindow* pWindow, int key, int scancode, int action, int mods)
   {
     const KEYBOARD_KEY kbKey = GLFWKeyToOGLDEVKey(key);
-    const KEYBOARD_KEY_STATE kbKeyState = (action == GLFW_PRESS) ? KB_KEY_STATE_PRESS : KB_KEY_STATE_RELEASE;
+    const KEYBOARD_KEY_STATE kbKeyState = (action == GLFW_PRESS) ? KEYBOARD_KEY_STATE::PRESS : KEYBOARD_KEY_STATE::RELEASE;
     s_pCallbacks->KeyboardCB(kbKey, kbKeyState);
   }
 
@@ -136,7 +136,7 @@ namespace t44
   {
     const MOUSE_BUTTON mouseButton = GLFWMouseToOGLDEVMouse(Button);
 
-    const KEYBOARD_KEY_STATE state = (Action == GLFW_PRESS) ? KB_KEY_STATE_PRESS : KB_KEY_STATE_RELEASE;
+    const KEYBOARD_KEY_STATE state = (Action == GLFW_PRESS) ? KEYBOARD_KEY_STATE::PRESS : KEYBOARD_KEY_STATE::RELEASE;
 
     double x, y;
 
@@ -154,13 +154,10 @@ namespace t44
 
   void GLFWErrorCallback(int error, const char* description)
   {
-#ifdef WIN32
     char msg[1000];
     _snprintf_s(msg, sizeof(msg), "GLFW error %d - %s", error, description);
     MessageBoxA(nullptr, msg, nullptr, 0);
-#else
-    fprintf(stderr, "GLFW error %d - %s", error, description);
-#endif    
+
     exit(0);
   }
 

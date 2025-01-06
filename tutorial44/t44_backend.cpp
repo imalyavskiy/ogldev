@@ -16,8 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <AntTweakBar.h>
-
 #include "t44_util.h"
 #include "t44_backend.h"
 #include "t44_glut_backend.h"
@@ -27,7 +25,7 @@
 namespace t44 {
   static BACKEND_TYPE sBackendType = BACKEND_TYPE::GLUT;
 
-  void OgldevBackendInit(BACKEND_TYPE backendType, int argc, char** argv, bool withDepth, bool withStencil)
+  void BackendInit(BACKEND_TYPE backendType, int32_t argc, char** argv, bool withDepth, bool withStencil)
   {
     sBackendType = backendType;
 
@@ -43,7 +41,7 @@ namespace t44 {
   }
 
 
-  void OgldevBackendTerminate()
+  void BackendTerminate()
   {
     switch (sBackendType) {
     case BACKEND_TYPE::GLUT:
@@ -57,10 +55,8 @@ namespace t44 {
   }
 
 
-  bool OgldevBackendCreateWindow(uint32_t width, uint32_t height, bool isFullScreen, const char* pTitle)
+  bool BackendCreateWindow(uint32_t width, uint32_t height, bool isFullScreen, const char* pTitle)
   {
-    TwWindowSize(width, height);
-
     switch (sBackendType) {
     case BACKEND_TYPE::GLUT:
       return GLUTBackendCreateWindow(width, height, isFullScreen, pTitle);
@@ -73,7 +69,7 @@ namespace t44 {
   }
 
 
-  void OgldevBackendRun(ICallbacks* pCallbacks)
+  void BackendRun(ICallbacks* pCallbacks)
   {
     switch (sBackendType) {
     case BACKEND_TYPE::GLUT:
@@ -87,10 +83,8 @@ namespace t44 {
   }
 
 
-  void OgldevBackendSwapBuffers()
+  void BackendSwapBuffers()
   {
-    TwDraw();
-
     switch (sBackendType) {
     case BACKEND_TYPE::GLUT:
       GLUTBackendSwapBuffers();
@@ -103,7 +97,7 @@ namespace t44 {
   }
 
 
-  void OgldevBackendLeaveMainLoop()
+  void BackendLeaveMainLoop()
   {
     switch (sBackendType) {
     case BACKEND_TYPE::GLUT:
@@ -117,7 +111,7 @@ namespace t44 {
   }
 
 
-  void OgldevBackendSetMousePos(uint32_t x, uint32_t y)
+  void BackendSetMousePos(uint32_t x, uint32_t y)
   {
     switch (sBackendType) {
     case BACKEND_TYPE::GLUT:

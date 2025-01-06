@@ -19,13 +19,9 @@
 #ifndef MATH_3D_H
 #define	MATH_3D_H
 
-#include <stdio.h>
-#ifdef WIN32
+#include <cstdio>
 #define _USE_MATH_DEFINES
 #include <cmath>
-#else
-#include <math.h>
-#endif
 
 #include <assimp/vector3.h>
 #include <assimp/matrix3x3.h>

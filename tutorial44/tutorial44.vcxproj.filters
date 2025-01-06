@@ -51,9 +51,6 @@
     <ClInclude Include="t44_mainapp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="t44_atb.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="t44_callbacks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -102,9 +99,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="t44_mainapp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="t44_atb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="t44_glfw_backend.cpp">
