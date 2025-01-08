@@ -72,9 +72,6 @@
     <ClInclude Include="t39_world_transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="t39_atb.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="stb_image\stb_image.h">
       <Filter>Header Files\stb_image</Filter>
     </ClInclude>
@@ -102,9 +99,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="t39_pipeline.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="t39_atb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="t39_technique.cpp">

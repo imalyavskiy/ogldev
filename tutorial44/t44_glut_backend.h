@@ -23,18 +23,18 @@
 
 namespace t44
 {
-  void GLUTBackendInit(int argc, char** argv, bool WithDepth, bool WithStencil);
+  class GLUTBackend {
+  public:
+    static void Init(int argc, char** argv, bool WithDepth, bool WithStencil);
 
+    static bool MakeWindow(uint32_t Width, uint32_t Height, bool isFullScreen, const char* pTitle);
 
-  bool GLUTBackendCreateWindow(uint32_t Width, uint32_t Height, bool isFullScreen, const char* pTitle);
+    static void Run(ICallbacks* pCallbacks);
 
-  void GLUTBackendRun(ICallbacks* pCallbacks);
+    static void SwapBuffers();
 
-  void GLUTBackendSwapBuffers();
-
-  void GLUTBackendLeaveMainLoop();
-
-  KEYBOARD_KEY GLUTKeyToOGLDEVKey(uint32_t Key);
+    static void LeaveMainLoop();
+  };
 }
 #endif	/* GLUT_BACKEND_H */
 

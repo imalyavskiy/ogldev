@@ -22,10 +22,6 @@
 #include "t39_math_3d.h"
 #include "t39_util.h"
 #include "t39_basic_lighting.h"
-#include "t39_atb.h"
-
-
-
 
 BasicLightingTechnique::BasicLightingTechnique()
 {

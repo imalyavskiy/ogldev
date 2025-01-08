@@ -23,7 +23,7 @@
 
 #include "t36_technique.h"
 #include "t36_util.h"
-#include "ogldev_util.h"
+#include "t36_util.h"
 
 namespace t36
 {

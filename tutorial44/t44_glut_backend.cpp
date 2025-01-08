@@ -164,7 +164,7 @@ namespace t44
   }
 
 
-  void GLUTBackendInit(int argc, char** argv, bool WithDepth, bool WithStencil)
+  void GLUTBackend::Init(int argc, char** argv, bool WithDepth, bool WithStencil)
   {
     sWithDepth = WithDepth;
     sWithStencil = WithStencil;
@@ -187,7 +187,7 @@ namespace t44
   }
 
 
-  bool GLUTBackendCreateWindow(unsigned int Width, unsigned int Height, bool isFullScreen, const char* pTitle)
+  bool GLUTBackend::MakeWindow(unsigned int Width, unsigned int Height, bool isFullScreen, const char* pTitle)
   {
     if (isFullScreen) {
       char ModeString[64] = { 0 };
@@ -211,7 +211,7 @@ namespace t44
     return true;
   }
 
-  void GLUTBackendRun(ICallbacks* pCallbacks)
+  void GLUTBackend::Run(ICallbacks* pCallbacks)
   {
     if (!pCallbacks) {
       fprintf(stderr, "%s : callbacks not specified!\n", __FUNCTION__);
@@ -233,12 +233,12 @@ namespace t44
   }
 
 
-  void GLUTBackendSwapBuffers()
+  void GLUTBackend::SwapBuffers()
   {
     glutSwapBuffers();
   }
 
-  void GLUTBackendLeaveMainLoop()
+  void GLUTBackend::LeaveMainLoop()
   {
     glutLeaveMainLoop();
   }

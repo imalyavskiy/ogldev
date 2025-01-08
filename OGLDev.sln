@@ -69,7 +69,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial32", "tutorial32\tu
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial33", "tutorial33\tutorial33.vcxproj", "{985C54EE-3CA7-4AE6-B83E-0D90E0190B10}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial34", "tutorial34\tutorial34.vcxproj", "{C6EC9373-2CD6-4F23-8B1F-1593B6157724}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial34(deprecated)", "tutorial34\tutorial34.vcxproj", "{C6EC9373-2CD6-4F23-8B1F-1593B6157724}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial35", "tutorial35\tutorial35.vcxproj", "{CA96BE72-E51A-4F96-ADA4-DC2937750DC8}"
 EndProject
@@ -84,45 +84,24 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial40", "tutorial40\tutorial40.vcxproj", "{F8CAF153-FF5A-4B97-A4E5-DE3024C1DA83}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial41", "tutorial41\tutorial41.vcxproj", "{E4F57195-30D1-44C1-927C-1EC8F7633D41}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC} = {6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Common\Common.vcxproj", "{6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial42", "tutorial42\tutorial42.vcxproj", "{86530C7F-C289-4627-9011-7009BE2B7D12}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC} = {6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial43", "tutorial43\tutorial43.vcxproj", "{7233B7C3-0804-4D5F-A9B7-20B45AB45FF1}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial44", "tutorial44\tutorial44.vcxproj", "{4895D6C2-0C5F-4927-B537-C0404F083D22}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC} = {6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial45", "tutorial45\tutorial45.vcxproj", "{EF3E5A2B-9E10-4011-99D3-CBBEBEE694B0}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC} = {6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial46", "tutorial46\tutorial46.vcxproj", "{ECB87595-8711-4847-A757-B62B7944606A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial47", "tutorial47\tutorial47.vcxproj", "{6A30767F-4FEA-427B-BC13-FE21D3EC3BA1}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC} = {6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial48", "tutorial48\tutorial48.vcxproj", "{1B74B773-3474-44B0-A0FF-BC5D540BF6A5}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC} = {6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tutorial49", "tutorial49\tutorial49.vcxproj", "{E68277C2-2609-4C3D-9C8A-4F7E17FF4F9C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC} = {6E9D80E7-C4F1-4AE3-8082-4A5EFDCE8CCC}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -263,9 +242,7 @@ Global
 		{985C54EE-3CA7-4AE6-B83E-0D90E0190B10}.Release|x86.ActiveCfg = Release|Win32
 		{985C54EE-3CA7-4AE6-B83E-0D90E0190B10}.Release|x86.Build.0 = Release|Win32
 		{C6EC9373-2CD6-4F23-8B1F-1593B6157724}.Debug|x86.ActiveCfg = Debug|Win32
-		{C6EC9373-2CD6-4F23-8B1F-1593B6157724}.Debug|x86.Build.0 = Debug|Win32
 		{C6EC9373-2CD6-4F23-8B1F-1593B6157724}.Release|x86.ActiveCfg = Release|Win32
-		{C6EC9373-2CD6-4F23-8B1F-1593B6157724}.Release|x86.Build.0 = Release|Win32
 		{CA96BE72-E51A-4F96-ADA4-DC2937750DC8}.Debug|x86.ActiveCfg = Debug|Win32
 		{CA96BE72-E51A-4F96-ADA4-DC2937750DC8}.Debug|x86.Build.0 = Debug|Win32
 		{CA96BE72-E51A-4F96-ADA4-DC2937750DC8}.Release|x86.ActiveCfg = Release|Win32
@@ -311,25 +288,15 @@ Global
 		{4895D6C2-0C5F-4927-B537-C0404F083D22}.Release|x86.ActiveCfg = Release|Win32
 		{4895D6C2-0C5F-4927-B537-C0404F083D22}.Release|x86.Build.0 = Release|Win32
 		{EF3E5A2B-9E10-4011-99D3-CBBEBEE694B0}.Debug|x86.ActiveCfg = Debug|Win32
-		{EF3E5A2B-9E10-4011-99D3-CBBEBEE694B0}.Debug|x86.Build.0 = Debug|Win32
 		{EF3E5A2B-9E10-4011-99D3-CBBEBEE694B0}.Release|x86.ActiveCfg = Release|Win32
-		{EF3E5A2B-9E10-4011-99D3-CBBEBEE694B0}.Release|x86.Build.0 = Release|Win32
 		{ECB87595-8711-4847-A757-B62B7944606A}.Debug|x86.ActiveCfg = Debug|Win32
-		{ECB87595-8711-4847-A757-B62B7944606A}.Debug|x86.Build.0 = Debug|Win32
 		{ECB87595-8711-4847-A757-B62B7944606A}.Release|x86.ActiveCfg = Release|Win32
-		{ECB87595-8711-4847-A757-B62B7944606A}.Release|x86.Build.0 = Release|Win32
 		{6A30767F-4FEA-427B-BC13-FE21D3EC3BA1}.Debug|x86.ActiveCfg = Debug|Win32
-		{6A30767F-4FEA-427B-BC13-FE21D3EC3BA1}.Debug|x86.Build.0 = Debug|Win32
 		{6A30767F-4FEA-427B-BC13-FE21D3EC3BA1}.Release|x86.ActiveCfg = Release|Win32
-		{6A30767F-4FEA-427B-BC13-FE21D3EC3BA1}.Release|x86.Build.0 = Release|Win32
 		{1B74B773-3474-44B0-A0FF-BC5D540BF6A5}.Debug|x86.ActiveCfg = Debug|Win32
-		{1B74B773-3474-44B0-A0FF-BC5D540BF6A5}.Debug|x86.Build.0 = Debug|Win32
 		{1B74B773-3474-44B0-A0FF-BC5D540BF6A5}.Release|x86.ActiveCfg = Release|Win32
-		{1B74B773-3474-44B0-A0FF-BC5D540BF6A5}.Release|x86.Build.0 = Release|Win32
 		{E68277C2-2609-4C3D-9C8A-4F7E17FF4F9C}.Debug|x86.ActiveCfg = Debug|Win32
-		{E68277C2-2609-4C3D-9C8A-4F7E17FF4F9C}.Debug|x86.Build.0 = Debug|Win32
 		{E68277C2-2609-4C3D-9C8A-4F7E17FF4F9C}.Release|x86.ActiveCfg = Release|Win32
-		{E68277C2-2609-4C3D-9C8A-4F7E17FF4F9C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

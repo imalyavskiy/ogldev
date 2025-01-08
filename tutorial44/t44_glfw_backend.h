@@ -23,18 +23,16 @@
 
 namespace t44
 {
-  void GLFWBackendInit(int argc, char** argv, bool WithDepth, bool WithStencil);
-
-  void GLFWBackendTerminate();
-
-  bool GLFWBackendCreateWindow(uint32_t width, uint32_t height, bool isFullScreen, const char* pTitle);
-
-  void GLFWBackendRun(ICallbacks* pCallbacks);
-
-  void GLFWBackendSwapBuffers();
-
-  void GLFWBackendLeaveMainLoop();
-
-  void GLFWBackendSetMousePos(uint32_t x, uint32_t y);
+  class GLFWBackend
+  {
+  public:
+    static void Init(int argc, char** argv, bool WithDepth, bool WithStencil);
+    static void Terminate();
+    static bool MakeWindow(uint32_t width, uint32_t height, bool isFullScreen, const char* pTitle);
+    static void Run(ICallbacks* pCallbacks);
+    static void SwapBuffers();
+    static void LeaveMainLoop();
+    static void SetMousePos(uint32_t x, uint32_t y);
+  };
 }
 #endif

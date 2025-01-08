@@ -44,11 +44,7 @@
     <ClCompile Include="t36_pipeline.cpp" />
     <ClCompile Include="t36_technique.cpp" />
     <ClCompile Include="t36_texture.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.vcxproj">
-      <Project>{6e9d80e7-c4f1-4ae3-8082-4a5efdce8ccc}</Project>
-    </ProjectReference>
+    <ClCompile Include="t36_util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\dir_light_pass.fs" />
@@ -93,7 +89,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)_bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)_int\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)Include;$(SolutionDir)deps\exports\glfx\inc;$(SolutionDir)deps\exports\freeglut.3.0.0\inc;$(SolutionDir)deps\exports\glew.2.0.0\inc;$(SolutionDir)deps\exports\FreeImage3180\inc;$(SolutionDir)deps\exports\assimp\inc;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Include;$(SolutionDir)deps\exports\glfx\inc;$(SolutionDir)deps\exports\freeglut.3.0.0\inc;$(SolutionDir)deps\exports\glew.2.0.0\inc;$(SolutionDir)deps\exports\FreeImage3180\inc;$(SolutionDir)deps\exports\assimp\inc;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)deps\exports\glfx\inc;$(SolutionDir)deps\exports\freeglut.3.0.0\inc;$(SolutionDir)deps\exports\glew.2.0.0\inc;$(SolutionDir)deps\exports\FreeImage3180\inc;$(SolutionDir)deps\exports\assimp\inc;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Include;$(SolutionDir)deps\exports\glfx\inc;$(SolutionDir)deps\exports\freeglut.3.0.0\inc;$(SolutionDir)deps\exports\glew.2.0.0\inc;$(SolutionDir)deps\exports\FreeImage3180\inc;$(SolutionDir)deps\exports\assimp\inc;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\deps\exports\glfx\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\freeglut.3.0.0\lib\$(PlatformShortName);$(SolutionDir)deps\exports\glew.2.0.0\lib\$(PlatformShortName);$(SolutionDir)deps\exports\FreeImage3180\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\assimp\lib\$(PlatformShortName)\$(Configuration);$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -101,7 +97,7 @@
     <OutDir>$(SolutionDir)_bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)_int\$(Configuration)\$(ProjectName)\</IntDir>
     <LibraryPath>$(SolutionDir)\deps\exports\glfx\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\freeglut.3.0.0\lib\$(PlatformShortName);$(SolutionDir)deps\exports\glew.2.0.0\lib\$(PlatformShortName);$(SolutionDir)deps\exports\FreeImage3180\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\assimp\lib\$(PlatformShortName)\$(Configuration);$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
-    <IncludePath>$(SolutionDir)Include;$(SolutionDir)deps\exports\glfx\inc;$(SolutionDir)deps\exports\freeglut.3.0.0\inc;$(SolutionDir)deps\exports\glew.2.0.0\inc;$(SolutionDir)deps\exports\FreeImage3180\inc;$(SolutionDir)deps\exports\assimp\inc;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>$(SolutionDir)deps\exports\glfx\inc;$(SolutionDir)deps\exports\freeglut.3.0.0\inc;$(SolutionDir)deps\exports\glew.2.0.0\inc;$(SolutionDir)deps\exports\FreeImage3180\inc;$(SolutionDir)deps\exports\assimp\inc;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -123,8 +119,13 @@
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImaged.dll $(OutDir)FreeImaged.dll
-copy $(SolutionDir)deps\exports\assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc143-mtd.dll $(OutDir)assimp-vc143-mtd.dll</Command>
+      <Command>if not exist "$(OutDir)FreeImaged.dll" (
+  copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImaged.dll $(OutDir)FreeImaged.dll
+)
+
+if not exist "$(OutDir)assimp-vc143-mtd.dll" (
+  copy $(SolutionDir)deps\exports\assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc143-mtd.dll $(OutDir)assimp-vc143-mtd.dll
+)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -149,8 +150,13 @@ copy $(SolutionDir)deps\exports\assimp\bin\$(PlatformShortName)\$(Configuration)
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImage.dll $(OutDir)FreeImage.dll
-copy $(SolutionDir)deps\exports\assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc143-mt.dll $(OutDir)assimp-vc143-mt.dll</Command>
+      <Command>if not exist "$(OutDir)FreeImage.dll" (
+  copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImage.dll $(OutDir)FreeImage.dll
+)
+
+if not exist "$(OutDir)assimp-vc143-mt.dll" (
+ copy $(SolutionDir)deps\exports\assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc143-mt.dll $(OutDir)assimp-vc143-mt.dll
+)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

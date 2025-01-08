@@ -16,13 +16,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <limits.h>
-#include <string.h>
+#include <climits>
+#include <cstring>
 
 #include "t40_math_3d.h"
 #include "t40_util.h"
 #include "t40_basic_lighting.h"
-#include "t40_atb.h"
 
 
 

@@ -31,10 +31,10 @@ namespace t44 {
 
     switch (backendType) {
     case BACKEND_TYPE::GLUT:
-      GLUTBackendInit(argc, argv, withDepth, withStencil);
+      GLUTBackend::Init(argc, argv, withDepth, withStencil);
       return;
     case BACKEND_TYPE::GLFW:
-      GLFWBackendInit(argc, argv, withDepth, withStencil);
+      GLFWBackend::Init(argc, argv, withDepth, withStencil);
       return;
     }
     assert(0);
@@ -48,20 +48,20 @@ namespace t44 {
       // nothing to do here...
       return;
     case BACKEND_TYPE::GLFW:
-      GLFWBackendTerminate();
+      GLFWBackend::Terminate();
       return;
     }
     assert(0);
   }
 
 
-  bool BackendCreateWindow(uint32_t width, uint32_t height, bool isFullScreen, const char* pTitle)
+  bool BackendMakeWindow(uint32_t width, uint32_t height, bool isFullScreen, const char* pTitle)
   {
     switch (sBackendType) {
     case BACKEND_TYPE::GLUT:
-      return GLUTBackendCreateWindow(width, height, isFullScreen, pTitle);
+      return GLUTBackend::MakeWindow(width, height, isFullScreen, pTitle);
     case BACKEND_TYPE::GLFW:
-      return GLFWBackendCreateWindow(width, height, isFullScreen, pTitle);
+      return GLFWBackend::MakeWindow(width, height, isFullScreen, pTitle);
     }
 
     assert(0);
@@ -73,10 +73,10 @@ namespace t44 {
   {
     switch (sBackendType) {
     case BACKEND_TYPE::GLUT:
-      GLUTBackendRun(pCallbacks);
+      GLUTBackend::Run(pCallbacks);
       return;
     case BACKEND_TYPE::GLFW:
-      GLFWBackendRun(pCallbacks);
+      GLFWBackend::Run(pCallbacks);
       return;
     }
     assert(0);
@@ -87,10 +87,10 @@ namespace t44 {
   {
     switch (sBackendType) {
     case BACKEND_TYPE::GLUT:
-      GLUTBackendSwapBuffers();
+      GLUTBackend::SwapBuffers();
       return;
     case BACKEND_TYPE::GLFW:
-      GLFWBackendSwapBuffers();
+      GLFWBackend::SwapBuffers();
       return;
     }
     assert(0);
@@ -101,10 +101,10 @@ namespace t44 {
   {
     switch (sBackendType) {
     case BACKEND_TYPE::GLUT:
-      GLUTBackendLeaveMainLoop();
+      GLUTBackend::LeaveMainLoop();
       return;
     case BACKEND_TYPE::GLFW:
-      GLFWBackendLeaveMainLoop();
+      GLFWBackend::LeaveMainLoop();
       return;
     }
     assert(0);
@@ -115,10 +115,10 @@ namespace t44 {
   {
     switch (sBackendType) {
     case BACKEND_TYPE::GLUT:
-      //GLUTBackendLeaveMainLoop();
+      //GLUTBackendLeave::MainLoop();
       return;
     case BACKEND_TYPE::GLFW:
-      GLFWBackendSetMousePos(x, y);
+      GLFWBackend::SetMousePos(x, y);
       return;
     }
     assert(0);

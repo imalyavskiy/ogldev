@@ -14,7 +14,6 @@
     <ClInclude Include="stb_image\stb_image.h" />
     <ClInclude Include="stb_image\stb_image_write.h" />
     <ClInclude Include="t40_app.h" />
-    <ClInclude Include="t40_atb.h" />
     <ClInclude Include="t40_basic_lighting.h" />
     <ClInclude Include="t40_callbacks.h" />
     <ClInclude Include="t40_camera.h" />
@@ -36,7 +35,6 @@
   <ItemGroup>
     <ClCompile Include="stb_image\stb_image.cpp" />
     <ClCompile Include="t40_app.cpp" />
-    <ClCompile Include="t40_atb.cpp" />
     <ClCompile Include="t40_basic_lighting.cpp" />
     <ClCompile Include="t40_camera.cpp" />
     <ClCompile Include="t40_glut_backend.cpp" />
@@ -117,8 +115,13 @@
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImaged.dll $(OutDir)FreeImaged.dll
-copy $(SolutionDir)deps\exports\assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc143-mtd.dll $(OutDir)assimp-vc143-mtd.dll</Command>
+      <Command>if not exist "$(OutDir)FreeImaged.dll" (
+  copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImaged.dll $(OutDir)FreeImaged.dll
+)
+
+if not exist "$(OutDir)assimp-vc143-mtd.dll" (
+  copy $(SolutionDir)deps\exports\assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc143-mtd.dll $(OutDir)assimp-vc143-mtd.dll
+)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -143,8 +146,13 @@ copy $(SolutionDir)deps\exports\assimp\bin\$(PlatformShortName)\$(Configuration)
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImage.dll $(OutDir)FreeImage.dll
-copy $(SolutionDir)deps\exports\assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc143-mt.dll $(OutDir)assimp-vc143-mt.dll</Command>
+      <Command>if not exist "$(OutDir)FreeImage.dll" (
+  copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImage.dll $(OutDir)FreeImage.dll
+)
+
+if not exist "$(OutDir)assimp-vc143-mt.dll" (
+  copy $(SolutionDir)deps\exports\assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc143-mt.dll $(OutDir)assimp-vc143-mt.dll
+)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

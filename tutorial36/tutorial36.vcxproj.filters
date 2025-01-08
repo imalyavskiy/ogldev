@@ -110,6 +110,9 @@
     <ClCompile Include="t36_mainapp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="t36_util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\light_pass.vs">

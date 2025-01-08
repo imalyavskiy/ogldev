@@ -22,12 +22,7 @@
 
 #include <iostream>
 #include <fstream>
-#ifdef WIN32
 #include <Windows.h>
-#else
-#include <sys/time.h>
-#endif
-
 #include "ogldev_util.h"
 
 bool ReadFile(const char* pFileName, string& outFile)

@@ -162,7 +162,7 @@ namespace t44
   }
 
 
-  void GLFWBackendInit(int argc, char** argv, bool WithDepth, bool WithStencil)
+  void GLFWBackend::Init(int argc, char** argv, bool WithDepth, bool WithStencil)
   {
     sWithDepth = WithDepth;
     sWithStencil = WithStencil;
@@ -182,14 +182,14 @@ namespace t44
   }
 
 
-  void GLFWBackendTerminate()
+  void GLFWBackend::Terminate()
   {
     glfwDestroyWindow(s_pWindow);
     glfwTerminate();
   }
 
 
-  bool GLFWBackendCreateWindow(uint32_t width, uint32_t height, bool isFullScreen, const char* pTitle)
+  bool GLFWBackend::MakeWindow(uint32_t width, uint32_t height, bool isFullScreen, const char* pTitle)
   {
     GLFWmonitor* pMonitor = isFullScreen ? glfwGetPrimaryMonitor() : nullptr;
 
@@ -213,7 +213,7 @@ namespace t44
     return (s_pWindow != nullptr);
   }
 
-  void GLFWBackendRun(ICallbacks* pCallbacks)
+  void GLFWBackend::Run(ICallbacks* pCallbacks)
   {
     if (!pCallbacks) {
       REPORT_ERROR("callbacks not specified");
@@ -240,19 +240,19 @@ namespace t44
   }
 
 
-  void GLFWBackendSwapBuffers()
+  void GLFWBackend::SwapBuffers()
   {
     // Nothing to do here
   }
 
 
-  void GLFWBackendLeaveMainLoop()
+  void GLFWBackend::LeaveMainLoop()
   {
     glfwSetWindowShouldClose(s_pWindow, 1);
   }
 
 
-  void GLFWBackendSetMousePos(uint32_t x, uint32_t y)
+  void GLFWBackend::SetMousePos(uint32_t x, uint32_t y)
   {
     glfwSetCursorPos(s_pWindow, x, y);
   }

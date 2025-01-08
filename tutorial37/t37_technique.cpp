@@ -23,7 +23,6 @@
 
 #include "t37_technique.h"
 #include "t37_util.h"
-#include "ogldev_util.h"
 
 namespace t37
 {

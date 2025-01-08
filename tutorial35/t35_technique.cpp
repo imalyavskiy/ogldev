@@ -23,7 +23,7 @@
 
 #include "t35_technique.h"
 #include "t35_util.h"
-#include "ogldev_util.h"
+#include "t35_util.h"
 
 namespace t35
 {

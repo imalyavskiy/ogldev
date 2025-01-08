@@ -19,13 +19,15 @@
 #ifndef UTIL_H
 #define	UTIL_H
 
+#include <string>
 
-#ifndef WIN32
-#include <unistd.h>
-#endif
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
+bool ReadFile(const char* fileName, std::string& outFile);
+
+void OgldevError(const char* pFileName, uint32_t line, const char* pError);
+void OgldevFileError(const char* pFileName, uint32_t line, const char* pFileError);
+
+#define REPORT_ERROR(Error) OgldevError(__FILE__, __LINE__, Error);
+#define REPORT_FILE_ERROR(FileError) OgldevFileError(__FILE__, __LINE__, FileError);
 
 #define ZERO_MEM(a) memset(a, 0, sizeof(a))
 

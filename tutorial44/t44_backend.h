@@ -32,7 +32,7 @@ namespace t44 {
 
   void BackendTerminate();
 
-  bool BackendCreateWindow(uint32_t width, uint32_t height, bool isFullScreen, const char* pTitle);
+  bool BackendMakeWindow(uint32_t width, uint32_t height, bool isFullScreen, const char* pTitle);
 
   void BackendRun(ICallbacks* pCallbacks);
 

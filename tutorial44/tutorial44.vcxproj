@@ -87,7 +87,7 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)_bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)_int\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)deps\exports\freeglut.3.0.0\inc;$(SolutionDir)deps\exports\glew.2.0.0\inc;$(SolutionDir)deps\exports\FreeImage3180\inc;$(SolutionDir)deps\exports\assimp\inc;$(SolutionDir)deps\exports\glm\inc;$(SolutionDir)deps\exports\meshoptimizer\inc;$(SolutionDir)deps\exports\anttweakbar-1.16\inc;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)deps\exports\freeglut.3.0.0\inc;$(SolutionDir)deps\exports\glew.2.0.0\inc;$(SolutionDir)deps\exports\FreeImage3180\inc;$(SolutionDir)deps\exports\assimp\inc;$(SolutionDir)deps\exports\glm\inc;$(SolutionDir)deps\exports\meshoptimizer\inc;$(SolutionDir)deps\exports\anttweakbar-1.16\inc;$(SolutionDir)deps\exports\glfw\inc;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)deps\exports\glm\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\freeglut.3.0.0\lib\$(PlatformShortName);$(SolutionDir)deps\exports\glew.2.0.0\lib\$(PlatformShortName);$(SolutionDir)deps\exports\FreeImage3180\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\assimp\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\anttweakbar-1.16\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\meshoptimizer\lib\$(PlatformShortName)\$(Configuration);$(SolutionDir)deps\exports\glfw\lib\$(PlatformShortName)\$(Configuration);$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -110,10 +110,21 @@
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImaged.dll $(OutDir)FreeImaged.dll
-copy $(SolutionDir)deps\exports\assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc143-mtd.dll $(OutDir)assimp-vc143-mtd.dll
-copy $(SolutionDir)deps\exports\freeglut.3.0.0\bin\$(PlatformShortName)\freeglutd.dll $(OutDir)freeglutd.dll
-copy $(SolutionDir)deps\exports\anttweakbar-1.16\bin\$(PlatformShortName)\AntTweakBar.dll $(OutDir)AntTweakBar.dll</Command>
+      <Command>if not exist "$(OutDir)FreeImaged.dll" (
+  copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImaged.dll $(OutDir)FreeImaged.dll
+)
+
+if not exist "$(OutDir)assimp-vc143-mtd.dll" (
+  copy $(SolutionDir)deps\exports\assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc143-mtd.dll $(OutDir)assimp-vc143-mtd.dll
+)
+
+if not exist "$(OutDir)freeglutd.dll" (
+  copy $(SolutionDir)deps\exports\freeglut.3.0.0\bin\$(PlatformShortName)\freeglutd.dll $(OutDir)freeglutd.dll
+)
+
+if not exist "$(OutDir)AntTweakBar.dll" (
+  copy $(SolutionDir)deps\exports\anttweakbar-1.16\bin\$(PlatformShortName)\AntTweakBar.dll $(OutDir)AntTweakBar.dll
+)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -138,10 +149,21 @@ copy $(SolutionDir)deps\exports\anttweakbar-1.16\bin\$(PlatformShortName)\AntTwe
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImage.dll $(OutDir)FreeImage.dll
-copy $(SolutionDir)deps\exports\assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc143-mt.dll $(OutDir)assimp-vc143-mt.dll
-copy $(SolutionDir)deps\exports\freeglut.3.0.0\bin\$(PlatformShortName)\freeglut.dll $(OutDir)freeglut.dll
-copy $(SolutionDir)deps\exports\anttweakbar-1.16\bin\$(PlatformShortName)\AntTweakBar.dll $(OutDir)AntTweakBar.dll</Command>
+      <Command>if not exist "$(OutDir)FreeImage.dll" (
+  copy $(SolutionDir)deps\exports\FreeImage3180\bin\$(PlatformShortName)\$(Configuration)\FreeImage.dll $(OutDir)FreeImage.dll
+)
+
+if not exist "$(OutDir)assimp-vc143-mt.dll" (
+  copy $(SolutionDir)deps\exports\assimp\bin\$(PlatformShortName)\$(Configuration)\assimp-vc143-mt.dll $(OutDir)assimp-vc143-mt.dll
+)
+
+if not exist "$(OutDir)freeglut.dll" (
+  copy $(SolutionDir)deps\exports\freeglut.3.0.0\bin\$(PlatformShortName)\freeglut.dll $(OutDir)freeglut.dll
+)
+
+if not exist "$(OutDir)AntTweakBar.dll" (
+  copy $(SolutionDir)deps\exports\anttweakbar-1.16\bin\$(PlatformShortName)\AntTweakBar.dll $(OutDir)AntTweakBar.dll
+)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

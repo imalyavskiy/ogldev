@@ -29,7 +29,7 @@ int main(int argc, char** argv)
 {
   t44::BackendInit(t44::BACKEND_TYPE::GLFW, argc, argv, true, false);
 
-  if (!t44::BackendCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_FULLSCREEN, WINDOW_TITLE)) {
+  if (!t44::BackendMakeWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_FULLSCREEN, WINDOW_TITLE)) {
     t44::BackendTerminate();
     return 1;
   }

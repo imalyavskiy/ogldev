@@ -19,13 +19,18 @@
 #ifndef UTIL_H
 #define	UTIL_H
 
+#include <string>
 
-#ifndef WIN32
-#include <unistd.h>
-#endif
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+namespace t37
+{
+  bool ReadFile(const char* fileName, std::string& outFile);
+
+  void ReportError(const char* pFileName, uint32_t line, const char* pError);
+  void ReportFileError(const char* pFileName, uint32_t line, const char* pFileError);
+}
+
+#define REPORT_ERROR(_ERROR_) t37::ReportError(__FILE__, __LINE__, _ERROR_);
+#define REPORT_FILE_ERROR(_FILE_ERROR_) t37::ReportFileError(__FILE__, __LINE__, _FILE_ERROR_);
 
 #define ZERO_MEM(a) memset(a, 0, sizeof(a))
 
