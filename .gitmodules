@@ -37,3 +37,6 @@
 [submodule "deps/origins/stb_image"]
 	path = deps/origins/stb_image
 	url = https://github.com/imalyavskiy/stb_image
+[submodule "practice/asteroids"]
+	path = practice/asteroids
+	url = https://github.com/imalyavskiy/asteroids.git
