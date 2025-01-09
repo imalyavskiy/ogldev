@@ -16,11 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <limits.h>
-#include <string.h>
+#include <climits>
+#include <cstring>
 
-#include "ogldev_math_3d.h"
-#include "ogldev_util.h"
+#include "t47_math_3d.h"
+#include "t47_util.h"
 #include "lighting_technique.h"
 
 

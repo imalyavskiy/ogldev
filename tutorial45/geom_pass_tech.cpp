@@ -20,7 +20,6 @@
 #include <string.h>
 
 #include "geom_pass_tech.h"
-#include "ogldev_util.h"
 
 
 GeomPassTech::GeomPassTech()

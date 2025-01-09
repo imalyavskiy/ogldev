@@ -19,8 +19,6 @@
 #include <climits>
 #include <cstring>
 
-#include "ogldev_util.h"
-
 #include "t33_math_3d.h"
 #include "t33_lighting_technique.h"
 #include "t33_util.h"

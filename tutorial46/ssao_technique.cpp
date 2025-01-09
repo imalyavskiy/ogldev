@@ -16,11 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <limits.h>
-#include <string.h>
+#include <climits>
+#include <cstring>
 
-#include "ogldev_math_3d.h"
-#include "ogldev_util.h"
+#include "t46_math_3d.h"
+#include "t46_util.h"
 #include "ssao_technique.h"
 
 #define DEPTH_TEXTURE_UNIT           GL_TEXTURE1

@@ -16,11 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 
 #include "ogldev_util.h"
-#include "technique.h"
+#include "ogldev_technique.h"
 
 Technique::Technique()
 {

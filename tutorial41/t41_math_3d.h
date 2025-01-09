@@ -19,17 +19,8 @@
 #ifndef MATH_3D_H
 #define MATH_3D_H
 
-#ifdef _WIN64
-#ifndef _USE_MATH_DEFINES
-// For some reason this works on in Debug build of Visual Studio but not in Release build.
-// The solution people suggested was to define this as a preprocessor macro in the project.
-#define _USE_MATH_DEFINES 
-#endif
 #include <cmath>
-#else
-#include <math.h>
-#endif
-#include <stdio.h>
+#include <cstdio>
 #include <cfloat>
 
 #include "t41_util.h"
@@ -40,10 +31,6 @@
 
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
-
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
 
 // powf wrapper for integer params to avoid crazy casting
 #define powi(base,exp) (int)powf((float)(base), (float)(exp))

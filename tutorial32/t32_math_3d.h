@@ -19,8 +19,8 @@
 #ifndef MATH_3D_H
 #define	MATH_3D_H
 
-#include <stdio.h>
-#include <math.h>
+#include <cstdio>
+#include <cmath>
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846f   // pi

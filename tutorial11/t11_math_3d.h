@@ -21,10 +21,6 @@
 
 #include <cmath>
 
-#ifndef M_PI
-#define M_PI       3.14159265358979323846f   // pi
-#endif
-
 #define ToRadian(x) ((x) * M_PI / 180.0f)
 #define ToDegree(x) ((x) * 180.0f / M_PI)
 namespace t11

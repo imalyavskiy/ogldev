@@ -20,8 +20,8 @@
 #include <string.h>
 
 #include "engine_common.h"
-#include "ogldev_math_3d.h"
-#include "ogldev_util.h"
+#include "t45_math_3d.h"
+#include "t45_util.h"
 #include "lighting_technique.h"
 
 #define AO_TEXTURE_UNIT               GL_TEXTURE3

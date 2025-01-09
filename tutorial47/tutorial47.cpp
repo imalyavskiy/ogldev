@@ -28,15 +28,15 @@
 #endif
 #include <sys/types.h>
 
-#include "ogldev_engine_common.h"
-#include "ogldev_app.h"
-#include "ogldev_util.h"
-#include "ogldev_pipeline.h"
-#include "ogldev_camera.h"
-#include "ogldev_backend.h"
-#include "ogldev_camera.h"
-#include "ogldev_basic_mesh.h"
-#include "ogldev_shadow_map_fbo.h"
+#include "t47_engine_common.h"
+#include "t47_app.h"
+#include "t47_util.h"
+#include "t47_pipeline.h"
+#include "t47_camera.h"
+#include "t47_backend.h"
+#include "t47_camera.h"
+#include "t47_basic_mesh.h"
+#include "t47_shadow_map_fbo.h"
 #include "lighting_technique.h"
 #include "shadow_map_technique.h"
 

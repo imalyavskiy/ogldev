@@ -19,12 +19,8 @@
 #ifndef MATH_3D_H
 #define	MATH_3D_H
 
-#include <stdio.h>
-#include <math.h>
-
-#ifndef M_PI
-#define M_PI       3.14159265358979323846f   // pi
-#endif
+#include <cstdio>
+#include <cmath>
 
 #define ToRadian(x) ((x) * M_PI / 180.0f)
 #define ToDegree(x) ((x) * 180.0f / M_PI)

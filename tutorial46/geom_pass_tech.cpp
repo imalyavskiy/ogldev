@@ -16,11 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <limits.h>
-#include <string.h>
+#include <climits>
+#include <cstring>
 
 #include "geom_pass_tech.h"
-#include "ogldev_util.h"
+#include "t46_util.h"
 
 
 GeomPassTech::GeomPassTech()

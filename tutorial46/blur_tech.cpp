@@ -20,7 +20,7 @@
 #include <string.h>
 
 #include "blur_tech.h"
-#include "ogldev_util.h"
+#include "t46_util.h"
 
 #define INPUT_TEXTURE_UNIT                 GL_TEXTURE0
 #define INPUT_TEXTURE_UNIT_INDEX           0

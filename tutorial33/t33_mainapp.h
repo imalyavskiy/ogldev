@@ -9,13 +9,13 @@
 #include <GL/freeglut.h>
 
 #include "t33_engine_common.h"
-#include "ogldev_util.h"
 #include "t33_pipeline.h"
 #include "t33_camera.h"
 #include "t33_texture.h"
 #include "t33_lighting_technique.h"
 #include "t33_glut_backend.h"
 #include "t33_mesh.h"
+#include "t33_util.h"
 
 #ifdef FREETYPE
 #include "freetypeGL.h"

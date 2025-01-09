@@ -32,10 +32,6 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-
 // powf wrapper for integer params to avoid crazy casting
 #define powi(base,exp) (int)powf((float)(base), (float)(exp))
 

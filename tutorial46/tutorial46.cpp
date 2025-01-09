@@ -28,18 +28,18 @@
 #endif
 #include <sys/types.h>
 
-#include "ogldev_app.h"
-#include "ogldev_util.h"
-#include "ogldev_pipeline.h"
-#include "ogldev_camera.h"
+#include "t46_app.h"
+#include "t46_util.h"
+#include "t46_pipeline.h"
+#include "t46_camera.h"
 #include "ssao_technique.h"
 #include "geom_pass_tech.h"
 #include "blur_tech.h"
 #include "lighting_technique.h"
-#include "ogldev_backend.h"
-#include "ogldev_camera.h"
+#include "t46_backend.h"
+#include "t46_camera.h"
 #include "mesh.h"
-#include "ogldev_io_buffer.h"
+#include "t46_io_buffer.h"
 
 #define WINDOW_WIDTH  1280  
 #define WINDOW_HEIGHT 1024

@@ -18,7 +18,7 @@
 #ifndef LIGHTING_TECHNIQUE_H
 #define	LIGHTING_TECHNIQUE_H
 
-#include "technique.h"
+#include "ogldev_technique.h"
 #include "ogldev_math_3d.h"
 #include "ogldev_lights_common.h"
 

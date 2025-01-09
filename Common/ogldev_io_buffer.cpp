@@ -16,7 +16,7 @@
 */
 
 
-#include <stdio.h>
+#include <cstdio>
 #include <GL/glew.h>
 
 #include "ogldev_util.h"

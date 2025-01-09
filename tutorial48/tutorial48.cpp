@@ -30,16 +30,16 @@
 #include <sys/types.h>
 
 
-#include "ogldev_engine_common.h"
-#include "ogldev_app.h"
-#include "ogldev_util.h"
-#include "ogldev_pipeline.h"
-#include "ogldev_camera.h"
-#include "ogldev_basic_lighting.h"
-#include "ogldev_backend.h"
-#include "ogldev_camera.h"
-#include "ogldev_basic_mesh.h"
-#include "ogldev_atb.h"
+#include "t47_engine_common.h"
+#include "t47_app.h"
+#include "t47_util.h"
+#include "t47_pipeline.h"
+#include "t47_camera.h"
+#include "t47_basic_lighting.h"
+#include "t47_backend.h"
+#include "t47_camera.h"
+#include "t47_basic_mesh.h"
+#include "t47_atb.h"
 
 #define WINDOW_WIDTH  1280  
 #define WINDOW_HEIGHT 1024

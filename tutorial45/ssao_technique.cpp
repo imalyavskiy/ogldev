@@ -19,8 +19,8 @@
 #include <limits.h>
 #include <string.h>
 
-#include "ogldev_math_3d.h"
-#include "ogldev_util.h"
+#include "t45_math_3d.h"
+#include "t45_util.h"
 #include "ssao_technique.h"
 
 #define POSITION_TEXTURE_UNIT           GL_TEXTURE1

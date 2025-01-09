@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdio.h>
+#include <cstdio>
 
 #include "ogldev_types.h"
 #include "ogldev_shadow_map_fbo.h"

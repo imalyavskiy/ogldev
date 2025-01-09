@@ -16,11 +16,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <limits.h>
-#include <string.h>
+#include <climits>
+#include <cstring>
 
 #include "blur_tech.h"
-#include "ogldev_util.h"
 
 #define INPUT_TEXTURE_UNIT                 GL_TEXTURE0
 #define INPUT_TEXTURE_UNIT_INDEX           0

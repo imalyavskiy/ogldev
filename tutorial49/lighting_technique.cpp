@@ -19,9 +19,9 @@
 #include <limits.h>
 #include <string.h>
 
-#include "ogldev_math_3d.h"
-#include "ogldev_util.h"
-#include "ogldev_engine_common.h"
+#include "t47_math_3d.h"
+#include "t47_util.h"
+#include "t47_engine_common.h"
 #include "lighting_technique.h"
 
 

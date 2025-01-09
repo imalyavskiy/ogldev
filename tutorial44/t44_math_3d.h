@@ -20,7 +20,6 @@
 #define	MATH_3D_H
 
 #include <cstdio>
-#define _USE_MATH_DEFINES
 #include <cmath>
 
 #include <assimp/vector3.h>
@@ -28,10 +27,6 @@
 #include <assimp/matrix4x4.h>
 
 #include "t44_util.h"
-
-#ifndef M_PI
-#define M_PI       3.14159265358979323846f   // pi
-#endif
 
 #define ToRadian(x) (float)(((x) * M_PI / 180.0f))
 #define ToDegree(x) (float)(((x) * 180.0f / M_PI))

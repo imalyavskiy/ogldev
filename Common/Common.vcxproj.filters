@@ -15,19 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="camera.cpp">
+    <ClCompile Include="ogldev_camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cubemap_texture.cpp">
+    <ClCompile Include="ogldev_cubemap_texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="glut_backend.cpp">
+    <ClCompile Include="ogldev_glut_backend.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="io_buffer.cpp">
+    <ClCompile Include="ogldev_io_buffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="math_3d.cpp">
+    <ClCompile Include="ogldev_math_3d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ogldev_app.cpp">
@@ -57,16 +57,16 @@
     <ClCompile Include="ogldev_texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ogldev_pipeline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ogldev_random_texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ogldev_technique.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ogldev_util.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pipeline.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="random_texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="technique.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -137,7 +137,7 @@
     <ClInclude Include="..\Include\ogldev_util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\technique.h">
+    <ClInclude Include="..\Include\ogldev_technique.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

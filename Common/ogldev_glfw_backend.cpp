@@ -16,10 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifdef WIN32
 #include <Windows.h>
-#endif
-#include <stdio.h>
+#include <cstdio>
 #include <GL/glew.h>
 //#define GLFW_DLL
 #include <GLFW/glfw3.h>

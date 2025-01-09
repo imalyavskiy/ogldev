@@ -11,11 +11,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="camera.cpp" />
-    <ClCompile Include="cubemap_texture.cpp" />
-    <ClCompile Include="glut_backend.cpp" />
-    <ClCompile Include="io_buffer.cpp" />
-    <ClCompile Include="math_3d.cpp" />
+    <ClCompile Include="ogldev_camera.cpp" />
+    <ClCompile Include="ogldev_cubemap_texture.cpp" />
+    <ClCompile Include="ogldev_glut_backend.cpp" />
+    <ClCompile Include="ogldev_io_buffer.cpp" />
+    <ClCompile Include="ogldev_math_3d.cpp" />
     <ClCompile Include="ogldev_app.cpp" />
     <ClCompile Include="ogldev_atb.cpp" />
     <ClCompile Include="ogldev_backend.cpp" />
@@ -26,9 +26,9 @@
     <ClCompile Include="ogldev_skinned_mesh.cpp" />
     <ClCompile Include="ogldev_texture.cpp" />
     <ClCompile Include="ogldev_util.cpp" />
-    <ClCompile Include="pipeline.cpp" />
-    <ClCompile Include="random_texture.cpp" />
-    <ClCompile Include="technique.cpp" />
+    <ClCompile Include="ogldev_pipeline.cpp" />
+    <ClCompile Include="ogldev_random_texture.cpp" />
+    <ClCompile Include="ogldev_technique.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\ogldev_app.h" />
@@ -53,7 +53,7 @@
     <ClInclude Include="..\Include\ogldev_texture.h" />
     <ClInclude Include="..\Include\ogldev_types.h" />
     <ClInclude Include="..\Include\ogldev_util.h" />
-    <ClInclude Include="..\Include\technique.h" />
+    <ClInclude Include="..\Include\ogldev_technique.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -104,7 +104,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_USE_MATH_DEFINES;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
@@ -121,7 +121,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_USE_MATH_DEFINES;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>

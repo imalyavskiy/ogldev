@@ -19,27 +19,24 @@
 */
 
 #include <windows.h>
-#include <math.h>
+
+#include <cmath>
 #include <GL/glew.h>
 #include <string>
-#ifndef WIN32
-#include <sys/time.h>
-#include <unistd.h>
-#endif
 #include <sys/types.h>
 
-#include "ogldev_app.h"
-#include "ogldev_util.h"
-#include "ogldev_pipeline.h"
-#include "ogldev_camera.h"
+#include "t45_app.h"
+#include "t45_util.h"
+#include "t45_pipeline.h"
+#include "t45_camera.h"
 #include "ssao_technique.h"
 #include "geom_pass_tech.h"
 #include "blur_tech.h"
 #include "lighting_technique.h"
-#include "ogldev_backend.h"
-#include "ogldev_camera.h"
+#include "t45_backend.h"
+#include "t45_camera.h"
 #include "mesh.h"
-#include "ogldev_io_buffer.h"
+#include "t45_io_buffer.h"
 
 #define WINDOW_WIDTH  1280  
 #define WINDOW_HEIGHT 1024
