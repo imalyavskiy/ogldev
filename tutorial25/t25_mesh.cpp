@@ -52,22 +52,19 @@ namespace t25
   {
     Clear();
 
-    bool Ret = false;
+    bool ret = false;
 
     Assimp::Importer Importer;
 
-    const aiScene* pScene = Importer.ReadFile(Filename.c_str(),
-                                    aiProcess_Triangulate | aiProcess_GenSmoothNormals|
-                                    aiProcess_FlipUVs);
+    uint32_t flags = aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs;
+    const aiScene* pAiScene = Importer.ReadFile(Filename.c_str(), flags);
 
-    if (pScene){
-      Ret = InitFromScene(pScene, Filename);
-    }
-    else {
+    if (pAiScene)
+      ret = InitFromScene(pAiScene, Filename);
+    else
       printf("Error parsing '%s': '%s'\n", Filename.c_str(), Importer.GetErrorString());
-    }
 
-    return Ret;
+    return ret;
   }
 
   bool Mesh::InitFromScene(const aiScene* pScene, const std::string& Filename)

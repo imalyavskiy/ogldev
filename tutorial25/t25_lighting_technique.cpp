@@ -43,7 +43,7 @@ namespace t25
   "  void main()                                                                                      \n"\
   "  {                                                                                                \n"\
   "      gl_Position      = gWVP * vec4(Position, 1.0);                                               \n"\
-  "      LightSpacePos = gLightWVP * vec4(Position, 1.0);                                             \n"\
+  "      LightSpacePos    = gLightWVP * vec4(Position, 1.0);                                          \n"\
   "      TexCoord0        = TexCoord;                                                                 \n"\
   "      Normal0          = (gWorld * vec4(Normal, 0.0)).xyz;                                         \n"\
   "      WorldPos0        = (gWorld * vec4(Position, 1.0)).xyz;                                       \n"\
